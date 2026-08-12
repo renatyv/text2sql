@@ -10,7 +10,15 @@ Design (mirrors AGENT_PROFILE_EXPERIMENT_PLAN.md):
 """
 from __future__ import annotations
 
+from pathlib import Path
+
 from . import config
+
+# Common text-to-SQL failure modes (grouping, schema linking, predicates, ...).
+# Injected into every system prompt so all arms (A/B/C) get the same guidance,
+# keeping the A-vs-B manipulation limited to the profile itself.
+_CHECKLIST_PATH = Path(__file__).resolve().parent / "error_avoidance_checklist.txt"
+_ERROR_CHECKLIST = _CHECKLIST_PATH.read_text(encoding="utf-8").strip()
 
 # Appended to pi's default coding-assistant system prompt (not a replacement).
 # Adds only the experiment-specific contract: the single sql_exec tool, the
@@ -43,13 +51,22 @@ Rules:
 - Prefer explicit table-qualified columns. Respect MySQL syntax (backticks for
   reserved/odd-case identifiers).
 - Budget: you have at most {max_turns} agent turns — explore efficiently.
+
+Before finalizing your query, re-check it against this list of common
+text-to-SQL errors and avoid them:
+
+__ERROR_CHECKLIST__
 """
 
 _ZERO_SYSTEM = """\
 You are an expert text-to-SQL engine. Given a database profile and a
 natural-language question, output exactly one MySQL SELECT/WITH statement that
 answers the question. The statement must run standalone. Do not explain.
-"""
+
+Before outputting the query, re-check it against this list of common
+text-to-SQL errors and avoid them:
+
+""" + _ERROR_CHECKLIST
 
 
 def _profile(db_label: str) -> str:
@@ -64,7 +81,7 @@ def agent_prompts(db_label: str, question: str, arm: str, max_turns: int) -> tup
         row_cap=config.EXPLORE_ROW_CAP,
         timeout=config.MYSQL_QUERY_TIMEOUT,
         max_turns=max_turns,
-    )
+    ).replace("__ERROR_CHECKLIST__", _ERROR_CHECKLIST)
     db = config.mysql_db_for(db_label)
     if arm == "A":
         user = (

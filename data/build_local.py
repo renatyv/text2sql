@@ -255,6 +255,22 @@ def build_questions_json(split):
     return out, cols
 
 
+def build_domain_knowledge_combined(question_lists):
+    """Flatten per-split question lists into one {id: domain_knowledge} map.
+
+    Only questions whose `domain_knowledge` is a non-empty list are included;
+    the result is sorted by id for stable diffs. Question ids are globally
+    unique (prefixed by split), so no split nesting is needed.
+    """
+    combined = {}
+    for split, questions in question_lists.items():
+        for q in questions:
+            dk = q.get("domain_knowledge") or []
+            if dk:
+                combined[q["id"]] = dk
+    return {k: combined[k] for k in sorted(combined)}
+
+
 def write_json(obj, path):
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
@@ -306,6 +322,8 @@ def build_split(split, sample_size, do_tables, tables_from="parquet"):
         write_json(tables, split_dir / "dev_tables.json")
         print(f"  dev_tables.json: {len(tables)} tables")
         report_table_coverage(questions, tables, split)
+
+    return questions
 
 
 def main():
