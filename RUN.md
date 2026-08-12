@@ -72,8 +72,27 @@ results/   <db>__<phase>__<n>/
 
 `summary.json` reports per-arm accuracy + Wilson 95% CI, `% valid runnable SQL`,
 mean turns / DB-queries, tokens in/out, latency, cost, subgroup accuracy by
-`category` and `contains_domain_knowledge`, an error taxonomy, and the pairwise
-**Δ + 95% CI** for **B−A**, **B−C**, **C−A** with exact McNemar p-values.
+`category`, `contains_domain_knowledge`, and `query_shape` (structural class of
+the gold query — `window` / `rollup` / `set_op` / `cte` / `simple`, derived from
+gold SQL so it is identical across arms), a structural error taxonomy, and the
+pairwise **Δ + 95% CI** for **B−A**, **B−C**, **C−A** with exact McNemar p-values.
+
+**Error taxonomy** (`error_class` per record, counted into `summary.json → error_taxonomy`):
+for predictions that run but return the wrong result, the predicted SQL is
+diffed against gold and labeled with the first matching structural cause —
+`missing_join`, `extra_join`, `wrong_join_type`, `missing_group_by`,
+`wrong_aggregate`, `missing_order_by`, `missing_limit` — falling back to
+`wrong_cardinality` (row count differs, no structural cause found) or
+`wrong_result` (same rows, different content). Non-runnable predictions are
+labeled `syntax` / `wrong_table_or_column` / `not_runnable` / `empty_result` /
+`timeout` as before. Each record also carries the full list of detected signals
+in `struct_diff` (e.g. `["missing_join", "missing_order_by"]`), the
+`cardinality_ratio` (`pred_rows / gold_rows`) and `cardinality_direction`
+(`over` / `under` / `exact`), and `join_count_pred` / `join_count_gold`.
+
+> Rescoring: the taxonomy and `query_shape` are pure functions of the SQL, so
+> tweaking `harness/scorer.py` and re-running `--score-only` re-derives them
+> from the saved `pred_sql` / `gold_sql` with no model calls.
 
 ## Anti-cheat / leakage controls (validity)
 

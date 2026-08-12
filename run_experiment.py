@@ -246,6 +246,7 @@ def _summarize(by_arm: dict[str, list[dict]], rdir: Path) -> None:
         agg = metrics.aggregate(recs)
         agg["by_category"] = metrics.subgroup_accuracy(recs, "category")
         agg["by_contains_domain_knowledge"] = metrics.subgroup_accuracy(recs, "contains_domain_knowledge")
+        agg["by_query_shape"] = metrics.subgroup_accuracy(recs, "query_shape")
         agg["error_taxonomy"] = metrics.value_counts(recs, "error_class")
         summary[arm] = agg
         print(f"arm {arm}: n={agg.get('n')} acc={agg.get('accuracy')} "
