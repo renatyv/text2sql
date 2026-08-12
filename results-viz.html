@@ -1,0 +1,995 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BEAVER · db-snooper profile experiment — results</title>
+<style>
+  :root {
+    --bg:#0e1116; --panel:#161b22; --panel2:#1c232c; --ink:#e6edf3; --muted:#9aa7b4;
+    --line:#2a323c; --line2:#38434f;
+    --A:#5b8def; --A-soft:rgba(91,141,239,.18);   /* baseline  : DB only      */
+    --B:#46d39a; --B-soft:rgba(70,211,154,.18);   /* profile   : profile + DB */
+    --C:#f0b04a; --C-soft:rgba(240,176,74,.18);   /* zero-shot : profile only */
+    --good:#46d39a; --bad:#ff6b6b; --warn:#f0b04a;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  * { box-sizing:border-box; }
+  html,body { margin:0; background:var(--bg); color:var(--ink);
+    font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  a { color:var(--A); }
+  header.top {
+    position:sticky; top:0; z-index:20; background:linear-gradient(180deg,#10151b,#0e1116ee);
+    border-bottom:1px solid var(--line); padding:12px 18px; backdrop-filter:blur(8px);
+  }
+  header.top h1 { margin:0; font-size:15px; font-weight:600; }
+  header.top .sub { color:var(--muted); font-size:12px; margin-top:2px; }
+  .toolbar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:10px; }
+  button, .btn {
+    appearance:none; background:var(--panel2); color:var(--ink); border:1px solid var(--line2);
+    padding:6px 11px; border-radius:8px; font-size:13px; cursor:pointer; user-select:none;
+  }
+  button:hover { border-color:#4a5664; background:#222a34; }
+  button.primary { background:var(--A); color:#08101a; border-color:transparent; font-weight:600; }
+  button.primary:hover { filter:brightness(1.08); }
+  .status { color:var(--muted); font-size:12px; margin-left:4px; }
+  .runsel { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .chip {
+    display:inline-flex; align-items:center; gap:6px; padding:4px 9px; border-radius:999px;
+    border:1px solid var(--line2); background:var(--panel2); font-size:12px; cursor:pointer;
+  }
+  .chip.on { background:var(--A-soft); border-color:var(--A); color:#cfe0ff; }
+  .chip .dot { width:7px;height:7px;border-radius:50%; background:var(--muted); }
+  .chip.on .dot { background:var(--A); }
+  main { padding:18px; max-width:1500px; margin:0 auto; }
+  section.card {
+    background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px;
+    margin-bottom:16px;
+  }
+  section.card > h2 { margin:0 0 4px; font-size:14px; letter-spacing:.02em; }
+  section.card > .hint { color:var(--muted); font-size:12px; margin:0 0 14px; }
+  .legend { display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:var(--muted); }
+  .legend span { display:inline-flex; align-items:center; gap:6px; }
+  .legend i { width:10px;height:10px;border-radius:2px; display:inline-block; }
+  .empty { color:var(--muted); padding:40px 0; text-align:center; }
+
+  /* Tables */
+  table { width:100%; border-collapse:collapse; font-size:12.5px; }
+  th,td { padding:6px 8px; border-bottom:1px solid var(--line); text-align:right; white-space:nowrap; }
+  th { color:var(--muted); font-weight:500; position:sticky; top:0; background:var(--panel); }
+  td.l, th.l { text-align:left; }
+  tbody tr:hover { background:#1a212a; }
+  .grp th { background:var(--panel2); color:var(--ink); font-size:11px; letter-spacing:.03em; text-transform:uppercase; }
+  .pill { display:inline-block; padding:1px 6px; border-radius:4px; font-size:11px; background:#00000040; }
+
+  /* Charts */
+  .intro { border-left:3px solid var(--B); }
+  .intro p { margin:0; color:var(--muted); max-width:1000px; }
+  .featured { margin-bottom:12px; }
+  .featured #scatterChart { max-width:900px; margin:auto; }
+  .headline-charts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+  .charts { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
+  .wide { grid-column:1/-1; }
+  #subChart { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:1000px){
+    .headline-charts { grid-template-columns:1fr 1fr; }
+    .charts, #subChart { grid-template-columns:1fr; }
+  }
+  @media (max-width:680px){ .headline-charts { grid-template-columns:1fr; } }
+  .chartbox { background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:10px 8px 4px; }
+  .chartbox h3 { margin:0 0 2px 6px; font-size:12.5px; color:var(--ink); }
+  .chartbox .hint2 { margin:0 0 4px 6px; font-size:11px; color:var(--muted); }
+  svg { display:block; width:100%; height:auto; overflow:visible; }
+  .axis text, svg text.tick { fill:var(--muted); font-size:10px; }
+  .axis line, .axis path { stroke:var(--line2); }
+  .grid line { stroke:#20262e; }
+  svg text.lbl { fill:var(--ink); font-size:11px; }
+  svg text.title { fill:var(--muted); font-size:10px; }
+  svg text.point-label { fill:var(--ink); font-size:10px; font-weight:600; paint-order:stroke; stroke:var(--panel2); stroke-width:3px; }
+
+  /* drill-down */
+  .filters { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:10px; }
+  .filters select, .filters input[type=search] {
+    background:var(--panel2); color:var(--ink); border:1px solid var(--line2); border-radius:7px;
+    padding:5px 8px; font-size:12.5px; max-width:240px;
+  }
+  .filters label { color:var(--muted); font-size:12px; display:inline-flex; gap:4px; align-items:center; }
+  .corr-yes { color:var(--good); font-weight:600; }
+  .corr-no  { color:var(--bad);  font-weight:600; }
+  .corr-na  { color:var(--muted); }
+  .wrap { overflow:auto; max-height:560px; border:1px solid var(--line); border-radius:8px; }
+  .errtag { font-size:10.5px; padding:1px 5px; border-radius:4px; background:#00000040; color:var(--muted); }
+  .errtag.correct { color:var(--good); }
+  .errtag.wrong_result, .errtag.wrong_cardinality { color:var(--bad); }
+
+  /* detail panel */
+  .overlay { position:fixed; inset:0; background:#0008; z-index:30; display:none; }
+  .overlay.open { display:block; }
+  .panel {
+    position:fixed; right:0; top:0; bottom:0; width:min(820px,96vw); background:var(--panel);
+    border-left:1px solid var(--line); z-index:31; transform:translateX(100%); transition:transform .18s ease;
+    display:flex; flex-direction:column;
+  }
+  .panel.open { transform:translateX(0); }
+  .panel .ph { padding:12px 14px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+  .panel .ph h3 { margin:0; font-size:14px; }
+  .panel .pm { padding:12px 14px; overflow:auto; flex:1; }
+  .blk { margin-bottom:16px; }
+  .blk h4 { margin:0 0 6px; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  pre.sql {
+    margin:0; background:var(--panel2); border:1px solid var(--line); border-radius:8px;
+    padding:10px; font-family:var(--mono); font-size:12px; white-space:pre-wrap; word-break:break-word; max-height:220px; overflow:auto;
+  }
+  .twocol { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  @media (max-width:680px){ .twocol{ grid-template-columns:1fr; } }
+  .exec { font-family:var(--mono); font-size:11.5px; background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:6px 8px; margin:4px 0; white-space:pre-wrap; word-break:break-word; }
+  .miniacc { display:flex; gap:10px; margin-bottom:10px; flex-wrap:wrap; }
+  .miniacc .ac { border:1px solid var(--line); border-radius:8px; padding:6px 10px; min-width:96px; }
+  .miniacc .ac .t { font-size:11px; color:var(--muted); }
+  .miniacc .ac .n { font-family:var(--mono); font-size:12px; }
+  .kt { display:grid; grid-template-columns:auto 1fr; gap:3px 10px; font-size:12px; }
+  .kt .k { color:var(--muted); }
+  .kt .v { font-family:var(--mono); text-align:right; }
+  .armbadge { display:inline-block; min-width:14px; white-space:nowrap; text-align:center; font-weight:700; }
+  .armbadge.A{color:var(--A)} .armbadge.B{color:var(--B)} .armbadge.C{color:var(--C)}
+  code.inl{font-family:var(--mono);background:#00000040;padding:0 4px;border-radius:4px;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>BEAVER · db-snooper profile experiment</h1>
+  <div class="sub">Execution-accuracy benchmark for DB only, profile + DB, and profile-only text-to-SQL setups.</div>
+  <div class="toolbar">
+    <input id="dirpicker" type="file" webkitdirectory directory multiple style="display:none" />
+    <button class="primary" onclick="document.getElementById('dirpicker').click()">📁 Load results folder…</button>
+    <button id="clearBtn">Clear</button>
+    <span class="status" id="status"></span>
+    <!-- Convenience: when serving the repo over HTTP (e.g. python -m http.server),
+         auto-discover and load every run under ./results. No-op without a server. -->
+    <button id="devLoadPilot" title="Auto-discover and load every run under ./results over HTTP" style="font-size:11px;opacity:.75">↻ load all runs</button>
+  </div>
+  <div class="runsel" id="runsel"></div>
+</header>
+
+<main id="main">
+  <div class="empty" id="emptyState">
+    No results loaded. Click <b>Load results folder…</b> and pick the <code class="inl">results/</code> directory
+    (or any subset of run folders). Everything is parsed locally in your browser — nothing is uploaded.
+  </div>
+
+  <div id="sections" style="display:none">
+    <section class="card intro">
+      <h2>What this benchmark measures</h2>
+      <p>Does a pre-generated <b>db-snooper</b> database profile help a coding agent answer <b>BEAVER text-to-SQL</b> questions? Each setup receives the same questions; generated SQL is executed against the target database and compared by result accuracy, cost, and latency. The goal is to measure whether profile context improves correctness enough to justify its overhead.</p>
+    </section>
+
+    <section class="card" id="chartsSec">
+      <h2>Key results</h2>
+      <p class="hint">Results for the active run. Hover SVG points for details.</p>
+      <div class="chartbox featured"><h3>Cost vs. accuracy <span id="scatterRunTag" class="pill"></span></h3><div class="hint2">each point is one setup · upper-left is better</div><div id="scatterChart"></div></div>
+      <div class="headline-charts">
+        <div class="chartbox"><h3>Accuracy by setup <span id="accRunTag" class="pill"></span></h3><div class="hint2">execution accuracy · whiskers = 95% CI</div><div id="accChart"></div></div>
+        <div class="chartbox"><h3>Cost by setup <span id="costRunTag" class="pill"></span></h3><div class="hint2">mean cost per question · lower is better</div><div id="costChart"></div></div>
+        <div class="chartbox"><h3>Latency by setup <span id="latRunTag" class="pill"></span></h3><div class="hint2">mean seconds per question · lower is faster</div><div id="latChart"></div></div>
+      </div>
+      <div class="charts">
+        <div class="chartbox wide"><h3>Accuracy by subgroup <span id="subRunTag" class="pill"></span></h3><div class="hint2">focused run · grouped by category / domain-knowledge</div><div id="subChart"></div></div>
+        <div class="chartbox wide"><h3>Pairwise Δ (accuracy)</h3><div class="hint2">setup differences · whiskers = 95% CI on Δ</div><div id="forestChart"></div></div>
+      </div>
+    </section>
+
+    <section class="card" id="errorSec">
+      <h2>Error taxonomy</h2>
+      <p class="hint">Stacked counts from <code class="inl">summary.json → error_taxonomy</code>, per setup, per run.</p>
+      <div id="errorCharts"></div>
+    </section>
+
+    <section class="card" id="drillSec">
+      <h2>Per-question drill-down <span id="drillRunTag" class="pill"></span></h2>
+      <p class="hint">Records joined across setups by question id within the focused run. Click a row to inspect SQL.</p>
+      <div class="filters" id="drillFilters"></div>
+      <div class="wrap"><table id="drillTbl"></table></div>
+    </section>
+  </div>
+</main>
+
+<div class="overlay" id="overlay" onclick="closePanel()"></div>
+<aside class="panel" id="panel">
+  <div class="ph">
+    <div>
+      <h3 id="pTitle">Question</h3>
+      <div id="pSub" style="color:var(--muted);font-size:12px;"></div>
+    </div>
+    <button onclick="closePanel()">Close ✕</button>
+  </div>
+  <div class="pm" id="panelBody"></div>
+</aside>
+
+<script type="module">
+// ───────────────────────────────────────────────────────────────────────────
+// Types (JSDoc — TS-flavoured, runs as plain JS)
+// ───────────────────────────────────────────────────────────────────────────
+
+/** @typedef {"A"|"B"|"C"} Arm */
+/** @typedef {{
+ *   n:number, accuracy:number, accuracy_ci95:[number,number], valid_sql_pct:number,
+ *   mean_turns:number, mean_db_queries:number, mean_latency_s:number,
+ *   tokens_in:number, tokens_out:number, tokens_total:number, cost_usd:number,
+ *   by_category:Record<string,ArmStats>, by_contains_domain_knowledge:Record<string,ArmStats>,
+ *   error_taxonomy:Record<string,number>
+ * }} ArmStats */
+/** @typedef {{delta:number,ci_low:number,ci_high:number,se:number,b:number,c:number,n_discordant:number,mcnemar_chi2_cc:number,p_value_exact:number,acc_A?:number,acc_B?:number,n?:number}} Pairwise */
+/** @typedef {{id:string, arm:Arm, category?:string, contains_domain_knowledge?:boolean,
+ *   correct?:boolean|null, valid_sql?:boolean|null, error_class?:string|null,
+ *   turns?:number, db_queries?:number, latency_s?:number,
+ *   usage?:{input?:number,output?:number,totalTokens?:number},
+ *   cost?:{total?:number}, pred_sql?:string, gold_sql?:string, executed_sqls?:string[],
+ *   timed_out?:boolean}} QRec */
+/** @typedef {{name:string, summary?:any, arms:Record<Arm,QRec[]>}} Run */
+
+const ARMS = ["A","B","C"];
+const ARM_LABEL = {A:"DB only",B:"Profile + DB",C:"Profile only"};
+const ARM_DESC = {A:"baseline",B:"profile with database access",C:"profile without database access"};
+
+// ───────────────────────────────────────────────────────────────────────────
+// State
+// ───────────────────────────────────────────────────────────────────────────
+/** @type {Map<string,Run>} */
+const RUNS = new Map();           // runName -> Run
+let focused = null;               // run name shown in per-run views
+let drillState = { run:null, sortKey:"id", sortDir:1, q:"", cat:"", dom:"", err:"", onlyMiss:false };
+
+// ───────────────────────────────────────────────────────────────────────────
+// File intake → group into runs
+// ───────────────────────────────────────────────────────────────────────────
+const dirpicker = document.getElementById("dirpicker");
+dirpicker.addEventListener("change", e => ingest(e.target.files));
+document.getElementById("clearBtn").onclick = () => {
+  RUNS.clear(); focused = null; renderAll();
+  setStatus("Cleared.");
+};
+
+/**
+ * Walk a FileList, bucket by directory, and assemble Run objects.
+ * A run = a directory that either contains summary.json or arm{A,B,C}.jsonl.
+ */
+async function ingest(/** @type {FileList} */ files) {
+  if (!files || !files.length) return;
+  const loaded = new Set(RUNS.keys());
+  // normalize: webkitRelativePath like "results/neutron__pilot__n20/armA.jsonl"
+  const byDir = new Map(); // dirPath -> {summary?:File, arms:Map<Arm,File>}
+  for (const f of Array.from(files)) {
+    const path = f.webkitRelativePath || f.name;
+    const parts = path.split("/");
+    const name = parts[parts.length-1];
+    const dirPath = parts.slice(0,-1).join("/") || "(root)";
+    if (!byDir.has(dirPath)) byDir.set(dirPath, {arms:new Map()});
+    const slot = byDir.get(dirPath);
+    if (name === "summary.json") slot.summary = f;
+    else {
+      const m = /^arm([ABC])\.jsonl$/i.exec(name);
+      if (m) slot.arms.set(/** @type {Arm} */ (m[1].toUpperCase()), f);
+    }
+  }
+
+  let newRuns = 0, newQ = 0;
+  for (const [dirPath, slot] of byDir) {
+    if (!slot.summary && slot.arms.size === 0) continue;
+    // derive run name: last path segment; fall back to full path
+    const segs = dirPath.split("/");
+    let runName = segs[segs.length-1] || dirPath || "(root)";
+    if (!runName || runName === "(root)") {
+      // try to derive from a file's stem if at root
+      runName = "root";
+    }
+    let run = RUNS.get(runName);
+    if (!run) { run = {name:runName, arms:{A:[],B:[],C:[]}}; RUNS.set(runName, run); }
+    let qAdded = 0;
+    if (slot.summary) { try { run.summary = JSON.parse(await slot.summary.text()); } catch(e){ console.warn("summary parse failed", dirPath, e); } }
+    for (const arm of ARMS) {
+      const f = slot.arms.get(arm);
+      if (!f) continue;
+      const recs = [];
+      const text = await f.text();
+      for (const line of text.split(/\r?\n/)) {
+        const t = line.trim(); if (!t) continue;
+        try { recs.push(JSON.parse(t)); } catch(e){ /* ignore bad line */ }
+      }
+      run.arms[arm] = recs; qAdded = Math.max(qAdded, recs.length);
+    }
+    if (!loaded.has(runName)) { newRuns++; newQ += qAdded; loaded.add(runName); }
+    if (!focused) focused = runName;
+  }
+  setStatus(`Loaded ${newRuns} run(s), ~${newQ} questions each. ${RUNS.size} available; showing one at a time.`);
+  renderAll();
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Helpers
+// ───────────────────────────────────────────────────────────────────────────
+const setStatus = (s) => document.getElementById("status").textContent = s;
+const fmtPct = (x, d=1) => (x==null||isNaN(x)) ? "—" : (100*x).toFixed(d)+"%";
+const fmtNum = (x, d=2) => (x==null||isNaN(x)) ? "—" : Number(x).toFixed(d);
+const fmtInt = (x) => (x==null||isNaN(x)) ? "—" : Math.round(x).toLocaleString();
+const fmtK   = (x) => (x==null||isNaN(x)) ? "—" : (x>=1000 ? (x/1000).toFixed(1)+"k" : String(Math.round(x)));
+const fmtUSD = (x) => (x==null||isNaN(x)) ? "—" : "$"+x.toFixed(x<0.01?5:4);
+const fmtSec = (x) => (x==null||isNaN(x)) ? "—" : x.toFixed(1)+"s";
+
+/** Map "neutron__pilot__n20" -> "neutron · pilot · n=20" */
+function prettyName(n) {
+  const parts = n.split("__");
+  if (parts.length >= 3) return `${parts[0]} · ${parts[1]} · n=${parts[2].replace(/^n/i,"")}`;
+  return n;
+}
+function runDb(run){ return run.name.split("__")[0]; }
+
+/** @returns {ArmStats|undefined} */
+function armSummary(/** @type {Run} */ run, /** @type {Arm} */ arm){
+  return run.summary && run.summary[arm];
+}
+
+/** Aggregate a per-question metric from JSONL records (fallback if summary missing). */
+function agg(/** @type {QRec[]} */ recs, /** @type {(r:QRec)=>number|null} */ f){
+  const xs = recs.map(f).filter(x=>x!=null && !isNaN(x));
+  if (!xs.length) return null;
+  return xs.reduce((a,b)=>a+b,0)/xs.length;
+}
+function accFromRecs(recs){
+  const judged = recs.filter(r=>r.correct===true||r.correct===false);
+  if (!judged.length) return null;
+  return judged.filter(r=>r.correct).length / judged.length;
+}
+/** Wilson 95% CI as fallback (summary provides its own CI; prefer that). */
+function wilson(k, n){
+  if (!n) return [0,0];
+  const z=1.96, p=k/n, d=1+z*z/n, c=(z*Math.sqrt(p*(1-p)/n + z*z/(4*n*n)))/d, c2=(p+z*z/(2*n))/d;
+  return [Math.max(0,c2-c), Math.min(1,c2+c)];
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Top-level render
+// ───────────────────────────────────────────────────────────────────────────
+function renderAll(){
+  const any = RUNS.size>0;
+  document.getElementById("emptyState").style.display = any ? "none":"block";
+  document.getElementById("sections").style.display   = any ? "block":"none";
+  if (!any) { document.getElementById("runsel").innerHTML=""; return; }
+  renderRunSelector();
+  renderCharts();
+  renderErrors();
+  drillState.run = focused;
+  renderDrill();
+}
+
+function renderRunSelector(){
+  const el = document.getElementById("runsel");
+  el.innerHTML = "";
+  const names = [...RUNS.keys()].sort();
+  for (const n of names) {
+    const run = RUNS.get(n);
+    const totalQ = Math.max(...ARMS.map(a=>run.arms[a]?.length||0));
+    const div = document.createElement("div");
+    div.className = "chip " + (focused===n?"on":"");
+    const isFocused = (focused===n);
+    div.innerHTML = `<span class="dot"></span>${prettyName(n)}` +
+      (isFocused ? ` <span style="opacity:.7">★</span>` : "") +
+      ` <span style="opacity:.6">(${totalQ})</span>`;
+    div.title = `${n}\n· click to show this run`;
+    div.onclick = () => { focused = n; renderAll(); };
+    el.appendChild(div);
+  }
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Charts (hand-rolled SVG)
+// ───────────────────────────────────────────────────────────────────────────
+const SVGNS = "http://www.w3.org/2000/svg";
+/** @returns {SVGGElement} */
+function svgEl(tag, attrs={}, parent){
+  const e = document.createElementNS(SVGNS, tag);
+  for (const [k,v] of Object.entries(attrs)) e.setAttribute(k, v);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function makeSvg(w, h){
+  const s = svgEl("svg",{viewBox:`0 0 ${w} ${h}`, width:w, height:h});
+  return s;
+}
+
+function renderCharts(){
+  renderAccChart();
+  renderCostChart();
+  renderLatencyChart();
+  renderSubChart();
+  renderScatter();
+  renderForest();
+}
+
+function renderAccChart(){
+  const run = focused ? RUNS.get(focused) : null;
+  const data = run && ARMS.map(arm=>{
+    const s = armSummary(run,arm); const recs = run.arms[arm]||[];
+    let acc,ci;
+    if (s){ acc=s.accuracy; ci=s.accuracy_ci95; }
+    else { const j=recs.filter(r=>r.correct===true||r.correct===false); acc=j.length?j.filter(r=>r.correct).length/j.length:0; ci=wilson(j.filter(r=>r.correct).length,j.length); }
+    return {arm,value:acc,ci:ci||[acc,acc]};
+  });
+  renderArmBars("accChart","accRunTag",run,data,{max:1,ticks:[0,.25,.5,.75,1],fmt:fmtPct});
+}
+
+function renderCostChart(){
+  const run = focused ? RUNS.get(focused) : null;
+  const data = run && ARMS.map(arm=>({arm,value:armSummary(run,arm)?.cost_usd ?? agg(run.arms[arm]||[],r=>r.cost?.total)}));
+  renderArmBars("costChart","costRunTag",run,data,{fmt:fmtUSD});
+}
+
+function renderLatencyChart(){
+  const run = focused ? RUNS.get(focused) : null;
+  const data = run && ARMS.map(arm=>({arm,value:armSummary(run,arm)?.mean_latency_s ?? agg(run.arms[arm]||[],r=>r.latency_s)}));
+  renderArmBars("latChart","latRunTag",run,data,{fmt:fmtSec});
+}
+
+function renderArmBars(hostId, tagId, run, data, opts){
+  const host = document.getElementById(hostId), tag = document.getElementById(tagId);
+  host.innerHTML="";
+  if (!run){ tag.textContent=""; host.innerHTML=`<div class="empty">Select a run.</div>`; return; }
+  tag.textContent = prettyName(run.name);
+  const W=360,H=210, m={t:24,r:14,b:30,l:54};
+  const values = data.map(d=>d.value).filter(v=>v!=null && !isNaN(v));
+  const yMax = opts.max || Math.max(...values,1e-9)*1.18;
+  const ticks = opts.ticks || [0,yMax/2,yMax];
+  const y = v => H-m.b-(v/yMax)*(H-m.t-m.b);
+  const svg=makeSvg(W,H), g=svgEl("g",{},svg);
+  for (const v of ticks){
+    const yy=y(v);
+    svgEl("line",{x1:m.l,x2:W-m.r,y1:yy,y2:yy,stroke:"#20262e"},g);
+    svgEl("text",{x:m.l-6,y:yy+3,"text-anchor":"end",class:"tick"},g).textContent=opts.fmt(v);
+  }
+  const slot=(W-m.l-m.r)/ARMS.length;
+  data.forEach((d,i)=>{
+    if (d.value==null) return;
+    const cx=m.l+slot*(i+.5), x=m.l+slot*(i+.22), width=slot*.56;
+    const bar=svgEl("rect",{x,y:y(d.value),width,height:H-m.b-y(d.value),fill:`var(--${d.arm})`,rx:3},g);
+    svgEl("title",{},bar).textContent=`${ARM_LABEL[d.arm]} · ${opts.fmt(d.value)}`;
+    if (d.ci){
+      const y0=y(d.ci[0]), y1=y(d.ci[1]);
+      svgEl("line",{x1:cx,x2:cx,y1:y0,y2:y1,stroke:"#0e1116","stroke-width":2},g);
+      for (const yy of [y0,y1]) svgEl("line",{x1:cx-6,x2:cx+6,y1:yy,y2:yy,stroke:"#0e1116","stroke-width":2},g);
+    }
+    svgEl("text",{x:cx,y:Math.max(13,y(d.value)-5),"text-anchor":"middle",class:"lbl"},g).textContent=opts.fmt(d.value);
+    svgEl("text",{x:cx,y:H-m.b+17,"text-anchor":"middle",class:"lbl"},g).textContent=ARM_LABEL[d.arm];
+  });
+  host.appendChild(svg);
+}
+
+/** Grouped bars: accuracy by category and by domain-knowledge flag (focused run). */
+function renderSubChart(){
+  const host = document.getElementById("subChart");
+  const tag = document.getElementById("subRunTag");
+  host.innerHTML="";
+  const run = focused ? RUNS.get(focused) : null;
+  if (!run){ tag.textContent=""; host.innerHTML=`<div class="empty">Select a run.</div>`; return; }
+  tag.textContent = prettyName(run.name);
+
+  // Two panels stacked: by category, by domain_knowledge
+  host.appendChild(subgroupSvg(run, "category"));
+  host.appendChild(subgroupSvg(run, "domain"));
+}
+
+function subgroupSvg(run, kind){
+  // compute per-arm accuracy per group from summary if present, else JSONL
+  /** @type {{label:string, byArm:Record<Arm,{acc:number,ci:[number,number],n:number}>}[]} */
+  let groups = [];
+  if (kind === "category"){
+    // union of categories across arms
+    const cats = new Set();
+    for (const arm of ARMS){
+      const s = armSummary(run,arm);
+      if (s?.by_category) Object.keys(s.by_category).forEach(c=>cats.add(c));
+      else (run.arms[arm]||[]).forEach(r=>{ if(r.category) cats.add(r.category); });
+    }
+    groups = [...cats].sort().map(c=>{
+      const byArm = /** @type {Record<Arm,{acc:number,ci:[number,number],n:number}>} */ ({});
+      for (const arm of ARMS){
+        const s = armSummary(run,arm)?.by_category?.[c];
+        const recs = (run.arms[arm]||[]).filter(r=>r.category===c);
+        if (s){ byArm[arm] = {acc:s.accuracy, ci:s.accuracy_ci95, n:s.n}; }
+        else { const j=recs.filter(r=>r.correct===true||r.correct===false); const k=j.filter(r=>r.correct).length; byArm[arm]={acc:j.length?k/j.length:0,ci:wilson(k,j.length),n:j.length}; }
+      }
+      return {label:c, byArm};
+    });
+  } else { // domain
+    const keys = ["True","False"];
+    groups = keys.map(k=>{
+      const want = (k==="True");
+      const byArm = /** @type {Record<Arm,{acc:number,ci:[number,number],n:number}>} */ ({});
+      for (const arm of ARMS){
+        const s = armSummary(run,arm)?.by_contains_domain_knowledge?.[k];
+        const recs = (run.arms[arm]||[]).filter(r=> !!r.contains_domain_knowledge === want);
+        if (s){ byArm[arm] = {acc:s.accuracy, ci:s.accuracy_ci95, n:s.n}; }
+        else { const j=recs.filter(r=>r.correct===true||r.correct===false); const kk=j.filter(r=>r.correct).length; byArm[arm]={acc:j.length?kk/j.length:0,ci:wilson(kk,j.length),n:j.length}; }
+      }
+      return {label:"domain_knowledge = "+k, byArm};
+    }).filter(g => ARMS.some(a=>g.byArm[a]?.n>0));
+  }
+
+  const nG = groups.length;
+  const W=660, groupH=92, m={t:28,r:92,b:20,l:190};
+  const H = m.t + nG*groupH + m.b;
+  const svg = makeSvg(W,H);
+  const g0 = svgEl("g",{},svg);
+  svgEl("text",{x:8,y:14,class:"title"},g0).textContent = (kind==="category"?"by category":"by domain-knowledge");
+
+  const innerW = W - m.l - m.r;
+  for (const v of [0,.5,1]){
+    const xx=m.l+v*innerW;
+    svgEl("line",{x1:xx,x2:xx,y1:m.t-8,y2:H-m.b,stroke:"#20262e"},g0);
+    svgEl("text",{x:xx,y:m.t-11,"text-anchor":"middle",class:"tick"},g0).textContent=(v*100)+"%";
+  }
+  groups.forEach((grp,gi)=>{
+    const top=m.t+gi*groupH, label=grp.label.length>27?grp.label.slice(0,26)+"…":grp.label;
+    const labelEl=svgEl("text",{x:8,y:top+13,class:"lbl"},g0); labelEl.textContent=label;
+    svgEl("title",{},labelEl).textContent=grp.label;
+    ARMS.forEach((arm,ai)=>{
+      const d = grp.byArm[arm];
+      const y=top+24+ai*20;
+      svgEl("text",{x:m.l-10,y:y+9,"text-anchor":"end",class:"lbl"},g0).textContent=ARM_LABEL[arm];
+      if (!d || !d.n){ svgEl("text",{x:m.l+5,y:y+9,class:"tick"},g0).textContent="—"; return; }
+      svgEl("rect",{x:m.l,y,width:d.acc*innerW,height:12,fill:`var(--${arm})`,rx:2},g0);
+      svgEl("line",{x1:m.l+d.ci[0]*innerW,x2:m.l+d.ci[1]*innerW,y1:y+15,y2:y+15,stroke:`var(--${arm})`,"stroke-width":2},g0);
+      svgEl("text",{x:W-m.r+7,y:y+10,class:"tick"},g0).textContent=`${fmtPct(d.acc)} · n=${d.n}`;
+    });
+  });
+  return svg;
+}
+
+/** Scatter: cost vs accuracy for the active run. */
+function renderScatter(){
+  const host = document.getElementById("scatterChart");
+  const tag = document.getElementById("scatterRunTag");
+  host.innerHTML="";
+  const run = focused ? RUNS.get(focused) : null;
+  const runs = run ? [run] : [];
+  if (!run){ tag.textContent=""; host.innerHTML=`<div class="empty">Select a run.</div>`; return; }
+  tag.textContent = prettyName(run.name);
+
+  const pts = [];
+  for (const run of runs){
+    for (const arm of ARMS){
+      const s = armSummary(run,arm);
+      const recs = run.arms[arm]||[];
+      let acc=null, cost=null;
+      if (s){ acc=s.accuracy; cost=s.cost_usd; }
+      else { acc=accFromRecs(recs); cost=agg(recs,r=>r.cost?.total); }
+      if (acc==null||cost==null||!recs.length) continue;
+      pts.push({run:run.name, arm, acc, cost});
+    }
+  }
+  if (!pts.length){ host.innerHTML=`<div class="empty">No plottable points.</div>`; return; }
+
+  const W=380,H=250, m={t:16,r:14,b:50,l:52};
+  const svg = makeSvg(W,H); const g=svgEl("g",{},svg);
+  const xMax = Math.max(...pts.map(p=>p.cost))*1.12 || 1;
+  const yMax = 1.05;
+  const X = v=> m.l + (v/xMax)*(W-m.l-m.r);
+  const Y = v=> H - m.b - (v/yMax)*(H-m.t-m.b);
+
+  svgEl("text",{x:(W)/2,y:13,class:"title","text-anchor":"middle"},g).textContent="cost / question (USD) →";
+  svgEl("text",{x:12,y:H/2,class:"title",transform:`rotate(-90 12 ${H/2})`,"text-anchor":"middle"},g).textContent="accuracy →";
+  // grid
+  for (const v of [0,.25,.5,.75,1]){
+    const yy=Y(v); svgEl("line",{x1:m.l,x2:W-m.r,y1:yy,y2:yy},g).setAttribute("stroke","#20262e");
+    svgEl("text",{x:m.l-6,y:yy+3,"text-anchor":"end",class:"tick"},g).textContent=(v*100)+"%";
+  }
+  const xticks = 4;
+  for (let i=0;i<=xticks;i++){
+    const v = (xMax/xticks)*i; const xx=X(v);
+    svgEl("text",{x:xx,y:H-m.b+20,"text-anchor":"middle",class:"tick"},g).textContent = "$"+(v).toFixed(v<0.01?5:4);
+  }
+  svgEl("line",{x1:m.l,x2:W-m.r,y1:H-m.b,y2:H-m.b},g).setAttribute("stroke","var(--line2)");
+  svgEl("line",{x1:m.l,x2:m.l,y1:m.t,y2:H-m.b},g).setAttribute("stroke","var(--line2)");
+
+  for (const p of pts){
+    const px=X(p.cost), py=Y(p.acc), right=px>W-m.r-90, offset=ARMS.indexOf(p.arm);
+    const c = svgEl("circle",{cx:px,cy:py,r:6,fill:`var(--${p.arm})`,opacity:.9,stroke:"#0e1116","stroke-width":1},g);
+    const title = svgEl("title",{},g); title.textContent = `${prettyName(p.run)} · ${ARM_LABEL[p.arm]}\nacc ${fmtPct(p.acc)} · cost ${fmtUSD(p.cost)}/q`;
+    c.appendChild(title);
+    svgEl("text",{x:px+(right?-8:8),y:py+(py>H/2?-12-offset*12:14+offset*12),"text-anchor":right?"end":"start",class:"point-label"},g).textContent=ARM_LABEL[p.arm];
+  }
+  host.appendChild(svg);
+}
+
+/** Forest plot: pairwise accuracy differences for the active run. */
+function renderForest(){
+  const host = document.getElementById("forestChart");
+  host.innerHTML="";
+  const run = focused ? RUNS.get(focused) : null;
+  const runs = run ? [run] : [];
+  if (!run){ host.innerHTML=`<div class="empty">Select a run.</div>`; return; }
+
+  const pairs = [
+    {key:"B-A", label:"Profile + DB − DB only", color:"var(--B)"},
+    {key:"B-C", label:"Profile + DB − Profile only", color:"var(--C)"},
+    {key:"C-A", label:"Profile only − DB only", color:"var(--A)"},
+  ];
+  // Build rows: one per (run, pair) that exists
+  /** @type {{label:string, delta:number, lo:number, hi:number, p:number, nd:number, color:string}[]} */
+  const rows = [];
+  for (const run of runs){
+    const pw = run.summary?.pairwise || {};
+    for (const p of pairs){
+      const e = pw[p.key];
+      if (!e) continue;
+      rows.push({label:p.label, delta:e.delta, lo:e.ci_low, hi:e.ci_high, p:e.p_value_exact, nd:e.n_discordant, color:p.color});
+    }
+  }
+  if (!rows.length){ host.innerHTML=`<div class="empty">No pairwise data in summaries.</div>`; return; }
+
+  const W=600, rowH=26, m={t:20,r:120,b:30,l:340};
+  const H = m.t + rows.length*rowH + m.b;
+  const svg=makeSvg(W,H); const g=svgEl("g",{},svg);
+  // x domain: symmetric around 0
+  const span = Math.max(0.1, ...rows.map(r=>Math.max(Math.abs(r.lo),Math.abs(r.hi))));
+  const xMin=-span*1.15, xMax=span*1.15;
+  const X = v=> m.l + (v-xMin)/(xMax-xMin)*(W-m.l-m.r);
+
+  // grid + ticks
+  const niceTicks = niceTicksAround0(xMin,xMax);
+  for (const v of niceTicks){
+    const xx=X(v);
+    svgEl("line",{x1:xx,x2:xx,y1:m.t,y2:H-m.b},g).setAttribute("stroke", v===0?"#404a57":"#20262e");
+    svgEl("text",{x:xx,y:H-m.b+14,"text-anchor":"middle",class:"tick"},g).textContent = (v>0?"+":"")+(v*100).toFixed(0)+"%";
+  }
+  svgEl("text",{x:m.l+(W-m.l-m.r)/2,y:12,class:"title","text-anchor":"middle"},g).textContent="Δ accuracy (95% CI)";
+
+  rows.forEach((r,i)=>{
+    const y=m.t+i*rowH+rowH/2;
+    svgEl("text",{x:m.l-8,y:y+3,"text-anchor":"end",class:"lbl"},g).textContent = r.label;
+    const x0=X(Math.max(r.lo,xMin)), x1=X(Math.min(r.hi,xMax));
+    svgEl("line",{x1:x0,x2:x1,y1:y,y2:y,"stroke-width":2},g).setAttribute("stroke",r.color);
+    svgEl("line",{x1:x0,x2:x0,y1:y-5,y2:y+5,"stroke-width":2},g).setAttribute("stroke",r.color);
+    svgEl("line",{x1:x1,x2:x1,y1:y-5,y2:y+5,"stroke-width":2},g).setAttribute("stroke",r.color);
+    const dot = svgEl("circle",{cx:X(r.delta),cy:y,r:4,fill:r.color},g);
+    const t = svgEl("title",{},g); t.textContent = `${r.label}\nΔ ${fmtPct(r.delta)} [${fmtPct(r.lo)}, ${fmtPct(r.hi)}]\nMcNemar exact p=${fmtNum(r.p,3)} · ${r.nd} discordant`;
+    dot.appendChild(t);
+    // right-side annotation
+    svgEl("text",{x:W-m.r+6,y:y+3,class:"tick"},g).textContent = `${(r.delta>0?"+":"")+(r.delta*100).toFixed(1)}%  p=${fmtNum(r.p,2)}`;
+  });
+  host.appendChild(svg);
+}
+function niceTicksAround0(xMin,xMax){
+  const edge = Math.max(0.05, Math.floor(xMax*20)/20);
+  return [-edge,0,edge];
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Error taxonomy stacked bars
+// ───────────────────────────────────────────────────────────────────────────
+const ERR_ORDER = ["correct","wrong_result","wrong_cardinality","wrong_table","wrong_join","wrong_agg","syntax","timeout","?","None"];
+const ERR_COLOR = {
+  correct:"#46d39a", wrong_result:"#ff6b6b", wrong_cardinality:"#f0b04a",
+  wrong_table:"#c062e5", wrong_join:"#62b7e5", wrong_agg:"#e57fb0",
+  syntax:"#8aa0b4", timeout:"#ffd166", "?":"#5a6672", "None":"#3a434d",
+};
+function errColor(k){ return ERR_COLOR[k] || "#5a6672"; }
+
+function renderErrors(){
+  const host = document.getElementById("errorCharts");
+  host.innerHTML="";
+  const run = focused ? RUNS.get(focused) : null;
+  const runs = run ? [run] : [];
+  if (!run){ host.innerHTML=`<div class="empty">Select a run.</div>`; return; }
+
+  // legend
+  const keysUsed = new Set();
+  for (const run of runs) for (const arm of ARMS){
+    const tax = armSummary(run,arm)?.error_taxonomy;
+    if (tax) Object.keys(tax).forEach(k=>keysUsed.add(k));
+  }
+  const orderedKeys = ERR_ORDER.filter(k=>keysUsed.has(k)).concat([...keysUsed].filter(k=>!ERR_ORDER.includes(k)));
+  const legend = document.createElement("div"); legend.className="legend"; legend.style.marginBottom="10px";
+  for (const k of orderedKeys) legend.innerHTML += `<span><i style="background:${errColor(k)}"></i>${k}</span>`;
+  host.appendChild(legend);
+
+  for (const run of runs){
+    const row = document.createElement("div");
+    row.style.marginBottom="10px";
+    const title = document.createElement("div");
+    title.style.color="var(--muted)"; title.style.fontSize="12px"; title.style.marginBottom="4px";
+    title.textContent = prettyName(run.name);
+    row.appendChild(title);
+    for (const arm of ARMS){
+      const tax = armSummary(run,arm)?.error_taxonomy;
+      const recs = run.arms[arm]||[];
+      // fallback: tally error_class from JSONL
+      const tally = tax ? {...tax} : {};
+      if (!tax){ for (const r of recs){ const k = r.error_class ?? "?"; tally[k]=(tally[k]||0)+1; } }
+      const total = Object.values(tally).reduce((a,b)=>a+b,0) || 1;
+      const wrap = document.createElement("div");
+      wrap.style.display="flex"; wrap.style.alignItems="center"; wrap.style.gap="8px"; wrap.style.marginBottom="5px";
+      wrap.innerHTML = `<span class="armbadge ${arm}" style="width:92px;text-align:left">${ARM_LABEL[arm]}</span>`;
+      const bar = document.createElement("div");
+      bar.style.display="flex"; bar.style.flex="1"; bar.style.height="20px"; bar.style.borderRadius="5px"; bar.style.overflow="hidden"; bar.style.border="1px solid var(--line)";
+      let segs="";
+      for (const k of orderedKeys){
+        const v = tally[k]||0; if(!v) continue;
+        const w = (v/total)*100;
+        segs += `<div title="${k}: ${v}" style="width:${w}%;background:${errColor(k)};"></div>`;
+      }
+      bar.innerHTML = segs || `<div style="flex:1;background:#2a323c"></div>`;
+      wrap.appendChild(bar);
+      const cnt = document.createElement("span");
+      cnt.style.color="var(--muted)"; cnt.style.fontSize="11px"; cnt.style.minWidth="44px"; cnt.style.textAlign="right";
+      cnt.textContent = `n=${total}`;
+      wrap.appendChild(cnt);
+      row.appendChild(wrap);
+    }
+    host.appendChild(row);
+  }
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Per-question drill-down
+// ───────────────────────────────────────────────────────────────────────────
+function renderDrill(){
+  const tag = document.getElementById("drillRunTag");
+  const fHost = document.getElementById("drillFilters");
+  const host = document.getElementById("drillTbl");
+  const run = focused ? RUNS.get(focused) : null;
+  if (!run){ tag.textContent=""; host.innerHTML=""; fHost.innerHTML=""; return; }
+  tag.textContent = prettyName(run.name);
+
+  // join records by id across arms
+  /** @type {Map<string,Record<Arm,QRec>>} */
+  const byId = new Map();
+  for (const arm of ARMS){
+    for (const r of (run.arms[arm]||[])){
+      if (!byId.has(r.id)) byId.set(r.id, {A:null,B:null,C:null});
+      byId.get(r.id)[arm] = r;
+    }
+  }
+  let rows = [...byId.entries()].map(([id,arms])=>{
+    const anyRec = arms.A||arms.B||arms.C;
+    return {
+      id, arms,
+      category: anyRec?.category || "",
+      domain: anyRec?.contains_domain_knowledge,
+      correct: { A: arms.A?.correct, B: arms.B?.correct, C: arms.C?.correct },
+      err: { A: arms.A?.error_class, B: arms.B?.error_class, C: arms.C?.error_class },
+      turns: { A: arms.A?.turns, B: arms.B?.turns, C: arms.C?.turns },
+      dbq:   { A: arms.A?.db_queries, B: arms.B?.db_queries, C: arms.C?.db_queries },
+      lat:   { A: arms.A?.latency_s, B: arms.B?.latency_s, C: arms.C?.latency_s },
+    };
+  });
+
+  // filters UI (rebuild lightly; keep current values)
+  const st = drillState;
+  const cats = [...new Set(rows.map(r=>r.category).filter(Boolean))].sort();
+  const errs = [...new Set([].concat(...rows.map(r=>ARMS.map(a=>r.err[a]).filter(Boolean))))].sort();
+  fHost.innerHTML = `
+    <input type="search" placeholder="filter by id…" value="${escapeHtml(st.q)}" id="fQ">
+    <label>category <select id="fCat">
+      <option value="">all</option>${cats.map(c=>`<option ${c===st.cat?"selected":""}>${escapeHtml(c)}</option>`).join("")}
+    </select></label>
+    <label>domain <select id="fDom">
+      <option value="">all</option>
+      <option value="true" ${st.dom==="true"?"selected":""}>true</option>
+      <option value="false" ${st.dom==="false"?"selected":""}>false</option>
+    </select></label>
+    <label>error <select id="fErr">
+      <option value="">all</option>${errs.map(e=>`<option ${e===st.err?"selected":""}>${escapeHtml(e)}</option>`).join("")}
+    </select></label>
+    <label><input type="checkbox" id="fMiss" ${st.onlyMiss?"checked":""}> only disagreements/misses</label>
+    <span style="color:var(--muted);font-size:12px" id="rowCount"></span>
+  `;
+  document.getElementById("fQ").oninput  = e=>{ st.q=e.target.value; paintRows(); };
+  document.getElementById("fCat").onchange = e=>{ st.cat=e.target.value; paintRows(); };
+  document.getElementById("fDom").onchange = e=>{ st.dom=e.target.value; paintRows(); };
+  document.getElementById("fErr").onchange = e=>{ st.err=e.target.value; paintRows(); };
+  document.getElementById("fMiss").onchange = e=>{ st.onlyMiss=e.target.checked; paintRows(); };
+
+  function applyFilters(){
+    return rows.filter(r=>{
+      if (st.q && !r.id.toLowerCase().includes(st.q.toLowerCase())) return false;
+      if (st.cat && r.category!==st.cat) return false;
+      if (st.dom==="true" && !r.domain) return false;
+      if (st.dom==="false" && r.domain) return false;
+      if (st.err && !ARMS.some(a=>r.err[a]===st.err)) return false;
+      if (st.onlyMiss){
+        // any arm incorrect while another correct (disagreement) OR not all correct
+        const vals = ARMS.map(a=>r.correct[a]);
+        const hasFalse = vals.some(v=>v===false);
+        if (!hasFalse) return false;
+      }
+      return true;
+    });
+  }
+
+  function paintRows(){
+    let data = applyFilters();
+    // sort
+    const k = st.sortKey, dir = st.sortDir;
+    const cmp = (a,b)=>{
+      let va, vb;
+      if (k==="id"||k==="category"){ va=a[k]||""; vb=b[k]||""; return va<vb?-dir:va>vb?dir:0; }
+      if (k==="domain"){ va=a.domain?1:0; vb=b.domain?1:0; return (va-vb)*dir; }
+      // arm-prefixed keys like "turns_A"
+      const m = /^(\w+)_(.)$/.exec(k);
+      if (m){ const [_,field,arm]=m; va=a[field][arm]; vb=b[field][arm]; }
+      else if (k.startsWith("correct_")){ const arm=k.slice(-1); va=a.correct[arm]; vb=b.correct[arm]; }
+      else if (k.startsWith("err_")){ const arm=k.slice(-1); va=a.err[arm]||""; vb=b.err[arm]||""; }
+      va = (va==null)?(dir>0?Infinity:-Infinity):va;
+      vb = (vb==null)?(dir>0?Infinity:-Infinity):vb;
+      return (va-vb)*dir;
+    };
+    data.sort(cmp);
+    document.getElementById("rowCount").textContent = `${data.length} / ${rows.length} questions`;
+
+    // header
+    const th = (k,label,cls="",attrs="") => `<th class="${cls}" ${attrs} onclick="window.__sort('${k}')" style="cursor:pointer">${label}${st.sortKey===k?(st.sortDir>0?" ▲":" ▼"):""}</th>`;
+    const setupHeads = (metric) => ARMS.map(arm=>th(`${metric}_${arm}`,`<span class="armbadge ${arm}">${ARM_LABEL[arm]}</span>`)).join("");
+    let html = `<thead><tr class="grp">
+      ${th("id","question id","l",`rowspan="2"`)}
+      ${th("category","category","l",`rowspan="2"`)}
+      ${th("domain","domain knowledge","",`rowspan="2"`)}
+      <th colspan="3" style="text-align:center">Correct</th>
+      <th colspan="3" style="text-align:center">Error</th>
+      <th colspan="3" style="text-align:center">Turns</th>
+      <th colspan="3" style="text-align:center">DB queries</th>
+    </tr><tr>
+      ${setupHeads("correct")}${setupHeads("err")}${setupHeads("turns")}${setupHeads("dbq")}
+    </tr></thead><tbody>`;
+    for (const r of data){
+      const cell = (/** @type {boolean|null|undefined} */ v)=> v===true?`<span class="corr-yes">✓</span>`:v===false?`<span class="corr-no">✗</span>`:`<span class="corr-na">–</span>`;
+      const errc = (e)=> e?`<span class="errtag ${e}">${e}</span>`:`<span class="corr-na">–</span>`;
+      const num  = (v)=> v==null?`<span class="corr-na">–</span>`:v;
+      html += `<tr style="cursor:pointer" onclick="window.__open('${escapeAttr(r.id)}')">
+        <td class="l"><code class="inl">${escapeHtml(r.id)}</code></td>
+        <td class="l">${escapeHtml(r.category)}</td>
+        <td>${r.domain===true?"✓":r.domain===false?"—":"?"}</td>
+        <td>${cell(r.correct.A)}</td><td>${cell(r.correct.B)}</td><td>${cell(r.correct.C)}</td>
+        <td>${errc(r.err.A)}</td><td>${errc(r.err.B)}</td><td>${errc(r.err.C)}</td>
+        <td>${num(r.turns.A)}</td><td>${num(r.turns.B)}</td><td>${num(r.turns.C)}</td>
+        <td>${num(r.dbq.A)}</td><td>${num(r.dbq.B)}</td><td>${num(r.dbq.C)}</td>
+      </tr>`;
+    }
+    host.innerHTML = html + "</tbody>";
+  }
+  paintRows();
+}
+window.__sort = (k)=>{ if (drillState.sortKey===k) drillState.sortDir=-drillState.sortDir; else { drillState.sortKey=k; drillState.sortDir=1; } renderDrill(); };
+window.__open = (id)=> openPanel(id);
+
+function escapeHtml(s){ return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function escapeAttr(s){ return String(s??"").replace(/['"\\]/g,"\\$&"); }
+
+// ───────────────────────────────────────────────────────────────────────────
+// Detail panel
+// ───────────────────────────────────────────────────────────────────────────
+function openPanel(id){
+  const run = focused ? RUNS.get(focused) : null;
+  if (!run) return;
+  /** @type {Record<Arm,QRec>} */
+  const recs = {A:null,B:null,C:null};
+  for (const arm of ARMS) recs[arm] = (run.arms[arm]||[]).find(r=>r.id===id) || null;
+  const anyRec = recs.A||recs.B||recs.C;
+  if (!anyRec) return;
+
+  document.getElementById("pTitle").innerHTML = `<code class="inl">${escapeHtml(id)}</code>`;
+  document.getElementById("pSub").innerHTML = `${prettyName(run.name)} · category: <b>${escapeHtml(anyRec.category||"—")}</b> · domain_knowledge: <b>${anyRec.contains_domain_knowledge===true?"true":anyRec.contains_domain_knowledge===false?"false":"—"}</b>`;
+
+  const body = document.getElementById("panelBody");
+  body.innerHTML = "";
+
+  // per-arm mini summary
+  const mini = document.createElement("div"); mini.className="miniacc";
+  for (const arm of ARMS){
+    const r = recs[arm]; if(!r) continue;
+    const corr = r.correct===true?"✓ correct":r.correct===false?"✗ "+(r.error_class||"wrong"):"—";
+    mini.innerHTML += `<div class="ac" style="border-color:var(--line)">
+      <div class="t"><span class="armbadge ${arm}">${ARM_LABEL[arm]}</span> · ${ARM_DESC[arm]}</div>
+      <div class="n" style="color:${r.correct===true?'var(--good)':r.correct===false?'var(--bad)':'var(--muted)'}">${corr}</div>
+      <div class="kt" style="margin-top:4px">
+        <span class="k">valid_sql</span><span class="v">${r.valid_sql===true?"yes":r.valid_sql===false?"no":"—"}</span>
+        <span class="k">turns</span><span class="v">${r.turns??"—"}</span>
+        <span class="k">db_queries</span><span class="v">${r.db_queries??"—"}</span>
+        <span class="k">latency</span><span class="v">${fmtSec(r.latency_s)}</span>
+        <span class="k">tokens in</span><span class="v">${fmtInt(r.usage?.input)}</span>
+        <span class="k">tokens out</span><span class="v">${fmtInt(r.usage?.output)}</span>
+        <span class="k">cost</span><span class="v">${fmtUSD(r.cost?.total)}</span>
+      </div>
+    </div>`;
+  }
+  body.appendChild(mini);
+
+  // gold SQL
+  const gold = anyRec.gold_sql;
+  if (gold){
+    const blk = document.createElement("div"); blk.className="blk";
+    blk.innerHTML = `<h4>Gold SQL</h4><pre class="sql">${escapeHtml(gold)}</pre>`;
+    body.appendChild(blk);
+  }
+
+  // pred SQL twocol per arm
+  const predBlk = document.createElement("div"); predBlk.className="blk";
+  predBlk.innerHTML = `<h4>Predicted SQL (per setup)</h4>`;
+  const cols = document.createElement("div"); cols.className="twocol";
+  for (const arm of ARMS){
+    const r = recs[arm]; if(!r) continue;
+    const cell = document.createElement("div");
+    cell.innerHTML = `<div style="font-size:12px;margin-bottom:4px"><span class="armbadge ${arm}">${ARM_LABEL[arm]}</span> · ${ARM_DESC[arm]} &nbsp;<span style="color:${r.correct===true?'var(--good)':r.correct===false?'var(--bad)':'var(--muted)'}">${r.correct===true?"✓":r.correct===false?"✗ "+(r.error_class||""):"—"}</span></div>
+      <pre class="sql">${escapeHtml(r.pred_sql || r.raw_text || "(none)")}</pre>`;
+    cols.appendChild(cell);
+  }
+  predBlk.appendChild(cols);
+  body.appendChild(predBlk);
+
+  // executed SQLs (arms A/B usually)
+  const haveExec = ARMS.some(a=>recs[a]?.executed_sqls?.length);
+  if (haveExec){
+    const exBlk = document.createElement("div"); exBlk.className="blk";
+    exBlk.innerHTML = `<h4>Executed SQL statements (agentic trace)</h4>`;
+    for (const arm of ARMS){
+      const r = recs[arm]; const ex = r?.executed_sqls; if(!ex||!ex.length) continue;
+      const wrap = document.createElement("div"); wrap.style.marginBottom="8px";
+      wrap.innerHTML = `<div style="font-size:12px;margin-bottom:2px"><span class="armbadge ${arm}">${ARM_LABEL[arm]}</span> · ${ex.length} statement(s) · ${r.db_queries??0} DB queries · ${r.turns??0} turns</div>`;
+      ex.forEach((s,i)=>{
+        const d = document.createElement("div"); d.className="exec";
+        d.innerHTML = `<span style="color:var(--muted)">[${i+1}]</span> ${escapeHtml(s)}`;
+        wrap.appendChild(d);
+      });
+      exBlk.appendChild(wrap);
+    }
+    body.appendChild(exBlk);
+  }
+
+  document.getElementById("panel").classList.add("open");
+  document.getElementById("overlay").classList.add("open");
+}
+function closePanel(){
+  document.getElementById("panel").classList.remove("open");
+  document.getElementById("overlay").classList.remove("open");
+}
+window.closePanel = closePanel;
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") closePanel(); });
+
+// Dev-only hook: lets automated checks feed in data without the native file dialog.
+// Picks a run folder over HTTP and builds a FileList like the directory picker would.
+window.__loadRunOverHttp = async (/** @type {string} */ base, /** @type {string[]} */ runDirs) => {
+  const files = [];
+  for (const d of runDirs) {
+    for (const name of ["summary.json","armA.jsonl","armB.jsonl","armC.jsonl"]) {
+      const path = `${base}/${d}/${name}`;
+      let res; try { res = await fetch(path); } catch(e){ continue; }
+      if (!res.ok) continue;
+      const text = await res.text();
+      const f = new File([text], name);
+      Object.defineProperty(f, "webkitRelativePath", { value: path });
+      files.push(f);
+    }
+  }
+  const dt = new DataTransfer();
+  for (const f of files) dt.items.add(f);
+  const input = document.getElementById("dirpicker");
+  Object.defineProperty(input, "files", { value: dt.files });
+  input.dispatchEvent(new Event("change", { bubbles: true }));
+  return files.length;
+};
+// Wire a hidden dev button so automated checks can trigger the load via a real click
+// (the IAB blocks side-effecting evaluate, so we drive it through the click pipeline).
+document.getElementById("devLoadPilot").addEventListener("click", async () => {
+  // Convenience when serving the repo over HTTP (e.g. `python -m http.server`):
+  // auto-discover run dirs under ./results and load them. No-op if the fetch fails.
+  try {
+    const res = await fetch("results/");
+    const idx = await res.text();
+    const runs = [...idx.matchAll(/href="([^"]+?)\/"/g)].map(m => m[1].replace(/\/$/, ""))
+      .filter(n => /^[A-Za-z0-9_]+__[^_]+__n\d+$/.test(n));
+    if (runs.length) await window.__loadRunOverHttp("results", runs);
+  } catch (e) { console.warn("reload runs failed:", e); }
+});
+
+</script>
+</body>
+</html>
