@@ -15,3 +15,4 @@ beaver-query/
 # experiment outputs (keep code & manifests; ignore bulky per-question logs)
 results/
 __pycache__/
+.env

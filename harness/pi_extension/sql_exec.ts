@@ -5,26 +5,28 @@
  * Connection details and caps are injected through environment variables so the
  * agent (which only sees the tool's text results) never touches the repo.
  *
- * Env (set by the Python runner before spawning pi):
- *   BEAVER_MYSQL_HOST     default 127.0.0.1
- *   BEAVER_MYSQL_PORT     default 3307
- *   BEAVER_MYSQL_USER     default beaver
- *   BEAVER_MYSQL_PWD      (no default; passed via env, never argv)
- *   BEAVER_DB             target database name
- *   BEAVER_QUERY_TIMEOUT  per-query wall-clock kill, seconds (default 20)
- *   BEAVER_MAX_TURNS      agent turn cap (default 10). After this many turns the
- *                         tool refuses further exploration and asks the model to
- *                         finalize, and the run is aborted at cap+1.
- *   BEAVER_EXPLORE_ROW_CAP rows returned per exploration call (default 100)
+ * Env (set by the Python runner before spawning pi; MYSQL_* are the .env names
+ * used by data/build_local.py and are read as fallbacks so the tool also works
+ * when the extension is run directly with only .env sourced):
+ *   BEAVER_MYSQL_HOST / MYSQL_HOST       default 127.0.0.1
+ *   BEAVER_MYSQL_PORT / MYSQL_PORT       default 3307
+ *   BEAVER_MYSQL_USER / MYSQL_USER       default beaver
+ *   BEAVER_MYSQL_PWD  / MYSQL_PASSWORD   (no default; passed via env, never argv)
+ *   BEAVER_DB                            target database name
+ *   BEAVER_QUERY_TIMEOUT                 per-query wall-clock kill, seconds (default 20)
+ *   BEAVER_MAX_TURNS                     agent turn cap (default 10). After this many turns the
+ *                                        tool refuses further exploration and asks the model to
+ *                                        finalize, and the run is aborted at cap+1.
+ *   BEAVER_EXPLORE_ROW_CAP               rows returned per exploration call (default 100)
  */
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { Type } from "typebox";
 import { spawn } from "node:child_process";
 
-const HOST = process.env.BEAVER_MYSQL_HOST ?? "127.0.0.1";
-const PORT = process.env.BEAVER_MYSQL_PORT ?? "3307";
-const USER = process.env.BEAVER_MYSQL_USER ?? "beaver";
-const PWD = process.env.BEAVER_MYSQL_PWD ?? "";
+const HOST = process.env.BEAVER_MYSQL_HOST ?? process.env.MYSQL_HOST ?? "127.0.0.1";
+const PORT = process.env.BEAVER_MYSQL_PORT ?? process.env.MYSQL_PORT ?? "3307";
+const USER = process.env.BEAVER_MYSQL_USER ?? process.env.MYSQL_USER ?? "beaver";
+const PWD = process.env.BEAVER_MYSQL_PWD ?? process.env.MYSQL_PASSWORD ?? "";
 const DB = process.env.BEAVER_DB ?? "";
 const QUERY_TIMEOUT = Number(process.env.BEAVER_QUERY_TIMEOUT ?? "20");
 const MAX_TURNS = Number(process.env.BEAVER_MAX_TURNS ?? "10");

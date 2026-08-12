@@ -11,6 +11,36 @@ import os
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
+def _load_env_file() -> None:
+    """Load REPO_ROOT/.env into os.environ (without overwriting real env vars).
+
+    Stdlib only (no python-dotenv dependency). Keys already present in the real
+    environment win, so exports on the shell still take precedence. Values are
+    stripped of surrounding quotes; blank/`` lines and ``#`` comments are skipped.
+    Called at import time, before the ``os.environ.get`` lookups below, so every
+    module that imports ``config`` picks up the local credentials automatically.
+    """
+    env_path = REPO_ROOT / ".env"
+    if not env_path.is_file():
+        return
+    for raw in env_path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        key = key.strip()
+        if not key or key in os.environ:  # real env wins
+            continue
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in ("'", '"'):
+            value = value[1:-1]
+        os.environ[key] = value
+
+
+_load_env_file()
+
 DATA_DIR = REPO_ROOT / "data"
 PROFILES_DIR = REPO_ROOT / "profiles"
 HARNESS_DIR = REPO_ROOT / "harness"
@@ -65,12 +95,14 @@ PI_WALL_CLOCK = 600               # seconds, hard subprocess kill for arms A/B
 ZEROSHOT_WALL_CLOCK = 120         # seconds, hard timeout for arm C
 
 # ---------------------------------------------------------------------------
-# MySQL connection (loaded BEAVER DBs on port 3307)
+# MySQL connection (loaded BEAVER DBs on port 3307).
+# Reads BEAVER_MYSQL_* first (legacy harness names), then falls back to the
+# MYSQL_* names used in .env / data/build_local.py, then to the defaults.
 # ---------------------------------------------------------------------------
-MYSQL_HOST = os.environ.get("BEAVER_MYSQL_HOST", "127.0.0.1")
-MYSQL_PORT = int(os.environ.get("BEAVER_MYSQL_PORT", "3307"))
-MYSQL_USER = os.environ.get("BEAVER_MYSQL_USER", "beaver")
-MYSQL_PWD = os.environ.get("BEAVER_MYSQL_PWD", "beaver")
+MYSQL_HOST = os.environ.get("BEAVER_MYSQL_HOST") or os.environ.get("MYSQL_HOST") or "127.0.0.1"
+MYSQL_PORT = int(os.environ.get("BEAVER_MYSQL_PORT") or os.environ.get("MYSQL_PORT") or "3307")
+MYSQL_USER = os.environ.get("BEAVER_MYSQL_USER") or os.environ.get("MYSQL_USER") or "beaver"
+MYSQL_PWD = os.environ.get("BEAVER_MYSQL_PWD") or os.environ.get("MYSQL_PASSWORD") or "beaver"
 
 # pi binary (defaults to PATH; override for a specific install)
 PI_BIN = os.environ.get("PI_BIN", "pi")
