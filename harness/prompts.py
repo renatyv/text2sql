@@ -1,9 +1,10 @@
 """Prompt construction for arms A / B / C.
 
 Design (mirrors AGENT_PROFILE_EXPERIMENT_PLAN.md):
-  * Arms A and B share the SAME system prompt; only the user turn differs
-    (B prepends the frozen <db>.md profile). This keeps the only manipulation
-    the profile itself.
+  * Arms A and B share the SAME system-prompt APPEND text (passed to pi via
+    --append-system-prompt, on top of pi's default coding-assistant prompt);
+    only the user turn differs (B prepends the frozen <db>.md profile). This
+    keeps the only manipulation between A and B the profile itself.
   * Arm C is a clean zero-shot text-to-SQL call with the profile baked in and
     no tooling — a single LLM response is expected.
 """
@@ -11,6 +12,10 @@ from __future__ import annotations
 
 from . import config
 
+# Appended to pi's default coding-assistant system prompt (not a replacement).
+# Adds only the experiment-specific contract: the single sql_exec tool, the
+# workflow, and — critically — the ```sql fenced-block output format that the
+# scorer's parse_sql.extract_sql depends on to recover the predicted query.
 _AGENT_SYSTEM = r"""\
 You are an expert text-to-SQL agent targeting a MySQL database.
 

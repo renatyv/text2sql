@@ -31,10 +31,19 @@ def _env(db_label: str, max_turns: int) -> dict:
     return env
 
 
-def _argv(system_prompt: str) -> list[str]:
+def _argv(append_prompt: str) -> list[str]:
     # Anti-cheat (plan §#1–2): isolated cwd, no built-ins/web/fetch/search, no
     # global skills/context/themes that could leak gold, --offline so pi makes no
     # startup network calls beyond the LLM endpoint.
+    #
+    # System prompt: pi's default coding-assistant prompt is used as the base
+    # (better-tuned for agentic tool use than a hand-rolled one); we only
+    # --append-system-prompt the experiment-specific contract (output format,
+    # sql_exec framing, rules). This keeps arms A/B identical since the append
+    # text is the same for both — the only manipulation between them remains the
+    # profile, per the plan invariant.
+    # Reasoning effort: DeepSeek defaults to pi's built-in thinking level; we
+    # pin --thinking low (config.PI_THINKING) for cost/latency control.
     return [
         config.PI_BIN, "-p",
         "--mode", "json",
@@ -47,7 +56,8 @@ def _argv(system_prompt: str) -> list[str]:
         "-e", str(config.PI_EXTENSION),
         "--no-builtin-tools",
         "--tools", "sql_exec",
-        "--system-prompt", system_prompt,
+        "--thinking", config.PI_THINKING,
+        "--append-system-prompt", append_prompt,
         "--provider", config.DEFAULT_PROVIDER,
         "--model", config.DEFAULT_MODEL_ID,
     ]
@@ -155,7 +165,7 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
     }
     try:
         proc = subprocess.run(
-            _argv(system_prompt),
+            _argv(system_prompt),  # now an APPEND prompt, not a replacement
             input=user_prompt,
             env=_env(db_label, max_turns),
             cwd=str(sandbox),

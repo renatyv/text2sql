@@ -24,6 +24,17 @@ from . import config
 
 SAMPLE_SEED = 77  # plan: matches data/build_local.py
 
+# phase0 is a sanity check ("get 1 question producing valid SQL in all arms"),
+# so we pin the easiest question present in neutron's dev_sampled.json rather
+# than letting the stratified sampler (which starts at the hard
+# "complex query|False" bucket for n=1) pick a CTE+ROLLUP monster that all arms
+# fail. neutron_546 is the shortest base SQL in the sampled set (flat single
+# SELECT, one JOIN, COUNT(*), every filter value stated in the question).
+# Scoped to phase0 only; pilot/main keep using _stratified_sample.
+# NOTE: must be an id present in data/<db>/dev_sampled.json, else the loader
+# falls back to _stratified_sample.
+PHASE0_PIN_ID = "neutron_546"
+
 
 def _load_questions(db_label: str) -> list[dict]:
     """Prefer dev_sampled.json (n=100, seed 77) when present, else dev.json (full)."""
@@ -82,7 +93,12 @@ def build_manifest(db_label: str, phase: str, num_samples: int | None) -> Path:
         return path
 
     all_q = _load_questions(db_label)
-    if num_samples is None or num_samples >= len(all_q):
+    if phase == "phase0":
+        # Sanity phase: pin one easy question so all arms can succeed end-to-end.
+        # Falls back to the sampler if the pinned id is absent (e.g. wrong dataset).
+        pin = next((q for q in all_q if q["id"] == PHASE0_PIN_ID), None)
+        chosen = [pin] if pin is not None else _stratified_sample(all_q, 1, SAMPLE_SEED)
+    elif num_samples is None or num_samples >= len(all_q):
         chosen = all_q
     else:
         chosen = _stratified_sample(all_q, num_samples, SAMPLE_SEED)

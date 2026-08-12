@@ -25,7 +25,9 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import threading
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from rich.progress import (
@@ -105,6 +107,25 @@ def _score(rec: dict, q: dict, db: str) -> dict:
     return rec
 
 
+def _run_one_and_score(q: dict, arm: str, db: str, max_turns: int, idx: int) -> tuple[dict, float]:
+    """Worker: run one question + score it, never raising.
+
+    Moved out of the loop body so it can be submitted to a ThreadPoolExecutor:
+    a single question failing (subprocess crash, scorer error, ...) is captured
+    here as an error record instead of poisoning the pool. Returns (rec, elapsed_s)
+    so the wall time is measured around the actual work, not after `as_completed`
+    reorders completions.
+    """
+    t0 = time.time()
+    try:
+        rec = _run_one(q, arm, db, max_turns, idx)
+        rec = _score(rec, q, db)
+    except Exception as e:  # never let one question kill the run
+        rec = {"id": q["id"], "arm": arm, "error": f"{type(e).__name__}: {e}",
+               "correct": False, "valid_sql": False}
+    return rec, time.time() - t0
+
+
 def _load_existing(path: Path) -> dict[str, dict]:
     return {r["id"]: r for r in metrics.read_jsonl(path) if "id" in r}
 
@@ -130,7 +151,7 @@ def run(args) -> int:
     max_turns = args.max_turns or PHASE_DEFAULT_TURNS[args.phase]
 
     print(f"=== run {run_id} | arms={arms} | questions={len(questions)} | "
-          f"max_turns={max_turns} | db={db} ===")
+          f"max_turns={max_turns} | db={db} | workers={args.workers} ===")
     print(f"model: {config.DEFAULT_PROVIDER}/{config.DEFAULT_MODEL_ID}")
 
     # ---- score-only / estimate-cost short-circuit --------------------------
@@ -162,40 +183,57 @@ def run(args) -> int:
     # ---- main loop ---------------------------------------------------------
     summaries: dict[str, list[dict]] = {}
     progress = _progress()
+    n_total = len(questions)
     with progress:
         for arm in arms:
             path = rdir / f"arm{arm}.jsonl"
             done = _load_existing(path)
             records: list[dict] = list(done.values())
+            write_lock = threading.Lock()  # guards `records` + write_jsonl on main thread
             desc = f"arm {arm} · {config.ARM_DESCRIPTIONS[arm]}"
-            task = progress.add_task(desc, total=len(questions))
+            task = progress.add_task(desc, total=n_total)
+
+            # Partition: cached questions are accounted for up front on the main
+            # thread; the rest are dispatched to the pool.
+            to_run: list[tuple[int, dict]] = []
             for i, q in enumerate(questions, 1):
                 if q["id"] in done and not args.force:
-                    progress.console.print(f"  [{i}/{len(questions)}] {q['id']}: cached")
+                    progress.console.print(f"  [{i}/{n_total}] {q['id']}: cached")
                     progress.advance(task)
-                    continue
-                t0 = time.time()
-                try:
-                    rec = _run_one(q, arm, args.dataset, max_turns, i)
-                    rec = _score(rec, q, db)
-                except Exception as e:  # never let one question kill the run
-                    rec = {"id": q["id"], "arm": arm, "error": f"{type(e).__name__}: {e}",
-                           "correct": False, "valid_sql": False}
-                records = [r for r in records if r.get("id") != q["id"]] + [rec]
-                metrics.write_jsonl(path, records)
-                tag = _status_tag(rec)
-                line = (f"  [{i}/{len(questions)}] {q['id']}: {tag}  "
-                        f"turns={rec.get('turns')} dbq={rec.get('db_queries')} "
-                        f"tok={rec.get('usage', {}).get('totalTokens', 0)} "
-                        f"({time.time() - t0:.1f}s)")
-                if not rec.get("correct"):
-                    err = rec.get("pred_error") or rec.get("error")
-                    if err:
-                        line += f"  [red]err={err}[/red]"
-                progress.console.print(line)
-                progress.advance(task)
+                else:
+                    to_run.append((i, q))
+
+            if not to_run:
+                summaries[arm] = records
+                continue
+
+            workers = max(1, args.workers)
+            with ThreadPoolExecutor(max_workers=workers) as pool:
+                future_to_q = {
+                    pool.submit(_run_one_and_score, q, arm, db, max_turns, i): (i, q)
+                    for i, q in to_run
+                }
+                for fut in as_completed(future_to_q):
+                    i, q = future_to_q[fut]
+                    rec, elapsed = fut.result()  # _run_one + _score (or error rec) — never raises
+                    # Only the main thread mutates `records` / writes the file,
+                    # so no concurrent access happens here; the lock is retained
+                    # for safety if writes ever move off-thread.
+                    with write_lock:
+                        records = [r for r in records if r.get("id") != q["id"]] + [rec]
+                        metrics.write_jsonl(path, records)
+                    tag = _status_tag(rec)
+                    line = (f"  [{i}/{n_total}] {q['id']}: {tag}  "
+                            f"turns={rec.get('turns')} dbq={rec.get('db_queries')} "
+                            f"tok={rec.get('usage', {}).get('totalTokens', 0)} "
+                            f"({elapsed:.1f}s)")
+                    if not rec.get("correct"):
+                        err = rec.get("pred_error") or rec.get("error")
+                        if err:
+                            line += f"  [red]err={err}[/red]"
+                    progress.console.print(line)
+                    progress.advance(task)
             summaries[arm] = records
-        summaries[arm] = records
 
     _summarize(summaries, rdir)
     return 0
@@ -250,6 +288,9 @@ def main(argv=None) -> int:
                    help="questions per dataset (default: phase-dependent; omit = full)")
     p.add_argument("--limit", type=int, default=None, help="cap questions (quick tests)")
     p.add_argument("--max-turns", type=int, default=None)
+    p.add_argument("--workers", type=int, default=4,
+                   help="parallel questions per arm (thread pool). Bounded by "
+                        "OpenRouter/DeepSeek rate limits; raise with care.")
     p.add_argument("--force", action="store_true", help="re-run cached questions")
     p.add_argument("--score-only", action="store_true", help="rescore existing records")
     p.add_argument("--estimate-cost", action="store_true", help="project Phase-2 cost from pilot")

@@ -80,6 +80,11 @@ DEFAULT_PROVIDER = os.environ.get("PI_PROVIDER", "openrouter")
 DEFAULT_MODEL_ID = os.environ.get("PI_MODEL", "deepseek/deepseek-v4-flash-0731")
 # When pi drives the model, the CLI selector is "<provider>/<model_id>".
 PI_MODEL_SELECTOR = f"{DEFAULT_PROVIDER}/{DEFAULT_MODEL_ID}"
+# Reasoning effort passed to pi via --thinking (off|minimal|low|medium|high|
+# xhigh|max). low by default: DeepSeek-V4-flash is strong enough at low effort
+# for text-to-SQL, and this caps per-question token cost/latency. Overridable
+# via env so ablations can raise it without code changes.
+PI_THINKING = os.environ.get("PI_THINKING", "low")
 # Raw slug used for the direct OpenRouter call in arm C.
 ZEROSHOT_MODEL_SLUG = DEFAULT_MODEL_ID
 OPENROUTER_BASE_URL = os.environ.get("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
