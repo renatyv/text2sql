@@ -16,3 +16,4 @@ beaver-query/
 results/
 __pycache__/
 .env
+runs/

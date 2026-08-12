@@ -28,12 +28,50 @@ import sys
 import time
 from pathlib import Path
 
+from rich.progress import (
+    BarColumn,
+    MofNCompleteColumn,
+    Progress,
+    SpinnerColumn,
+    TaskProgressColumn,
+    TextColumn,
+    TimeElapsedColumn,
+)
+
 from harness import config, manifest as manifest_mod, metrics, runner_pi, runner_zeroshot, scorer
 
 PHASE_DEFAULT_N = {"phase0": 1, "pilot": config.PILOT_N}
 PHASE_DEFAULT_TURNS = {"phase0": config.MAX_TURNS_PILOT,
                        "pilot": config.MAX_TURNS_PILOT,
                        "main": config.MAX_TURNS_MAIN}
+
+
+def _progress() -> Progress:
+    """A shared rich.Progress layout for both loops.
+
+    `transient=True` clears each arm's bar when it finishes so the screen isn't
+    cluttered with one stale bar per arm; the per-question result line and the
+    final summary are printed via `progress.console.print`, which is not cleared.
+    """
+    return Progress(
+        SpinnerColumn(),
+        TextColumn("[bold blue]{task.description}"),
+        BarColumn(),
+        MofNCompleteColumn(),
+        TaskProgressColumn(),
+        "•",
+        TimeElapsedColumn(),
+        transient=True,
+    )
+
+
+def _status_tag(rec: dict) -> str:
+    """One-glyph correctness marker, colour-coded for the result line."""
+    if rec.get("correct"):
+        return "[green]✓[/green]"
+    if rec.get("valid_sql"):
+        return "[yellow]sql[/yellow]"
+    return "[red]✗[/red]"
 
 
 def _run_id(dataset: str, phase: str, num_samples: int | None) -> str:
@@ -99,17 +137,22 @@ def run(args) -> int:
     if args.score_only or args.estimate_cost:
         gold = {q["id"]: q["sql"] for q in questions}
         by_arm: dict[str, list[dict]] = {}
-        for arm in arms:
-            recs = list(_load_existing(rdir / f"arm{arm}.jsonl").values())
-            if args.score_only:
-                for r in recs:
-                    q = {"id": r.get("id"), "sql": gold.get(r.get("id"), ""),
-                          "category": r.get("category"),
-                          "detailed_category": r.get("detailed_category"),
-                          "contains_domain_knowledge": r.get("contains_domain_knowledge")}
-                    _score(r, q, db)
-                metrics.write_jsonl(rdir / f"arm{arm}.jsonl", recs)
-            by_arm[arm] = recs
+        progress = _progress()
+        with progress:
+            for arm in arms:
+                recs = list(_load_existing(rdir / f"arm{arm}.jsonl").values())
+                if args.score_only:
+                    desc = f"rescore arm {arm}"
+                    task = progress.add_task(desc, total=len(recs))
+                    for r in recs:
+                        q = {"id": r.get("id"), "sql": gold.get(r.get("id"), ""),
+                              "category": r.get("category"),
+                              "detailed_category": r.get("detailed_category"),
+                              "contains_domain_knowledge": r.get("contains_domain_knowledge")}
+                        _score(r, q, db)
+                        progress.advance(task)
+                    metrics.write_jsonl(rdir / f"arm{arm}.jsonl", recs)
+                by_arm[arm] = recs
         if args.estimate_cost:
             print(json.dumps(metrics.project_cost(by_arm, config.PHASE2_SAMPLE_SIZES.get(args.dataset, 0)), indent=2))
             return 0
@@ -118,30 +161,40 @@ def run(args) -> int:
 
     # ---- main loop ---------------------------------------------------------
     summaries: dict[str, list[dict]] = {}
-    for arm in arms:
-        path = rdir / f"arm{arm}.jsonl"
-        done = _load_existing(path)
-        records: list[dict] = list(done.values())
-        print(f"\n--- arm {arm} ({config.ARM_DESCRIPTIONS[arm]}) ---")
-        for i, q in enumerate(questions, 1):
-            if q["id"] in done and not args.force:
-                print(f"  [{i}/{len(questions)}] {q['id']}: cached")
-                continue
-            t0 = time.time()
-            try:
-                rec = _run_one(q, arm, args.dataset, max_turns, i)
-                rec = _score(rec, q, db)
-            except Exception as e:  # never let one question kill the run
-                rec = {"id": q["id"], "arm": arm, "error": f"{type(e).__name__}: {e}",
-                       "correct": False, "valid_sql": False}
-            records = [r for r in records if r.get("id") != q["id"]] + [rec]
-            metrics.write_jsonl(path, records)
-            tag = "✓" if rec.get("correct") else ("sql" if rec.get("valid_sql") else "✗")
-            print(f"  [{i}/{len(questions)}] {q['id']}: {tag}  "
-                  f"turns={rec.get('turns')} dbq={rec.get('db_queries')} "
-                  f"tok={rec.get('usage', {}).get('totalTokens', 0)} "
-                  f"({time.time() - t0:.1f}s)"
-                  + (f"  err={rec.get('pred_error') or rec.get('error')}" if not rec.get("correct") else ""))
+    progress = _progress()
+    with progress:
+        for arm in arms:
+            path = rdir / f"arm{arm}.jsonl"
+            done = _load_existing(path)
+            records: list[dict] = list(done.values())
+            desc = f"arm {arm} · {config.ARM_DESCRIPTIONS[arm]}"
+            task = progress.add_task(desc, total=len(questions))
+            for i, q in enumerate(questions, 1):
+                if q["id"] in done and not args.force:
+                    progress.console.print(f"  [{i}/{len(questions)}] {q['id']}: cached")
+                    progress.advance(task)
+                    continue
+                t0 = time.time()
+                try:
+                    rec = _run_one(q, arm, args.dataset, max_turns, i)
+                    rec = _score(rec, q, db)
+                except Exception as e:  # never let one question kill the run
+                    rec = {"id": q["id"], "arm": arm, "error": f"{type(e).__name__}: {e}",
+                           "correct": False, "valid_sql": False}
+                records = [r for r in records if r.get("id") != q["id"]] + [rec]
+                metrics.write_jsonl(path, records)
+                tag = _status_tag(rec)
+                line = (f"  [{i}/{len(questions)}] {q['id']}: {tag}  "
+                        f"turns={rec.get('turns')} dbq={rec.get('db_queries')} "
+                        f"tok={rec.get('usage', {}).get('totalTokens', 0)} "
+                        f"({time.time() - t0:.1f}s)")
+                if not rec.get("correct"):
+                    err = rec.get("pred_error") or rec.get("error")
+                    if err:
+                        line += f"  [red]err={err}[/red]"
+                progress.console.print(line)
+                progress.advance(task)
+            summaries[arm] = records
         summaries[arm] = records
 
     _summarize(summaries, rdir)
