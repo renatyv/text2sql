@@ -24,10 +24,12 @@ def score_prediction(pred_sql: str | None, gold_sql: str, database: str) -> dict
       pred_rows        : int
       gold_rows        : int
       ordered          : bool — whether ordered comparison was used
+      gold_sql         : str   — the gold SQL as executed (for debugging/rescoring)
     """
     rec: dict = {
         "correct": False, "valid_sql": False, "pred_error": None, "gold_error": None,
         "timed_out": False, "pred_rows": None, "gold_rows": None, "ordered": False,
+        "gold_sql": gold_sql,
     }
 
     gold = mysql_io.execute(gold_sql, database)

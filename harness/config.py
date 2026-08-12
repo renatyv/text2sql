@@ -7,6 +7,7 @@ Implements the locked decisions in AGENT_PROFILE_EXPERIMENT_PLAN.md:
 """
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
 
@@ -82,6 +83,29 @@ PI_MODEL_SELECTOR = f"{DEFAULT_PROVIDER}/{DEFAULT_MODEL_ID}"
 # Raw slug used for the direct OpenRouter call in arm C.
 ZEROSHOT_MODEL_SLUG = DEFAULT_MODEL_ID
 OPENROUTER_BASE_URL = os.environ.get("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
+
+
+def _load_openrouter_rates() -> dict[str, float]:
+    """OpenRouter $/Mtok rates for the locked model, read from
+    openrouter_models.json (the same fragment setup_openrouter.py merges into pi).
+
+    Falls back to the known DeepSeek V4 Flash 0731 rates if the file is missing
+    or shaped differently. Used by runner_zeroshot to price arm C so its `cost`
+    dict matches the shape pi returns for arms A/B (dollars, not $/Mtok).
+    """
+    fallback = {"input": 0.08, "output": 0.18, "cacheRead": 0.016, "cacheWrite": 0.0}
+    frag = HARNESS_DIR / "openrouter_models.json"
+    try:
+        data = json.loads(frag.read_text(encoding="utf-8"))
+        models = data["providers"]["openrouter"]["models"]
+        rates = next(m["cost"] for m in models if m.get("id") == DEFAULT_MODEL_ID)
+        return {k: float(rates.get(k, fallback[k])) for k in fallback}
+    except Exception:
+        return fallback
+
+
+# $/Mtok. Single source of truth for pricing arm C and cost projections.
+OPENROUTER_RATES = _load_openrouter_rates()
 
 # ---------------------------------------------------------------------------
 # Caps — identical across all cells (plan §Locked decisions #4)

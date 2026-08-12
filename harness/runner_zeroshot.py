@@ -22,6 +22,26 @@ def _has_openrouter_key() -> bool:
     return bool(os.environ.get("OPENROUTER_API_KEY"))
 
 
+def _cost_from_tokens(usage: dict) -> dict:
+    """Price an OpenRouter response from its token usage.
+
+    OpenRouter's `/usage` object carries no cost, so derive it here from the
+    model's $/Mtok rates (config.OPENROUTER_RATES). The returned dict matches the
+    shape pi reports for arms A/B — dollars, keys {input, output, cacheRead,
+    cacheWrite, total} — so metrics.aggregate / project_cost treat all arms alike.
+    """
+    r = config.OPENROUTER_RATES
+    inp = usage.get("input", 0) * r["input"] / 1_000_000
+    out = usage.get("output", 0) * r["output"] / 1_000_000
+    cache_read = usage.get("cacheRead", 0) * r["cacheRead"] / 1_000_000
+    cache_write = usage.get("cacheWrite", 0) * r["cacheWrite"] / 1_000_000
+    return {
+        "input": inp, "output": out,
+        "cacheRead": cache_read, "cacheWrite": cache_write,
+        "total": inp + out + cache_read + cache_write,
+    }
+
+
 def _direct_openrouter(db_label: str, question: str) -> dict:
     system, user = prompts.zeroshot_prompt(db_label, question)
     body = {
@@ -67,6 +87,7 @@ def _direct_openrouter(db_label: str, question: str) -> dict:
         "cacheRead": 0, "cacheWrite": 0, "reasoning": 0,
         "totalTokens": usage.get("total_tokens", 0),
     }
+    rec["cost"] = _cost_from_tokens(rec["usage"])
     rec["latency_s"] = round(time.time() - started, 2)
     rec["model"] = data.get("model", config.ZEROSHOT_MODEL_SLUG)
     return rec
@@ -116,6 +137,7 @@ def _parse_pi(stdout: str) -> dict:
     final_text = ""
     usage = {"input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0,
              "reasoning": 0, "totalTokens": 0}
+    cost = {"input": 0.0, "output": 0.0, "cacheRead": 0.0, "cacheWrite": 0.0, "total": 0.0}
     model = None
     for line in stdout.splitlines():
         line = line.strip()
@@ -134,7 +156,11 @@ def _parse_pi(stdout: str) -> dict:
                     u = m.get("usage") or {}
                     for k in usage:
                         usage[k] += u.get(k, 0) or 0
-    return {"raw_text": final_text, "usage": usage, "turns": 1, "db_queries": 0, "model": model}
+                    c = u.get("cost") or {}
+                    for k in cost:
+                        cost[k] += c.get(k, 0) or 0.0
+    return {"raw_text": final_text, "usage": usage, "cost": cost,
+            "turns": 1, "db_queries": 0, "model": model}
 
 
 def run(db_label: str, question: str, sandbox: Path) -> dict:
