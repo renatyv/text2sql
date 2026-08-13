@@ -79,10 +79,14 @@ def parse_stream(stdout: str) -> dict:
     cost_total = _empty_cost()
     model = provider = None
     agent_ended = False
+    last_stop_reason = last_error = None
+    retry_count = 0
 
     events = list(_iter_events(stdout))
     for e in events:
         t = e.get("type")
+        if t == "auto_retry_start":
+            retry_count += 1
         if t == "turn_end":
             turns += 1
         if t == "tool_execution_start":
@@ -101,6 +105,8 @@ def parse_stream(stdout: str) -> dict:
         if t == "turn_end":
             m = e.get("message") or {}
             if m.get("role") == "assistant":
+                last_stop_reason = m.get("stopReason")
+                last_error = m.get("errorMessage")
                 provider = provider or m.get("provider")
                 model = model or m.get("model")
                 txt = "".join(c.get("text", "") for c in m.get("content", [])
@@ -115,6 +121,8 @@ def parse_stream(stdout: str) -> dict:
             for m in e.get("messages") or []:
                 if m.get("role") != "assistant":
                     continue
+                last_stop_reason = m.get("stopReason")
+                last_error = m.get("errorMessage")
                 provider = provider or m.get("provider")
                 model = model or m.get("model")
                 # Fall back to per-turn text already collected from turn_end;
@@ -152,4 +160,6 @@ def parse_stream(stdout: str) -> dict:
         "turns": turns, "db_queries": tool_calls, "raw_text": final_text,
         "all_text": texts, "executed_sqls": executed_sqls,
         "usage": usage_total, "cost": cost_total, "model": model, "provider": provider,
+        "retry_count": retry_count,
+        "api_error": last_error if last_stop_reason == "error" else None,
     }

@@ -38,9 +38,18 @@ class ContainerIsolationTests(unittest.TestCase):
             subprocess.CompletedProcess(["docker", "rm"], 0),
         ]
         with patch("harness.runner_container.uuid.uuid4", return_value=type("U", (), {"hex": "test"})()):
-            rec = runner_container.run("neutron", "question", "pi_no_profile_no_checklist", 1, Path("/tmp/x"))
+            rec = runner_container.run("neutron", "question", "raw", 1, Path("/tmp/x"))
         self.assertIn("wall-clock timeout", rec["error"])
+        self.assertTrue(rec["infrastructure_error"])
         self.assertEqual(run.call_args_list[1].args[0][:3], ["docker", "rm", "-f"])
+
+    def test_terminal_api_error_is_visible_despite_zero_exit(self) -> None:
+        events = ('{"type":"auto_retry_start"}\n'
+                  '{"type":"turn_end","message":{"role":"assistant",'
+                  '"stopReason":"error","errorMessage":"429 rate limited","content":[]}}\n')
+        parsed = pi_stream.parse_stream(events)
+        self.assertEqual(parsed["retry_count"], 1)
+        self.assertEqual(parsed["api_error"], "429 rate limited")
 
 
 if __name__ == "__main__":

@@ -1,8 +1,7 @@
 """Configuration constants for the db-snooper profiling experiment.
 
-Arms are a 2×2-ish matrix over three boolean dimensions — whether the coding
-agent has database tools, whether the db-snooper profile is injected, and
-whether the error-avoidance checklist is injected. See ``ARMS`` below.
+Arms are a 2×2 matrix over profile and aggregated-metadata injection. Database
+tools and the error-avoidance checklist are fixed across every arm.
   * pi is the default runner; BEAVER_AGENT can select another installed CLI
   * identical caps across cells (turns, token guard, MySQL timeout)
 """
@@ -68,30 +67,26 @@ PHASE2_SAMPLE_SIZES = {"neutron": 1017, "nova": 1053, "dw": 500, "dw_real": 121}
 PILOT_N = 20  # Phase-1 pilot (neutron)
 
 # ---------------------------------------------------------------------------
-# Arms (dimension-driven: tools / profile / checklist)
+# Arms (profile × aggregated metadata)
 # ---------------------------------------------------------------------------
-# Each arm is a long descriptive name -> spec. The spec fixes three booleans:
-#   tools     — coding agent with database tools (True) vs. a single zero-shot
-#               LLM call with no tools / no agent loop (False).
-#   profile   — inject the frozen db-snooper <db>.md profile into the prompt.
-#   checklist — inject harness/error_avoidance_checklist.txt into the prompt.
-# This makes each of the three manipulations isolatable by differencing arms.
+# All arms use the same agent, MySQL tools, checklist, caps, and model. Only the
+# two injected artifacts vary, so pairwise differences isolate their effects.
 ARMS: dict[str, dict] = {
-    "pi_no_profile_no_checklist": {
-        "tools": True,  "profile": False, "checklist": False,
-        "description": "agent + MySQL CLI, no profile, no error checklist",
+    "raw": {
+        "tools": True, "profile": False, "metadata": False, "checklist": True,
+        "description": "raw database access",
     },
-    "pi_no_profile_checklist": {
-        "tools": True,  "profile": False, "checklist": True,
-        "description": "agent + MySQL CLI, no profile, with error checklist",
+    "profile": {
+        "tools": True, "profile": True, "metadata": False, "checklist": True,
+        "description": "raw database access + db-snooper profile",
     },
-    "pi_profile_checklist": {
-        "tools": True,  "profile": True,  "checklist": True,
-        "description": "agent + MySQL CLI + profile, with error checklist",
+    "metadata": {
+        "tools": True, "profile": False, "metadata": True, "checklist": True,
+        "description": "raw database access + aggregated metadata",
     },
-    "zeroshot_profile_checklist": {
-        "tools": False, "profile": True,  "checklist": True,
-        "description": "zero-shot + profile, no tools, with error checklist",
+    "profile_metadata": {
+        "tools": True, "profile": True, "metadata": True, "checklist": True,
+        "description": "raw database access + profile + aggregated metadata",
     },
 }
 
@@ -108,19 +103,12 @@ def arm_spec(name: str) -> dict:
         raise KeyError(f"unknown arm '{name}'; choose from {list(ARMS)}")
 
 
-# Pairwise comparisons reported in the summary. Each tuple is
-# (subtrahend, minuend); Δ = acc(minuend) − acc(subtrahend), matching the
-# (a, b) argument order of metrics.paired_diff_ci (Δ = p_b − p_a). Pairs only
-# differ along ONE dimension, so each Δ isolates a single manipulation:
-#   profile  effect: pi_profile_checklist − pi_no_profile_checklist
-#   checklist effect (agentic): pi_no_profile_checklist − pi_no_profile_no_checklist
-#   agent-vs-zeroshot effect:  pi_profile_checklist − zeroshot_profile_checklist
-#   profile+checklist vs bare: zeroshot_profile_checklist − pi_no_profile_checklist
+# Pairwise comparisons reported when both selected arms are present.
 PAIRWISE = [
-    ("pi_no_profile_checklist",    "pi_profile_checklist"),         # profile effect
-    ("pi_no_profile_no_checklist", "pi_no_profile_checklist"),      # checklist effect
-    ("zeroshot_profile_checklist", "pi_profile_checklist"),         # agentic vs zero-shot
-    ("pi_no_profile_checklist",    "zeroshot_profile_checklist"),   # zero-shot vs bare agent
+    ("raw", "profile"),
+    ("raw", "metadata"),
+    ("profile", "profile_metadata"),
+    ("metadata", "profile_metadata"),
 ]
 
 # ---------------------------------------------------------------------------
@@ -243,6 +231,10 @@ def profile_path(db_label: str) -> Path:
 
 def schema_links_path(db_label: str) -> Path:
     return SCHEMA_LINKS_DIR / DATASETS[db_label]["profile"]
+
+
+def metadata_path(db_label: str) -> Path:
+    return GENERATED_METADATA_DIR / DATASETS[db_label]["profile"]
 
 
 def mysql_db_for(db_label: str) -> str:

@@ -36,7 +36,7 @@ RUN python3 -m pip install --no-cache-dir --break-system-packages \
 
 # Coding agents plus the TypeScript compiler (the agent can run `tsc`, then
 # `node`). They all use the same isolated container and OpenRouter-only proxy.
-RUN npm install -g @anthropic-ai/claude-code @openai/codex @earendil-works/pi-coding-agent opencode-ai typescript
+RUN npm install -g @anthropic-ai/claude-code @openai/codex @earendil-works/pi-coding-agent@0.84.1 opencode-ai typescript
 
 # Run unprivileged. The runner bind-mounts only its turn guard and the locked
 # OpenRouter model definition, both read-only.

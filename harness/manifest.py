@@ -37,13 +37,13 @@ PHASE0_PIN_ID = "neutron_546"
 
 
 def _load_questions(db_label: str) -> list[dict]:
-    """Prefer dev_sampled.json (n=100, seed 77) when present, else dev.json (full)."""
+    """Load the full split; use the old sampled file only as a fallback."""
     sampled = config.DATA_DIR / db_label / "dev_sampled.json"
     full = config.DATA_DIR / db_label / "dev.json"
-    if sampled.exists():
-        return json.loads(sampled.read_text(encoding="utf-8"))
     if full.exists():
         return json.loads(full.read_text(encoding="utf-8"))
+    if sampled.exists():
+        return json.loads(sampled.read_text(encoding="utf-8"))
     raise FileNotFoundError(
         f"No dev data for '{db_label}' (looked in {config.DATA_DIR / db_label}). "
         f"Build it first with: python data/build_local.py --datasets {db_label}"
@@ -64,24 +64,14 @@ def _stratified_sample(questions: list[dict], n: int, seed: int) -> list[dict]:
     rng = random.Random(seed)
     buckets = _stratify(questions)
     total = len(questions)
-    picked: list[dict] = []
-    # round-robin so small strata still get representation when n is small
-    keys = sorted(buckets)
-    shuffled = {k: rng.sample(v, len(v)) for k, v in buckets.items()}
-    idx = {k: 0 for k in keys}
-    while len(picked) < n:
-        progressed = False
-        for k in keys:
-            if len(picked) >= n:
-                break
-            if idx[k] < len(shuffled[k]):
-                picked.append(shuffled[k][idx[k]])
-                idx[k] += 1
-                progressed = True
-        if not progressed:
-            break
+    n = min(n, total)
+    quotas = {k: n * len(v) / total for k, v in buckets.items()}
+    counts = {k: int(q) for k, q in quotas.items()}
+    for k in sorted(buckets, key=lambda key: (quotas[key] - counts[key], key), reverse=True)[:n - sum(counts.values())]:
+        counts[k] += 1
+    picked = [q for k, bucket in buckets.items() for q in rng.sample(bucket, counts[k])]
     rng.shuffle(picked)
-    return picked[:n]
+    return picked
 
 
 def build_manifest(db_label: str, phase: str, num_samples: int | None) -> Path:
@@ -90,7 +80,10 @@ def build_manifest(db_label: str, phase: str, num_samples: int | None) -> Path:
     n_tag = "full" if num_samples is None else f"n{num_samples}"
     path = config.MANIFEST_DIR / f"manifest__{db_label}__{phase}__{n_tag}.json"
     if path.exists():
-        return path
+        existing = load_manifest(path)
+        if phase == "phase0" or num_samples is None or existing.get("num_samples", 0) >= num_samples:
+            return path
+        print(f"[manifest] rebuilding undersized {path} ({existing.get('num_samples')} < {num_samples})")
 
     all_q = _load_questions(db_label)
     if phase == "phase0":

@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Orchestrate the db-snooper profiling experiment.
-
-Arms (config.ARMS) span three dimensions — database tools, db-snooper profile,
-and the error-avoidance checklist — so each pairwise Δ isolates one
-manipulation. See config.ARMS / config.PAIRWISE for the arm set and the
-comparisons reported in the summary.
+"""Orchestrate the db-snooper profile × metadata experiment.
 
 Implements three phases:
   phase0  — sanity: 1 question × all arms, headless, end-to-end scored
@@ -19,9 +14,9 @@ Examples
   # Phase-1 pilot
   python run_experiment.py --dataset neutron --phase pilot --arm all
 
-  # A single arm
-  python run_experiment.py --dataset neutron --phase phase0 \
-      --arm pi_no_profile_checklist
+  # Any subset of arms, with a different sample size per database
+  python run_experiment.py --phase main --samples neutron=100 nova=80 dw=50 \
+      --arms raw profile metadata
 
   # Dry-run cost projection from existing pilot data
   python run_experiment.py --dataset neutron --phase pilot --estimate-cost
@@ -33,6 +28,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import random
 import sys
 import threading
 import time
@@ -135,19 +131,27 @@ def _run_one_and_score(q: dict, arm: str, db: str, max_turns: int, idx: int) -> 
     """
     t0 = time.time()
     try:
-        rec = _run_one(q, arm, db, max_turns, idx)
-        rec = _score(rec, q, db)
+        for attempt in range(2):
+            rec = _run_one(q, arm, db, max_turns, idx)
+            if not rec.get("infrastructure_error"):
+                rec = _score(rec, q, db)
+                break
+            if attempt == 0:
+                time.sleep(random.uniform(5, 15))
+        rec["harness_attempts"] = attempt + 1
+        rec["id"] = q["id"]
     except Exception as e:  # never let one question kill the run
         rec = {"id": q["id"], "arm": arm, "error": f"{type(e).__name__}: {e}",
-               "correct": False, "valid_sql": False}
+               "infrastructure_error": True, "correct": False, "valid_sql": False}
     return rec, time.time() - t0
 
 
 def _load_existing(path: Path) -> dict[str, dict]:
-    return {r["id"]: r for r in metrics.read_jsonl(path) if "id" in r}
+    return {r["id"]: r for r in metrics.read_jsonl(path)
+            if "id" in r and not r.get("infrastructure_error")}
 
 
-def run(args) -> int:
+def _run_dataset(args) -> int:
     if args.dataset not in config.DATASETS:
         print(f"unknown dataset '{args.dataset}'; choose from {list(config.DATASETS)}")
         return 2
@@ -164,7 +168,7 @@ def run(args) -> int:
     run_id = _run_id(args.dataset, args.phase, num_samples)
     rdir = _results_dir(run_id)
 
-    arms = list(config.ARMS) if args.arm == "all" else [args.arm]
+    arms = args.arms or (list(config.ARMS) if args.arm in (None, "all") else [args.arm])
     max_turns = args.max_turns or PHASE_DEFAULT_TURNS[args.phase]
     # Container vs. host runner for agentic arms.
     global _USE_CONTAINER
@@ -214,6 +218,7 @@ def run(args) -> int:
 
     # ---- main loop ---------------------------------------------------------
     summaries: dict[str, list[dict]] = {}
+    infrastructure_failures = 0
     progress = _progress()
     n_total = len(questions)
     with progress:
@@ -236,7 +241,7 @@ def run(args) -> int:
                     to_run.append((i, q))
 
             if not to_run:
-                summaries[arm] = records
+                summaries[arm] = [r for r in records if not r.get("infrastructure_error")]
                 continue
 
             workers = max(1, args.workers)
@@ -265,10 +270,47 @@ def run(args) -> int:
                             line += f"  [red]err={err}[/red]"
                     progress.console.print(line)
                     progress.advance(task)
-            summaries[arm] = records
+            failures = [r for r in records if r.get("infrastructure_error")]
+            infrastructure_failures += len(failures)
+            summaries[arm] = [r for r in records if not r.get("infrastructure_error")]
 
     _summarize(summaries, rdir)
+    if infrastructure_failures:
+        print(f"ERROR: {infrastructure_failures} infrastructure failures were excluded; "
+              "rerun the same command to retry them.")
+        return 1
     return 0
+
+
+def _parse_samples(values: list[str]) -> list[tuple[str, int]]:
+    parsed = []
+    seen = set()
+    for value in values:
+        db, sep, raw_n = value.partition("=")
+        if not sep or db not in config.DATASETS:
+            raise argparse.ArgumentTypeError(
+                f"invalid sample {value!r}; use DB=N with DB in {list(config.DATASETS)}"
+            )
+        try:
+            n = int(raw_n)
+        except ValueError:
+            n = 0
+        if n < 1 or db in seen:
+            raise argparse.ArgumentTypeError(f"invalid or duplicate sample {value!r}")
+        parsed.append((db, n))
+        seen.add(db)
+    return parsed
+
+
+def run(args) -> int:
+    samples = _parse_samples(args.samples) if args.samples else [(args.dataset, args.num_samples)]
+    status = 0
+    for dataset, num_samples in samples:
+        dataset_args = argparse.Namespace(**vars(args))
+        dataset_args.dataset = dataset
+        dataset_args.num_samples = num_samples
+        status = max(status, _run_dataset(dataset_args))
+    return status
 
 
 def _summarize(by_arm: dict[str, list[dict]], rdir: Path) -> None:
@@ -288,20 +330,17 @@ def _summarize(by_arm: dict[str, list[dict]], rdir: Path) -> None:
               f"tok_in/out={agg.get('tokens_in')}/{agg.get('tokens_out')} "
               f"cost={telemetry}")
 
-    # pairwise comparisons (require both arms of a pair to be present).
-    # config.PAIRWISE lists (subtrahend, minuend) tuples; Δ = acc(minuend) −
-    # acc(subtrahend), matching metrics.paired_diff_ci(a, b) = p_b − p_a.
-    def _correct_vec(arm):
-        # ordered by id to align paired comparisons
-        m = {r["id"]: bool(r.get("correct")) for r in by_arm.get(arm, [])}
-        ids = sorted(set().union(*( {r["id"] for r in v} for v in by_arm.values())))
-        return [m.get(i, False) for i in ids], ids
-
-    vecs = {arm: _correct_vec(arm)[0] for arm in by_arm}  # cache per-arm vectors
+    # Pair only IDs completed in both arms; infrastructure failures must never
+    # become false answers in a statistical comparison.
     pairwise: dict[str, dict] = {}
     for sub, minu in config.PAIRWISE:
         if sub in by_arm and minu in by_arm:
-            pairwise[f"{minu}-{sub}"] = metrics.paired_diff_ci(vecs[sub], vecs[minu])
+            a = {r["id"]: bool(r.get("correct")) for r in by_arm[sub]}
+            b = {r["id"]: bool(r.get("correct")) for r in by_arm[minu]}
+            ids = sorted(a.keys() & b.keys())
+            pairwise[f"{minu}-{sub}"] = metrics.paired_diff_ci(
+                [a[i] for i in ids], [b[i] for i in ids]
+            )
     if pairwise:
         summary["pairwise"] = pairwise
         for name, p in pairwise.items():
@@ -314,8 +353,15 @@ def _summarize(by_arm: dict[str, list[dict]], rdir: Path) -> None:
 
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--dataset", default="neutron", choices=list(config.DATASETS))
-    p.add_argument("--arm", default="all", choices=list(config.ARMS) + ["all"])
+    p.add_argument("--dataset", default="neutron", choices=list(config.DATASETS),
+                   help="single-database mode (default: neutron)")
+    p.add_argument("--samples", nargs="+", metavar="DB=N",
+                   help="multi-database mode; e.g. neutron=100 nova=80 dw=50")
+    arm_group = p.add_mutually_exclusive_group()
+    arm_group.add_argument("--arms", nargs="+", choices=list(config.ARMS),
+                           help="one or more arms (default: all four)")
+    arm_group.add_argument("--arm", choices=list(config.ARMS) + ["all"],
+                           help="legacy single-arm form")
     p.add_argument("--phase", default="phase0", choices=["phase0", "pilot", "main"])
     p.add_argument("--num-samples", type=int, default=None,
                    help="questions per dataset (default: phase-dependent; omit = full)")
@@ -331,7 +377,11 @@ def main(argv=None) -> int:
                         "and comparability with pre-container runs.")
     p.add_argument("--score-only", action="store_true", help="rescore existing records")
     p.add_argument("--estimate-cost", action="store_true", help="project Phase-2 cost from pilot")
-    return run(p.parse_args(argv))
+    args = p.parse_args(argv)
+    try:
+        return run(args)
+    except argparse.ArgumentTypeError as e:
+        p.error(str(e))
 
 
 if __name__ == "__main__":

@@ -173,6 +173,7 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
     if not network.is_ready():
         rec["error"] = ("agent network not ready — call harness.network.setup() "
                         "before running (or check `docker ps` for the egress proxy).")
+        rec["infrastructure_error"] = True
         return rec
 
     # Assemble the full `docker run` command. --network attaches to the internal
@@ -215,6 +216,7 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
         parsed = _parse_agent_output(agent, proc.stdout or "")
     except subprocess.TimeoutExpired as e:
         rec["error"] = f"container wall-clock timeout ({config.PI_WALL_CLOCK}s)"
+        rec["infrastructure_error"] = True
         rec["stdout"] = (e.stdout or "") if isinstance(e.stdout, str) else ""
         parsed = _parse_agent_output(agent, rec.get("stdout", ""))
         # Killing the docker CLI does not reliably stop its container. Explicit
@@ -226,19 +228,27 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
             rec["cleanup_error"] = (cleanup.stderr or "").strip()
     except FileNotFoundError:
         rec["error"] = "`docker` not found on PATH — install Docker/OrbStack."
+        rec["infrastructure_error"] = True
         return rec
 
     rec.update(parsed)
+    if parsed.get("api_error"):
+        rec["error"] = f"model API error: {parsed['api_error']}"
+        rec["infrastructure_error"] = True
+    if rec.get("returncode") and not rec.get("pred_sql"):
+        rec["error"] = rec.get("error") or f"agent container exited {rec['returncode']}"
+        rec["infrastructure_error"] = True
     rec["latency_s"] = round(time.time() - started, 2)
     # Pick the best SQL candidate: prefer the last fenced ```sql block in any
     # assistant text; fall back to the last SELECT the agent executed via bash.
     candidate = None
-    for txt in reversed(parsed.get("all_text") or []):
-        candidate = parse_sql.extract_sql(txt)
-        if candidate:
-            break
-    if not candidate:
-        candidate = parse_sql.last_select(parsed.get("executed_sqls") or [])
+    if not rec.get("infrastructure_error"):
+        for txt in reversed(parsed.get("all_text") or []):
+            candidate = parse_sql.extract_sql(txt)
+            if candidate:
+                break
+        if not candidate:
+            candidate = parse_sql.last_select(parsed.get("executed_sqls") or [])
     rec["pred_sql"] = candidate
     # Token runaway guard (plan §Locked decisions #4).
     if parsed["usage"]["totalTokens"] > config.TOKEN_GUARD:

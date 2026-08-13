@@ -1,21 +1,4 @@
-"""Prompt construction for the experiment arms.
-
-Arms are dimension-driven (see config.ARMS): each arm fixes three booleans —
-``tools`` (pi agent with database tools vs. a single zero-shot LLM call), ``profile``
-(inject the frozen <db>.md), and ``checklist`` (inject the error-avoidance
-checklist). This module builds the system + user prompts from those flags:
-
-  * Agentic arms (tools=True) share ONE system-prompt APPEND text (passed to pi
-    via --append-system-prompt, on top of pi's default coding-assistant prompt);
-    the user turn optionally prepends the profile. So two agentic arms differ
-    only in {profile, checklist}, never in tooling or base instructions.
-  * The zero-shot arm (tools=False) uses a separate single-call system prompt
-    with the profile baked into the user turn and no tooling.
-
-The checklist is an EXPLICIT manipulation: arms with checklist=False get no
-checklist text at all, so its marginal effect is isolatable by differencing
-two arms that differ only in that flag.
-"""
+"""Prompt construction for the profile × metadata experiment arms."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -108,13 +91,15 @@ def _profile(db_label: str) -> str:
     return path.read_text(encoding="utf-8")
 
 
+def _metadata(db_label: str) -> str:
+    return config.metadata_path(db_label).read_text(encoding="utf-8")
+
+
 def agent_prompts(db_label: str, question: str, arm: str, max_turns: int) -> tuple[str, str]:
     """Return (system_prompt, user_prompt) for an agentic arm (tools=True).
 
-    The arm's spec drives two dimensions: ``profile`` (prepend the frozen
-    <db>.md to the user turn) and ``checklist`` (append the error-avoidance
-    checklist to the system prompt). Tooling and base instructions are identical
-    across all agentic arms, so any two differ only in those two flags.
+    All arms share tooling, checklist, and base instructions. The arm only
+    controls whether the frozen profile and/or aggregated metadata are included.
     """
     spec = config.arm_spec(arm)
     assert spec["tools"], f"agent_prompts called for non-agentic arm '{arm}'"
@@ -125,22 +110,27 @@ def agent_prompts(db_label: str, question: str, arm: str, max_turns: int) -> tup
         checklist=spec["checklist"],
     )
     db = config.mysql_db_for(db_label)
-    if not spec["profile"]:
-        user = (
-            f"Target MySQL database: `{db}` (explore it with the mysql CLI).\n\n"
-            f"Natural-language question:\n\"\"\"\n{question}\n\"\"\"\n\n"
-            f"Explore the schema as needed, then return your FINAL SQL in a ```sql block."
+    context = []
+    if spec["profile"]:
+        context.append(
+            f"===== BEGIN DB PROFILE ({db_label}) =====\n{_profile(db_label)}\n"
+            "===== END DB PROFILE ====="
         )
-    else:  # inject the frozen profile into the initial prompt
-        prof = _profile(db_label)
-        user = (
-            f"Target MySQL database: `{db}`.\n\n"
-            f"A pre-generated profile of this database follows. Use it to ground your "
-            f"schema understanding; you may still verify with the mysql CLI.\n\n"
-            f"===== BEGIN DB PROFILE ({db_label}) =====\n{prof}\n===== END DB PROFILE =====\n\n"
-            f"Natural-language question:\n\"\"\"\n{question}\n\"\"\"\n\n"
-            f"Return your FINAL SQL in a ```sql block."
+    if spec["metadata"]:
+        context.append(
+            f"===== BEGIN AGGREGATED METADATA ({db_label}) =====\n{_metadata(db_label)}\n"
+            "===== END AGGREGATED METADATA ====="
         )
+    grounding = (
+        "\n\nUse the supplied database context to ground your schema understanding; "
+        "you may still verify it with the mysql CLI.\n\n" + "\n\n".join(context)
+        if context else " Explore it with the mysql CLI."
+    )
+    user = (
+        f"Target MySQL database: `{db}`.{grounding}\n\n"
+        f"Natural-language question:\n\"\"\"\n{question}\n\"\"\"\n\n"
+        f"Explore or verify the schema as needed, then return your FINAL SQL in a ```sql block."
+    )
     return system, user
 
 

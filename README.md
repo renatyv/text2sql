@@ -6,12 +6,12 @@ The agentic arms run in a fresh, unprivileged Docker/OrbStack container for ever
 
 ## Experiment arms
 
-- `pi_no_profile_no_checklist` — pi agent + MySQL CLI, no profile or checklist.
-- `pi_no_profile_checklist` — same agent + checklist.
-- `pi_profile_checklist` — same agent + frozen database profile + checklist.
-- `zeroshot_profile_checklist` — one OpenRouter call; no database or agent tools.
+- `raw` — agent + MySQL CLI.
+- `profile` — raw access + frozen db-snooper profile.
+- `metadata` — raw access + aggregated metadata.
+- `profile_metadata` — raw access + both artifacts.
 
-The first three arms differ only in the profile/checklist interventions. The default model and caps live in [`harness/config.py`](harness/config.py).
+All four arms use the same agent, error-avoidance checklist, tools, model, and caps. The default model and caps live in [`harness/config.py`](harness/config.py).
 
 ## Isolation model
 
@@ -33,7 +33,7 @@ uv sync
 docker build -t beaver-agent -f Dockerfile.agent .
 docker build -t beaver-egress-proxy -f Dockerfile.proxy harness/egress
 export OPENROUTER_API_KEY=sk-or-...
-uv run python run_experiment.py --dataset neutron --phase phase0 --arm all
+uv run python run_experiment.py --dataset neutron --phase phase0 --arms raw profile metadata profile_metadata
 ```
 
 At startup the runner creates the two networks, attaches MySQL to the internal one, starts the proxy, and provisions `beaver_agent`. The privileged host MySQL credentials still come from `.env` (`BEAVER_MYSQL_*` or `MYSQL_*`). Do not set `BEAVER_AGENT_MYSQL_PWD` unless a stable debugging password is necessary; otherwise a new random password is used for each experiment process.
@@ -42,6 +42,7 @@ Useful runs:
 
 ```bash
 uv run python run_experiment.py --dataset neutron --phase pilot
+uv run python run_experiment.py --phase main --samples neutron=100 nova=80 dw=50 --arms raw profile metadata
 uv run python run_experiment.py --dataset neutron --phase pilot --estimate-cost
 uv run python run_experiment.py --dataset neutron --phase pilot --score-only
 ```
@@ -58,7 +59,7 @@ BEAVER_AGENT=opencode uv run python run_experiment.py --dataset neutron --phase 
 BEAVER_AGENT=codex uv run python run_experiment.py --dataset neutron --phase phase0
 ```
 
-Override the model with the CLI's OpenRouter alias when needed, for example `BEAVER_AGENT=codex BEAVER_AGENT_MODEL='~openai/gpt-latest'`. Claude Code is configured with OpenRouter's Anthropic-compatible endpoint; Codex and OpenCode use its OpenAI-compatible endpoint. The zero-shot arm intentionally remains a direct OpenRouter call, so this setting applies only to the three agentic arms. Pi and Claude have a CLI turn cap; Codex and OpenCode retain the prompt budget and the same 10-minute container wall-clock cap. Non-pi runs record execution accuracy, but their CLI telemetry is deliberately reported as unavailable rather than a false zero; use pi when you need turns, database-query counts, token, or cost projections.
+Override the model with the CLI's OpenRouter alias when needed, for example `BEAVER_AGENT=codex BEAVER_AGENT_MODEL='~openai/gpt-latest'`. Claude Code is configured with OpenRouter's Anthropic-compatible endpoint; Codex and OpenCode use its OpenAI-compatible endpoint. Pi and Claude have a CLI turn cap; Codex and OpenCode retain the prompt budget and the same 10-minute container wall-clock cap. Non-pi runs record execution accuracy, but their CLI telemetry is deliberately reported as unavailable rather than a false zero; use pi when you need turns, database-query counts, token, or cost projections.
 
 ## Verify the boundary
 
