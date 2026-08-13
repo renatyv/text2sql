@@ -86,7 +86,7 @@ def score_prediction(pred_sql: str | None, gold_sql: str, database: str) -> dict
 
 
 def _add_cardinality_diagnostics(rec: dict) -> None:
-    """Attach cardinality_ratio + direction + join counts to a scoring record."""
+    """Attach cardinality ratio and direction to a scoring record."""
     g, p = rec.get("gold_rows"), rec.get("pred_rows")
     rec["cardinality_ratio"] = round(p / g, 4) if (g and p and g > 0) else None
     if g is None or p is None:
@@ -97,60 +97,27 @@ def _add_cardinality_diagnostics(rec: dict) -> None:
         rec["cardinality_direction"] = "under"
     else:
         rec["cardinality_direction"] = "exact"
-    rec["join_count_gold"] = _join_count(rec.get("gold_sql") or "")
-    rec["join_count_pred"] = _join_count(rec.get("pred_sql") or "")
 
 
 def _classify_error(rec: dict, pred_sql: str, gold_sql: str) -> str:
     """Diagnostic error taxonomy for runnable-but-wrong predictions.
 
-    Diffs pred vs gold SQL structurally (lightweight regex, no parser) and
-    returns the first matching structural cause. Falls back to the coarse
-    cardinality-vs-result labels when no structural signal explains the gap.
-
-    The full list of detected signals is also written to rec["struct_diff"]
-    regardless of which single label wins, so nothing is lost.
+    ``error_class`` only reports an observable execution outcome. SQL-shape
+    differences are useful diagnostics, but cannot establish the cause: an
+    equivalent rewrite may use no GROUP BY or different aggregates. Those
+    non-causal signals are kept in ``struct_diff``.
     """
-    # --- empty result is a distinct, actionable signal on its own ---
+    rec["struct_diff"] = _struct_diff(pred_sql, gold_sql)
     if rec.get("pred_rows") == 0:
-        rec["struct_diff"] = _struct_diff(pred_sql, gold_sql)
         return "empty_result"
-
-    signals = _struct_diff(pred_sql, gold_sql)
-    rec["struct_diff"] = signals
-
-    # Join errors dominate (they usually *cause* the cardinality mismatch),
-    # so check them first.
-    for s in ("missing_join", "extra_join", "wrong_join_type"):
-        if s in signals:
-            return s
-    for s in ("missing_group_by", "wrong_aggregate", "missing_order_by", "missing_limit"):
-        if s in signals:
-            return s
-
-    # no structural cause found — fall back to the coarse cardinality labels
-    if (rec.get("gold_rows") or 0) > 0 and (rec.get("pred_rows") or 0) != rec.get("gold_rows"):
+    if rec.get("pred_rows") != rec.get("gold_rows"):
         return "wrong_cardinality"
     return "wrong_result"
 
 
 def _struct_diff(pred_sql: str, gold_sql: str) -> list[str]:
-    """Detect structural differences between pred and gold SQL.
-
-    Returns every signal that fires (in a fixed priority order); callers pick
-    the first for the single error_class label, but the full list is kept on
-    the record so the co-occurring causes are visible.
-    """
+    """Return non-causal textual differences between pred and gold SQL."""
     signals: list[str] = []
-    jc_pred, jc_gold = _join_count(pred_sql), _join_count(gold_sql)
-    if jc_pred < jc_gold:
-        signals.append("missing_join")
-    elif jc_pred > jc_gold:
-        signals.append("extra_join")
-    elif _join_types(pred_sql) != _join_types(gold_sql):
-        # same join count but different qualifiers (e.g. LEFT vs INNER)
-        signals.append("wrong_join_type")
-
     if _has_clause(gold_sql, r"GROUP\s+BY") and not _has_clause(pred_sql, r"GROUP\s+BY"):
         signals.append("missing_group_by")
     if _has_clause(gold_sql, r"ORDER\s+BY") and not _has_clause(pred_sql, r"ORDER\s+BY"):
@@ -158,7 +125,7 @@ def _struct_diff(pred_sql: str, gold_sql: str) -> list[str]:
     if _has_clause(gold_sql, r"LIMIT\b") and not _has_clause(pred_sql, r"LIMIT\b"):
         signals.append("missing_limit")
     if _aggregates_used(gold_sql) and _aggregates_used(pred_sql) != _aggregates_used(gold_sql):
-        signals.append("wrong_aggregate")
+        signals.append("different_aggregates")
     return signals
 
 
@@ -180,27 +147,7 @@ def _has_clause(sql: str, clause: str) -> bool:
     return bool(re.search(rf"\b{clause}\b", _strip_literals(sql), re.IGNORECASE))
 
 
-_JOIN_RE = re.compile(r"\b(?:LEFT|RIGHT|INNER|OUTER|CROSS|NATURAL)?\s*(?:LEFT|RIGHT|INNER|OUTER)?\s*JOIN\b", re.IGNORECASE)
-# captures the optional qualifiers preceding each JOIN, e.g. "LEFT OUTER JOIN"
-_JOIN_TYPE_RE = re.compile(
-    r"\b((?:LEFT|RIGHT|INNER|FULL|CROSS|NATURAL)(?:\s+(?:OUTER|INNER))?|LEFT\s+JOIN|RIGHT\s+JOIN|INNER\s+JOIN|CROSS\s+JOIN|NATURAL\s+(?:LEFT|RIGHT)?\s*JOIN)\b",
-    re.IGNORECASE,
-)
 _AGG_RE = re.compile(r"\b(COUNT|SUM|AVG|MIN|MAX|STDDEV|STDDEV_POP|STDDEV_SAMP|VAR_POP|VAR_SAMP|GROUP_CONCAT)\s*\(", re.IGNORECASE)
-
-
-def _join_count(sql: str) -> int:
-    return len(_JOIN_RE.findall(_strip_literals(sql)))
-
-
-def _join_types(sql: str) -> tuple[str, ...]:
-    """Sorted tuple of qualified join types used (e.g. ('LEFT', 'LEFT', 'INNER')).
-
-    Only explicit qualifiers are captured; a bare `JOIN` (implicit INNER)
-    contributes nothing, so two queries differing only in `JOIN` vs `INNER JOIN`
-    compare equal — which is correct, since they're semantically identical.
-    """
-    return tuple(sorted(m.group(1).upper().split()[0] for m in _JOIN_TYPE_RE.finditer(_strip_literals(sql))))
 
 
 def _aggregates_used(sql: str) -> set[str]:

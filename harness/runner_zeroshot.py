@@ -1,9 +1,9 @@
-"""Runner for arm C — zero-shot + profile, single LLM call, NO tools / NO agent loop.
+"""Runner for zero-shot arms — single LLM call, NO tools / NO agent loop.
 
 Primary path: a direct OpenRouter chat-completions request (isolates the
-profile's standalone value, per plan). When OPENROUTER_API_KEY is absent, falls
-back to a single `pi -p --no-tools` call so the pipeline still runs end-to-end
-(e.g. for a smoke test against another configured provider).
+profile's standalone value). When OPENROUTER_API_KEY is absent, falls back to a
+single `pi -p --no-tools` call so the pipeline still runs end-to-end (e.g. for a
+smoke test against another configured provider).
 """
 from __future__ import annotations
 
@@ -27,8 +27,9 @@ def _cost_from_tokens(usage: dict) -> dict:
 
     OpenRouter's `/usage` object carries no cost, so derive it here from the
     model's $/Mtok rates (config.OPENROUTER_RATES). The returned dict matches the
-    shape pi reports for arms A/B — dollars, keys {input, output, cacheRead,
-    cacheWrite, total} — so metrics.aggregate / project_cost treat all arms alike.
+    shape pi reports for the agentic arms — dollars, keys {input, output,
+    cacheRead, cacheWrite, total} — so metrics.aggregate / project_cost treat all
+    arms alike.
     """
     r = config.OPENROUTER_RATES
     inp = usage.get("input", 0) * r["input"] / 1_000_000
@@ -42,8 +43,8 @@ def _cost_from_tokens(usage: dict) -> dict:
     }
 
 
-def _direct_openrouter(db_label: str, question: str) -> dict:
-    system, user = prompts.zeroshot_prompt(db_label, question)
+def _direct_openrouter(db_label: str, question: str, arm: str) -> dict:
+    system, user = prompts.zeroshot_prompt(db_label, question, arm)
     body = {
         "model": config.ZEROSHOT_MODEL_SLUG,
         "messages": [
@@ -62,7 +63,7 @@ def _direct_openrouter(db_label: str, question: str) -> dict:
         method="POST",
     )
     started = time.time()
-    rec: dict = {"arm": "C", "runner": "openrouter-direct", "db_label": db_label}
+    rec: dict = {"arm": arm, "runner": "openrouter-direct", "db_label": db_label}
     try:
         with urllib.request.urlopen(req, timeout=config.ZEROSHOT_WALL_CLOCK) as resp:
             data = json.loads(resp.read().decode("utf-8"))
@@ -93,9 +94,9 @@ def _direct_openrouter(db_label: str, question: str) -> dict:
     return rec
 
 
-def _pi_fallback(db_label: str, question: str, sandbox: Path) -> dict:
+def _pi_fallback(db_label: str, question: str, arm: str, sandbox: Path) -> dict:
     """Single pi call, no tools, no agent loop, clean zero-shot system prompt."""
-    system, user = prompts.zeroshot_prompt(db_label, question)
+    system, user = prompts.zeroshot_prompt(db_label, question, arm)
     sandbox.mkdir(parents=True, exist_ok=True)
     argv = [
         config.PI_BIN, "-p",
@@ -112,7 +113,7 @@ def _pi_fallback(db_label: str, question: str, sandbox: Path) -> dict:
         "--model", config.DEFAULT_MODEL_ID,
     ]
     started = time.time()
-    rec: dict = {"arm": "C", "runner": "pi-fallback", "db_label": db_label}
+    rec: dict = {"arm": arm, "runner": "pi-fallback", "db_label": db_label}
     try:
         proc = subprocess.run(
             argv, input=user, env=os.environ.copy(), cwd=str(sandbox),
@@ -163,7 +164,7 @@ def _parse_pi(stdout: str) -> dict:
             "turns": 1, "db_queries": 0, "model": model}
 
 
-def run(db_label: str, question: str, sandbox: Path) -> dict:
+def run(db_label: str, question: str, arm: str, sandbox: Path) -> dict:
     if _has_openrouter_key():
-        return _direct_openrouter(db_label, question)
-    return _pi_fallback(db_label, question, sandbox)
+        return _direct_openrouter(db_label, question, arm)
+    return _pi_fallback(db_label, question, arm, sandbox)

@@ -22,7 +22,7 @@ def wilson_ci(k: int, n: int, z: float = 1.96) -> tuple[float, float]:
 
 
 def mcnemar(a_correct: list[bool], b_correct: list[bool]) -> dict:
-    """Paired test for arm A vs arm B on identical questions."""
+    """Paired McNemar test for two arms on identical questions."""
     assert len(a_correct) == len(b_correct), "paired test needs identical questions"
     b = sum(1 for a, bb in zip(a_correct, b_correct) if a and not bb)  # A right, B wrong
     c = sum(1 for a, bb in zip(a_correct, b_correct) if not a and bb)  # A wrong, B right
@@ -41,7 +41,12 @@ def mcnemar(a_correct: list[bool], b_correct: list[bool]) -> dict:
 
 
 def paired_diff_ci(a_correct: list[bool], b_correct: list[bool]) -> dict:
-    """CI for Δ = p_B - p_A using the paired (discordant-pair) standard error."""
+    """CI for Δ = p_b - p_a using the paired (discordant-pair) standard error.
+
+    ``a_correct`` is the subtrahend, ``b_correct`` the minuend, so a positive
+    ``delta`` means arm b beats arm a. The returned ``acc_a`` / ``acc_b`` keys
+    are positional (first / second argument), not tied to any arm name.
+    """
     n = len(a_correct)
     acc_a = sum(a_correct) / n if n else 0.0
     acc_b = sum(b_correct) / n if n else 0.0
@@ -56,7 +61,7 @@ def paired_diff_ci(a_correct: list[bool], b_correct: list[bool]) -> dict:
         se = math.sqrt(n_disc) / n
     z = 1.96
     return {
-        "n": n, "acc_A": round(acc_a, 4), "acc_B": round(acc_b, 4),
+        "n": n, "acc_a": round(acc_a, 4), "acc_b": round(acc_b, 4),
         "delta": round(delta, 4),
         "ci_low": round(delta - z * se, 4), "ci_high": round(delta + z * se, 4),
         "se": round(se, 4), **m,

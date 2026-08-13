@@ -1,4 +1,8 @@
-"""Runner for arms A (baseline) and B (profile) — pi headless, sql_exec tool.
+"""Runner for agentic arms — pi headless, sql_exec tool.
+
+Handles every arm with ``tools=True`` in config.ARMS (the profile and checklist
+dimensions are resolved inside prompts.agent_prompts, so this runner stays
+agnostic to them).
 
 Per-question flow (plan §Anti-cheat #1):
   * fresh sandbox cwd, only the prompt (via stdin) and write-only output;
@@ -39,9 +43,9 @@ def _argv(append_prompt: str) -> list[str]:
     # System prompt: pi's default coding-assistant prompt is used as the base
     # (better-tuned for agentic tool use than a hand-rolled one); we only
     # --append-system-prompt the experiment-specific contract (output format,
-    # sql_exec framing, rules). This keeps arms A/B identical since the append
-    # text is the same for both — the only manipulation between them remains the
-    # profile, per the plan invariant.
+    # sql_exec framing, rules). The append text is identical across agentic arms
+    # except for the optional checklist section — the profile manipulation lives
+    # in the user turn, not here, per the plan invariant.
     # Reasoning effort: DeepSeek defaults to pi's built-in thinking level; we
     # pin --thinking low (config.PI_THINKING) for cost/latency control.
     return [

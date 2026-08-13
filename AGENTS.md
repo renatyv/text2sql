@@ -3,3 +3,5 @@ profile of the target DB improve a coding agent's **execution accuracy** on
 [BEAVER](https://huggingface.co/datasets/BeaverBench/beaver), vs. raw DB access?
 
 Project is managed by `uv`
+
+The databases are loaded to MySQL running in docker on localhost port 3307, user and password in the .env file. Use `--skip-ssl`

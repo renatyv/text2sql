@@ -1,7 +1,8 @@
 """Configuration constants for the db-snooper profiling experiment.
 
-Implements the locked decisions in AGENT_PROFILE_EXPERIMENT_PLAN.md:
-  * 3 arms: A (baseline), B (profile), C (zero-shot + profile)
+Arms are a 2×2-ish matrix over three boolean dimensions — whether the pi
+agent has the sql_exec tool, whether the db-snooper profile is injected, and
+whether the error-avoidance checklist is injected. See ``ARMS`` below.
   * pi is the only agent runner; deepseek-v4-flash via OpenRouter is the default model
   * identical caps across cells (turns, token guard, MySQL timeout)
 """
@@ -64,14 +65,60 @@ PHASE2_SAMPLE_SIZES = {"neutron": 1017, "nova": 1053, "dw": 500, "dw_real": 121}
 PILOT_N = 20  # Phase-1 pilot (neutron)
 
 # ---------------------------------------------------------------------------
-# Arms
+# Arms (dimension-driven: tools / profile / checklist)
 # ---------------------------------------------------------------------------
-ARMS = ("A", "B", "C")
-ARM_DESCRIPTIONS = {
-    "A": "baseline: NL question + MySQL + sql_exec tool, no schema hints",
-    "B": "profile:  same as A + frozen db-snooper <db>.md in the initial prompt",
-    "C": "zero-shot + profile: single LLM call, profile + question, no DB / no tools",
+# Each arm is a long descriptive name -> spec. The spec fixes three booleans:
+#   tools     — pi agent with the sql_exec tool (True) vs. a single zero-shot
+#               LLM call with no tools / no agent loop (False).
+#   profile   — inject the frozen db-snooper <db>.md profile into the prompt.
+#   checklist — inject harness/error_avoidance_checklist.txt into the prompt.
+# This makes each of the three manipulations isolatable by differencing arms.
+ARMS: dict[str, dict] = {
+    "pi_no_profile_no_checklist": {
+        "tools": True,  "profile": False, "checklist": False,
+        "description": "pi agent + sql_exec, no profile, no error checklist",
+    },
+    "pi_no_profile_checklist": {
+        "tools": True,  "profile": False, "checklist": True,
+        "description": "pi agent + sql_exec, no profile, with error checklist",
+    },
+    "pi_profile_checklist": {
+        "tools": True,  "profile": True,  "checklist": True,
+        "description": "pi agent + sql_exec + profile, with error checklist",
+    },
+    "zeroshot_profile_checklist": {
+        "tools": False, "profile": True,  "checklist": True,
+        "description": "zero-shot + profile, no tools, with error checklist",
+    },
 }
+
+# name -> human description (kept as a flat dict so the orchestrator's progress
+# bar and summary printer can do ARM_DESCRIPTIONS[arm] unchanged).
+ARM_DESCRIPTIONS = {name: spec["description"] for name, spec in ARMS.items()}
+
+
+def arm_spec(name: str) -> dict:
+    """Return the ``{tools, profile, checklist, description}`` spec for an arm."""
+    try:
+        return ARMS[name]
+    except KeyError:
+        raise KeyError(f"unknown arm '{name}'; choose from {list(ARMS)}")
+
+
+# Pairwise comparisons reported in the summary. Each tuple is
+# (subtrahend, minuend); Δ = acc(minuend) − acc(subtrahend), matching the
+# (a, b) argument order of metrics.paired_diff_ci (Δ = p_b − p_a). Pairs only
+# differ along ONE dimension, so each Δ isolates a single manipulation:
+#   profile  effect: pi_profile_checklist − pi_no_profile_checklist
+#   checklist effect (agentic): pi_no_profile_checklist − pi_no_profile_no_checklist
+#   agent-vs-zeroshot effect:  pi_profile_checklist − zeroshot_profile_checklist
+#   profile+checklist vs bare: zeroshot_profile_checklist − pi_no_profile_checklist
+PAIRWISE = [
+    ("pi_no_profile_checklist",    "pi_profile_checklist"),         # profile effect
+    ("pi_no_profile_no_checklist", "pi_no_profile_checklist"),      # checklist effect
+    ("zeroshot_profile_checklist", "pi_profile_checklist"),         # agentic vs zero-shot
+    ("pi_no_profile_checklist",    "zeroshot_profile_checklist"),   # zero-shot vs bare agent
+]
 
 # ---------------------------------------------------------------------------
 # Model (plan §Locked decisions #2) — overridable via env for smoke tests.
@@ -85,7 +132,7 @@ PI_MODEL_SELECTOR = f"{DEFAULT_PROVIDER}/{DEFAULT_MODEL_ID}"
 # for text-to-SQL, and this caps per-question token cost/latency. Overridable
 # via env so ablations can raise it without code changes.
 PI_THINKING = os.environ.get("PI_THINKING", "low")
-# Raw slug used for the direct OpenRouter call in arm C.
+# Raw slug used for the direct OpenRouter call in the zero-shot arm.
 ZEROSHOT_MODEL_SLUG = DEFAULT_MODEL_ID
 OPENROUTER_BASE_URL = os.environ.get("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
 
@@ -95,8 +142,9 @@ def _load_openrouter_rates() -> dict[str, float]:
     openrouter_models.json (the same fragment setup_openrouter.py merges into pi).
 
     Falls back to the known DeepSeek V4 Flash 0731 rates if the file is missing
-    or shaped differently. Used by runner_zeroshot to price arm C so its `cost`
-    dict matches the shape pi returns for arms A/B (dollars, not $/Mtok).
+    or shaped differently. Used by runner_zeroshot to price the zero-shot arm so
+    its `cost` dict matches the shape pi returns for the agentic arms (dollars,
+    not $/Mtok).
     """
     fallback = {"input": 0.08, "output": 0.18, "cacheRead": 0.016, "cacheWrite": 0.0}
     frag = HARNESS_DIR / "openrouter_models.json"
@@ -109,7 +157,7 @@ def _load_openrouter_rates() -> dict[str, float]:
         return fallback
 
 
-# $/Mtok. Single source of truth for pricing arm C and cost projections.
+# $/Mtok. Single source of truth for pricing the zero-shot arm and cost projections.
 OPENROUTER_RATES = _load_openrouter_rates()
 
 # ---------------------------------------------------------------------------
@@ -120,8 +168,8 @@ MAX_TURNS_PILOT = 6
 MAX_TURNS_MAIN = 10
 TOKEN_GUARD = 320_000             # runaway guard, total tokens/question
 EXPLORE_ROW_CAP = 100             # rows returned per exploration sql_exec call
-PI_WALL_CLOCK = 600               # seconds, hard subprocess kill for arms A/B
-ZEROSHOT_WALL_CLOCK = 120         # seconds, hard timeout for arm C
+PI_WALL_CLOCK = 600               # seconds, hard subprocess kill for agentic arms
+ZEROSHOT_WALL_CLOCK = 120         # seconds, hard timeout for the zero-shot arm
 
 # ---------------------------------------------------------------------------
 # MySQL connection (loaded BEAVER DBs on port 3307).

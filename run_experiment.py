@@ -1,18 +1,27 @@
 #!/usr/bin/env python3
-"""Orchestrate the db-snooper profiling experiment (AG vs. AG+profile vs. zero-shot).
+"""Orchestrate the db-snooper profiling experiment.
+
+Arms (config.ARMS) span three dimensions — sql_exec tool, db-snooper profile,
+and the error-avoidance checklist — so each pairwise Δ isolates one
+manipulation. See config.ARMS / config.PAIRWISE for the arm set and the
+comparisons reported in the summary.
 
 Implements the phases in AGENT_PROFILE_EXPERIMENT_PLAN.md:
-  phase0  — sanity: 1 question × {A,B,C}, headless, end-to-end scored
+  phase0  — sanity: 1 question × all arms, headless, end-to-end scored
   pilot   — neutron n=20 (default), all arms
   main    — full per-dataset sampling, all arms
 
 Examples
 --------
-  # Phase-0 sanity (default): 1 neutron question, all 3 arms
+  # Phase-0 sanity (default): 1 neutron question, all arms
   python run_experiment.py --dataset neutron --phase phase0
 
   # Phase-1 pilot
   python run_experiment.py --dataset neutron --phase pilot --arm all
+
+  # A single arm
+  python run_experiment.py --dataset neutron --phase phase0 \
+      --arm pi_no_profile_checklist
 
   # Dry-run cost projection from existing pilot data
   python run_experiment.py --dataset neutron --phase pilot --estimate-cost
@@ -89,10 +98,10 @@ def _results_dir(run_id: str) -> Path:
 
 def _run_one(q: dict, arm: str, db_label: str, max_turns: int, idx: int) -> dict:
     sandbox = config.SANDBOX_ROOT / f"{db_label}_{arm}_{idx}_{q['id']}"
-    if arm in ("A", "B"):
+    if config.arm_spec(arm)["tools"]:
         rec = runner_pi.run(db_label, q["question"], arm, max_turns, sandbox)
     else:
-        rec = runner_zeroshot.run(db_label, q["question"], sandbox)
+        rec = runner_zeroshot.run(db_label, q["question"], arm, sandbox)
     return rec
 
 
@@ -255,24 +264,23 @@ def _summarize(by_arm: dict[str, list[dict]], rdir: Path) -> None:
               f"tok_in/out={agg.get('tokens_in')}/{agg.get('tokens_out')} "
               f"cost=${agg.get('cost_usd')}")
 
-    # pairwise comparisons (require identical question sets)
+    # pairwise comparisons (require both arms of a pair to be present).
+    # config.PAIRWISE lists (subtrahend, minuend) tuples; Δ = acc(minuend) −
+    # acc(subtrahend), matching metrics.paired_diff_ci(a, b) = p_b − p_a.
     def _correct_vec(arm):
         # ordered by id to align paired comparisons
         m = {r["id"]: bool(r.get("correct")) for r in by_arm.get(arm, [])}
         ids = sorted(set().union(*( {r["id"] for r in v} for v in by_arm.values())))
         return [m.get(i, False) for i in ids], ids
 
-    pairs = [("B", "A"), ("B", "C"), ("C", "A")]
-    if "A" in by_arm and "B" in by_arm and "C" in by_arm:
-        vA, ids = _correct_vec("A")
-        vB, _ = _correct_vec("B")
-        vC, _ = _correct_vec("C")
-        summary["pairwise"] = {
-            "B-A": metrics.paired_diff_ci(vA, vB),
-            "B-C": metrics.paired_diff_ci(vC, vB),
-            "C-A": metrics.paired_diff_ci(vA, vC),
-        }
-        for name, p in summary["pairwise"].items():
+    vecs = {arm: _correct_vec(arm)[0] for arm in by_arm}  # cache per-arm vectors
+    pairwise: dict[str, dict] = {}
+    for sub, minu in config.PAIRWISE:
+        if sub in by_arm and minu in by_arm:
+            pairwise[f"{minu}-{sub}"] = metrics.paired_diff_ci(vecs[sub], vecs[minu])
+    if pairwise:
+        summary["pairwise"] = pairwise
+        for name, p in pairwise.items():
             print(f"  Δ {name}: {p['delta']:+.3f}  (95% CI {p['ci_low']:+.3f}..{p['ci_high']:+.3f}, "
                   f"discordant b/c={p['b']}/{p['c']}, p={p['p_value_exact']})")
 
