@@ -16,6 +16,7 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 const MAX_TURNS = Number(process.env.BEAVER_MAX_TURNS ?? "6");
+const FINAL_SQL = /(?:<ans>|```(?:sql|mysql)?\s*\n)\s*(?:SELECT|WITH|\()/i;
 
 export default function turnGuardExtension(pi: ExtensionAPI) {
   let turnCount = 0;
@@ -26,13 +27,27 @@ export default function turnGuardExtension(pi: ExtensionAPI) {
       pi.setActiveTools([]);
       pi.sendMessage({
         customType: "turn-guard",
-        content: "FINAL TURN: Tools are now disabled. Return your best complete MySQL query immediately in one ```sql block. Do not explain.",
+        content: "FINAL TURN: Tools are now disabled. Return your best complete MySQL query immediately inside <ans>...</ans>. Do not explain.",
         display: false,
       }, { deliverAs: "steer" });
       return;
     }
-    // Failsafe: the final turn has no tools, so this should be unreachable.
-    if (turnCount >= MAX_TURNS && event.message.stopReason === "toolUse") {
+    if (turnCount === MAX_TURNS) {
+      const text = Array.isArray(event.message.content)
+        ? event.message.content.filter((part) => part.type === "text").map((part) => part.text).join("")
+        : "";
+      if (!FINAL_SQL.test(text)) {
+        pi.setActiveTools([]);
+        pi.sendMessage({
+          customType: "turn-guard",
+          content: "FORMAT RECOVERY: Your response did not contain final SQL. Do not use tools or explain. Return the best complete MySQL query now inside <ans>...</ans>.",
+          display: false,
+        }, { deliverAs: "followUp", triggerTurn: true });
+      }
+      return;
+    }
+    // Failsafe: allow only the one answer-format recovery turn.
+    if (turnCount > MAX_TURNS && event.message.stopReason === "toolUse") {
       try { ctx.abort(); } catch { /* ignore */ }
     }
   });

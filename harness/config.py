@@ -176,7 +176,7 @@ TOKEN_GUARD = 320_000             # runaway guard, total tokens/question
 EXPLORE_ROW_CAP = 100             # rows returned per exploration sql_exec call
 PI_WALL_CLOCK = 300               # seconds; exceeding the evaluation budget is incorrect
 ZEROSHOT_WALL_CLOCK = 120         # seconds, hard timeout for the zero-shot arm
-PROTOCOL_VERSION = 2              # bump when runner semantics change outside prompt/config hashes
+PROTOCOL_VERSION = 3              # bump when runner semantics change outside prompt/config hashes
 PI_AGENT_VERSION = "0.84.1"       # pinned in Dockerfile.agent
 
 # ---------------------------------------------------------------------------

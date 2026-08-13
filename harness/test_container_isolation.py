@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from harness import pi_stream, runner_container
+from harness import parse_sql, pi_stream, runner_container
 
 
 class ContainerIsolationTests(unittest.TestCase):
@@ -24,6 +24,12 @@ class ContainerIsolationTests(unittest.TestCase):
         parsed = pi_stream.parse_stream(events)
         self.assertEqual(parsed["db_queries"], 1)
         self.assertEqual(parsed["executed_sqls"], ["SELECT 1"])
+
+    def test_unclosed_sql_fence_is_recoverable(self) -> None:
+        self.assertEqual(parse_sql.extract_sql("```sql\nSELECT 1;"), "SELECT 1;")
+        self.assertEqual(parse_sql.extract_sql("<ans>SELECT 2</ans>"), "SELECT 2;")
+        self.assertEqual(parse_sql.extract_sql("<ans>WITH q AS (SELECT 3) SELECT * FROM q"),
+                         "WITH q AS (SELECT 3) SELECT * FROM q;")
 
     def test_non_pi_telemetry_is_not_reported_as_zero(self) -> None:
         parsed = runner_container._parse_agent_output("codex", "```sql\nSELECT 1\n```")

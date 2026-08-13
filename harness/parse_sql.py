@@ -4,6 +4,8 @@ from __future__ import annotations
 import re
 
 _FENCE_RE = re.compile(r"```(?:sql|SQL|mysql|MySQL)?\s*\n(.*?)```", re.DOTALL)
+_OPEN_SQL_FENCE_RE = re.compile(r"```(?:sql|SQL|mysql|MySQL)\s*\n(.*)\Z", re.DOTALL)
+_ANS_RE = re.compile(r"<ans>\s*(.*?)(?:\s*</ans>|\Z)", re.IGNORECASE | re.DOTALL)
 # A "FINAL" tag optionally wraps the intended answer block.
 _FINAL_RE = re.compile(r"FINAL[:\s]*```", re.IGNORECASE)
 
@@ -12,16 +14,21 @@ def extract_sql(text: str) -> str | None:
     """Pull the single best SQL candidate out of free-form model output.
 
     Strategy (first hit wins):
-      1. The last ```sql``` fenced block appearing after a FINAL marker, if any.
-      2. The last fenced block overall.
-      3. The longest ;-terminated statement in raw text.
+      1. The last <ans> block, including a truncated block missing </ans>.
+      2. The last ```sql``` fenced block appearing after a FINAL marker, if any.
+      3. The last fenced block overall.
+      4. The longest ;-terminated statement in raw text.
 
     Returns None when nothing plausible is found.
     """
     if not text:
         return None
 
-    # 1. FINAL-tagged fenced block.
+    answers = [m.group(1) for m in _ANS_RE.finditer(text)]
+    if answers and _looks_like_sql(answers[-1]):
+        return _clean(answers[-1])
+
+    # Backward-compatible Markdown parsing.
     final_match = _FINAL_RE.search(text)
     if final_match:
         tail = text[final_match.start():]
@@ -33,6 +40,12 @@ def extract_sql(text: str) -> str | None:
     blocks = [m.group(1) for m in _FENCE_RE.finditer(text)]
     if blocks:
         return _clean(blocks[-1])
+
+    # Providers occasionally end a valid final response before the closing
+    # Markdown fence. Only recover explicitly SQL-labelled open fences.
+    open_blocks = [m.group(1) for m in _OPEN_SQL_FENCE_RE.finditer(text)]
+    if open_blocks and _looks_like_sql(open_blocks[-1]):
+        return _clean(open_blocks[-1])
 
     # 3. Raw text: take the longest ;-terminated statement.
     stmts = [s.strip() for s in text.split(";") if s.strip()]

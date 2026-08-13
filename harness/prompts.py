@@ -34,18 +34,18 @@ Workflow:
    otherwise, and `SELECT ... LIMIT 5` only to confirm a needed value or join.
 2. Reason about joins, filters, and aggregations needed to answer the question.
 3. Iterate, running candidate queries via `mysql` to validate intermediate results.
-4. When confident, output your FINAL query inside a single fenced block:
+4. When confident, output your FINAL query inside exactly one answer block:
 
-```sql
+<ans>
 <your final query>
-```
+</ans>
 
 Rules:
 - Run ONLY read-only statements (SELECT / WITH / SHOW / DESCRIBE / EXPLAIN) —
   never INSERT/UPDATE/DELETE/DROP. The DB is a shared benchmark; do not mutate it.
 - Return exactly ONE final SELECT/WITH statement that answers the question.
 - Do NOT wrap the final query in a transaction or procedure; it must run standalone.
-- Do NOT include any commentary after the final ```sql block.
+- Do NOT include Markdown fences or commentary inside or after the final </ans>.
 - Prefer explicit table-qualified columns. Respect MySQL syntax (backticks for
   reserved/odd-case identifiers).
 - Budget: you have at most {max_turns} agent turns. Turn {max_turns} is reserved
@@ -131,7 +131,7 @@ def agent_prompts(db_label: str, question: str, arm: str, max_turns: int) -> tup
         f"===== BEGIN SUPPLIED DATABASE CONTEXT =====\n{grounding}\n"
         f"===== END SUPPLIED DATABASE CONTEXT =====\n\n"
         f"Natural-language question:\n\"\"\"\n{question}\n\"\"\"\n\n"
-        f"Return your FINAL SQL in a ```sql block."
+        f"Return your FINAL SQL inside <ans>...</ans>."
     )
     return system, user
 
@@ -150,6 +150,6 @@ def zeroshot_prompt(db_label: str, question: str, arm: str) -> tuple[str, str]:
         f"Database profile ({db_label}):\n\n"
         f"===== BEGIN DB PROFILE =====\n{prof}\n===== END DB PROFILE =====\n\n"
         f"Natural-language question:\n\"\"\"\n{question}\n\"\"\"\n\n"
-        f"Output the single MySQL query that answers it inside one ```sql block."
+        f"Output the single MySQL query that answers it inside <ans>...</ans>."
     )
     return system, user

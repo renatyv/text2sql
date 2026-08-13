@@ -72,6 +72,8 @@ class BenchmarkTests(unittest.TestCase):
             self.assertIn("Use any supplied database context first", system)
             self.assertIn("Turn 10 is reserved", system)
             self.assertIn("finish all tool use by turn 9", system)
+            self.assertIn("<ans>", system)
+            self.assertIn("<ans>...</ans>", user)
             self.assertIn("BEGIN SUPPLIED DATABASE CONTEXT", user)
             self.assertNotIn("primary schema briefing", user)
 

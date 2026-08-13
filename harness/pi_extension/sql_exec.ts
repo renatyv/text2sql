@@ -127,7 +127,7 @@ export default function sqlExecExtension(pi: ExtensionAPI) {
           content: [{
             type: "text",
             text: "TURNCAP_REACHED: You have used your exploration turn budget (" + MAX_TURNS +
-              "). Do NOT call any more tools. Output your FINAL SQL query now in a single ```sql block and stop.",
+              "). Do NOT call any more tools. Output your FINAL SQL query now inside <ans>...</ans> and stop.",
           }],
           details: { ok: false, turncapped: true },
         };
