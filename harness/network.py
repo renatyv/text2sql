@@ -97,7 +97,7 @@ def _sql_literal(value: str) -> str:
     return "'" + value.replace("\\", "\\\\").replace("'", "''") + "'"
 
 
-def ensure_agent_db_user() -> None:
+def ensure_agent_db_user(databases: set[str] | None = None) -> None:
     """Reset the account injected into agents to SELECT-only benchmark access.
 
     The benchmark loader/scorer account is intentionally powerful, so it cannot
@@ -110,7 +110,7 @@ def ensure_agent_db_user() -> None:
         f"ALTER USER {account} IDENTIFIED BY {_sql_literal(config.AGENT_MYSQL_PWD)}",
         f"REVOKE ALL PRIVILEGES, GRANT OPTION FROM {account}",
     ]
-    for dataset in {spec["mysql_db"] for spec in config.DATASETS.values()}:
+    for dataset in databases or {spec["mysql_db"] for spec in config.DATASETS.values()}:
         statements.append(f"GRANT SELECT ON `{dataset.replace('`', '``')}`.* TO {account}")
     env = dict(os.environ, MYSQL_PWD=config.MYSQL_PWD)
     r = subprocess.run(
@@ -154,11 +154,11 @@ def ensure_egress_proxy() -> str:
     return name
 
 
-def setup() -> str:
+def setup(databases: set[str] | None = None) -> str:
     """One-call bring-up: networks + proxy. Returns the proxy container name.
     Safe to call repeatedly (idempotent). Called once at experiment start."""
     ensure_networks()
-    ensure_agent_db_user()
+    ensure_agent_db_user(databases)
     return ensure_egress_proxy()
 
 

@@ -46,6 +46,8 @@ _load_env_file()
 
 DATA_DIR = REPO_ROOT / "data"
 PROFILES_DIR = REPO_ROOT / "profiles"
+SCHEMA_LINKS_DIR = REPO_ROOT / "schema-links"
+GENERATED_METADATA_DIR = REPO_ROOT / "generated-metadata"
 HARNESS_DIR = REPO_ROOT / "harness"
 PI_EXTENSION = HARNESS_DIR / "pi_extension" / "sql_exec.ts"
 RESULTS_DIR = REPO_ROOT / "results"
@@ -237,6 +239,10 @@ MYSQL_HOST_CONTAINER = os.environ.get("BEAVER_MYSQL_HOST_CONTAINER", MYSQL_CONTA
 MYSQL_PORT_CONTAINER = int(os.environ.get("BEAVER_MYSQL_PORT_CONTAINER", "3306"))
 def profile_path(db_label: str) -> Path:
     return PROFILES_DIR / DATASETS[db_label]["profile"]
+
+
+def schema_links_path(db_label: str) -> Path:
+    return SCHEMA_LINKS_DIR / DATASETS[db_label]["profile"]
 
 
 def mysql_db_for(db_label: str) -> str:
