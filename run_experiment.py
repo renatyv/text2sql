@@ -321,7 +321,7 @@ def _run_dataset(args) -> int:
                             f"tok={rec.get('usage', {}).get('totalTokens', 0)} "
                             f"({elapsed:.1f}s)")
                     if not rec.get("correct"):
-                        err = rec.get("pred_error") or rec.get("error")
+                        err = rec.get("error") or rec.get("pred_error")
                         if err:
                             line += f"  [red]err={err}[/red]"
                     progress.console.print(line)

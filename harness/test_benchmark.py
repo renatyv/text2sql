@@ -70,6 +70,8 @@ class BenchmarkTests(unittest.TestCase):
             self.assertEqual("PROFILE" in user, has_profile)
             self.assertEqual("METADATA" in user, has_metadata)
             self.assertIn("Use any supplied database context first", system)
+            self.assertIn("Turn 10 is reserved", system)
+            self.assertIn("finish all tool use by turn 9", system)
             self.assertIn("BEGIN SUPPLIED DATABASE CONTEXT", user)
             self.assertNotIn("primary schema briefing", user)
 

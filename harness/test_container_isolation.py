@@ -75,6 +75,8 @@ class ContainerIsolationTests(unittest.TestCase):
         )
         rec = runner_container.run("neutron", "question", "raw", 6, Path("/tmp/x"))
         self.assertEqual(rec["budget_exhausted"], "turns")
+        self.assertEqual(rec["turns"], 6)
+        self.assertEqual(rec["error"], "no final SQL within 6-turn budget")
         self.assertNotIn("infrastructure_error", rec)
         self.assertIsNone(rec["api_error"])
 

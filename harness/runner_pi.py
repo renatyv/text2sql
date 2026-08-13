@@ -106,6 +106,7 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
 
     if pi_stream.is_turn_limit_abort(parsed.get("api_error"), parsed.get("turns", 0), max_turns):
         parsed["api_error"] = None
+        parsed["turns"] = max_turns
     rec.update(parsed)
     candidate = None
     if not rec.get("budget_exhausted") and not parsed.get("api_error"):

@@ -48,7 +48,8 @@ Rules:
 - Do NOT include any commentary after the final ```sql block.
 - Prefer explicit table-qualified columns. Respect MySQL syntax (backticks for
   reserved/odd-case identifiers).
-- Budget: you have at most {max_turns} agent turns — explore efficiently.
+- Budget: you have at most {max_turns} agent turns. Turn {max_turns} is reserved
+  for your FINAL SQL response, so finish all tool use by turn {penultimate_turn}.
 {checklist_block}\
 """
 
@@ -67,6 +68,7 @@ def _agent_system(row_cap: int, timeout: int, max_turns: int, checklist: bool) -
         row_cap=row_cap,
         timeout=timeout,
         max_turns=max_turns,
+        penultimate_turn=max(0, max_turns - 1),
         checklist_block=_AGENT_CHECKLIST_BLOCK if checklist else "",
     )
 

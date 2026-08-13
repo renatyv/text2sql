@@ -13,7 +13,7 @@ Replaces runner_pi.py as the default agentic runner. Per-question flow (plan
     find, ls) plus pre-installed python/pandas/jq/mysql-client, so it can
     explore the DB and compute freely;
   * sql_exec.ts is DROPPED — the agent runs SQL via `bash` + the `mysql` CLI;
-    a tiny turn_guard.ts extension keeps the hard turn-cap (ctx.abort at cap+1).
+    a tiny turn_guard.ts extension reserves the last turn for final SQL.
 
 The runner signature matches runner_pi.run() so run_experiment.py dispatches
 through the same code path. ``BEAVER_AGENT`` selects pi, Claude Code, OpenCode,
@@ -107,7 +107,7 @@ def _agent_argv(agent: str, system_prompt: str, user_prompt: str, max_turns: int
         ]
     # pi is the default and the only runner with a custom lifecycle extension.
     # See runner_pi._argv for the full rationale. Key differences here:
-    #   * -e turn_guard.ts replaces sql_exec.ts (hard turn-cap, no SQL logic);
+    #   * -e turn_guard.ts replaces sql_exec.ts (turn cap, last turn answer-only);
     #   * --no-builtin-tools is REMOVED — the agent gets bash/read/write/edit/
     #     grep/find/ls via the --tools allowlist, so it can use python/pandas/
     #     mysql-client freely;
@@ -294,6 +294,7 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
 
     if pi_stream.is_turn_limit_abort(parsed.get("api_error"), parsed.get("turns", 0), max_turns):
         parsed["api_error"] = None
+        parsed["turns"] = max_turns
     rec.update(parsed)
     candidate = None
     if not rec.get("budget_exhausted") and not parsed.get("api_error"):
