@@ -58,9 +58,14 @@ def retryable_api_error(message: str | None) -> bool:
         re.search(r"\b(?:429|5\d\d)\b", lower)
         or any(term in lower for term in (
             "rate limit", "connection reset", "connection refused", "timed out",
-            "timeout", "econnreset", "fetch failed", "network error",
+            "timeout", "econnreset", "fetch failed", "network error", "upstream error",
         ))
     )
+
+
+def is_turn_limit_abort(message: str | None, turns: int, max_turns: int) -> bool:
+    """True when pi reports the turn guard's deliberate abort as an API error."""
+    return message == "This operation was aborted" and turns >= max_turns
 
 
 def _sql_from_bash(command: str) -> str | None:

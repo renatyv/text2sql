@@ -56,7 +56,27 @@ class ContainerIsolationTests(unittest.TestCase):
         self.assertEqual(parsed["retry_count"], 1)
         self.assertEqual(parsed["api_error"], "429 rate limited")
         self.assertTrue(pi_stream.retryable_api_error(parsed["api_error"]))
+        self.assertTrue(pi_stream.retryable_api_error(
+            "Upstream error: generation ended before the streamed tool call was complete"
+        ))
         self.assertFalse(pi_stream.retryable_api_error("HTTP 401 invalid API key"))
+
+    @patch("harness.runner_container.network.is_ready", return_value=True)
+    @patch("harness.runner_container.prompts.agent_prompts", return_value=("system", "user"))
+    @patch("harness.runner_container.subprocess.run")
+    def test_turn_guard_abort_is_budget_exhaustion(self, run, _prompts, _ready) -> None:
+        tool_turn = ('{"type":"turn_end","message":{"role":"assistant",'
+                     '"stopReason":"toolUse","content":[]}}\n')
+        error_turn = ('{"type":"turn_end","message":{"role":"assistant",'
+                      '"stopReason":"error","errorMessage":"This operation was aborted",'
+                      '"content":[]}}\n')
+        run.return_value = subprocess.CompletedProcess(
+            ["docker", "run"], 0, tool_turn * 6 + error_turn, ""
+        )
+        rec = runner_container.run("neutron", "question", "raw", 6, Path("/tmp/x"))
+        self.assertEqual(rec["budget_exhausted"], "turns")
+        self.assertNotIn("infrastructure_error", rec)
+        self.assertIsNone(rec["api_error"])
 
     def test_streamed_runner_reports_turns(self) -> None:
         events = [
