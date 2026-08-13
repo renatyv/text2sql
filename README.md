@@ -11,7 +11,7 @@ The agentic arms run in a fresh, unprivileged Docker/OrbStack container for ever
 - `metadata` — raw access + aggregated metadata.
 - `profile_metadata` — raw access + both artifacts.
 
-All four arms use the same agent, error-avoidance checklist, tools, model, and caps. The default model and caps live in [`harness/config.py`](harness/config.py).
+All four arms use the same agent, prompt instructions, error-avoidance checklist, tools, model, and caps; only the supplied context differs. The default model and caps live in [`harness/config.py`](harness/config.py). The fixed evaluation budget is six turns and 300 seconds per question. Exhausting either budget counts as an incorrect answer; only transient provider/API failures are retried.
 
 ## Isolation model
 
@@ -42,12 +42,14 @@ Useful runs:
 
 ```bash
 uv run python run_experiment.py --dataset neutron --phase pilot
-uv run python run_experiment.py --phase main --samples neutron=100 nova=80 dw=50 --arms raw profile metadata
+uv run python run_experiment.py --phase main --samples neutron=20 nova=20 dw=20 --arms raw profile metadata --workers 8 --max-turns 6
 uv run python run_experiment.py --dataset neutron --phase pilot --estimate-cost
 uv run python run_experiment.py --dataset neutron --phase pilot --score-only
 ```
 
 `--no-container` is a legacy debugging path. It runs pi on the host with `sql_exec.ts`; it does not provide the container isolation described above.
+
+Completed records are reused only when their protocol fingerprint matches the current prompts, artifacts, model, runner, reasoning effort, and budgets. Prompt or budget changes therefore cannot silently mix incompatible results. While pi runs, the progress bar shows the latest completed agent turn and database-query count.
 
 ## Switch coding agents
 

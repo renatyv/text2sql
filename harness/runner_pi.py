@@ -95,8 +95,9 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
         parsed = _parse_stream(proc.stdout or "")
     except subprocess.TimeoutExpired as e:
         rec["error"] = f"pi wall-clock timeout ({config.PI_WALL_CLOCK}s)"
-        rec["infrastructure_error"] = True
-        rec["stdout"] = (e.stdout or "") if isinstance(e.stdout, str) else ""
+        rec["budget_exhausted"] = "wall_clock"
+        output = e.stdout or ""
+        rec["stdout"] = output.decode("utf-8", "replace") if isinstance(output, bytes) else output
         parsed = _parse_stream(rec.get("stdout", ""))
     except FileNotFoundError:
         rec["error"] = "`pi` not found on PATH — install pi or set PI_BIN."
@@ -104,20 +105,20 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
         return rec
 
     rec.update(parsed)
-    if parsed.get("api_error"):
-        rec["error"] = f"model API error: {parsed['api_error']}"
-        rec["infrastructure_error"] = True
-    rec["latency_s"] = round(time.time() - started, 2)
-    # pick the best SQL candidate: prefer the last fenced block in any assistant
-    # text; fall back to the last SELECT the agent actually executed.
     candidate = None
-    if not rec.get("infrastructure_error"):
+    if not rec.get("budget_exhausted") and not parsed.get("api_error"):
         for txt in reversed(parsed.get("all_text") or []):
             candidate = parse_sql.extract_sql(txt)
             if candidate:
                 break
-        if not candidate:
-            candidate = parse_sql.last_select(parsed.get("executed_sqls") or [])
+    if parsed.get("api_error"):
+        rec["error"] = f"model API error: {parsed['api_error']}"
+        rec["infrastructure_error"] = True
+        rec["retryable_error"] = pi_stream.retryable_api_error(parsed["api_error"])
+    if parsed.get("turns", 0) >= max_turns and not candidate and not rec.get("api_error"):
+        rec["error"] = rec.get("error") or f"no final SQL within {max_turns}-turn budget"
+        rec["budget_exhausted"] = "turns"
+    rec["latency_s"] = round(time.time() - started, 2)
     rec["pred_sql"] = candidate
     # token runaway guard (plan §Locked decisions #4)
     if parsed["usage"]["totalTokens"] > config.TOKEN_GUARD:

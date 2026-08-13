@@ -169,13 +169,15 @@ OPENROUTER_RATES = _load_openrouter_rates()
 # ---------------------------------------------------------------------------
 # Caps — identical across all cells (plan §Locked decisions #4)
 # ---------------------------------------------------------------------------
-MYSQL_QUERY_TIMEOUT = 20          # seconds, per MySQL query (gold/pred/exploration)
+MYSQL_QUERY_TIMEOUT = 10          # seconds, per MySQL query (gold/pred/exploration)
 MAX_TURNS_PILOT = 6
-MAX_TURNS_MAIN = 10
+MAX_TURNS_MAIN = 6
 TOKEN_GUARD = 320_000             # runaway guard, total tokens/question
 EXPLORE_ROW_CAP = 100             # rows returned per exploration sql_exec call
-PI_WALL_CLOCK = 600               # seconds, hard subprocess kill for agentic arms
+PI_WALL_CLOCK = 300               # seconds; exceeding the evaluation budget is incorrect
 ZEROSHOT_WALL_CLOCK = 120         # seconds, hard timeout for the zero-shot arm
+PROTOCOL_VERSION = 2              # bump when runner semantics change outside prompt/config hashes
+PI_AGENT_VERSION = "0.84.1"       # pinned in Dockerfile.agent
 
 # ---------------------------------------------------------------------------
 # MySQL connection (loaded BEAVER DBs on port 3307).

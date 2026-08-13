@@ -13,7 +13,7 @@
  *   BEAVER_MYSQL_USER / MYSQL_USER       default beaver
  *   BEAVER_MYSQL_PWD  / MYSQL_PASSWORD   (no default; passed via env, never argv)
  *   BEAVER_DB                            target database name
- *   BEAVER_QUERY_TIMEOUT                 per-query wall-clock kill, seconds (default 20)
+ *   BEAVER_QUERY_TIMEOUT                 per-query wall-clock kill, seconds (default 10)
  *   BEAVER_MAX_TURNS                     agent turn cap (default 10). After this many turns the
  *                                        tool refuses further exploration and asks the model to
  *                                        finalize, and the run is aborted at cap+1.
@@ -28,7 +28,7 @@ const PORT = process.env.BEAVER_MYSQL_PORT ?? process.env.MYSQL_PORT ?? "3307";
 const USER = process.env.BEAVER_MYSQL_USER ?? process.env.MYSQL_USER ?? "beaver";
 const PWD = process.env.BEAVER_MYSQL_PWD ?? process.env.MYSQL_PASSWORD ?? "";
 const DB = process.env.BEAVER_DB ?? "";
-const QUERY_TIMEOUT = Number(process.env.BEAVER_QUERY_TIMEOUT ?? "20");
+const QUERY_TIMEOUT = Number(process.env.BEAVER_QUERY_TIMEOUT ?? "10");
 const MAX_TURNS = Number(process.env.BEAVER_MAX_TURNS ?? "10");
 const ROW_CAP = Number(process.env.BEAVER_EXPLORE_ROW_CAP ?? "100");
 

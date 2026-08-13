@@ -27,9 +27,11 @@ $MYSQL_PWD). Keep exploratory output small: LIMIT to ~{row_cap} rows. Each
 query should finish within {timeout}s.
 
 Workflow:
-1. Explore the schema: `SHOW TABLES;`, then `SHOW CREATE TABLE \`<t>\`;` or
-   `DESCRIBE <t>;` for relevant tables. Use `SELECT ... LIMIT 5;` to sample data
-   and confirm column meaning, formats, and join keys.
+1. Use any supplied database context first. Query the database only to resolve
+   missing schema details or validate candidate SQL; do not repeat lookups that
+   the context already answers. If context is absent or insufficient, inspect
+   only relevant tables. Use `SHOW TABLES` only when you cannot identify them
+   otherwise, and `SELECT ... LIMIT 5` only to confirm a needed value or join.
 2. Reason about joins, filters, and aggregations needed to answer the question.
 3. Iterate, running candidate queries via `mysql` to validate intermediate results.
 4. When confident, output your FINAL query inside a single fenced block:
@@ -121,15 +123,13 @@ def agent_prompts(db_label: str, question: str, arm: str, max_turns: int) -> tup
             f"===== BEGIN AGGREGATED METADATA ({db_label}) =====\n{_metadata(db_label)}\n"
             "===== END AGGREGATED METADATA ====="
         )
-    grounding = (
-        "\n\nUse the supplied database context to ground your schema understanding; "
-        "you may still verify it with the mysql CLI.\n\n" + "\n\n".join(context)
-        if context else " Explore it with the mysql CLI."
-    )
+    grounding = "\n\n".join(context) if context else "(none supplied)"
     user = (
-        f"Target MySQL database: `{db}`.{grounding}\n\n"
+        f"Target MySQL database: `{db}`.\n\n"
+        f"===== BEGIN SUPPLIED DATABASE CONTEXT =====\n{grounding}\n"
+        f"===== END SUPPLIED DATABASE CONTEXT =====\n\n"
         f"Natural-language question:\n\"\"\"\n{question}\n\"\"\"\n\n"
-        f"Explore or verify the schema as needed, then return your FINAL SQL in a ```sql block."
+        f"Return your FINAL SQL in a ```sql block."
     )
     return system, user
 

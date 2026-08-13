@@ -26,9 +26,11 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import threading
 import time
 import uuid
 from pathlib import Path
+from typing import Callable
 
 from . import config, network, parse_sql, pi_stream, prompts
 
@@ -154,8 +156,62 @@ def _parse_agent_output(agent: str, stdout: str) -> dict:
     }
 
 
+def _run_pi_streamed(argv: list[str], prompt: str, status: Callable[[int, int], None]):
+    """Run pi while draining JSON stdout and reporting completed turns."""
+    proc = subprocess.Popen(
+        argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+    )
+    stdout: list[str] = []
+    stderr: list[str] = []
+    counters = {"turns": 0, "db_queries": 0}
+
+    def read_stdout() -> None:
+        assert proc.stdout is not None
+        for line in proc.stdout:
+            stdout.append(line)
+            try:
+                event = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if event.get("type") == "tool_execution_start":
+                args = event.get("args") or {}
+                if args.get("sql") or pi_stream._sql_from_bash(str(args.get("command", ""))):
+                    counters["db_queries"] += 1
+            elif event.get("type") == "turn_end":
+                counters["turns"] += 1
+                status(counters["turns"], counters["db_queries"])
+
+    def read_stderr() -> None:
+        assert proc.stderr is not None
+        stderr.extend(proc.stderr)
+
+    readers = [threading.Thread(target=read_stdout), threading.Thread(target=read_stderr)]
+    for reader in readers:
+        reader.start()
+    assert proc.stdin is not None
+    try:
+        proc.stdin.write(prompt)
+        proc.stdin.close()
+        returncode = proc.wait(timeout=config.PI_WALL_CLOCK)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        proc.wait()
+        for reader in readers:
+            reader.join()
+        proc.stdout.close()
+        proc.stderr.close()
+        raise subprocess.TimeoutExpired(
+            argv, config.PI_WALL_CLOCK, output="".join(stdout), stderr="".join(stderr)
+        )
+    for reader in readers:
+        reader.join()
+    proc.stdout.close()
+    proc.stderr.close()
+    return subprocess.CompletedProcess(argv, returncode, "".join(stdout), "".join(stderr))
+
+
 def run(db_label: str, question: str, arm: str, max_turns: int,
-        sandbox: Path) -> dict:
+        sandbox: Path, status_callback: Callable[[int, int], None] | None = None) -> dict:
     """Run one question in a fresh isolated container, return a result record.
 
     ``sandbox`` is accepted for signature parity with runner_pi.run but is NOT
@@ -181,13 +237,14 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
     # caps contain runaway work; --rm guarantees teardown.
     volumes = [
         "-v", f"{config.HARNESS_DIR / 'turn_guard.ts'}:/extensions/turn_guard.ts:ro",
+        "-v", f"{config.HARNESS_DIR / 'mysql_timeout.sh'}:/usr/local/bin/mysql:ro",
         "-v", f"{config.HARNESS_DIR / 'openrouter_models.json'}:/home/node/.pi/agent/models.json:ro",
         "-v", f"{config.HARNESS_DIR / 'codex_config.toml'}:/home/node/.codex/config.toml:ro",
         "-v", f"{config.HARNESS_DIR / 'opencode.json'}:/config/opencode.json:ro",
     ]
     container_name = f"beaver-agent-{uuid.uuid4().hex}"
     docker_argv = [
-        "docker", "run", "--rm",
+        "docker", "run", "--rm", "-i",
         "--name", container_name,
         "--network", config.AGENT_NET_SANDBOX,
         "--memory", config.CONTAINER_MEMORY,
@@ -204,20 +261,24 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
     ]
 
     try:
-        proc = subprocess.run(
-            docker_argv,
-            input=user_prompt if agent == "pi" else None,
-            capture_output=True,
-            text=True,
-            timeout=config.PI_WALL_CLOCK,
-        )
+        if agent == "pi" and status_callback:
+            proc = _run_pi_streamed(docker_argv, user_prompt, status_callback)
+        else:
+            proc = subprocess.run(
+                docker_argv,
+                input=user_prompt if agent == "pi" else None,
+                capture_output=True,
+                text=True,
+                timeout=config.PI_WALL_CLOCK,
+            )
         rec["returncode"] = proc.returncode
         rec["stderr_tail"] = (proc.stderr or "")[-1000:]
         parsed = _parse_agent_output(agent, proc.stdout or "")
     except subprocess.TimeoutExpired as e:
         rec["error"] = f"container wall-clock timeout ({config.PI_WALL_CLOCK}s)"
-        rec["infrastructure_error"] = True
-        rec["stdout"] = (e.stdout or "") if isinstance(e.stdout, str) else ""
+        rec["budget_exhausted"] = "wall_clock"
+        output = e.stdout or ""
+        rec["stdout"] = output.decode("utf-8", "replace") if isinstance(output, bytes) else output
         parsed = _parse_agent_output(agent, rec.get("stdout", ""))
         # Killing the docker CLI does not reliably stop its container. Explicit
         # teardown is required to keep an over-time question from surviving
@@ -232,23 +293,28 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
         return rec
 
     rec.update(parsed)
-    if parsed.get("api_error"):
-        rec["error"] = f"model API error: {parsed['api_error']}"
-        rec["infrastructure_error"] = True
-    if rec.get("returncode") and not rec.get("pred_sql"):
-        rec["error"] = rec.get("error") or f"agent container exited {rec['returncode']}"
-        rec["infrastructure_error"] = True
-    rec["latency_s"] = round(time.time() - started, 2)
-    # Pick the best SQL candidate: prefer the last fenced ```sql block in any
-    # assistant text; fall back to the last SELECT the agent executed via bash.
     candidate = None
-    if not rec.get("infrastructure_error"):
+    if not rec.get("budget_exhausted") and not parsed.get("api_error"):
         for txt in reversed(parsed.get("all_text") or []):
             candidate = parse_sql.extract_sql(txt)
             if candidate:
                 break
-        if not candidate:
-            candidate = parse_sql.last_select(parsed.get("executed_sqls") or [])
+    if parsed.get("api_error"):
+        rec["error"] = f"model API error: {parsed['api_error']}"
+        rec["infrastructure_error"] = True
+        rec["retryable_error"] = pi_stream.retryable_api_error(parsed["api_error"])
+    if (agent == "pi" and not rec.get("budget_exhausted")
+            and not parsed.get("model") and not parsed.get("turns")):
+        rec["error"] = rec.get("error") or "pi emitted no assistant events"
+        rec["infrastructure_error"] = True
+    if parsed.get("turns", 0) >= max_turns and not candidate and not rec.get("api_error"):
+        rec["error"] = rec.get("error") or f"no final SQL within {max_turns}-turn budget"
+        rec["budget_exhausted"] = "turns"
+    if (rec.get("returncode") and not rec.get("budget_exhausted")
+            and not (parsed.get("turns", 0) >= max_turns and candidate)):
+        rec["error"] = rec.get("error") or f"agent container exited {rec['returncode']}"
+        rec["infrastructure_error"] = True
+    rec["latency_s"] = round(time.time() - started, 2)
     rec["pred_sql"] = candidate
     # Token runaway guard (plan §Locked decisions #4).
     if parsed["usage"]["totalTokens"] > config.TOKEN_GUARD:

@@ -27,6 +27,7 @@ Examples
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import random
 import sys
@@ -45,7 +46,7 @@ from rich.progress import (
     TimeElapsedColumn,
 )
 
-from harness import config, manifest as manifest_mod, metrics, network, runner_container, runner_pi, runner_zeroshot, scorer
+from harness import config, manifest as manifest_mod, metrics, network, prompts, runner_container, runner_pi, runner_zeroshot, scorer
 
 PHASE_DEFAULT_N = {"phase0": 1, "pilot": config.PILOT_N}
 PHASE_DEFAULT_TURNS = {"phase0": config.MAX_TURNS_PILOT,
@@ -97,11 +98,14 @@ def _results_dir(run_id: str) -> Path:
 _USE_CONTAINER = True
 
 
-def _run_one(q: dict, arm: str, db_label: str, max_turns: int, idx: int) -> dict:
+def _run_one(q: dict, arm: str, db_label: str, max_turns: int, idx: int,
+             status_callback=None) -> dict:
     sandbox = config.SANDBOX_ROOT / f"{db_label}_{arm}_{idx}_{q['id']}"
     if config.arm_spec(arm)["tools"]:
         if _USE_CONTAINER:
-            rec = runner_container.run(db_label, q["question"], arm, max_turns, sandbox)
+            rec = runner_container.run(
+                db_label, q["question"], arm, max_turns, sandbox, status_callback
+            )
         else:
             rec = runner_pi.run(db_label, q["question"], arm, max_turns, sandbox)
     else:
@@ -120,7 +124,25 @@ def _score(rec: dict, q: dict, db: str) -> dict:
     return rec
 
 
-def _run_one_and_score(q: dict, arm: str, db: str, max_turns: int, idx: int) -> tuple[dict, float]:
+def _protocol_fingerprint(q: dict, arm: str, db: str, max_turns: int) -> str:
+    system, user = prompts.agent_prompts(db, q["question"], arm, max_turns)
+    payload = {
+        "version": config.PROTOCOL_VERSION,
+        "runner": f"container:{config.CONTAINER_AGENT}" if _USE_CONTAINER else "host:pi",
+        "model": config.CONTAINER_AGENT_MODEL if _USE_CONTAINER else config.DEFAULT_MODEL_ID,
+        "thinking": config.PI_THINKING,
+        "pi_version": config.PI_AGENT_VERSION,
+        "max_turns": max_turns,
+        "wall_clock": config.PI_WALL_CLOCK,
+        "system_prompt": system,
+        "user_prompt": user,
+    }
+    return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
+
+
+def _run_one_and_score(q: dict, arm: str, db_label: str, mysql_db: str,
+                       max_turns: int, idx: int,
+                       status_callback=None) -> tuple[dict, float]:
     """Worker: run one question + score it, never raising.
 
     Moved out of the loop body so it can be submitted to a ThreadPoolExecutor:
@@ -130,25 +152,42 @@ def _run_one_and_score(q: dict, arm: str, db: str, max_turns: int, idx: int) -> 
     reorders completions.
     """
     t0 = time.time()
+    fingerprint = _protocol_fingerprint(q, arm, db_label, max_turns)
     try:
         for attempt in range(2):
-            rec = _run_one(q, arm, db, max_turns, idx)
-            if not rec.get("infrastructure_error"):
-                rec = _score(rec, q, db)
+            rec = _run_one(q, arm, db_label, max_turns, idx, status_callback)
+            if not rec.get("retryable_error"):
                 break
             if attempt == 0:
                 time.sleep(random.uniform(5, 15))
+        if not rec.get("infrastructure_error"):
+            rec = _score(rec, q, mysql_db)
         rec["harness_attempts"] = attempt + 1
         rec["id"] = q["id"]
+        rec["protocol_fingerprint"] = fingerprint
     except Exception as e:  # never let one question kill the run
         rec = {"id": q["id"], "arm": arm, "error": f"{type(e).__name__}: {e}",
                "infrastructure_error": True, "correct": False, "valid_sql": False}
     return rec, time.time() - t0
 
 
-def _load_existing(path: Path) -> dict[str, dict]:
+def _is_infrastructure_failure(rec: dict) -> bool:
+    if rec.get("budget_exhausted"):
+        return False
+    return bool(
+        rec.get("infrastructure_error")
+        or (rec.get("turns") == 0
+            and not (rec.get("usage") or {}).get("totalTokens")
+            and not rec.get("model")
+            and not rec.get("pred_sql"))
+    )
+
+
+def _load_existing(path: Path, fingerprints: dict[str, str] | None = None) -> dict[str, dict]:
     return {r["id"]: r for r in metrics.read_jsonl(path)
-            if "id" in r and not r.get("infrastructure_error")}
+            if "id" in r and not _is_infrastructure_failure(r)
+            and (fingerprints is None
+                 or r.get("protocol_fingerprint") == fingerprints.get(r["id"]))}
 
 
 def _run_dataset(args) -> int:
@@ -173,6 +212,11 @@ def _run_dataset(args) -> int:
     # Container vs. host runner for agentic arms.
     global _USE_CONTAINER
     _USE_CONTAINER = not getattr(args, "no_container", False)
+    fingerprints = {
+        arm: {q["id"]: _protocol_fingerprint(q, arm, args.dataset, max_turns)
+              for q in questions}
+        for arm in arms
+    }
 
     runner_name = f"container:{config.CONTAINER_AGENT}" if _USE_CONTAINER else "host(pi)"
     print(f"=== run {run_id} | arms={arms} | questions={len(questions)} | "
@@ -188,7 +232,7 @@ def _run_dataset(args) -> int:
     has_container_agent = any(config.arm_spec(arm)["tools"] for arm in arms)
     if _USE_CONTAINER and has_container_agent and not (args.score_only or args.estimate_cost):
         print("=== preparing agent network and SELECT-only database account ===")
-        network.setup()
+        network.setup({db})
 
     # ---- score-only / estimate-cost short-circuit --------------------------
     if args.score_only or args.estimate_cost:
@@ -197,7 +241,9 @@ def _run_dataset(args) -> int:
         progress = _progress()
         with progress:
             for arm in arms:
-                recs = list(_load_existing(rdir / f"arm{arm}.jsonl").values())
+                recs = list(_load_existing(
+                    rdir / f"arm{arm}.jsonl", fingerprints[arm]
+                ).values())
                 if args.score_only:
                     desc = f"rescore arm {arm}"
                     task = progress.add_task(desc, total=len(recs))
@@ -224,7 +270,7 @@ def _run_dataset(args) -> int:
     with progress:
         for arm in arms:
             path = rdir / f"arm{arm}.jsonl"
-            done = _load_existing(path)
+            done = _load_existing(path, fingerprints[arm])
             records: list[dict] = list(done.values())
             write_lock = threading.Lock()  # guards `records` + write_jsonl on main thread
             desc = f"arm {arm} · {config.ARM_DESCRIPTIONS[arm]}"
@@ -246,8 +292,18 @@ def _run_dataset(args) -> int:
 
             workers = max(1, args.workers)
             with ThreadPoolExecutor(max_workers=workers) as pool:
+                def live_status(qid: str, turn: int, dbq: int) -> None:
+                    progress.update(
+                        task,
+                        description=(f"arm {arm} · {config.ARM_DESCRIPTIONS[arm]} · "
+                                     f"{qid} turn {turn}/{max_turns} dbq={dbq}"),
+                    )
+
                 future_to_q = {
-                    pool.submit(_run_one_and_score, q, arm, db, max_turns, i): (i, q)
+                    pool.submit(
+                        _run_one_and_score, q, arm, args.dataset, db, max_turns, i,
+                        lambda turn, dbq, qid=q["id"]: live_status(qid, turn, dbq),
+                    ): (i, q)
                     for i, q in to_run
                 }
                 for fut in as_completed(future_to_q):

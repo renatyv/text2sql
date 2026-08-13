@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import subprocess
+import sys
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -40,8 +41,12 @@ class ContainerIsolationTests(unittest.TestCase):
         with patch("harness.runner_container.uuid.uuid4", return_value=type("U", (), {"hex": "test"})()):
             rec = runner_container.run("neutron", "question", "raw", 1, Path("/tmp/x"))
         self.assertIn("wall-clock timeout", rec["error"])
-        self.assertTrue(rec["infrastructure_error"])
+        self.assertEqual(rec["budget_exhausted"], "wall_clock")
+        self.assertNotIn("infrastructure_error", rec)
+        self.assertIn("-i", run.call_args_list[0].args[0])
         self.assertEqual(run.call_args_list[1].args[0][:3], ["docker", "rm", "-f"])
+        self.assertTrue(any("mysql_timeout.sh:/usr/local/bin/mysql:ro" in str(arg)
+                            for arg in run.call_args_list[0].args[0]))
 
     def test_terminal_api_error_is_visible_despite_zero_exit(self) -> None:
         events = ('{"type":"auto_retry_start"}\n'
@@ -50,6 +55,24 @@ class ContainerIsolationTests(unittest.TestCase):
         parsed = pi_stream.parse_stream(events)
         self.assertEqual(parsed["retry_count"], 1)
         self.assertEqual(parsed["api_error"], "429 rate limited")
+        self.assertTrue(pi_stream.retryable_api_error(parsed["api_error"]))
+        self.assertFalse(pi_stream.retryable_api_error("HTTP 401 invalid API key"))
+
+    def test_streamed_runner_reports_turns(self) -> None:
+        events = [
+            '{"type":"tool_execution_start","toolName":"bash",'
+            '"args":{"command":"mysql -e SELECT"}}',
+            '{"type":"turn_end","message":{"role":"assistant"}}',
+        ]
+        script = "import sys; sys.stdin.read(); " + "; ".join(
+            f"print({event!r})" for event in events
+        )
+        statuses = []
+        completed = runner_container._run_pi_streamed(
+            [sys.executable, "-c", script], "prompt", lambda turn, dbq: statuses.append((turn, dbq))
+        )
+        self.assertEqual(completed.returncode, 0)
+        self.assertEqual(statuses, [(1, 1)])
 
 
 if __name__ == "__main__":

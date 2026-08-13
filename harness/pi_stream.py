@@ -22,6 +22,7 @@ emits agent_end, we reconstruct usage/cost from the per-turn turn_end messages
 from __future__ import annotations
 
 import json
+import re
 import shlex
 
 _USAGE_KEYS = ("input", "output", "cacheRead", "cacheWrite", "reasoning", "totalTokens")
@@ -46,6 +47,20 @@ def _iter_events(stdout: str):
             yield json.loads(line)
         except json.JSONDecodeError:
             continue
+
+
+def retryable_api_error(message: str | None) -> bool:
+    """True only for transient provider/rate/network failures."""
+    if not message:
+        return False
+    lower = message.lower()
+    return bool(
+        re.search(r"\b(?:429|5\d\d)\b", lower)
+        or any(term in lower for term in (
+            "rate limit", "connection reset", "connection refused", "timed out",
+            "timeout", "econnreset", "fetch failed", "network error",
+        ))
+    )
 
 
 def _sql_from_bash(command: str) -> str | None:
