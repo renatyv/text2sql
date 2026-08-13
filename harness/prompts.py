@@ -1,7 +1,7 @@
 """Prompt construction for the experiment arms.
 
 Arms are dimension-driven (see config.ARMS): each arm fixes three booleans —
-``tools`` (pi agent with sql_exec vs. a single zero-shot LLM call), ``profile``
+``tools`` (pi agent with database tools vs. a single zero-shot LLM call), ``profile``
 (inject the frozen <db>.md), and ``checklist`` (inject the error-avoidance
 checklist). This module builds the system + user prompts from those flags:
 
@@ -33,17 +33,22 @@ _ERROR_CHECKLIST = _CHECKLIST_PATH.read_text(encoding="utf-8").strip()
 _AGENT_SYSTEM_TEMPLATE = r"""\
 You are an expert text-to-SQL agent targeting a MySQL database.
 
-You have ONE tool: `sql_exec`, which runs a READ-ONLY SQL statement
-(SELECT / WITH / SHOW / DESCRIBE / EXPLAIN) against the target database and
-returns up to {row_cap} rows. Write statements are rejected; each call has a
-{timeout}s timeout.
+You have a `bash` tool and standard shell tools: the `mysql` CLI, `python3`
+(with pandas/pyarrow), `jq`, and file tools (read/write/edit). Use `bash` to
+run read-only SQL against the target database and to compute as needed.
+
+Connect to the database (creds are already in the environment):
+  mysql --skip-ssl -D "$BEAVER_DB" -e "<SQL>"
+The MySQL server is at $MYSQL_HOST:$MYSQL_PORT (user $MYSQL_USER, password in
+$MYSQL_PWD). Keep exploratory output small: LIMIT to ~{row_cap} rows. Each
+query should finish within {timeout}s.
 
 Workflow:
-1. Explore the schema: `SHOW TABLES;`, then `SHOW CREATE TABLE `<t>`;` or
+1. Explore the schema: `SHOW TABLES;`, then `SHOW CREATE TABLE \`<t>\`;` or
    `DESCRIBE <t>;` for relevant tables. Use `SELECT ... LIMIT 5;` to sample data
    and confirm column meaning, formats, and join keys.
 2. Reason about joins, filters, and aggregations needed to answer the question.
-3. Iterate using sql_exec to validate intermediate results.
+3. Iterate, running candidate queries via `mysql` to validate intermediate results.
 4. When confident, output your FINAL query inside a single fenced block:
 
 ```sql
@@ -51,6 +56,8 @@ Workflow:
 ```
 
 Rules:
+- Run ONLY read-only statements (SELECT / WITH / SHOW / DESCRIBE / EXPLAIN) —
+  never INSERT/UPDATE/DELETE/DROP. The DB is a shared benchmark; do not mutate it.
 - Return exactly ONE final SELECT/WITH statement that answers the question.
 - Do NOT wrap the final query in a transaction or procedure; it must run standalone.
 - Do NOT include any commentary after the final ```sql block.
@@ -120,7 +127,7 @@ def agent_prompts(db_label: str, question: str, arm: str, max_turns: int) -> tup
     db = config.mysql_db_for(db_label)
     if not spec["profile"]:
         user = (
-            f"Target MySQL database: `{db}` (explore it with sql_exec).\n\n"
+            f"Target MySQL database: `{db}` (explore it with the mysql CLI).\n\n"
             f"Natural-language question:\n\"\"\"\n{question}\n\"\"\"\n\n"
             f"Explore the schema as needed, then return your FINAL SQL in a ```sql block."
         )
@@ -129,7 +136,7 @@ def agent_prompts(db_label: str, question: str, arm: str, max_turns: int) -> tup
         user = (
             f"Target MySQL database: `{db}`.\n\n"
             f"A pre-generated profile of this database follows. Use it to ground your "
-            f"schema understanding; you may still verify with sql_exec.\n\n"
+            f"schema understanding; you may still verify with the mysql CLI.\n\n"
             f"===== BEGIN DB PROFILE ({db_label}) =====\n{prof}\n===== END DB PROFILE =====\n\n"
             f"Natural-language question:\n\"\"\"\n{question}\n\"\"\"\n\n"
             f"Return your FINAL SQL in a ```sql block."

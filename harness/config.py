@@ -1,15 +1,16 @@
 """Configuration constants for the db-snooper profiling experiment.
 
-Arms are a 2×2-ish matrix over three boolean dimensions — whether the pi
-agent has the sql_exec tool, whether the db-snooper profile is injected, and
+Arms are a 2×2-ish matrix over three boolean dimensions — whether the coding
+agent has database tools, whether the db-snooper profile is injected, and
 whether the error-avoidance checklist is injected. See ``ARMS`` below.
-  * pi is the only agent runner; deepseek-v4-flash via OpenRouter is the default model
+  * pi is the default runner; BEAVER_AGENT can select another installed CLI
   * identical caps across cells (turns, token guard, MySQL timeout)
 """
 from __future__ import annotations
 
 import json
 import os
+import secrets
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -68,7 +69,7 @@ PILOT_N = 20  # Phase-1 pilot (neutron)
 # Arms (dimension-driven: tools / profile / checklist)
 # ---------------------------------------------------------------------------
 # Each arm is a long descriptive name -> spec. The spec fixes three booleans:
-#   tools     — pi agent with the sql_exec tool (True) vs. a single zero-shot
+#   tools     — coding agent with database tools (True) vs. a single zero-shot
 #               LLM call with no tools / no agent loop (False).
 #   profile   — inject the frozen db-snooper <db>.md profile into the prompt.
 #   checklist — inject harness/error_avoidance_checklist.txt into the prompt.
@@ -76,15 +77,15 @@ PILOT_N = 20  # Phase-1 pilot (neutron)
 ARMS: dict[str, dict] = {
     "pi_no_profile_no_checklist": {
         "tools": True,  "profile": False, "checklist": False,
-        "description": "pi agent + sql_exec, no profile, no error checklist",
+        "description": "agent + MySQL CLI, no profile, no error checklist",
     },
     "pi_no_profile_checklist": {
         "tools": True,  "profile": False, "checklist": True,
-        "description": "pi agent + sql_exec, no profile, with error checklist",
+        "description": "agent + MySQL CLI, no profile, with error checklist",
     },
     "pi_profile_checklist": {
         "tools": True,  "profile": True,  "checklist": True,
-        "description": "pi agent + sql_exec + profile, with error checklist",
+        "description": "agent + MySQL CLI + profile, with error checklist",
     },
     "zeroshot_profile_checklist": {
         "tools": False, "profile": True,  "checklist": True,
@@ -136,6 +137,21 @@ PI_THINKING = os.environ.get("PI_THINKING", "low")
 ZEROSHOT_MODEL_SLUG = DEFAULT_MODEL_ID
 OPENROUTER_BASE_URL = os.environ.get("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
 
+# Containerized agent CLI. All choices keep the same ephemeral Docker sandbox,
+# MySQL account, and OpenRouter-only egress boundary. BEAVER_AGENT_MODEL is a
+# agent-specific OpenRouter model name; provider prefixes are added by the
+# relevant CLI where required.
+CONTAINER_AGENT = os.environ.get("BEAVER_AGENT", "pi").lower()
+AGENT_MODELS = {
+    "pi": DEFAULT_MODEL_ID,
+    "claude": "~anthropic/claude-sonnet-latest",
+    "opencode": "~openai/gpt-latest",
+    "codex": "~openai/gpt-latest",
+}
+if CONTAINER_AGENT not in AGENT_MODELS:
+    raise ValueError(f"unknown BEAVER_AGENT={CONTAINER_AGENT!r}; choose from {list(AGENT_MODELS)}")
+CONTAINER_AGENT_MODEL = os.environ.get("BEAVER_AGENT_MODEL", AGENT_MODELS[CONTAINER_AGENT])
+
 
 def _load_openrouter_rates() -> dict[str, float]:
     """OpenRouter $/Mtok rates for the locked model, read from
@@ -180,14 +196,45 @@ MYSQL_HOST = os.environ.get("BEAVER_MYSQL_HOST") or os.environ.get("MYSQL_HOST")
 MYSQL_PORT = int(os.environ.get("BEAVER_MYSQL_PORT") or os.environ.get("MYSQL_PORT") or "3307")
 MYSQL_USER = os.environ.get("BEAVER_MYSQL_USER") or os.environ.get("MYSQL_USER") or "beaver"
 MYSQL_PWD = os.environ.get("BEAVER_MYSQL_PWD") or os.environ.get("MYSQL_PASSWORD") or "beaver"
+# The host uses MYSQL_* above to build/score the benchmark. Agents must never
+# receive those credentials: setup() provisions this separate SELECT-only user.
+AGENT_MYSQL_USER = os.environ.get("BEAVER_AGENT_MYSQL_USER", "beaver_agent")
+AGENT_MYSQL_PWD = os.environ.get("BEAVER_AGENT_MYSQL_PWD") or secrets.token_urlsafe(32)
 
-# pi binary (defaults to PATH; override for a specific install)
+# pi binary (defaults to PATH; override for a specific install). Used by the
+# legacy --no-container runner; the containerized runner uses the pi baked into
+# CONTAINER_IMAGE instead.
 PI_BIN = os.environ.get("PI_BIN", "pi")
 
-# Sandbox base dir for per-question isolation (plan §Anti-cheat #1)
+# Sandbox base dir for per-question isolation (plan §Anti-cheat #1).
+# Used by the legacy host runner; the container runner is ephemeral per query.
 SANDBOX_ROOT = Path(os.environ.get("BEAVER_SANDBOX_ROOT", "/tmp/beaver-sbx"))
 
-
+# ---------------------------------------------------------------------------
+# Containerized agent (plan: containerize pi). See harness/network.py for the
+# full topology. The default image/tag matches Dockerfile.agent / Dockerfile.proxy.
+# ---------------------------------------------------------------------------
+CONTAINER_IMAGE = os.environ.get("BEAVER_AGENT_IMAGE", "beaver-agent")
+EGRESS_PROXY_IMAGE = os.environ.get("BEAVER_PROXY_IMAGE", "beaver-egress-proxy")
+# Networks: beaver-net (egress, has internet) + beaver-sandbox (internal, no
+# internet). Agents live on beaver-sandbox only.
+AGENT_NET_EGRESS = os.environ.get("BEAVER_NET_EGRESS", "beaver-net")
+AGENT_NET_SANDBOX = os.environ.get("BEAVER_NET_SANDBOX", "beaver-sandbox")
+# Container names.
+MYSQL_CONTAINER = os.environ.get("BEAVER_MYSQL_CONTAINER", "beaver-mysql")
+EGRESS_PROXY_CONTAINER = os.environ.get("BEAVER_PROXY_CONTAINER", "beaver-egress-proxy")
+EGRESS_PROXY_PORT = int(os.environ.get("BEAVER_PROXY_PORT", "8888"))
+# The experiment permits exactly one external hostname. Keep this out of the
+# environment so a stray shell setting cannot silently broaden agent egress.
+EGRESS_ALLOW_HOSTS = "openrouter.ai"
+# Per-container resource caps (contain runaway bash/SQL from one question).
+CONTAINER_CPUS = os.environ.get("BEAVER_CONTAINER_CPUS", "1.0")
+CONTAINER_MEMORY = os.environ.get("BEAVER_CONTAINER_MEMORY", "1g")
+CONTAINER_PIDS_LIMIT = os.environ.get("BEAVER_CONTAINER_PIDS_LIMIT", "256")
+# MySQL as seen FROM INSIDE the agent container (by container name, port 3306).
+# The host-side scorer still uses MYSQL_HOST/MYSQL_PORT above (127.0.0.1:3307).
+MYSQL_HOST_CONTAINER = os.environ.get("BEAVER_MYSQL_HOST_CONTAINER", MYSQL_CONTAINER)
+MYSQL_PORT_CONTAINER = int(os.environ.get("BEAVER_MYSQL_PORT_CONTAINER", "3306"))
 def profile_path(db_label: str) -> Path:
     return PROFILES_DIR / DATASETS[db_label]["profile"]
 

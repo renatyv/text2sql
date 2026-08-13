@@ -11,13 +11,12 @@ Per-question flow (plan §Anti-cheat #1):
 """
 from __future__ import annotations
 
-import json
 import os
 import subprocess
 import time
 from pathlib import Path
 
-from . import config, parse_sql, prompts
+from . import config, parse_sql, pi_stream, prompts
 
 
 def _env(db_label: str, max_turns: int) -> dict:
@@ -67,95 +66,9 @@ def _argv(append_prompt: str) -> list[str]:
     ]
 
 
-def _parse_stream(stdout: str) -> dict:
-    turns = 0
-    tool_calls = 0
-    texts: list[str] = []          # assistant text segments, in order
-    executed_sqls: list[str] = []  # sql_exec args, in order
-    usage_total = {"input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0,
-                   "reasoning": 0, "totalTokens": 0}
-    cost_total = {"input": 0.0, "output": 0.0, "cacheRead": 0.0,
-                  "cacheWrite": 0.0, "total": 0.0}
-    model = provider = None
-    agent_ended = False
-    for line in stdout.splitlines():
-        line = line.strip()
-        if not line or not line.startswith("{"):
-            continue
-        try:
-            e = json.loads(line)
-        except json.JSONDecodeError:
-            continue
-        t = e.get("type")
-        if t == "turn_end":
-            turns += 1
-        if t == "tool_execution_start":
-            tool_calls += 1
-            sql = (e.get("args") or {}).get("sql")
-            if sql:
-                executed_sqls.append(sql)
-        # Collect per-turn assistant TEXT from turn_end (so the final answer is
-        # captured even when agent_end never fires, e.g. on a wall-clock abort).
-        if t == "turn_end":
-            m = e.get("message") or {}
-            if m.get("role") == "assistant":
-                provider = provider or m.get("provider")
-                model = model or m.get("model")
-                txt = "".join(c.get("text", "") for c in m.get("content", [])
-                              if c.get("type") == "text")
-                if txt.strip():
-                    texts.append(txt)
-        # Accumulate usage/cost ONCE, from the terminal agent_end event (which
-        # carries the full assistant message list). Counting turn_end here too
-        # would double-count every token, since agent_end repeats all messages.
-        elif t == "agent_end":
-            agent_ended = True
-            for m in e.get("messages") or []:
-                if m.get("role") != "assistant":
-                    continue
-                provider = provider or m.get("provider")
-                model = model or m.get("model")
-                # Fall back to per-turn text already collected from turn_end;
-                # only append here if turn_end text was missing (e.g. a turn
-                # whose turn_end event was dropped from the stream).
-                txt = "".join(c.get("text", "") for c in m.get("content", [])
-                              if c.get("type") == "text")
-                if txt.strip() and txt not in texts:
-                    texts.append(txt)
-                u = m.get("usage") or {}
-                for k in usage_total:
-                    usage_total[k] += u.get(k, 0) or 0
-                c = (u.get("cost") or {})
-                for k in cost_total:
-                    cost_total[k] += c.get(k, 0) or 0.0
-    # If the run was aborted before agent_end, recover usage/cost from the
-    # turn_end messages we already saw (better an estimate than zeros).
-    if not agent_ended:
-        for line in stdout.splitlines():
-            line = line.strip()
-            if not line or not line.startswith("{"):
-                continue
-            try:
-                e = json.loads(line)
-            except json.JSONDecodeError:
-                continue
-            if e.get("type") != "turn_end":
-                continue
-            m = e.get("message") or {}
-            if m.get("role") != "assistant":
-                continue
-            u = m.get("usage") or {}
-            for k in usage_total:
-                usage_total[k] += u.get(k, 0) or 0
-            c = (u.get("cost") or {})
-            for k in cost_total:
-                cost_total[k] += c.get(k, 0) or 0.0
-    final_text = texts[-1] if texts else ""
-    return {
-        "turns": turns, "db_queries": tool_calls, "raw_text": final_text,
-        "all_text": texts, "executed_sqls": executed_sqls,
-        "usage": usage_total, "cost": cost_total, "model": model, "provider": provider,
-    }
+# The JSON-stream parser is shared with the container runner (see
+# pi_stream.py). Kept as a local alias so this module's call sites are unchanged.
+_parse_stream = pi_stream.parse_stream
 
 
 def run(db_label: str, question: str, arm: str, max_turns: int,

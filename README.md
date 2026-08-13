@@ -1,64 +1,93 @@
 # profiling-test
 
-Agentic text-to-SQL experiment: does a pre-generated [db-snooper](https://github.com/renatyv/db-snooper)
-profile of the target DB improve a coding agent's **execution accuracy** on
-[BEAVER](https://huggingface.co/datasets/BeaverBench/beaver), vs. raw DB access?
+Does a pre-generated [db-snooper](https://github.com/renatyv/db-snooper) profile improve an agent's execution accuracy on [BEAVER](https://huggingface.co/datasets/BeaverBench/beaver), compared with raw database access?
 
-Four arms over three dimensions (sql_exec tool / db-snooper profile / error-avoidance
-checklist), **pi-only** runner, paired comparison:
+The agentic arms run in a fresh, unprivileged Docker/OrbStack container for every question. They have Python, pandas, PyArrow, Node.js, the TypeScript compiler, `jq`, `rg`, the MySQL CLI, and pi, Claude Code, OpenCode, and Codex CLIs.
 
-- **`pi_no_profile_no_checklist`** — pi agent + `sql_exec`, no profile, no checklist.
-- **`pi_no_profile_checklist`** — same as above + the error-avoidance checklist.
-- **`pi_profile_checklist`** — pi agent + `sql_exec` + a frozen `<db>.md` profile + checklist.
-- **`zeroshot_profile_checklist`** — profile + checklist, **no DB / no tools / no agent loop** — one LLM call.
+## Experiment arms
 
-Each pair of arms differs along exactly one dimension, so every pairwise Δ
-isolates a single manipulation (checklist effect, profile effect, agentic-vs-zero-shot).
+- `pi_no_profile_no_checklist` — pi agent + MySQL CLI, no profile or checklist.
+- `pi_no_profile_checklist` — same agent + checklist.
+- `pi_profile_checklist` — same agent + frozen database profile + checklist.
+- `zeroshot_profile_checklist` — one OpenRouter call; no database or agent tools.
 
-See [`AGENT_PROFILE_EXPERIMENT_PLAN.md`](AGENT_PROFILE_EXPERIMENT_PLAN.md) for the
-full design and [`RUN.md`](RUN.md) for how to run it.
+The first three arms differ only in the profile/checklist interventions. The default model and caps live in [`harness/config.py`](harness/config.py).
 
-## Quick start
+## Isolation model
+
+Each agent question gets `docker run --rm` on the internal `beaver-sandbox` network. It has an empty `/workspace`, runs as the non-root `node` user, has no Docker socket or repo mount, and is deleted after the run. A wall-clock timeout explicitly force-removes the container as well.
+
+The only permitted connections are:
+
+- MySQL at `beaver-mysql:3306`, using a separate account that is reset at experiment startup to `SELECT` on `neutron`, `nova`, and `dw` only.
+- `https://openrouter.ai`, via `beaver-egress-proxy`. The proxy is the only container with internet access and accepts `CONNECT` only for the exact allow-listed hostname.
+
+The host's loader/scorer credentials and coding-agent configuration are never mounted into an agent. The runner mounts only its own read-only agent configuration and pins the selected model. This prevents filesystem state from one question reaching the next and prevents arbitrary internet access. It cannot prevent the required OpenRouter model call itself from seeing the prompt and tool outputs.
+
+## Setup
+
+Prerequisites: OrbStack or Docker, the existing `beaver-mysql` container exposing MySQL on host port 3307, and `uv`.
 
 ```bash
+uv sync
+docker build -t beaver-agent -f Dockerfile.agent .
+docker build -t beaver-egress-proxy -f Dockerfile.proxy harness/egress
 export OPENROUTER_API_KEY=sk-or-...
-python harness/setup_openrouter.py          # register provider+model, confirm ctx window
-export BEAVER_MYSQL_PWD=beaver
-python run_experiment.py --dataset neutron --phase phase0 --arm all   # sanity (1 q × all arms)
-python run_experiment.py --dataset neutron --phase pilot              # n=20, all arms
-python run_experiment.py --dataset neutron --phase pilot --estimate-cost   # go/no-go gate
+uv run python run_experiment.py --dataset neutron --phase phase0 --arm all
 ```
+
+At startup the runner creates the two networks, attaches MySQL to the internal one, starts the proxy, and provisions `beaver_agent`. The privileged host MySQL credentials still come from `.env` (`BEAVER_MYSQL_*` or `MYSQL_*`). Do not set `BEAVER_AGENT_MYSQL_PWD` unless a stable debugging password is necessary; otherwise a new random password is used for each experiment process.
+
+Useful runs:
+
+```bash
+uv run python run_experiment.py --dataset neutron --phase pilot
+uv run python run_experiment.py --dataset neutron --phase pilot --estimate-cost
+uv run python run_experiment.py --dataset neutron --phase pilot --score-only
+```
+
+`--no-container` is a legacy debugging path. It runs pi on the host with `sql_exec.ts`; it does not provide the container isolation described above.
+
+## Switch coding agents
+
+The default is pi. Set `BEAVER_AGENT` before a run; all choices retain the same fresh container, SELECT-only MySQL account, and OpenRouter-only proxy.
+
+```bash
+BEAVER_AGENT=claude uv run python run_experiment.py --dataset neutron --phase phase0
+BEAVER_AGENT=opencode uv run python run_experiment.py --dataset neutron --phase phase0
+BEAVER_AGENT=codex uv run python run_experiment.py --dataset neutron --phase phase0
+```
+
+Override the model with the CLI's OpenRouter alias when needed, for example `BEAVER_AGENT=codex BEAVER_AGENT_MODEL='~openai/gpt-latest'`. Claude Code is configured with OpenRouter's Anthropic-compatible endpoint; Codex and OpenCode use its OpenAI-compatible endpoint. The zero-shot arm intentionally remains a direct OpenRouter call, so this setting applies only to the three agentic arms. Pi and Claude have a CLI turn cap; Codex and OpenCode retain the prompt budget and the same 10-minute container wall-clock cap. Non-pi runs record execution accuracy, but their CLI telemetry is deliberately reported as unavailable rather than a false zero; use pi when you need turns, database-query counts, token, or cost projections.
+
+## Verify the boundary
+
+After a run, the sandbox should be internal and contain only the proxy and MySQL. The egress network should contain only the proxy.
+
+```bash
+docker network inspect beaver-sandbox
+docker network inspect beaver-net
+docker run --rm --network beaver-sandbox --entrypoint sh beaver-agent -lc \
+  'curl --noproxy "*" --connect-timeout 5 -I https://example.com || true; \
+   curl -x http://beaver-egress-proxy:8888 -I https://example.com || true'
+```
+
+The direct request must fail because the network has no internet route; the proxied request must fail with `CONNECT tunnel failed, response 403`. A request to `https://openrouter.ai` through that proxy is the one allowed external route.
 
 ## Layout
 
-```
+```text
 harness/
-  config.py              arms (tools/profile/checklist matrix), datasets, caps, model defaults
-  prompts.py             per-arm prompt construction (agentic arms share system text; zero-shot is single-call)
-  manifest.py            freeze question list (seed 77, stratified by category×domain-knowledge)
-  pi_extension/sql_exec.ts   read-only MySQL tool + turn-cap enforcement, loaded via `pi -e`
-  mysql_io.py  scorer.py  parse_sql.py   execution-accuracy scorer (Spider/BEAVER-style ETE)
-  runner_pi.py           agentic arms (pi headless, json stream → SQL + usage)
-  runner_zeroshot.py     zero-shot arm (direct OpenRouter call; pi --no-tools fallback)
-  metrics.py             accuracy, Wilson CI, McNemar, subgroups, error taxonomy, cost projection
-  setup_openrouter.py    one-time provider/model registration + Phase-0 context check
-  openrouter_models.json provider+model fragment for pi (~/.pi/agent/models.json)
-run_experiment.py        CLI orchestrator (--dataset/--arm/--phase/--num-samples/…)
-profiles/  data/         db-snooper profiles; BEAVER dev splits
-runs/      results/      frozen manifests; per-question records + summary.json
-```
-
-
-## How `rich` profile was computed
-
-Prompt:
-```
-`profiles/neutron.md`, `schema-links/neutron.md`
- 
-1. Explore the `neutron` database at localhost port 3307 login `beaver` password `beaver`.
-2. Copy the the original DB profile into `rich-profile/neutron.md`
-3. For each table and column where the meaning was not already clear before exploration, inject a brief comment
-4. Use schema-links file to derive non-obvious potential join strategies. Inject them into the enriched profile.
-
-Never select all rows. Always have LIMIT 10 or 100 in the worst case
+  runner_container.py      default ephemeral-container runner
+  network.py               network + SELECT-only MySQL account setup
+  egress/egress-proxy.js   exact-host HTTPS CONNECT allow-list
+  turn_guard.ts            hard agent turn cap
+  prompts.py               arm-specific prompts
+  scorer.py                execution-accuracy scorer
+  runner_zeroshot.py       no-tools OpenRouter arm
+Dockerfile.agent           coding-agent CLIs + analytics tools image
+Dockerfile.proxy           egress proxy image
+profiles/                  db-snooper profiles
+data/                      BEAVER splits
+results/                   per-run records and summaries (ignored)
 ```

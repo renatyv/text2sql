@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Orchestrate the db-snooper profiling experiment.
 
-Arms (config.ARMS) span three dimensions — sql_exec tool, db-snooper profile,
+Arms (config.ARMS) span three dimensions — database tools, db-snooper profile,
 and the error-avoidance checklist — so each pairwise Δ isolates one
 manipulation. See config.ARMS / config.PAIRWISE for the arm set and the
 comparisons reported in the summary.
 
-Implements the phases in AGENT_PROFILE_EXPERIMENT_PLAN.md:
+Implements three phases:
   phase0  — sanity: 1 question × all arms, headless, end-to-end scored
   pilot   — neutron n=20 (default), all arms
   main    — full per-dataset sampling, all arms
@@ -49,7 +49,7 @@ from rich.progress import (
     TimeElapsedColumn,
 )
 
-from harness import config, manifest as manifest_mod, metrics, runner_pi, runner_zeroshot, scorer
+from harness import config, manifest as manifest_mod, metrics, network, runner_container, runner_pi, runner_zeroshot, scorer
 
 PHASE_DEFAULT_N = {"phase0": 1, "pilot": config.PILOT_N}
 PHASE_DEFAULT_TURNS = {"phase0": config.MAX_TURNS_PILOT,
@@ -96,10 +96,18 @@ def _results_dir(run_id: str) -> Path:
     return d
 
 
+# Whether agentic arms run in a container (default) or on the host (--no-container).
+# Set in run() so the thread-pool worker below picks it up without a signature change.
+_USE_CONTAINER = True
+
+
 def _run_one(q: dict, arm: str, db_label: str, max_turns: int, idx: int) -> dict:
     sandbox = config.SANDBOX_ROOT / f"{db_label}_{arm}_{idx}_{q['id']}"
     if config.arm_spec(arm)["tools"]:
-        rec = runner_pi.run(db_label, q["question"], arm, max_turns, sandbox)
+        if _USE_CONTAINER:
+            rec = runner_container.run(db_label, q["question"], arm, max_turns, sandbox)
+        else:
+            rec = runner_pi.run(db_label, q["question"], arm, max_turns, sandbox)
     else:
         rec = runner_zeroshot.run(db_label, q["question"], arm, sandbox)
     return rec
@@ -158,10 +166,25 @@ def run(args) -> int:
 
     arms = list(config.ARMS) if args.arm == "all" else [args.arm]
     max_turns = args.max_turns or PHASE_DEFAULT_TURNS[args.phase]
+    # Container vs. host runner for agentic arms.
+    global _USE_CONTAINER
+    _USE_CONTAINER = not getattr(args, "no_container", False)
 
+    runner_name = f"container:{config.CONTAINER_AGENT}" if _USE_CONTAINER else "host(pi)"
     print(f"=== run {run_id} | arms={arms} | questions={len(questions)} | "
-          f"max_turns={max_turns} | db={db} | workers={args.workers} ===")
-    print(f"model: {config.DEFAULT_PROVIDER}/{config.DEFAULT_MODEL_ID}")
+          f"max_turns={max_turns} | db={db} | workers={args.workers} "
+          f"| runner={runner_name} ===")
+    model = config.CONTAINER_AGENT_MODEL if _USE_CONTAINER else config.DEFAULT_MODEL_ID
+    print(f"agent model: openrouter/{model}")
+
+    # Setup also resets this process's random, SELECT-only agent account. Run
+    # it even when the network already exists; otherwise a later process would
+    # have credentials that do not match the account provisioned by an earlier
+    # process. Zero-shot and host-pi runs do not need this boundary.
+    has_container_agent = any(config.arm_spec(arm)["tools"] for arm in arms)
+    if _USE_CONTAINER and has_container_agent and not (args.score_only or args.estimate_cost):
+        print("=== preparing agent network and SELECT-only database account ===")
+        network.setup()
 
     # ---- score-only / estimate-cost short-circuit --------------------------
     if args.score_only or args.estimate_cost:
@@ -258,11 +281,12 @@ def _summarize(by_arm: dict[str, list[dict]], rdir: Path) -> None:
         agg["by_query_shape"] = metrics.subgroup_accuracy(recs, "query_shape")
         agg["error_taxonomy"] = metrics.value_counts(recs, "error_class")
         summary[arm] = agg
+        telemetry = "unavailable" if not agg.get("operational_metrics_available", True) else f"${agg.get('cost_usd')}"
         print(f"arm {arm}: n={agg.get('n')} acc={agg.get('accuracy')} "
               f"(CI {agg.get('accuracy_ci95')}) valid={agg.get('valid_sql_pct')} "
               f"mean_turns={agg.get('mean_turns')} mean_dbq={agg.get('mean_db_queries')} "
               f"tok_in/out={agg.get('tokens_in')}/{agg.get('tokens_out')} "
-              f"cost=${agg.get('cost_usd')}")
+              f"cost={telemetry}")
 
     # pairwise comparisons (require both arms of a pair to be present).
     # config.PAIRWISE lists (subtrahend, minuend) tuples; Δ = acc(minuend) −
@@ -301,6 +325,10 @@ def main(argv=None) -> int:
                    help="parallel questions per arm (thread pool). Bounded by "
                         "OpenRouter/DeepSeek rate limits; raise with care.")
     p.add_argument("--force", action="store_true", help="re-run cached questions")
+    p.add_argument("--no-container", action="store_true",
+                   help="run agentic arms with the host `pi` binary (legacy sql_exec.ts "
+                        "path) instead of the isolated Docker container. For debugging "
+                        "and comparability with pre-container runs.")
     p.add_argument("--score-only", action="store_true", help="rescore existing records")
     p.add_argument("--estimate-cost", action="store_true", help="project Phase-2 cost from pilot")
     return run(p.parse_args(argv))

@@ -78,6 +78,7 @@ def aggregate(records: list[dict]) -> dict:
     correct = sum(1 for r in records if r.get("correct"))
     valid = sum(1 for r in records if r.get("valid_sql"))
     lo, hi = wilson_ci(correct, n)
+    operational_metrics = all(r.get("metrics_available", True) for r in records)
     tok_in = sum(r.get("usage", {}).get("input", 0) for r in records)
     tok_out = sum(r.get("usage", {}).get("output", 0) for r in records)
     tok_total = sum(r.get("usage", {}).get("totalTokens", 0) for r in records)
@@ -90,11 +91,14 @@ def aggregate(records: list[dict]) -> dict:
         "accuracy": round(correct / n, 4),
         "accuracy_ci95": [round(lo, 4), round(hi, 4)],
         "valid_sql_pct": round(valid / n, 4),
-        "mean_turns": round(sum(turns) / n, 2),
-        "mean_db_queries": round(sum(dbq) / n, 2),
+        "mean_turns": round(sum(turns) / n, 2) if operational_metrics else None,
+        "mean_db_queries": round(sum(dbq) / n, 2) if operational_metrics else None,
         "mean_latency_s": round(sum(lat) / n, 2),
-        "tokens_in": tok_in, "tokens_out": tok_out, "tokens_total": tok_total,
-        "cost_usd": round(cost, 6),
+        "tokens_in": tok_in if operational_metrics else None,
+        "tokens_out": tok_out if operational_metrics else None,
+        "tokens_total": tok_total if operational_metrics else None,
+        "cost_usd": round(cost, 6) if operational_metrics else None,
+        "operational_metrics_available": operational_metrics,
     }
 
 
@@ -120,10 +124,15 @@ def project_cost(arm_records: dict[str, list[dict]], total_questions: int) -> di
     per_arm: dict[str, dict] = {}
     total_cost = 0.0
     total_tokens = 0
+    unavailable = False
     for arm, recs in arm_records.items():
         n = len(recs)
         if n == 0:
             per_arm[arm] = {"avg_cost_per_question": 0.0, "avg_tokens_per_question": 0.0}
+            continue
+        if not all(r.get("metrics_available", True) for r in recs):
+            per_arm[arm] = {"avg_cost_per_question": None, "avg_tokens_per_question": None}
+            unavailable = True
             continue
         c = sum(r.get("cost", {}).get("total", 0) or 0 for r in recs) / n
         t = sum(r.get("usage", {}).get("totalTokens", 0) for r in recs) / n
@@ -134,8 +143,8 @@ def project_cost(arm_records: dict[str, list[dict]], total_questions: int) -> di
     return {
         "per_arm": per_arm,
         "total_questions": total_questions,
-        "estimated_cost_usd": round(total_cost, 4),
-        "estimated_tokens_total": round(total_tokens, 1),
+        "estimated_cost_usd": None if unavailable else round(total_cost, 4),
+        "estimated_tokens_total": None if unavailable else round(total_tokens, 1),
         "basis_questions": {a: len(r) for a, r in arm_records.items()},
     }
 
