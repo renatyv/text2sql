@@ -29,8 +29,7 @@ Workflow:
    missing schema details or validate candidate SQL; do not repeat lookups that
    the context already answers. If context is absent or insufficient, inspect
    only relevant tables. Batch independent DESCRIBE/SHOW calls in one turn. Use
-   `SHOW TABLES` only when you cannot identify tables otherwise, and use
-   `SELECT ... LIMIT 5` only to confirm a needed value or join.
+   `SHOW TABLES` only when you cannot identify tables otherwise.
 2. Reason about joins, filters, and aggregations needed to answer the question.
 3. By turn {validation_turn}, run the complete candidate query, not merely pieces
    of it. Use turn {repair_turn} only to repair and re-run that complete query.
@@ -42,7 +41,7 @@ Workflow:
 
 Rules:
 - Run ONLY read-only statements (SELECT / WITH / SHOW / DESCRIBE / EXPLAIN) —
-  never INSERT/UPDATE/DELETE/DROP. The DB is a shared benchmark; do not mutate it.
+  never INSERT/UPDATE/DELETE/DROP. The DB is a shared; do not mutate it.
 - Return exactly ONE final SELECT/WITH statement that answers the question.
 - Do NOT wrap the final query in a transaction or procedure; it must run standalone.
 - Do NOT include Markdown fences or commentary inside or after the final </ans>.
