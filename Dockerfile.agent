@@ -8,9 +8,9 @@
 # Build once (offline thereafter):
 #   docker build -t beaver-agent -f Dockerfile.agent .
 #
-# Pi runs read-only SQL through the mounted sql_exec extension; the other
-# supported agents use the MySQL CLI. The image intentionally bundles no repo
-# code or credentials (those are injected per run).
+# Pi runs SQL through the mounted sql_exec extension; the other supported agents
+# use the MySQL CLI. The SELECT-only database account is the safety boundary.
+# The image intentionally bundles no repo code or credentials.
 
 FROM node:24-bookworm-slim
 

@@ -1,10 +1,9 @@
 /**
  * turn_guard — hard agent turn-cap for the containerized BEAVER runner.
  *
- * sql_exec.ts enforces read-only SQL; this separate extension owns the hard
- * lifecycle cap. After the penultimate turn it removes tools and tells the
- * model to use its final turn for SQL, then aborts if that response contains
- * no SQL.
+ * This extension owns the hard lifecycle cap. After the penultimate turn it
+ * removes tools and tells the model to use its final turn for SQL, then aborts
+ * if that response contains no SQL.
  *
  * It registers NO tools and reads NO MySQL credentials — pure lifecycle guard.
  *

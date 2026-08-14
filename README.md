@@ -2,7 +2,7 @@
 
 Does a pre-generated [db-snooper](https://github.com/renatyv/db-snooper) profile improve an agent's execution accuracy on [BEAVER](https://huggingface.co/datasets/BeaverBench/beaver), compared with raw database access?
 
-The agentic arms run in a fresh, unprivileged Docker/OrbStack container for every question. Pi uses the purpose-built read-only `sql_exec` tool; the optional Claude Code, OpenCode, and Codex runners use their built-in tools with the container's MySQL/Python utilities.
+The agentic arms run in a fresh, unprivileged Docker/OrbStack container for every question. Pi uses the purpose-built `sql_exec` tool; the optional Claude Code, OpenCode, and Codex runners use their built-in tools with the container's MySQL/Python utilities. The database account enforces SELECT-only access.
 
 ## Experiment arms
 

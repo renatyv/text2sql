@@ -29,7 +29,6 @@ def _env(db_label: str, max_turns: int) -> dict:
         "BEAVER_DB": config.mysql_db_for(db_label),
         "BEAVER_QUERY_TIMEOUT": str(config.MYSQL_QUERY_TIMEOUT),
         "BEAVER_MAX_TURNS": str(max_turns),
-        "BEAVER_EXPLORE_ROW_CAP": str(config.EXPLORE_ROW_CAP),
     })
     return env
 

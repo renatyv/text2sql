@@ -9,8 +9,8 @@ Replaces runner_pi.py as the default agentic runner. Per-question flow (plan
   * the container lives on the `beaver-sandbox` internal network (no internet
     route); its only egress is the allow-list proxy (openrouter.ai) and MySQL
     (beaver-mysql:3306), so the correct answer cannot leak via the internet;
-  * pi gets the purpose-built, read-only sql_exec tool; other supported agents
-    use their built-in tools and the pre-installed MySQL/Python utilities;
+  * pi gets the purpose-built sql_exec tool under the SELECT-only DB account;
+    other agents use their built-in tools and the installed MySQL/Python utilities;
   * turn_guard.ts reserves the last turn for final SQL.
 
 The runner signature matches runner_pi.run() so run_experiment.py dispatches
@@ -70,7 +70,6 @@ def _container_env(db_label: str, max_turns: int) -> list[str]:
         "BEAVER_DB": db,
         "BEAVER_MAX_TURNS": str(max_turns),
         "BEAVER_QUERY_TIMEOUT": str(config.MYSQL_QUERY_TIMEOUT),
-        "BEAVER_EXPLORE_ROW_CAP": str(config.EXPLORE_ROW_CAP),
     }
     # Flatten to ["-e", "KEY=VAL", ...]
     flags: list[str] = []
@@ -99,9 +98,8 @@ def _agent_argv(agent: str, system_prompt: str, user_prompt: str, max_turns: int
             f"{system_prompt}\n\n{user_prompt}",
         ]
     # pi is the default and the only runner with custom lifecycle extensions.
-    # Keep its tool surface to the existing read-only SQL tool: it is more
-    # compact, supports parallel lookups in one turn, and enforces the boundary
-    # before the SELECT-only database account does.
+    # Keep its tool surface to sql_exec: it is compact and supports parallel
+    # lookups in one turn. The SELECT-only database account enforces safety.
     return [
         "-p",
         "--mode", "json",

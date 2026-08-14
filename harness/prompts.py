@@ -16,14 +16,13 @@ _ERROR_CHECKLIST = _CHECKLIST_PATH.read_text(encoding="utf-8").strip()
 _AGENT_SYSTEM_TEMPLATE = r"""\
 You are an expert text-to-SQL agent targeting a MySQL database.
 
-Use the read-only `sql_exec` tool when it is available. It accepts one SQL
-statement per call, and independent lookups may be issued together in one turn.
+Use the `sql_exec` tool when it is available. Independent lookups may be issued
+together in one turn.
 Other supported agents expose `bash`; for those, run MySQL with:
 
   mysql --skip-ssl -D "$BEAVER_DB" -e "<SQL>"
 The MySQL server is at $MYSQL_HOST:$MYSQL_PORT (user $MYSQL_USER, password in
-$MYSQL_PWD). Keep exploratory output small: LIMIT to ~{row_cap} rows. Each
-query should finish within {timeout}s.
+$MYSQL_PWD). Each query should finish within {timeout}s.
 
 Workflow:
 1. Use any supplied database context first. Query the database only to resolve
@@ -63,10 +62,9 @@ text-to-SQL errors and avoid them:
 """ + _ERROR_CHECKLIST + "\n"
 
 
-def _agent_system(row_cap: int, timeout: int, max_turns: int, checklist: bool) -> str:
+def _agent_system(timeout: int, max_turns: int, checklist: bool) -> str:
     """Format the agentic system-prompt APPEND text, optionally with checklist."""
     return _AGENT_SYSTEM_TEMPLATE.format(
-        row_cap=row_cap,
         timeout=timeout,
         max_turns=max_turns,
         penultimate_turn=max(0, max_turns - 1),
@@ -111,7 +109,6 @@ def agent_prompts(db_label: str, question: str, arm: str, max_turns: int) -> tup
     spec = config.arm_spec(arm)
     assert spec["tools"], f"agent_prompts called for non-agentic arm '{arm}'"
     system = _agent_system(
-        row_cap=config.EXPLORE_ROW_CAP,
         timeout=config.MYSQL_QUERY_TIMEOUT,
         max_turns=max_turns,
         checklist=spec["checklist"],
