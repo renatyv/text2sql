@@ -13,6 +13,8 @@ import os
 import secrets
 import tempfile
 from pathlib import Path
+from urllib.parse import quote
+from urllib.request import Request, urlopen
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -163,10 +165,81 @@ def _load_openrouter_rates(model_id: str = DEFAULT_MODEL_ID) -> dict[str, float]
 # $/Mtok. Single source of truth for pricing the zero-shot arm and cost projections.
 OPENROUTER_RATES = _load_openrouter_rates()
 _MODEL_CONFIGS: dict[str, Path] = {}
+_REMOTE_MODELS: dict[str, dict] = {}
+
+
+def _per_million(pricing: dict, key: str) -> float:
+    """Convert OpenRouter's per-token price strings to pi's $/Mtok units."""
+    try:
+        return round(float(pricing.get(key, 0)) * 1_000_000, 12)
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def _fetch_openrouter_model(model: str) -> dict:
+    """Resolve a complete pi model definition from OpenRouter once per run."""
+    if cached := _REMOTE_MODELS.get(model):
+        return cached
+    headers = {"Accept": "application/json", "User-Agent": "beaver-profile-harness"}
+    if api_key := os.environ.get("OPENROUTER_API_KEY"):
+        headers["Authorization"] = f"Bearer {api_key}"
+    url = f"{OPENROUTER_BASE_URL.rstrip('/')}/model/{quote(model, safe='/:~')}"
+    try:
+        with urlopen(Request(url, headers=headers), timeout=30) as response:
+            payload = json.loads(response.read())
+    except Exception as e:
+        raise RuntimeError(f"failed to resolve OpenRouter metadata for {model!r}: {e}") from e
+
+    remote = payload.get("data") if isinstance(payload, dict) else None
+    if not isinstance(remote, dict):
+        raise RuntimeError(f"OpenRouter returned no model metadata for {model!r}")
+    top = remote.get("top_provider") or {}
+    context_window = top.get("context_length") or remote.get("context_length")
+    max_tokens = top.get("max_completion_tokens") or remote.get("max_completion_tokens")
+    if not context_window or not max_tokens:
+        raise RuntimeError(f"OpenRouter returned incomplete token limits for {model!r}")
+
+    modalities = set((remote.get("architecture") or {}).get("input_modalities") or [])
+    if "text" not in modalities:
+        raise RuntimeError(f"OpenRouter model {model!r} does not accept text input")
+    supported = set(remote.get("supported_parameters") or [])
+    pricing = remote.get("pricing") or {}
+    cost = {
+        "input": _per_million(pricing, "prompt"),
+        "output": _per_million(pricing, "completion"),
+        "cacheRead": _per_million(pricing, "input_cache_read"),
+        "cacheWrite": _per_million(pricing, "input_cache_write"),
+    }
+    tiers = []
+    for override in pricing.get("overrides") or []:
+        if not override.get("min_prompt_tokens"):
+            continue
+        merged = pricing | override
+        tiers.append({
+            "inputTokensAbove": int(override["min_prompt_tokens"]),
+            "input": _per_million(merged, "prompt"),
+            "output": _per_million(merged, "completion"),
+            "cacheRead": _per_million(merged, "input_cache_read"),
+            "cacheWrite": _per_million(merged, "input_cache_write"),
+        })
+    if tiers:
+        cost["tiers"] = sorted(tiers, key=lambda tier: tier["inputTokensAbove"])
+
+    resolved = {
+        "id": model,
+        "name": remote.get("name") or model,
+        "reasoning": bool(supported & {"reasoning", "reasoning_effort", "include_reasoning"}),
+        "input": [kind for kind in ("text", "image") if kind in modalities],
+        "contextWindow": int(context_window),
+        "maxTokens": int(max_tokens),
+        "cost": cost,
+    }
+    _REMOTE_MODELS[model] = resolved
+    return resolved
 
 
 def openrouter_models_path() -> Path:
-    """Return pi's registry, adding the selected custom slug when needed."""
+    """Return pi's registry, resolving complete metadata for missing slugs."""
     fragment = HARNESS_DIR / "openrouter_models.json"
     data = json.loads(fragment.read_text(encoding="utf-8"))
     models = data["providers"]["openrouter"]["models"]
@@ -174,7 +247,11 @@ def openrouter_models_path() -> Path:
         return fragment
     if path := _MODEL_CONFIGS.get(CONTAINER_AGENT_MODEL):
         return path
-    models.append({"id": CONTAINER_AGENT_MODEL})  # pi supplies defaults for omitted metadata.
+    resolved = _fetch_openrouter_model(CONTAINER_AGENT_MODEL)
+    models.append(resolved)
+    global OPENROUTER_RATES
+    OPENROUTER_RATES = {key: resolved["cost"][key]
+                        for key in ("input", "output", "cacheRead", "cacheWrite")}
     with tempfile.NamedTemporaryFile("w", encoding="utf-8", prefix="beaver-openrouter-",
                                      suffix=".json", delete=False) as f:
         json.dump(data, f)
@@ -204,7 +281,7 @@ TOKEN_GUARD = 320_000             # runaway guard, total tokens/question
 EXPLORE_ROW_CAP = 100             # rows returned per exploration sql_exec call
 PI_WALL_CLOCK = 600               # seconds; exceeding the evaluation budget is incorrect
 ZEROSHOT_WALL_CLOCK = 120         # seconds, hard timeout for the zero-shot arm
-PROTOCOL_VERSION = 4              # bump when runner semantics change outside prompt/config hashes
+PROTOCOL_VERSION = 5              # bump when runner semantics change outside prompt/config hashes
 PI_AGENT_VERSION = "0.84.1"       # pinned in Dockerfile.agent
 
 # ---------------------------------------------------------------------------

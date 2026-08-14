@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from io import BytesIO
 import subprocess
 import sys
 import unittest
@@ -28,11 +29,31 @@ class ContainerIsolationTests(unittest.TestCase):
         self.assertIn("sql_exec", argv)
         self.assertIn("--no-builtin-tools", argv)
 
-    def test_unknown_openrouter_model_is_added_to_pi_registry(self) -> None:
-        model = "openai/gpt-5.6-luna-pro"
-        with patch.object(runner_container.config, "CONTAINER_AGENT_MODEL", model):
+    def test_missing_openrouter_model_gets_resolved_metadata(self) -> None:
+        model = "vendor/test-model"
+        remote = {"data": {
+            "id": model,
+            "name": "Test Model",
+            "architecture": {"input_modalities": ["text", "image"]},
+            "supported_parameters": ["tools", "reasoning"],
+            "pricing": {"prompt": "0.000001", "completion": "0.000002"},
+            "top_provider": {"context_length": 1_000_000,
+                             "max_completion_tokens": 128_000},
+        }}
+        runner_container.config._MODEL_CONFIGS.pop(model, None)
+        runner_container.config._REMOTE_MODELS.pop(model, None)
+        with (patch.object(runner_container.config, "CONTAINER_AGENT_MODEL", model),
+              patch("harness.config.urlopen",
+                    return_value=BytesIO(json.dumps(remote).encode())) as fetch):
             registry = runner_container.config.openrouter_models_path()
-        self.assertIn(model, [m["id"] for m in json.loads(registry.read_text())["providers"]["openrouter"]["models"]])
+            self.assertEqual(registry, runner_container.config.openrouter_models_path())
+        resolved = next(m for m in json.loads(registry.read_text())["providers"]["openrouter"]["models"]
+                        if m["id"] == model)
+        self.assertEqual(resolved["contextWindow"], 1_000_000)
+        self.assertEqual(resolved["maxTokens"], 128_000)
+        self.assertTrue(resolved["reasoning"])
+        self.assertEqual(resolved["cost"]["input"], 1.0)
+        fetch.assert_called_once()
 
     def test_mysql_bash_is_counted_and_recoverable(self) -> None:
         events = ('{"type":"tool_execution_start","toolName":"bash",'

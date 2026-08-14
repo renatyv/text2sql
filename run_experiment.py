@@ -126,10 +126,14 @@ def _score(rec: dict, q: dict, db: str) -> dict:
 
 def _protocol_fingerprint(q: dict, arm: str, db: str, max_turns: int) -> str:
     system, user = prompts.agent_prompts(db, q["question"], arm, max_turns)
+    model_registry_hash = None
+    if _USE_CONTAINER and config.CONTAINER_AGENT == "pi":
+        model_registry_hash = hashlib.sha256(config.openrouter_models_path().read_bytes()).hexdigest()
     payload = {
         "version": config.PROTOCOL_VERSION,
         "runner": f"container:{config.CONTAINER_AGENT}" if _USE_CONTAINER else "host:pi",
         "model": config.CONTAINER_AGENT_MODEL if _USE_CONTAINER else config.DEFAULT_MODEL_ID,
+        "model_registry_hash": model_registry_hash,
         "thinking": config.PI_THINKING,
         "pi_version": config.PI_AGENT_VERSION,
         "max_turns": max_turns,
