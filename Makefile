@@ -53,7 +53,7 @@ benchmark-100:
 benchmark-300:
 	@uv run python run_experiment.py \
 	 --phase main \
-	 --samples dw=100 neutron=100 nova=100 \
+	 --samples dw=300 neutron=300 nova=300 \
 	 --arms raw profile metadata \
 	 --model openai/gpt-5.6-luna-pro\
 	 --effort medium\
