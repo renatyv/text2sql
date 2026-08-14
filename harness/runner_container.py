@@ -4,16 +4,14 @@ Replaces runner_pi.py as the default agentic runner. Per-question flow (plan
 §Anti-cheat #1–3):
 
   * a BRAND-NEW `docker run --rm` container per question — no shared state;
-    only the turn guard and locked model definition are bind-mounted read-only,
-    so question N cannot read question N-1's filesystem;
+    only runner-owned tools/configuration are bind-mounted read-only, so
+    question N cannot read question N-1's filesystem;
   * the container lives on the `beaver-sandbox` internal network (no internet
     route); its only egress is the allow-list proxy (openrouter.ai) and MySQL
     (beaver-mysql:3306), so the correct answer cannot leak via the internet;
-  * the agent gets its full built-in toolset (bash, read, write, edit, grep,
-    find, ls) plus pre-installed python/pandas/jq/mysql-client, so it can
-    explore the DB and compute freely;
-  * sql_exec.ts is DROPPED — the agent runs SQL via `bash` + the `mysql` CLI;
-    a tiny turn_guard.ts extension reserves the last turn for final SQL.
+  * pi gets the purpose-built, read-only sql_exec tool; other supported agents
+    use their built-in tools and the pre-installed MySQL/Python utilities;
+  * turn_guard.ts reserves the last turn for final SQL.
 
 The runner signature matches runner_pi.run() so run_experiment.py dispatches
 through the same code path. ``BEAVER_AGENT`` selects pi, Claude Code, OpenCode,
@@ -33,11 +31,6 @@ from pathlib import Path
 from typing import Callable
 
 from . import config, network, parse_sql, pi_stream, prompts
-
-# Built-in pi tools the agent may use. We allowlist explicitly (via --tools)
-# so nothing else (extensions/skills are disabled anyway) can sneak in. bash is
-# what makes python/pandas/mysql-client reachable to the agent.
-_AGENT_TOOLS = "bash,read,write,edit,grep,find,ls"
 
 
 def _container_env(db_label: str, max_turns: int) -> list[str]:
@@ -105,13 +98,10 @@ def _agent_argv(agent: str, system_prompt: str, user_prompt: str, max_turns: int
             "--dangerously-bypass-approvals-and-sandbox", "--model", model,
             f"{system_prompt}\n\n{user_prompt}",
         ]
-    # pi is the default and the only runner with a custom lifecycle extension.
-    # See runner_pi._argv for the full rationale. Key differences here:
-    #   * -e turn_guard.ts replaces sql_exec.ts (turn cap, last turn answer-only);
-    #   * --no-builtin-tools is REMOVED — the agent gets bash/read/write/edit/
-    #     grep/find/ls via the --tools allowlist, so it can use python/pandas/
-    #     mysql-client freely;
-    #   * sql_exec is no longer in --tools (it isn't loaded).
+    # pi is the default and the only runner with custom lifecycle extensions.
+    # Keep its tool surface to the existing read-only SQL tool: it is more
+    # compact, supports parallel lookups in one turn, and enforces the boundary
+    # before the SELECT-only database account does.
     return [
         "-p",
         "--mode", "json",
@@ -122,12 +112,14 @@ def _agent_argv(agent: str, system_prompt: str, user_prompt: str, max_turns: int
         "--no-prompt-templates",
         "--no-context-files",
         "--no-themes",
+        "-e", "/extensions/sql_exec.ts",
         "-e", "/extensions/turn_guard.ts",
-        "--tools", _AGENT_TOOLS,
+        "--no-builtin-tools",
+        "--tools", "sql_exec",
         "--thinking", config.PI_THINKING,
         "--append-system-prompt", system_prompt,
         "--provider", config.DEFAULT_PROVIDER,
-        "--model", config.DEFAULT_MODEL_ID,
+        "--model", config.CONTAINER_AGENT_MODEL,
     ]
 
 
@@ -236,9 +228,10 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
     # sandbox net; -v mounts only runner-owned configuration read-only; resource
     # caps contain runaway work; --rm guarantees teardown.
     volumes = [
+        "-v", f"{config.PI_EXTENSION}:/extensions/sql_exec.ts:ro",
         "-v", f"{config.HARNESS_DIR / 'turn_guard.ts'}:/extensions/turn_guard.ts:ro",
         "-v", f"{config.HARNESS_DIR / 'mysql_timeout.sh'}:/usr/local/bin/mysql:ro",
-        "-v", f"{config.HARNESS_DIR / 'openrouter_models.json'}:/home/node/.pi/agent/models.json:ro",
+        "-v", f"{(config.openrouter_models_path() if agent == 'pi' else config.HARNESS_DIR / 'openrouter_models.json')}:/home/node/.pi/agent/models.json:ro",
         "-v", f"{config.HARNESS_DIR / 'codex_config.toml'}:/home/node/.codex/config.toml:ro",
         "-v", f"{config.HARNESS_DIR / 'opencode.json'}:/config/opencode.json:ro",
     ]

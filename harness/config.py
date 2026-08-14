@@ -7,9 +7,11 @@ tools and the error-avoidance checklist are fixed across every arm.
 """
 from __future__ import annotations
 
+import atexit
 import json
 import os
 import secrets
+import tempfile
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -119,10 +121,8 @@ DEFAULT_MODEL_ID = os.environ.get("PI_MODEL", "deepseek/deepseek-v4-flash-0731")
 # When pi drives the model, the CLI selector is "<provider>/<model_id>".
 PI_MODEL_SELECTOR = f"{DEFAULT_PROVIDER}/{DEFAULT_MODEL_ID}"
 # Reasoning effort passed to pi via --thinking (off|minimal|low|medium|high|
-# xhigh|max). low by default: DeepSeek-V4-flash is strong enough at low effort
-# for text-to-SQL, and this caps per-question token cost/latency. Overridable
-# via env so ablations can raise it without code changes.
-PI_THINKING = os.environ.get("PI_THINKING", "low")
+# xhigh|max). Overridable via the CLI or env for effort ablations.
+PI_THINKING = os.environ.get("PI_THINKING", "medium")
 # Raw slug used for the direct OpenRouter call in the zero-shot arm.
 ZEROSHOT_MODEL_SLUG = DEFAULT_MODEL_ID
 OPENROUTER_BASE_URL = os.environ.get("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
@@ -140,43 +140,71 @@ AGENT_MODELS = {
 }
 if CONTAINER_AGENT not in AGENT_MODELS:
     raise ValueError(f"unknown BEAVER_AGENT={CONTAINER_AGENT!r}; choose from {list(AGENT_MODELS)}")
-CONTAINER_AGENT_MODEL = os.environ.get("BEAVER_AGENT_MODEL", AGENT_MODELS[CONTAINER_AGENT])
+CONTAINER_AGENT_MODEL = os.environ.get("BEAVER_AGENT_MODEL", AGENT_MODELS[CONTAINER_AGENT]).removeprefix("openrouter/")
 
 
-def _load_openrouter_rates() -> dict[str, float]:
-    """OpenRouter $/Mtok rates for the locked model, read from
+def _load_openrouter_rates(model_id: str = DEFAULT_MODEL_ID) -> dict[str, float]:
+    """OpenRouter $/Mtok rates for ``model_id``, read from
     openrouter_models.json (the same fragment setup_openrouter.py merges into pi).
 
-    Falls back to the known DeepSeek V4 Flash 0731 rates if the file is missing
-    or shaped differently. Used by runner_zeroshot to price the zero-shot arm so
-    its `cost` dict matches the shape pi returns for the agentic arms (dollars,
-    not $/Mtok).
+    Unknown custom models report zero cost rather than DeepSeek's rate.
     """
     fallback = {"input": 0.08, "output": 0.18, "cacheRead": 0.016, "cacheWrite": 0.0}
     frag = HARNESS_DIR / "openrouter_models.json"
     try:
         data = json.loads(frag.read_text(encoding="utf-8"))
         models = data["providers"]["openrouter"]["models"]
-        rates = next(m["cost"] for m in models if m.get("id") == DEFAULT_MODEL_ID)
+        rates = next(m["cost"] for m in models if m.get("id") == model_id)
         return {k: float(rates.get(k, fallback[k])) for k in fallback}
     except Exception:
-        return fallback
+        return fallback if model_id == "deepseek/deepseek-v4-flash-0731" else dict.fromkeys(fallback, 0.0)
 
 
 # $/Mtok. Single source of truth for pricing the zero-shot arm and cost projections.
 OPENROUTER_RATES = _load_openrouter_rates()
+_MODEL_CONFIGS: dict[str, Path] = {}
+
+
+def openrouter_models_path() -> Path:
+    """Return pi's registry, adding the selected custom slug when needed."""
+    fragment = HARNESS_DIR / "openrouter_models.json"
+    data = json.loads(fragment.read_text(encoding="utf-8"))
+    models = data["providers"]["openrouter"]["models"]
+    if any(item.get("id") == CONTAINER_AGENT_MODEL for item in models):
+        return fragment
+    if path := _MODEL_CONFIGS.get(CONTAINER_AGENT_MODEL):
+        return path
+    models.append({"id": CONTAINER_AGENT_MODEL})  # pi supplies defaults for omitted metadata.
+    with tempfile.NamedTemporaryFile("w", encoding="utf-8", prefix="beaver-openrouter-",
+                                     suffix=".json", delete=False) as f:
+        json.dump(data, f)
+        path = Path(f.name)
+    _MODEL_CONFIGS[CONTAINER_AGENT_MODEL] = path
+    atexit.register(path.unlink, missing_ok=True)
+    return path
+
+
+def set_openrouter_model(model: str) -> None:
+    """Use one OpenRouter model slug consistently across all experiment arms."""
+    model = model.removeprefix("openrouter/").strip()
+    if not model:
+        raise ValueError("OpenRouter model must not be empty")
+    global DEFAULT_MODEL_ID, PI_MODEL_SELECTOR, ZEROSHOT_MODEL_SLUG, CONTAINER_AGENT_MODEL, OPENROUTER_RATES
+    DEFAULT_MODEL_ID = ZEROSHOT_MODEL_SLUG = CONTAINER_AGENT_MODEL = model
+    PI_MODEL_SELECTOR = f"{DEFAULT_PROVIDER}/{model}"
+    OPENROUTER_RATES = _load_openrouter_rates(model)
 
 # ---------------------------------------------------------------------------
 # Caps — identical across all cells (plan §Locked decisions #4)
 # ---------------------------------------------------------------------------
 MYSQL_QUERY_TIMEOUT = 10          # seconds, per MySQL query (gold/pred/exploration)
-MAX_TURNS_PILOT = 6
-MAX_TURNS_MAIN = 6
+MAX_TURNS_PILOT = 10
+MAX_TURNS_MAIN = 10
 TOKEN_GUARD = 320_000             # runaway guard, total tokens/question
 EXPLORE_ROW_CAP = 100             # rows returned per exploration sql_exec call
-PI_WALL_CLOCK = 300               # seconds; exceeding the evaluation budget is incorrect
+PI_WALL_CLOCK = 600               # seconds; exceeding the evaluation budget is incorrect
 ZEROSHOT_WALL_CLOCK = 120         # seconds, hard timeout for the zero-shot arm
-PROTOCOL_VERSION = 3              # bump when runner semantics change outside prompt/config hashes
+PROTOCOL_VERSION = 4              # bump when runner semantics change outside prompt/config hashes
 PI_AGENT_VERSION = "0.84.1"       # pinned in Dockerfile.agent
 
 # ---------------------------------------------------------------------------

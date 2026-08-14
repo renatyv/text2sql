@@ -1,21 +1,19 @@
 /**
  * turn_guard — hard agent turn-cap for the containerized BEAVER runner.
  *
- * The legacy sql_exec.ts enforced the turn budget by refusing further
- * exploration after BEAVER_MAX_TURNS. Now that the agent explores MySQL via
- * `bash` + the `mysql` CLI (no sql_exec tool), this minimal extension keeps
- * ONLY that turn-counting responsibility: after the penultimate turn it removes
- * tools and tells the model to use its final turn for SQL, with abort as a
- * failsafe if the model somehow still emits a tool call at the cap.
+ * sql_exec.ts enforces read-only SQL; this separate extension owns the hard
+ * lifecycle cap. After the penultimate turn it removes tools and tells the
+ * model to use its final turn for SQL, then aborts if that response contains
+ * no SQL.
  *
  * It registers NO tools and reads NO MySQL credentials — pure lifecycle guard.
  *
  * Env:
- *   BEAVER_MAX_TURNS   agent turn cap (default 6). Last turn is answer-only.
+ *   BEAVER_MAX_TURNS   agent turn cap (default 10). Last turn is answer-only.
  */
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
-const MAX_TURNS = Number(process.env.BEAVER_MAX_TURNS ?? "6");
+const MAX_TURNS = Number(process.env.BEAVER_MAX_TURNS ?? "10");
 const FINAL_SQL = /(?:<ans>|```(?:sql|mysql)?\s*\n)\s*(?:SELECT|WITH|\()/i;
 
 export default function turnGuardExtension(pi: ExtensionAPI) {
@@ -38,16 +36,11 @@ export default function turnGuardExtension(pi: ExtensionAPI) {
         : "";
       if (!FINAL_SQL.test(text)) {
         pi.setActiveTools([]);
-        pi.sendMessage({
-          customType: "turn-guard",
-          content: "FORMAT RECOVERY: Your response did not contain final SQL. Do not use tools or explain. Return the best complete MySQL query now inside <ans>...</ans>.",
-          display: false,
-        }, { deliverAs: "followUp", triggerTurn: true });
+        try { ctx.abort(); } catch { /* ignore */ }
       }
       return;
     }
-    // Failsafe: allow only the one answer-format recovery turn.
-    if (turnCount > MAX_TURNS && event.message.stopReason === "toolUse") {
+    if (turnCount > MAX_TURNS) {
       try { ctx.abort(); } catch { /* ignore */ }
     }
   });

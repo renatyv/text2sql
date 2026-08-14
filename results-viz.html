@@ -8,10 +8,10 @@
   :root {
     --bg:#0e1116; --panel:#161b22; --panel2:#1c232c; --ink:#e6edf3; --muted:#9aa7b4;
     --line:#2a323c; --line2:#38434f;
-    --A:#5b8def; --A-soft:rgba(91,141,239,.18);   /* pi, no profile, no checklist */
-    --B:#46d39a; --B-soft:rgba(70,211,154,.18);   /* pi, no profile, checklist    */
-    --C:#f0b04a; --C-soft:rgba(240,176,74,.18);   /* pi, profile, checklist       */
-    --D:#c084fc; --D-soft:rgba(192,132,252,.18);  /* zero-shot, profile, checklist*/
+    --A:#5b8def; --A-soft:rgba(91,141,239,.18);   /* raw access                    */
+    --B:#46d39a; --B-soft:rgba(70,211,154,.18);   /* profile                       */
+    --C:#f0b04a; --C-soft:rgba(240,176,74,.18);   /* aggregated metadata            */
+    --D:#c084fc; --D-soft:rgba(192,132,252,.18);  /* profile + metadata             */
     --good:#46d39a; --bad:#ff6b6b; --warn:#f0b04a;
     --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   }
@@ -107,7 +107,7 @@
   .overlay { position:fixed; inset:0; background:#0008; z-index:30; display:none; }
   .overlay.open { display:block; }
   .panel {
-    position:fixed; right:0; top:0; bottom:0; width:min(820px,96vw); background:var(--panel);
+    position:fixed; right:0; top:0; bottom:0; width:min(1200px,100vw); background:var(--panel);
     border-left:1px solid var(--line); z-index:31; transform:translateX(100%); transition:transform .18s ease;
     display:flex; flex-direction:column;
   }
@@ -119,11 +119,14 @@
   .blk h4 { margin:0 0 6px; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
   pre.sql {
     margin:0; background:var(--panel2); border:1px solid var(--line); border-radius:8px;
-    padding:10px; font-family:var(--mono); font-size:12px; white-space:pre-wrap; word-break:break-word; max-height:220px; overflow:auto;
+    padding:12px; font-family:var(--mono); font-size:12px; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere;
   }
   .twocol { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   @media (max-width:680px){ .twocol{ grid-template-columns:1fr; } }
-  .exec { font-family:var(--mono); font-size:11.5px; background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:6px 8px; margin:4px 0; white-space:pre-wrap; word-break:break-word; }
+  details.execs { border:1px solid var(--line); border-radius:8px; margin:6px 0; }
+  details.execs summary { padding:7px 9px; cursor:pointer; }
+  details.execs > div { padding:0 8px 8px; }
+  .exec { font-family:var(--mono); font-size:11.5px; line-height:1.55; background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:8px; margin:4px 0; white-space:pre-wrap; overflow-wrap:anywhere; }
   .miniacc { display:flex; gap:10px; margin-bottom:10px; flex-wrap:wrap; }
   .miniacc .ac { border:1px solid var(--line); border-radius:8px; padding:6px 10px; min-width:96px; }
   .miniacc .ac .t { font-size:11px; color:var(--muted); }
@@ -140,7 +143,7 @@
 
 <header class="top">
   <h1>BEAVER · db-snooper profile experiment</h1>
-  <div class="sub">Execution-accuracy benchmark for agentic vs. zero-shot text-to-SQL, with/without a db-snooper profile and an error-avoidance checklist.</div>
+  <div class="sub">Execution-accuracy benchmark for text-to-SQL with raw database access, a db-snooper profile, aggregated metadata, or both artifacts.</div>
   <div class="toolbar">
     <input id="dirpicker" type="file" webkitdirectory directory multiple style="display:none" />
     <button class="primary" onclick="document.getElementById('dirpicker').click()">📁 Load results folder…</button>
@@ -162,7 +165,7 @@
   <div id="sections" style="display:none">
     <section class="card intro">
       <h2>What this benchmark measures</h2>
-      <p>Does a pre-generated <b>db-snooper</b> database profile help a coding agent answer <b>BEAVER text-to-SQL</b> questions? Each setup receives the same questions; generated SQL is executed against the target database and compared by result accuracy, cost, and latency. The goal is to measure whether profile context improves correctness enough to justify its overhead.</p>
+      <p>Do a pre-generated <b>db-snooper</b> profile or aggregated database metadata help a coding agent answer <b>BEAVER text-to-SQL</b> questions? Each setup receives the same questions; generated SQL is executed against the target database and compared by result accuracy, cost, and latency.</p>
     </section>
 
     <section class="card" id="chartsSec">
@@ -236,14 +239,12 @@
  *   timed_out?:boolean}} QRec */
 /** @typedef {{name:string, summary?:any, arms:Record<Arm,QRec[]>}} Run */
 
-// Mirrors harness/config.py ARMS. Each long arm name maps to a short badge
-// letter (for color/legend), a chart label, and a description. Iteration order
-// here defines plot/legend order.
+// Mirrors harness/config.py ARMS. Iteration order defines plot and legend order.
 const ARM_INFO = {
-  "pi_no_profile_no_checklist": {badge:"A", label:"pi · no profile · no checklist", color:"var(--A)", desc:"agentic, sql_exec tool, no profile, no error checklist"},
-  "pi_no_profile_checklist":    {badge:"B", label:"pi · no profile · checklist",    color:"var(--B)", desc:"agentic, sql_exec tool, no profile, with error checklist"},
-  "pi_profile_checklist":       {badge:"C", label:"pi · profile · checklist",       color:"var(--C)", desc:"agentic, sql_exec tool + profile, with error checklist"},
-  "zeroshot_profile_checklist": {badge:"D", label:"zero-shot · profile · checklist", color:"var(--D)", desc:"zero-shot, profile only, with error checklist"},
+  raw:                {badge:"A", label:"raw database access",            color:"var(--A)", desc:"agentic SQL access only"},
+  profile:            {badge:"B", label:"db-snooper profile",              color:"var(--B)", desc:"agentic SQL access + profile"},
+  metadata:           {badge:"C", label:"aggregated metadata",             color:"var(--C)", desc:"agentic SQL access + metadata"},
+  profile_metadata:   {badge:"D", label:"profile + aggregated metadata",   color:"var(--D)", desc:"agentic SQL access + both artifacts"},
 };
 const ARMS = Object.keys(ARM_INFO);
 const ARM_LABEL = Object.fromEntries(ARMS.map(a => [a, ARM_INFO[a].label]));
@@ -272,16 +273,13 @@ document.getElementById("clearBtn").onclick = () => {
 
 /**
  * Walk a FileList, bucket by directory, and assemble Run objects.
- * A run = a directory that contains summary.json and/or any arm*.jsonl.
- * Matches both legacy single-letter files and current long-name files.
+ * A run = a directory that contains summary.json and/or a current arm JSONL.
  */
 async function ingest(/** @type {FileList} */ files) {
   if (!files || !files.length) return;
   const loaded = new Set(RUNS.keys());
   // normalize: webkitRelativePath like "results/neutron__pilot__n20/arm_<name>.jsonl"
   const byDir = new Map(); // dirPath -> {summary?:File, arms:Map<Arm,File>}
-  // Legacy single-letter arm file -> its long name (so old results still load).
-  const LEGACY_LETTER = {A:"pi_no_profile_no_checklist", B:"pi_no_profile_checklist", C:"pi_profile_checklist"};
   for (const f of Array.from(files)) {
     const path = f.webkitRelativePath || f.name;
     const parts = path.split("/");
@@ -291,17 +289,16 @@ async function ingest(/** @type {FileList} */ files) {
     const slot = byDir.get(dirPath);
     if (name === "summary.json") slot.summary = f;
     else {
-      // current: arm<long-name>.jsonl  |  legacy: arm{A,B,C}.jsonl
-      const mLetter = /^arm([ABC])\.jsonl$/i.exec(name);
-      const mLong = /^arm_?(.+)\.jsonl$/i.exec(name);
-      if (mLetter) slot.arms.set(/** @type {Arm} */ (LEGACY_LETTER[mLetter[1].toUpperCase()]), f);
-      else if (mLong) slot.arms.set(/** @type {Arm} */ (mLong[1]), f);
+      const m = /^arm_?(.+)\.jsonl$/i.exec(name);
+      if (m && ARMS.includes(m[1])) slot.arms.set(/** @type {Arm} */ (m[1]), f);
     }
   }
 
   let newRuns = 0, newQ = 0;
   for (const [dirPath, slot] of byDir) {
-    if (!slot.summary && slot.arms.size === 0) continue;
+    let summary;
+    if (slot.summary) { try { summary = JSON.parse(await slot.summary.text()); } catch(e){ console.warn("summary parse failed", dirPath, e); } }
+    if (!slot.arms.size && !ARMS.some(arm => summary?.[arm])) continue;
     // derive run name: last path segment; fall back to full path
     const segs = dirPath.split("/");
     let runName = segs[segs.length-1] || dirPath || "(root)";
@@ -312,7 +309,7 @@ async function ingest(/** @type {FileList} */ files) {
     let run = RUNS.get(runName);
     if (!run) { run = {name:runName, arms:{}}; RUNS.set(runName, run); }
     let qAdded = 0;
-    if (slot.summary) { try { run.summary = JSON.parse(await slot.summary.text()); } catch(e){ console.warn("summary parse failed", dirPath, e); } }
+    if (summary) run.summary = summary;
     for (const arm of ARMS) {
       const f = slot.arms.get(arm);
       if (!f) continue;
@@ -452,7 +449,7 @@ function renderCostChart(){
   const run = focused ? RUNS.get(focused) : null;
   const data = run && ARMS.map(arm=>{
     const s=armSummary(run,arm);
-    return {arm,value:s ? s.cost_usd/s.n : agg(run.arms[arm]||[],r=>r.cost?.total)};
+    return {arm,value:s?.cost_usd != null && s.n ? s.cost_usd/s.n : agg(run.arms[arm]||[],r=>r.cost?.total)};
   });
   renderArmBars("costChart","costRunTag",run,data,{fmt:fmtUSD});
 }
@@ -595,7 +592,7 @@ function renderScatter(){
       const s = armSummary(run,arm);
       const recs = run.arms[arm]||[];
       let acc=null, cost=null;
-      if (s){ acc=s.accuracy; cost=s.cost_usd/s.n; }
+      if (s){ acc=s.accuracy; cost=s.cost_usd != null && s.n ? s.cost_usd/s.n : null; }
       else { acc=accFromRecs(recs); cost=agg(recs,r=>r.cost?.total); }
       if (acc==null||cost==null||!recs.length) continue;
       pts.push({run:run.name, arm, acc, cost});
@@ -649,7 +646,7 @@ function renderAuxStats(){
     <td class="l"><span class="armbadge ${ARM_BADGE[arm]}" title="${ARM_LABEL[arm]}">${ARM_BADGE[arm]}</span> ${ARM_LABEL[arm]}</td>
     <td>${fmtInt(s.n)}</td><td>${fmtPct(s.valid_sql_pct)}</td><td>${fmtNum(s.mean_turns)}</td><td>${fmtNum(s.mean_db_queries)}</td>
     <td>${fmtSec(s.mean_latency_s)}</td><td>${fmtInt(s.tokens_in)}</td><td>${fmtInt(s.tokens_out)}</td><td>${fmtInt(s.tokens_total)}</td>
-    <td>${fmtUSD(s.cost_usd)}</td><td>${fmtUSD(s.cost_usd/s.n)}</td>
+    <td>${fmtUSD(s.cost_usd)}</td><td>${fmtUSD(s.cost_usd != null && s.n ? s.cost_usd/s.n : null)}</td>
   </tr>`).join("")}</tbody>`;
 }
 
@@ -922,6 +919,24 @@ window.__open = (id)=> openPanel(id);
 
 function escapeHtml(s){ return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 function escapeAttr(s){ return String(s??"").replace(/['"\\]/g,"\\$&"); }
+function formatSql(sql){
+  const quoted = /('(?:''|[^'])*'|"(?:""|[^"])*"|`(?:``|[^`])*`)/g;
+  const lines = String(sql??"").split(quoted).map((part,i)=>i%2 ? part : part
+    .replace(/\s+/g," ")
+    .replace(/\s*\b((?:LEFT|RIGHT|FULL)(?: OUTER)? JOIN|(?:INNER|CROSS) JOIN|JOIN|UNION(?: ALL)?|GROUP BY|ORDER BY|PARTITION BY|SELECT|FROM|WHERE|HAVING|LIMIT|WITH)\b\s*/gi,"\n$1 ")
+    .replace(/\s*\b(AND|OR|WHEN|ELSE|END)\b\s*/gi,"\n  $1 "))
+    .join("").trim().split("\n");
+  let depth = 0;
+  return lines.map(line=>{
+    const text = line.trim();
+    const bare = text.replace(quoted,"");
+    const leadingClose = bare.match(/^\)+/)?.[0].length || 0;
+    depth = Math.max(0, depth-leadingClose);
+    const out = `${"  ".repeat(depth + (/^(AND|OR|WHEN|ELSE)\b/i.test(text) ? 1 : 0))}${text}`;
+    depth = Math.max(0, depth + (bare.match(/\(/g)?.length||0) - (bare.match(/\)/g)?.length||0) + leadingClose);
+    return out;
+  }).join("\n");
+}
 
 // ───────────────────────────────────────────────────────────────────────────
 // Detail panel
@@ -966,7 +981,7 @@ function openPanel(id){
   const gold = anyRec.gold_sql;
   if (gold){
     const blk = document.createElement("div"); blk.className="blk";
-    blk.innerHTML = `<h4>Gold SQL</h4><pre class="sql">${escapeHtml(gold)}</pre>`;
+    blk.innerHTML = `<h4>Gold SQL</h4><pre class="sql">${escapeHtml(formatSql(gold))}</pre>`;
     body.appendChild(blk);
   }
 
@@ -978,25 +993,26 @@ function openPanel(id){
     const r = recs[arm]; if(!r) continue;
     const cell = document.createElement("div");
     cell.innerHTML = `<div style="font-size:12px;margin-bottom:4px"><span class="armbadge ${ARM_BADGE[arm]||""}">${ARM_LABEL[arm]}</span> · ${ARM_DESC[arm]} &nbsp;<span style="color:${r.correct===true?'var(--good)':r.correct===false?'var(--bad)':'var(--muted)'}">${r.correct===true?"✓":r.correct===false?"✗ "+(r.error_class||""):"—"}</span></div>
-      <pre class="sql">${escapeHtml(r.pred_sql || r.raw_text || "(none)")}</pre>`;
+      <pre class="sql">${escapeHtml(r.pred_sql ? formatSql(r.pred_sql) : r.raw_text || "(none)")}</pre>`;
     cols.appendChild(cell);
   }
   predBlk.appendChild(cols);
   body.appendChild(predBlk);
 
-  // executed SQLs (arms A/B usually)
+  // Executed SQLs from the agentic trace.
   const haveExec = ARMS.some(a=>recs[a]?.executed_sqls?.length);
   if (haveExec){
     const exBlk = document.createElement("div"); exBlk.className="blk";
     exBlk.innerHTML = `<h4>Executed SQL statements (agentic trace)</h4>`;
     for (const arm of ARMS){
       const r = recs[arm]; const ex = r?.executed_sqls; if(!ex||!ex.length) continue;
-      const wrap = document.createElement("div"); wrap.style.marginBottom="8px";
-      wrap.innerHTML = `<div style="font-size:12px;margin-bottom:2px"><span class="armbadge ${ARM_BADGE[arm]||""}">${ARM_LABEL[arm]}</span> · ${ex.length} statement(s) · ${r.db_queries??0} DB queries · ${r.turns??0} turns</div>`;
+      const wrap = document.createElement("details"); wrap.className="execs";
+      wrap.innerHTML = `<summary><span class="armbadge ${ARM_BADGE[arm]||""}">${ARM_LABEL[arm]}</span> · ${ex.length} statement(s) · ${r.db_queries??0} DB queries · ${r.turns??0} turns</summary><div></div>`;
+      const statements = wrap.lastElementChild;
       ex.forEach((s,i)=>{
         const d = document.createElement("div"); d.className="exec";
-        d.innerHTML = `<span style="color:var(--muted)">[${i+1}]</span> ${escapeHtml(s)}`;
-        wrap.appendChild(d);
+        d.innerHTML = `<span style="color:var(--muted)">[${i+1}]</span> ${escapeHtml(formatSql(s))}`;
+        statements.appendChild(d);
       });
       exBlk.appendChild(wrap);
     }
@@ -1012,13 +1028,14 @@ function closePanel(){
 }
 window.closePanel = closePanel;
 document.addEventListener("keydown", e=>{ if(e.key==="Escape") closePanel(); });
+console.assert(formatSql("WITH q AS (SELECT 'FROM (x)' AS x FROM t WHERE a=1 AND b=2) SELECT * FROM q").includes("WITH q AS (\n  SELECT 'FROM (x)' AS x\n  FROM t\n  WHERE a=1\n    AND b=2)\nSELECT *\nFROM q"), "SQL display formatter");
 
 // Dev-only hook: lets automated checks feed in data without the native file dialog.
 // Picks a run folder over HTTP and builds a FileList like the directory picker would.
 window.__loadRunOverHttp = async (/** @type {string} */ base, /** @type {string[]} */ runDirs) => {
   const files = [];
   for (const d of runDirs) {
-    const names = ["summary.json", ...ARMS.flatMap(a => [`arm${a}.jsonl`, `arm_${a}.jsonl`]), "armA.jsonl", "armB.jsonl", "armC.jsonl"];
+    const names = ["summary.json", ...ARMS.flatMap(a => [`arm${a}.jsonl`, `arm_${a}.jsonl`])];
     for (const name of names) {
       const path = `${base}/${d}/${name}`;
       let res; try { res = await fetch(path); } catch(e){ continue; }

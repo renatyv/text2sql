@@ -8,9 +8,9 @@
 # Build once (offline thereafter):
 #   docker build -t beaver-agent -f Dockerfile.agent .
 #
-# The agent runs READ-ONLY SQL against the BEAVER MySQL DB via the `mysql`
-# CLI in bash; the image intentionally does NOT bundle any repo code or
-# credentials (those are injected per-run via env + stdin).
+# Pi runs read-only SQL through the mounted sql_exec extension; the other
+# supported agents use the MySQL CLI. The image intentionally bundles no repo
+# code or credentials (those are injected per run).
 
 FROM node:24-bookworm-slim
 
@@ -38,8 +38,8 @@ RUN python3 -m pip install --no-cache-dir --break-system-packages \
 # `node`). They all use the same isolated container and OpenRouter-only proxy.
 RUN npm install -g @anthropic-ai/claude-code @openai/codex @earendil-works/pi-coding-agent@0.84.1 opencode-ai typescript
 
-# Run unprivileged. The runner bind-mounts only its turn guard and the locked
-# OpenRouter model definition, both read-only.
+# Run unprivileged. The runner bind-mounts only runner-owned tools/configuration,
+# all read-only.
 RUN mkdir -p /config /tmp/opencode-config /workspace /home/node/.codex /home/node/.pi/agent \
   && chown -R node:node /tmp/opencode-config /workspace /home/node/.codex /home/node/.pi
 WORKDIR /workspace

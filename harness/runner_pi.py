@@ -45,8 +45,7 @@ def _argv(append_prompt: str) -> list[str]:
     # sql_exec framing, rules). The append text is identical across agentic arms
     # except for the optional checklist section — the profile manipulation lives
     # in the user turn, not here, per the plan invariant.
-    # Reasoning effort: DeepSeek defaults to pi's built-in thinking level; we
-    # pin --thinking low (config.PI_THINKING) for cost/latency control.
+    # Pin reasoning effort so every experiment arm uses the same setting.
     return [
         config.PI_BIN, "-p",
         "--mode", "json",

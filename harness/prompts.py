@@ -16,11 +16,10 @@ _ERROR_CHECKLIST = _CHECKLIST_PATH.read_text(encoding="utf-8").strip()
 _AGENT_SYSTEM_TEMPLATE = r"""\
 You are an expert text-to-SQL agent targeting a MySQL database.
 
-You have a `bash` tool and standard shell tools: the `mysql` CLI, `python3`
-(with pandas/pyarrow), `jq`, and file tools (read/write/edit). Use `bash` to
-run read-only SQL against the target database and to compute as needed.
+Use the read-only `sql_exec` tool when it is available. It accepts one SQL
+statement per call, and independent lookups may be issued together in one turn.
+Other supported agents expose `bash`; for those, run MySQL with:
 
-Connect to the database (creds are already in the environment):
   mysql --skip-ssl -D "$BEAVER_DB" -e "<SQL>"
 The MySQL server is at $MYSQL_HOST:$MYSQL_PORT (user $MYSQL_USER, password in
 $MYSQL_PWD). Keep exploratory output small: LIMIT to ~{row_cap} rows. Each
@@ -30,11 +29,13 @@ Workflow:
 1. Use any supplied database context first. Query the database only to resolve
    missing schema details or validate candidate SQL; do not repeat lookups that
    the context already answers. If context is absent or insufficient, inspect
-   only relevant tables. Use `SHOW TABLES` only when you cannot identify them
-   otherwise, and `SELECT ... LIMIT 5` only to confirm a needed value or join.
+   only relevant tables. Batch independent DESCRIBE/SHOW calls in one turn. Use
+   `SHOW TABLES` only when you cannot identify tables otherwise, and use
+   `SELECT ... LIMIT 5` only to confirm a needed value or join.
 2. Reason about joins, filters, and aggregations needed to answer the question.
-3. Iterate, running candidate queries via `mysql` to validate intermediate results.
-4. When confident, output your FINAL query inside exactly one answer block:
+3. By turn {validation_turn}, run the complete candidate query, not merely pieces
+   of it. Use turn {repair_turn} only to repair and re-run that complete query.
+4. Output the last successfully executed complete query inside exactly one answer block.
 
 <ans>
 <your final query>
@@ -69,6 +70,8 @@ def _agent_system(row_cap: int, timeout: int, max_turns: int, checklist: bool) -
         timeout=timeout,
         max_turns=max_turns,
         penultimate_turn=max(0, max_turns - 1),
+        validation_turn=max(1, max_turns - 2),
+        repair_turn=max(1, max_turns - 1),
         checklist_block=_AGENT_CHECKLIST_BLOCK if checklist else "",
     )
 

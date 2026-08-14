@@ -1,6 +1,7 @@
 """Small regression checks for container-run isolation bookkeeping."""
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 import unittest
@@ -17,6 +18,21 @@ class ContainerIsolationTests(unittest.TestCase):
             self.assertTrue(argv)
         self.assertIn("--max-turns", runner_container._agent_argv("claude", "s", "u", 3))
         self.assertEqual(runner_container._agent_argv("codex", "s", "u", 3)[0], "exec")
+
+    def test_pi_uses_the_selected_container_model(self) -> None:
+        with (patch.object(runner_container.config, "CONTAINER_AGENT_MODEL", "openai/gpt-5.6-luna-pro"),
+              patch.object(runner_container.config, "PI_THINKING", "medium")):
+            argv = runner_container._agent_argv("pi", "system", "user", 3)
+        self.assertEqual(argv[argv.index("--model") + 1], "openai/gpt-5.6-luna-pro")
+        self.assertEqual(argv[argv.index("--thinking") + 1], "medium")
+        self.assertIn("sql_exec", argv)
+        self.assertIn("--no-builtin-tools", argv)
+
+    def test_unknown_openrouter_model_is_added_to_pi_registry(self) -> None:
+        model = "openai/gpt-5.6-luna-pro"
+        with patch.object(runner_container.config, "CONTAINER_AGENT_MODEL", model):
+            registry = runner_container.config.openrouter_models_path()
+        self.assertIn(model, [m["id"] for m in json.loads(registry.read_text())["providers"]["openrouter"]["models"]])
 
     def test_mysql_bash_is_counted_and_recoverable(self) -> None:
         events = ('{"type":"tool_execution_start","toolName":"bash",'
@@ -52,6 +68,8 @@ class ContainerIsolationTests(unittest.TestCase):
         self.assertIn("-i", run.call_args_list[0].args[0])
         self.assertEqual(run.call_args_list[1].args[0][:3], ["docker", "rm", "-f"])
         self.assertTrue(any("mysql_timeout.sh:/usr/local/bin/mysql:ro" in str(arg)
+                            for arg in run.call_args_list[0].args[0]))
+        self.assertTrue(any("sql_exec.ts:/extensions/sql_exec.ts:ro" in str(arg)
                             for arg in run.call_args_list[0].args[0]))
 
     def test_terminal_api_error_is_visible_despite_zero_exit(self) -> None:

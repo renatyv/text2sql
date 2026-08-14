@@ -2,7 +2,7 @@
 
 Does a pre-generated [db-snooper](https://github.com/renatyv/db-snooper) profile improve an agent's execution accuracy on [BEAVER](https://huggingface.co/datasets/BeaverBench/beaver), compared with raw database access?
 
-The agentic arms run in a fresh, unprivileged Docker/OrbStack container for every question. They have Python, pandas, PyArrow, Node.js, the TypeScript compiler, `jq`, `rg`, the MySQL CLI, and pi, Claude Code, OpenCode, and Codex CLIs.
+The agentic arms run in a fresh, unprivileged Docker/OrbStack container for every question. Pi uses the purpose-built read-only `sql_exec` tool; the optional Claude Code, OpenCode, and Codex runners use their built-in tools with the container's MySQL/Python utilities.
 
 ## Experiment arms
 
@@ -11,7 +11,7 @@ The agentic arms run in a fresh, unprivileged Docker/OrbStack container for ever
 - `metadata` — raw access + aggregated metadata.
 - `profile_metadata` — raw access + both artifacts.
 
-All four arms use the same agent, prompt instructions, error-avoidance checklist, tools, model, and caps; only the supplied context differs. The default model and caps live in [`harness/config.py`](harness/config.py). The fixed evaluation budget is six turns and 300 seconds per question. Exhausting either budget counts as an incorrect answer; only transient provider/API failures are retried.
+All four arms use the same agent, prompt instructions, error-avoidance checklist, tools, model, and caps; only the supplied context differs. The default model and caps live in [`harness/config.py`](harness/config.py). The fixed evaluation budget is ten turns and 600 seconds per question. Exhausting either budget counts as an incorrect answer; only transient provider/API failures are retried.
 
 ## Isolation model
 
@@ -42,7 +42,7 @@ Useful runs:
 
 ```bash
 uv run python run_experiment.py --dataset neutron --phase pilot
-uv run python run_experiment.py --phase main --samples neutron=20 nova=20 dw=20 --arms raw profile metadata --workers 8 --max-turns 6
+uv run python run_experiment.py --phase main --samples neutron=20 nova=20 dw=20 --arms raw profile metadata --workers 8 --max-turns 10
 uv run python run_experiment.py --dataset neutron --phase pilot --estimate-cost
 uv run python run_experiment.py --dataset neutron --phase pilot --score-only
 ```
@@ -61,7 +61,13 @@ BEAVER_AGENT=opencode uv run python run_experiment.py --dataset neutron --phase 
 BEAVER_AGENT=codex uv run python run_experiment.py --dataset neutron --phase phase0
 ```
 
-Override the model with the CLI's OpenRouter alias when needed, for example `BEAVER_AGENT=codex BEAVER_AGENT_MODEL='~openai/gpt-latest'`. Claude Code is configured with OpenRouter's Anthropic-compatible endpoint; Codex and OpenCode use its OpenAI-compatible endpoint. Pi and Claude have a CLI turn cap; Codex and OpenCode retain the prompt budget and the same 10-minute container wall-clock cap. Non-pi runs record execution accuracy, but their CLI telemetry is deliberately reported as unavailable rather than a false zero; use pi when you need turns, database-query counts, token, or cost projections.
+Choose any OpenRouter model with `--model`; its slug is passed through unchanged (an optional `openrouter/` prefix is accepted). Reasoning effort defaults to `medium` and can be changed with `--effort`. For example:
+
+```bash
+uv run python run_experiment.py --dataset neutron --phase phase0 --model openai/gpt-5.6-luna-pro --effort medium
+```
+
+`BEAVER_AGENT_MODEL` remains available for scripted runs. Unknown custom models report zero projected cost until their rates are added to `harness/openrouter_models.json`. Claude Code is configured with OpenRouter's Anthropic-compatible endpoint; Codex and OpenCode use its OpenAI-compatible endpoint. Pi and Claude have a CLI turn cap; Codex and OpenCode retain the prompt budget and the same 10-minute container wall-clock cap. Non-pi runs record execution accuracy, but their CLI telemetry is deliberately reported as unavailable rather than a false zero; use pi when you need turns, database-query counts, token, or cost projections.
 
 ## Verify the boundary
 

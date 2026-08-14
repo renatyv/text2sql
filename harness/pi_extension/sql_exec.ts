@@ -1,7 +1,7 @@
 /**
  * sql_exec — read-only MySQL exploration tool for the BEAVER text-to-SQL experiment.
  *
- * Loaded by the orchestrator via `pi -e harness/pi_extension/sql_exec.ts`.
+ * Loaded by the orchestrator on the host or mounted read-only in the container.
  * Connection details and caps are injected through environment variables so the
  * agent (which only sees the tool's text results) never touches the repo.
  *
@@ -14,9 +14,8 @@
  *   BEAVER_MYSQL_PWD  / MYSQL_PASSWORD   (no default; passed via env, never argv)
  *   BEAVER_DB                            target database name
  *   BEAVER_QUERY_TIMEOUT                 per-query wall-clock kill, seconds (default 10)
- *   BEAVER_MAX_TURNS                     agent turn cap (default 10). After this many turns the
- *                                        tool refuses further exploration and asks the model to
- *                                        finalize, and the run is aborted at cap+1.
+ *   BEAVER_MAX_TURNS                     agent turn cap (default 10). The container's
+ *                                        turn guard reserves the final turn.
  *   BEAVER_EXPLORE_ROW_CAP               rows returned per exploration call (default 100)
  */
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";

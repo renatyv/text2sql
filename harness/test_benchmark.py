@@ -6,7 +6,7 @@ from tempfile import TemporaryDirectory
 from unittest.mock import patch
 
 import run_experiment
-from harness import manifest, metrics, prompts
+from harness import manifest, metrics, prompts, scorer
 
 
 class BenchmarkTests(unittest.TestCase):
@@ -58,6 +58,23 @@ class BenchmarkTests(unittest.TestCase):
         self.assertEqual([q["id"] for q in first], [q["id"] for q in second])
         self.assertEqual(sum(q["category"] == "a" for q in first), 8)
 
+    def test_only_outer_order_by_makes_result_order_significant(self) -> None:
+        self.assertFalse(scorer._has_top_level_order_by(
+            "WITH q AS (SELECT 1 ORDER BY 1) SELECT * FROM q"
+        ))
+        self.assertFalse(scorer._has_top_level_order_by(
+            "SELECT ROW_NUMBER() OVER (ORDER BY id) FROM t"
+        ))
+        self.assertTrue(scorer._has_top_level_order_by(
+            "WITH q AS (SELECT 1 ORDER BY 1) SELECT * FROM q ORDER BY 1"
+        ))
+
+    def test_validation_turns_follow_the_budget(self) -> None:
+        system, _ = prompts.agent_prompts("neutron", "question", "raw", 16)
+        self.assertIn("By turn 14, run the complete candidate query", system)
+        self.assertIn("Use turn 15 only to repair", system)
+        self.assertIn("Turn 16 is reserved", system)
+
     @patch("harness.prompts._profile", return_value="PROFILE")
     @patch("harness.prompts._metadata", return_value="METADATA")
     def test_four_arms_only_change_context(self, _metadata, _profile) -> None:
@@ -72,6 +89,8 @@ class BenchmarkTests(unittest.TestCase):
             self.assertIn("Use any supplied database context first", system)
             self.assertIn("Turn 10 is reserved", system)
             self.assertIn("finish all tool use by turn 9", system)
+            self.assertIn("By turn 8, run the complete candidate query", system)
+            self.assertIn("Use turn 9 only to repair", system)
             self.assertIn("<ans>", system)
             self.assertIn("<ans>...</ans>", user)
             self.assertIn("BEGIN SUPPLIED DATABASE CONTEXT", user)

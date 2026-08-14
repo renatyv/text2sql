@@ -51,7 +51,7 @@ def _direct_openrouter(db_label: str, question: str, arm: str) -> dict:
             {"role": "system", "content": system},
             {"role": "user", "content": user},
         ],
-        # reasoning = model default (plan §Locked decisions #2): send no effort.
+        "reasoning": {"effort": "none" if config.PI_THINKING == "off" else config.PI_THINKING},
     }
     req = urllib.request.Request(
         f"{config.OPENROUTER_BASE_URL}/chat/completions",
@@ -108,6 +108,7 @@ def _pi_fallback(db_label: str, question: str, arm: str, sandbox: Path) -> dict:
         "--no-context-files",
         "--no-themes",
         "--no-tools",
+        "--thinking", config.PI_THINKING,
         "--system-prompt", system,
         "--provider", config.DEFAULT_PROVIDER,
         "--model", config.DEFAULT_MODEL_ID,

@@ -77,7 +77,7 @@ def score_prediction(pred_sql: str | None, gold_sql: str, database: str) -> dict
     rec["valid_sql"] = True
     rec["pred_rows"] = len(pred.rows or [])
 
-    ordered = _has_order_by(gold_sql)
+    ordered = _has_top_level_order_by(gold_sql)
     rec["ordered"] = ordered
     rec["correct"] = _compare(gold.rows, pred.rows, ordered)
     _add_cardinality_diagnostics(rec)
@@ -154,8 +154,18 @@ def _aggregates_used(sql: str) -> set[str]:
     return {m.group(1).upper() for m in _AGG_RE.finditer(_strip_literals(sql))}
 
 
-def _has_order_by(sql: str) -> bool:
-    return _has_clause(sql, r"ORDER\s+BY")
+def _has_top_level_order_by(sql: str) -> bool:
+    """Ignore ORDER BY inside CTEs, subqueries, and window expressions."""
+    depth = 0
+    outer = []
+    for char in _strip_literals(sql):
+        if char == "(":
+            depth += 1
+        elif char == ")":
+            depth = max(0, depth - 1)
+        elif depth == 0:
+            outer.append(char)
+    return bool(re.search(r"\bORDER\s+BY\b", "".join(outer), re.IGNORECASE))
 
 
 # Strongest-first: a window query that also uses a CTE is classified by its

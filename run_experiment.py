@@ -423,6 +423,11 @@ def main(argv=None) -> int:
                    help="questions per dataset (default: phase-dependent; omit = full)")
     p.add_argument("--limit", type=int, default=None, help="cap questions (quick tests)")
     p.add_argument("--max-turns", type=int, default=None)
+    p.add_argument("--model", metavar="OPENROUTER_MODEL",
+                   help="OpenRouter model slug for every arm; e.g. openai/gpt-5.6-luna-pro")
+    p.add_argument("--effort", choices=["off", "minimal", "low", "medium", "high", "xhigh", "max"],
+                   default=config.PI_THINKING,
+                   help="reasoning effort for every arm (default: %(default)s)")
     p.add_argument("--workers", type=int, default=4,
                    help="parallel questions per arm (thread pool). Bounded by "
                         "OpenRouter/DeepSeek rate limits; raise with care.")
@@ -435,8 +440,11 @@ def main(argv=None) -> int:
     p.add_argument("--estimate-cost", action="store_true", help="project Phase-2 cost from pilot")
     args = p.parse_args(argv)
     try:
+        config.PI_THINKING = args.effort
+        if args.model:
+            config.set_openrouter_model(args.model)
         return run(args)
-    except argparse.ArgumentTypeError as e:
+    except (argparse.ArgumentTypeError, ValueError) as e:
         p.error(str(e))
 
 
