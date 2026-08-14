@@ -3,7 +3,7 @@ DB ?= neutron
 BENCH_ARGS ?= --dataset $(DB) --phase phase0
 METADATA_ARGS ?=
 
-.PHONY: help generate-profiles generate-schema-links generate-metadata benchmark benchmark-1 benchmark-20 benchmark-100 benchmark-300
+.PHONY: help generate-profiles generate-schema-links generate-metadata benchmark benchmark-1 benchmark-10 benchmark-100 benchmark-300
 
 help:
 	@printf '%s\n' 'make generate-profiles DB=neutron        # regenerate db-snooper profile' 'make generate-schema-links DB=neutron    # regenerate local link hints' 'make generate-metadata DB=neutron        # isolated Pi metadata agent' 'make benchmark BENCH_ARGS="--dataset neutron --phase pilot"' 'Useful args: DB=neutron|nova|dw, METADATA_ARGS="--max-turns 16"; benchmark accepts run_experiment.py args.' benchmark-1 benchmark-20 benchmark-100 benchmark-300
@@ -30,10 +30,10 @@ benchmark-1:
 	 --workers 4\
 	 --max-turns 15;
 
-benchmark-20:
+benchmark-10:
 	@uv run python run_experiment.py \
 	 --phase main \
-	 --samples dw=20 neutron=20 nova=20 \
+	 --samples dw=10 neutron=10 nova=10 \
 	 --arms raw profile metadata \
 	 --model openai/gpt-5.6-luna-pro\
 	 --effort medium\
