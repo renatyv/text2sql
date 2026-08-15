@@ -42,6 +42,9 @@
   .chip.on { background:var(--A-soft); border-color:var(--A); color:#cfe0ff; }
   .chip .dot { width:7px;height:7px;border-radius:50%; background:var(--muted); }
   .chip.on .dot { background:var(--A); }
+  .chip.sum .dot { background:var(--warn); }
+  .chip.sum.on { background:var(--C-soft); border-color:var(--warn); color:#ffd9a0; }
+  .chip.sum.on .dot { background:var(--warn); }
   main { padding:18px; max-width:1500px; margin:0 auto; }
   section.card {
     background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px;
@@ -186,7 +189,7 @@
 
     <section class="card" id="auxSec">
       <h2>Auxiliary statistics <span id="auxRunTag" class="pill"></span></h2>
-      <p class="hint">Operational totals and per-question means from <code class="inl">summary.json</code>.</p>
+      <p class="hint">Operational totals and per-question means from <code class="inl">summary.json</code> — recomputed from pooled records when “Σ all runs” is selected.</p>
       <div class="wrap" style="max-height:none"><table id="auxTbl"></table></div>
     </section>
 
@@ -198,7 +201,7 @@
 
     <section class="card" id="drillSec">
       <h2>Per-question drill-down <span id="drillRunTag" class="pill"></span></h2>
-      <p class="hint">Records joined across setups by question id within the focused run. Click a row to inspect SQL.</p>
+      <p class="hint">Records joined across setups by question id within the focused run — or pooled across every loaded run when “Σ all runs” is selected. Click a row to inspect SQL.</p>
       <div class="filters" id="drillFilters"></div>
       <div class="wrap"><table id="drillTbl"></table></div>
     </section>
@@ -259,6 +262,9 @@ const ARM_BADGE = Object.fromEntries(ARMS.map(a => [a, ARM_INFO[a].badge]));
 /** @type {Map<string,Run>} */
 const RUNS = new Map();           // runName -> Run
 let focused = null;               // run name shown in per-run views
+/** @type {Run|null} */
+let combinedRun = null;           // synthetic pooled run built from every loaded run
+const COMBINED_NAME = "Σ all runs";
 let drillState = { run:null, sortKey:"id", sortDir:1, q:"", cat:"", dom:"", err:"", onlyMiss:false };
 
 // ───────────────────────────────────────────────────────────────────────────
@@ -267,7 +273,7 @@ let drillState = { run:null, sortKey:"id", sortDir:1, q:"", cat:"", dom:"", err:
 const dirpicker = document.getElementById("dirpicker");
 dirpicker.addEventListener("change", e => ingest(e.target.files));
 document.getElementById("clearBtn").onclick = () => {
-  RUNS.clear(); focused = null; renderAll();
+  RUNS.clear(); focused = null; combinedRun = null; renderAll();
   setStatus("Cleared.");
 };
 
@@ -324,7 +330,9 @@ async function ingest(/** @type {FileList} */ files) {
     if (!loaded.has(runName)) { newRuns++; newQ += qAdded; loaded.add(runName); }
     if (!focused) focused = runName;
   }
-  setStatus(`Loaded ${newRuns} run(s), ~${newQ} questions each. ${RUNS.size} available; showing one at a time.`);
+  buildCombinedRun();
+  setStatus(`Loaded ${newRuns} run(s), ~${newQ} questions each. ${RUNS.size} available; showing one at a time` +
+    (combinedRun ? ` — or pick “Σ all runs” to pool them` : "") + ".");
   renderAll();
 }
 
@@ -371,6 +379,130 @@ function wilson(k, n){
 }
 
 // ───────────────────────────────────────────────────────────────────────────
+// Combined (pooled) run — merges every loaded run into one synthetic run.
+// Summary stats are recomputed in-browser with the same formulas as
+// harness/metrics.py so pooled numbers stay comparable with per-run summaries.
+// ───────────────────────────────────────────────────────────────────────────
+/** Mirrors harness/config.py PAIRWISE as [subtrahend, minuend]. */
+const PAIRS = [["raw","profile"],["raw","metadata"],["profile","profile_metadata"],["metadata","profile_metadata"]];
+const r2 = x => Math.round(x*100)/100;
+const r4 = x => Math.round(x*10000)/10000;
+const r6 = x => Math.round(x*1e6)/1e6;
+
+/** Port of metrics.aggregate(). */
+function aggregateRecords(recs){
+  const n = recs.length;
+  if (!n) return {n:0};
+  const correct = recs.filter(r=>r.correct===true).length;
+  const valid   = recs.filter(r=>r.valid_sql===true).length;
+  const ci = wilson(correct,n);
+  const opOK = recs.every(r=>r.metrics_available!==false);
+  const sum = f => recs.reduce((a,r)=>a+(Number(f(r))||0),0);
+  return {
+    n, accuracy:r4(correct/n), accuracy_ci95:[r4(ci[0]),r4(ci[1])], valid_sql_pct:r4(valid/n),
+    mean_turns: opOK ? r2(sum(r=>r.turns)/n) : null,
+    mean_db_queries: opOK ? r2(sum(r=>r.db_queries)/n) : null,
+    mean_latency_s: r2(sum(r=>r.latency_s)/n),
+    tokens_in: opOK ? Math.round(sum(r=>r.usage?.input)) : null,
+    tokens_out: opOK ? Math.round(sum(r=>r.usage?.output)) : null,
+    tokens_total: opOK ? Math.round(sum(r=>r.usage?.totalTokens)) : null,
+    cost_usd: opOK ? r6(sum(r=>r.cost?.total)) : null,
+    operational_metrics_available: opOK,
+  };
+}
+
+/** Port of metrics.subgroup_accuracy() for one grouping key. */
+function subgroupAgg(recs, keyFn){
+  const buckets = new Map();
+  for (const r of recs){
+    const k = keyFn(r);
+    if (!buckets.has(k)) buckets.set(k,[]);
+    buckets.get(k).push(r);
+  }
+  const out = {};
+  for (const k of [...buckets.keys()].sort()) out[k] = aggregateRecords(buckets.get(k));
+  return out;
+}
+/** Python str(bool) keys, to match summary.json's by_contains_domain_knowledge. */
+const domainKey = r => r.contains_domain_knowledge===true ? "True"
+  : r.contains_domain_knowledge===false ? "False" : String(r.contains_domain_knowledge ?? "?");
+
+/** Port of metrics.mcnemar() — exact two-sided binomial p over discordant pairs. */
+function mcnemarJS(a, b){
+  let bb=0, cc=0;
+  for (let i=0;i<a.length;i++){ if (a[i]&&!b[i]) bb++; else if (!a[i]&&b[i]) cc++; }
+  const nd = bb+cc;
+  let p = 1.0;
+  if (nd){
+    const k = Math.min(bb,cc);
+    let term=1, s=1; // C(nd,0) = 1
+    for (let i=1;i<=k;i++){ term = term*(nd-i+1)/i; s += term; }
+    p = Math.min(1, 2*s*Math.pow(0.5,nd));
+  }
+  const chi2 = nd ? Math.pow(Math.abs(bb-cc)-1,2)/nd : 0;
+  return {b:bb, c:cc, n_discordant:nd, mcnemar_chi2_cc:r4(chi2), p_value_exact:r6(p)};
+}
+
+/** Port of metrics.paired_diff_ci(): a = subtrahend, b = minuend (positive Δ ⇒ minuend better). */
+function pairedDiffCI(a, b){
+  const n = a.length;
+  if (!n) return null;
+  const accA = a.filter(Boolean).length/n, accB = b.filter(Boolean).length/n;
+  const delta = accB-accA;
+  const m = mcnemarJS(a,b);
+  const se = m.n_discordant ? Math.sqrt(m.n_discordant)/n : 0;
+  return {n, acc_a:r4(accA), acc_b:r4(accB), delta:r4(delta),
+          ci_low:r4(delta-1.96*se), ci_high:r4(delta+1.96*se), se:r4(se), ...m};
+}
+
+/** Pool every loaded run into one synthetic Run. Records are tagged with `__run`. */
+function buildCombinedRun(){
+  if (RUNS.size < 2){
+    combinedRun = null;
+    if (focused===COMBINED_NAME) focused = RUNS.size ? [...RUNS.keys()][0] : null;
+    return;
+  }
+  /** @type {Run} */
+  const run = {name:COMBINED_NAME, arms:{}, summary:{}};
+  for (const arm of ARMS){
+    const recs = [];
+    for (const src of RUNS.values()) for (const r of (src.arms[arm]||[])) recs.push(Object.assign({}, r, {__run:src.name}));
+    if (!recs.length) continue;
+    run.arms[arm] = recs;
+    const s = aggregateRecords(recs);
+    s.by_category = subgroupAgg(recs, r=>String(r.category ?? "?"));
+    s.by_contains_domain_knowledge = subgroupAgg(recs, domainKey);
+    const tax = {};
+    for (const r of recs){ const k = r.error_class ?? "?"; tax[k]=(tax[k]||0)+1; }
+    s.error_taxonomy = Object.fromEntries(Object.entries(tax).sort((x,y)=>y[1]-x[1]));
+    run.summary[arm] = s;
+  }
+  // Pairwise pooled across runs; McNemar pairs stay matched within one run.
+  const pairwise = {};
+  for (const [sub, minu] of PAIRS){
+    const a=[], b=[];
+    for (const src of RUNS.values()){
+      const subM = new Map((src.arms[sub]||[]).map(r=>[r.id, r.correct===true]));
+      const seen = new Set();
+      for (const r of (src.arms[minu]||[])){
+        if (!subM.has(r.id) || seen.has(r.id)) continue;
+        seen.add(r.id); a.push(subM.get(r.id)); b.push(r.correct===true);
+      }
+    }
+    const e = pairedDiffCI(a,b);
+    if (e) pairwise[`${minu}-${sub}`] = e;
+  }
+  if (Object.keys(pairwise).length) run.summary.pairwise = pairwise;
+  combinedRun = run;
+}
+
+/** Focused run, or the pooled synthetic run when Σ is selected. */
+function currentRun(){
+  if (focused === COMBINED_NAME) return combinedRun;
+  return focused ? (RUNS.get(focused) || null) : null;
+}
+
+// ───────────────────────────────────────────────────────────────────────────
 // Top-level render
 // ───────────────────────────────────────────────────────────────────────────
 function renderAll(){
@@ -390,6 +522,15 @@ function renderRunSelector(){
   const el = document.getElementById("runsel");
   el.innerHTML = "";
   const names = [...RUNS.keys()].sort();
+  if (combinedRun){
+    const totalQ = Math.max(...ARMS.map(a=>combinedRun.arms[a]?.length||0));
+    const div = document.createElement("div");
+    div.className = "chip sum" + (focused===COMBINED_NAME?" on":"");
+    div.innerHTML = `<span class="dot"></span>Σ all runs <span style="opacity:.6">(${totalQ})</span>`;
+    div.title = "pool every loaded run into one combined view";
+    div.onclick = () => { focused = COMBINED_NAME; renderAll(); };
+    el.appendChild(div);
+  }
   for (const n of names) {
     const run = RUNS.get(n);
     const totalQ = Math.max(...ARMS.map(a=>run.arms[a]?.length||0));
@@ -434,7 +575,7 @@ function renderCharts(){
 }
 
 function renderAccChart(){
-  const run = focused ? RUNS.get(focused) : null;
+  const run = currentRun();
   const data = run && ARMS.map(arm=>{
     const s = armSummary(run,arm); const recs = run.arms[arm]||[];
     let acc,ci;
@@ -446,7 +587,7 @@ function renderAccChart(){
 }
 
 function renderCostChart(){
-  const run = focused ? RUNS.get(focused) : null;
+  const run = currentRun();
   const data = run && ARMS.map(arm=>{
     const s=armSummary(run,arm);
     return {arm,value:s?.cost_usd != null && s.n ? s.cost_usd/s.n : agg(run.arms[arm]||[],r=>r.cost?.total)};
@@ -455,7 +596,7 @@ function renderCostChart(){
 }
 
 function renderLatencyChart(){
-  const run = focused ? RUNS.get(focused) : null;
+  const run = currentRun();
   const data = run && ARMS.map(arm=>({arm,value:armSummary(run,arm)?.mean_latency_s ?? agg(run.arms[arm]||[],r=>r.latency_s)}));
   renderArmBars("latChart","latRunTag",run,data,{fmt:fmtSec});
 }
@@ -499,7 +640,7 @@ function renderSubChart(){
   const host = document.getElementById("subChart");
   const tag = document.getElementById("subRunTag");
   host.innerHTML="";
-  const run = focused ? RUNS.get(focused) : null;
+  const run = currentRun();
   if (!run){ tag.textContent=""; host.innerHTML=`<div class="empty">Select a run.</div>`; return; }
   tag.textContent = prettyName(run.name);
 
@@ -581,7 +722,7 @@ function renderScatter(){
   const host = document.getElementById("scatterChart");
   const tag = document.getElementById("scatterRunTag");
   host.innerHTML="";
-  const run = focused ? RUNS.get(focused) : null;
+  const run = currentRun();
   const runs = run ? [run] : [];
   if (!run){ tag.textContent=""; host.innerHTML=`<div class="empty">Select a run.</div>`; return; }
   tag.textContent = prettyName(run.name);
@@ -634,7 +775,7 @@ function renderScatter(){
 
 function renderAuxStats(){
   const host=document.getElementById("auxTbl"), tag=document.getElementById("auxRunTag");
-  const run=focused ? RUNS.get(focused) : null;
+  const run=currentRun();
   if (!run){ tag.textContent=""; host.innerHTML=""; return; }
   tag.textContent=prettyName(run.name);
   const rows=ARMS.map(arm=>({arm,s:armSummary(run,arm)})).filter(r=>r.s);
@@ -654,7 +795,7 @@ function renderAuxStats(){
 function renderForest(){
   const host = document.getElementById("forestChart");
   host.innerHTML="";
-  const run = focused ? RUNS.get(focused) : null;
+  const run = currentRun();
   const runs = run ? [run] : [];
   if (!run){ host.innerHTML=`<div class="empty">Select a run.</div>`; return; }
 
@@ -737,7 +878,7 @@ function errColor(k){ return ERR_COLOR[k] || "#5a6672"; }
 function renderErrors(){
   const host = document.getElementById("errorCharts");
   host.innerHTML="";
-  const run = focused ? RUNS.get(focused) : null;
+  const run = currentRun();
   const runs = run ? [run] : [];
   if (!run){ host.innerHTML=`<div class="empty">Select a run.</div>`; return; }
 
@@ -796,24 +937,27 @@ function renderDrill(){
   const tag = document.getElementById("drillRunTag");
   const fHost = document.getElementById("drillFilters");
   const host = document.getElementById("drillTbl");
-  const run = focused ? RUNS.get(focused) : null;
+  const run = currentRun();
   if (!run){ tag.textContent=""; host.innerHTML=""; fHost.innerHTML=""; return; }
   tag.textContent = prettyName(run.name);
 
-  // join records by id across arms
+  // join records by id across arms; in the combined view key by run::id so
+  // identical question ids from different runs stay separate rows
+  const isComb = run === combinedRun;
   /** @type {Map<string,Record<Arm,QRec>>} */
   const byId = new Map();
   for (const arm of ARMS){
     for (const r of (run.arms[arm]||[])){
-      if (!byId.has(r.id)) byId.set(r.id, {});
-      byId.get(r.id)[arm] = r;
+      const key = isComb ? `${r.__run}::${r.id}` : r.id;
+      if (!byId.has(key)) byId.set(key, {});
+      byId.get(key)[arm] = r;
     }
   }
-  let rows = [...byId.entries()].map(([id,arms])=>{
+  let rows = [...byId.entries()].map(([key,arms])=>{
     const anyRec = ARMS.map(arm=>arms[arm]).find(Boolean);
     const metric = key => Object.fromEntries(ARMS.map(arm=>[arm, arms[arm]?.[key]]));
     return {
-      id, arms,
+      id: anyRec?.id || key, key, run: anyRec?.__run, arms,
       category: anyRec?.category || "",
       domain: anyRec?.contains_domain_knowledge,
       correct: metric("correct"), err: metric("error_class"),
@@ -870,7 +1014,7 @@ function renderDrill(){
     const k = st.sortKey, dir = st.sortDir;
     const cmp = (a,b)=>{
       let va, vb;
-      if (k==="id"||k==="category"){ va=a[k]||""; vb=b[k]||""; return va<vb?-dir:va>vb?dir:0; }
+      if (k==="id"||k==="category"||k==="run"){ va=a[k]||""; vb=b[k]||""; return va<vb?-dir:va>vb?dir:0; }
       if (k==="domain"){ va=a.domain?1:0; vb=b.domain?1:0; return (va-vb)*dir; }
       const arm = ARMS.find(arm=>k.endsWith("_"+arm));
       if (arm){ const field=k.slice(0,-arm.length-1); va=a[field][arm]; vb=b[field][arm]; }
@@ -886,6 +1030,7 @@ function renderDrill(){
     const th = (k,label,cls="",attrs="") => `<th class="${cls}" ${attrs} onclick="window.__sort('${k}')" style="cursor:pointer">${label}${st.sortKey===k?(st.sortDir>0?" ▲":" ▼"):""}</th>`;
     const setupHeads = (metric) => ARMS.map(arm=>th(`${metric}_${arm}`,`<span class="armbadge ${ARM_BADGE[arm]||""}" title="${ARM_LABEL[arm]}">${ARM_BADGE[arm]}</span>`)).join("");
     let html = `<thead><tr class="grp">
+      ${isComb ? th("run","run","l",`rowspan="2"`) : ""}
       ${th("id","question id","l",`rowspan="2"`)}
       ${th("category","category","l",`rowspan="2"`)}
       ${th("domain","domain knowledge","",`rowspan="2"`)}
@@ -900,7 +1045,8 @@ function renderDrill(){
       const cell = (/** @type {boolean|null|undefined} */ v)=> v===true?`<span class="corr-yes">✓</span>`:v===false?`<span class="corr-no">✗</span>`:`<span class="corr-na">–</span>`;
       const errc = (e)=> e?`<span class="errtag ${e}">${e}</span>`:`<span class="corr-na">–</span>`;
       const num  = (v)=> v==null?`<span class="corr-na">–</span>`:v;
-      html += `<tr style="cursor:pointer" onclick="window.__open('${escapeAttr(r.id)}')">
+      html += `<tr style="cursor:pointer" onclick="window.__open('${escapeAttr(r.key)}')">
+        ${isComb ? `<td class="l" title="${escapeHtml(r.run)}">${escapeHtml(prettyName(r.run))}</td>` : ""}
         <td class="l"><code class="inl">${escapeHtml(r.id)}</code></td>
         <td class="l">${escapeHtml(r.category)}</td>
         <td>${r.domain===true?"✓":r.domain===false?"—":"?"}</td>
@@ -941,9 +1087,18 @@ function formatSql(sql){
 // ───────────────────────────────────────────────────────────────────────────
 // Detail panel
 // ───────────────────────────────────────────────────────────────────────────
-function openPanel(id){
-  const run = focused ? RUNS.get(focused) : null;
+function openPanel(key){
+  let run = currentRun();
   if (!run) return;
+  let id = key;
+  // combined drill-down rows pass "runName::questionId"
+  if (run === combinedRun){
+    const i = key.indexOf("::");
+    if (i > 0){
+      const src = RUNS.get(key.slice(0,i));
+      if (src){ run = src; id = key.slice(i+2); }
+    }
+  }
   /** @type {Record<Arm,QRec>} */
   const recs = {};
   for (const arm of ARMS) recs[arm] = (run.arms[arm]||[]).find(r=>r.id===id) || null;
