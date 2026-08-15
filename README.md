@@ -2,6 +2,20 @@
 
 Does a pre-generated [db-snooper](https://github.com/renatyv/db-snooper) profile improve an agent's execution accuracy on [BEAVER](https://huggingface.co/datasets/BeaverBench/beaver), compared with raw database access?
 
+**Short answer: no.** Across 100 questions per database per arm, the profile moved execution accuracy by approximately nothing (every pairwise McNemar test p = 1.0) while multiplying pooled input tokens by ~6. Metadata alone — a quarter of the tokens — did just as well.
+
+## Results
+
+Execution accuracy, 100 questions per database per arm, identical prompts, tools, model, and budgets:
+
+| Database | Raw | + Profile | + Metadata |
+|---|---|---|---|
+| neutron | 13% | 13% | 13% |
+| nova | 9% | 8% | 11% |
+| dw | 5% | 4% | 3% |
+
+The profile arm also dropped from ~4.6 to ~2.2 turns and from 7.8 to 1.3 database queries per question — the agent read the profile, stopped exploring, and was wrong sooner. Open `results-viz.html` in a browser for the full per-run breakdown (turns, tokens, cost, failure modes).
+
 The agentic arms run in a fresh, unprivileged Docker/OrbStack container for every question. Pi uses the purpose-built `sql_exec` tool; the optional Claude Code, OpenCode, and Codex runners use their built-in tools with the container's MySQL/Python utilities. The database account enforces SELECT-only access.
 
 ## Experiment arms
@@ -29,10 +43,11 @@ The host's loader/scorer credentials and coding-agent configuration are never mo
 Prerequisites: OrbStack or Docker, the existing `beaver-mysql` container exposing MySQL on host port 3307, and `uv`.
 
 ```bash
+cp .env.example .env   # then fill in your OPENROUTER_API_KEY
 uv sync
+uv run --group data python data/download_hf.py   # only if data/ is missing (re-creates the seed-77 samples)
 docker build -t beaver-agent -f Dockerfile.agent .
 docker build -t beaver-egress-proxy -f Dockerfile.proxy harness/egress
-export OPENROUTER_API_KEY=sk-or-...
 uv run python run_experiment.py --dataset neutron --phase phase0 --arms raw profile metadata profile_metadata
 ```
 
@@ -97,6 +112,14 @@ harness/
 Dockerfile.agent           coding-agent CLIs + analytics tools image
 Dockerfile.proxy           egress proxy image
 profiles/                  db-snooper profiles
-data/                      BEAVER splits
+data/                      BEAVER splits (regenerable via data/download_hf.py)
 results/                   per-run records and summaries (ignored)
 ```
+
+## Data
+
+`data/` holds the BEAVER splits used by the harness: the full question set (`dev.json`), the seed-77 sample actually run (`dev_sampled.json`), and the official table metadata (`dev_tables.json`). Everything is regenerable from Hugging Face with `uv run --group data python data/download_hf.py --sample 100`, or offline from local parquet dumps with `data/build_local.py`.
+
+## License
+
+[MIT](LICENSE)
