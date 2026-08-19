@@ -19,17 +19,23 @@ from pathlib import Path
 from . import config, parse_sql, pi_stream, prompts
 
 
-def _env(db_label: str, max_turns: int) -> dict:
+def _env(db_label: str, max_turns: int, engine: str = "mysql", db: str | None = None) -> dict:
     env = dict(os.environ)
     env.update({
-        "BEAVER_MYSQL_HOST": config.MYSQL_HOST,
-        "BEAVER_MYSQL_PORT": str(config.MYSQL_PORT),
-        "BEAVER_MYSQL_USER": config.MYSQL_USER,
-        "BEAVER_MYSQL_PWD": config.MYSQL_PWD,
-        "BEAVER_DB": config.mysql_db_for(db_label),
         "BEAVER_QUERY_TIMEOUT": str(config.MYSQL_QUERY_TIMEOUT),
         "BEAVER_MAX_TURNS": str(max_turns),
     })
+    if engine == "sqlite":
+        env["BEAVER_DB_PATH"] = str(config.sqlite_db_path(db))
+        env["BEAVER_DB"] = Path(db).stem
+    else:
+        env.update({
+            "BEAVER_MYSQL_HOST": config.MYSQL_HOST,
+            "BEAVER_MYSQL_PORT": str(config.MYSQL_PORT),
+            "BEAVER_MYSQL_USER": config.MYSQL_USER,
+            "BEAVER_MYSQL_PWD": config.MYSQL_PWD,
+            "BEAVER_DB": db or config.mysql_db_for(db_label),
+        })
     return env
 
 
@@ -70,8 +76,12 @@ _parse_stream = pi_stream.parse_stream
 
 
 def run(db_label: str, question: str, arm: str, max_turns: int,
-        sandbox: Path) -> dict:
-    system_prompt, user_prompt = prompts.agent_prompts(db_label, question, arm, max_turns)
+        sandbox: Path, engine: str = "mysql", db: str | None = None,
+        evidence: str | None = None, profile_key: str | None = None) -> dict:
+    system_prompt, user_prompt = prompts.agent_prompts(
+        db_label, question, arm, max_turns, engine=engine, db=db,
+        evidence=evidence, profile_key=profile_key,
+    )
     sandbox.mkdir(parents=True, exist_ok=True)
     started = time.time()
     rec: dict = {
@@ -82,7 +92,7 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
         proc = subprocess.run(
             _argv(system_prompt),  # now an APPEND prompt, not a replacement
             input=user_prompt,
-            env=_env(db_label, max_turns),
+            env=_env(db_label, max_turns, engine, db),
             cwd=str(sandbox),
             capture_output=True,
             text=True,

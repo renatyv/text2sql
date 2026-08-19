@@ -98,34 +98,71 @@ def _results_dir(run_id: str) -> Path:
 _USE_CONTAINER = True
 
 
+def _q_target(q: dict, db_label: str) -> tuple[str, str, str]:
+    """Resolve a question's (engine, db, profile_key).
+
+    BEAVER: one MySQL schema per dataset. BIRD / Spider 2.0: the question's
+    `db` is an .sqlite file path and `profile` the per-database profile key.
+    """
+    spec = config.dataset_spec(db_label)
+    engine = q.get("engine") or spec["engine"]
+    db = q.get("db") or config.mysql_db_for(db_label) or db_label
+    profile_key = q.get("profile") or db
+    return engine, db, profile_key
+
+
 def _run_one(q: dict, arm: str, db_label: str, max_turns: int, idx: int,
              status_callback=None) -> dict:
     sandbox = config.SANDBOX_ROOT / f"{db_label}_{arm}_{idx}_{q['id']}"
+    engine, db, profile_key = _q_target(q, db_label)
     if config.arm_spec(arm)["tools"]:
         if _USE_CONTAINER:
             rec = runner_container.run(
-                db_label, q["question"], arm, max_turns, sandbox, status_callback
+                db_label, q["question"], arm, max_turns, sandbox, status_callback,
+                engine=engine, db=db, evidence=q.get("evidence"),
+                profile_key=profile_key,
             )
         else:
-            rec = runner_pi.run(db_label, q["question"], arm, max_turns, sandbox)
+            rec = runner_pi.run(
+                db_label, q["question"], arm, max_turns, sandbox,
+                engine=engine, db=db, evidence=q.get("evidence"),
+                profile_key=profile_key,
+            )
     else:
-        rec = runner_zeroshot.run(db_label, q["question"], arm, sandbox)
+        rec = runner_zeroshot.run(
+            db_label, q["question"], arm, sandbox,
+            engine=engine, db=db, evidence=q.get("evidence"),
+            profile_key=profile_key,
+        )
     return rec
 
 
-def _score(rec: dict, q: dict, db: str) -> dict:
-    s = scorer.score_prediction(rec.get("pred_sql"), q["sql"], db)
+def _score(rec: dict, q: dict, engine: str, db: str, mode: str = "beaver") -> dict:
+    eval_meta = None
+    if mode == "spider2":
+        eval_meta = {
+            "gold_csvs": q.get("gold_csvs") or [],
+            "condition_cols": q.get("condition_cols"),
+            "ignore_order": bool(q.get("ignore_order", False)),
+        }
+    s = scorer.score_prediction(rec.get("pred_sql"), q.get("sql"), db,
+                                engine=engine, mode=mode, eval_meta=eval_meta)
     rec.update(s)
-    # denormalize for the record
+    # denormalize for the record / subgroup metrics
     rec["id"] = q["id"]
-    rec["category"] = q.get("category")
-    rec["detailed_category"] = q.get("detailed_category")
-    rec["contains_domain_knowledge"] = q.get("contains_domain_knowledge")
+    for field in ("category", "detailed_category", "contains_domain_knowledge",
+                  "difficulty", "db_id"):
+        if q.get(field) is not None:
+            rec[field] = q[field]
     return rec
 
 
 def _protocol_fingerprint(q: dict, arm: str, db: str, max_turns: int) -> str:
-    system, user = prompts.agent_prompts(db, q["question"], arm, max_turns)
+    engine, target_db, profile_key = _q_target(q, db)
+    system, user = prompts.agent_prompts(
+        db, q["question"], arm, max_turns, engine=engine, db=target_db,
+        evidence=q.get("evidence"), profile_key=profile_key,
+    )
     model_registry_hash = None
     if _USE_CONTAINER and config.CONTAINER_AGENT == "pi":
         model_registry_hash = hashlib.sha256(config.openrouter_models_path().read_bytes()).hexdigest()
@@ -144,7 +181,7 @@ def _protocol_fingerprint(q: dict, arm: str, db: str, max_turns: int) -> str:
     return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
 
 
-def _run_one_and_score(q: dict, arm: str, db_label: str, mysql_db: str,
+def _run_one_and_score(q: dict, arm: str, db_label: str,
                        max_turns: int, idx: int,
                        status_callback=None) -> tuple[dict, float]:
     """Worker: run one question + score it, never raising.
@@ -157,6 +194,8 @@ def _run_one_and_score(q: dict, arm: str, db_label: str, mysql_db: str,
     """
     t0 = time.time()
     fingerprint = _protocol_fingerprint(q, arm, db_label, max_turns)
+    engine, db, _profile_key = _q_target(q, db_label)
+    mode = config.dataset_spec(db_label)["scoring"]
     try:
         for attempt in range(2):
             rec = _run_one(q, arm, db_label, max_turns, idx, status_callback)
@@ -165,7 +204,7 @@ def _run_one_and_score(q: dict, arm: str, db_label: str, mysql_db: str,
             if attempt == 0:
                 time.sleep(random.uniform(5, 15))
         if not rec.get("infrastructure_error"):
-            rec = _score(rec, q, mysql_db)
+            rec = _score(rec, q, engine, db, mode)
         rec["harness_attempts"] = attempt + 1
         rec["id"] = q["id"]
         rec["protocol_fingerprint"] = fingerprint
@@ -207,7 +246,10 @@ def _run_dataset(args) -> int:
     questions = man["questions"]
     if args.limit:
         questions = questions[: args.limit]
-    db = man["mysql_db"]
+    spec = config.dataset_spec(args.dataset)
+    engine = man.get("engine") or spec["engine"]
+    db = man.get("mysql_db") or config.mysql_db_for(args.dataset)
+    db_desc = db if engine == "mysql" else f"{engine} · {len({q['db'] for q in questions})} database files"
     run_id = _run_id(args.dataset, args.phase, num_samples)
     rdir = _results_dir(run_id)
 
@@ -224,7 +266,7 @@ def _run_dataset(args) -> int:
 
     runner_name = f"container:{config.CONTAINER_AGENT}" if _USE_CONTAINER else "host(pi)"
     print(f"=== run {run_id} | arms={arms} | questions={len(questions)} | "
-          f"max_turns={max_turns} | db={db} | workers={args.workers} "
+          f"max_turns={max_turns} | db={db_desc} | workers={args.workers} "
           f"| runner={runner_name} ===")
     model = config.CONTAINER_AGENT_MODEL if _USE_CONTAINER else config.DEFAULT_MODEL_ID
     print(f"agent model: openrouter/{model}")
@@ -232,15 +274,17 @@ def _run_dataset(args) -> int:
     # Setup also resets this process's random, SELECT-only agent account. Run
     # it even when the network already exists; otherwise a later process would
     # have credentials that do not match the account provisioned by an earlier
-    # process. Zero-shot and host-pi runs do not need this boundary.
+    # process. Zero-shot and host-pi runs do not need this boundary. SQLite
+    # benchmarks need no grants at all (read-only file mounts), but the proxy
+    # bring-up still applies.
     has_container_agent = any(config.arm_spec(arm)["tools"] for arm in arms)
     if _USE_CONTAINER and has_container_agent and not (args.score_only or args.estimate_cost):
         print("=== preparing agent network and SELECT-only database account ===")
-        network.setup({db})
+        network.setup(set(man.get("mysql_dbs") or []))
 
     # ---- score-only / estimate-cost short-circuit --------------------------
     if args.score_only or args.estimate_cost:
-        gold = {q["id"]: q["sql"] for q in questions}
+        by_id = {q["id"]: q for q in questions}
         by_arm: dict[str, list[dict]] = {}
         progress = _progress()
         with progress:
@@ -252,18 +296,17 @@ def _run_dataset(args) -> int:
                     desc = f"rescore arm {arm}"
                     task = progress.add_task(desc, total=len(recs))
                     for r in recs:
-                        q = {"id": r.get("id"), "sql": gold.get(r.get("id"), ""),
-                              "category": r.get("category"),
-                              "detailed_category": r.get("detailed_category"),
-                              "contains_domain_knowledge": r.get("contains_domain_knowledge")}
-                        _score(r, q, db)
+                        q = by_id.get(r.get("id"), {})
+                        if q:
+                            q_engine, q_db, _key = _q_target(q, args.dataset)
+                            _score(r, q, q_engine, q_db, spec["scoring"])
                         progress.advance(task)
                     metrics.write_jsonl(rdir / f"arm{arm}.jsonl", recs)
                 by_arm[arm] = recs
         if args.estimate_cost:
             print(json.dumps(metrics.project_cost(by_arm, config.PHASE2_SAMPLE_SIZES.get(args.dataset, 0)), indent=2))
             return 0
-        _summarize(by_arm, rdir)
+        _summarize(by_arm, rdir, spec["subgroups"])
         return 0
 
     # ---- main loop ---------------------------------------------------------
@@ -305,7 +348,7 @@ def _run_dataset(args) -> int:
 
                 future_to_q = {
                     pool.submit(
-                        _run_one_and_score, q, arm, args.dataset, db, max_turns, i,
+                        _run_one_and_score, q, arm, args.dataset, max_turns, i,
                         lambda turn, dbq, qid=q["id"]: live_status(qid, turn, dbq),
                     ): (i, q)
                     for i, q in to_run
@@ -334,7 +377,7 @@ def _run_dataset(args) -> int:
             infrastructure_failures += len(failures)
             summaries[arm] = [r for r in records if not r.get("infrastructure_error")]
 
-    _summarize(summaries, rdir)
+    _summarize(summaries, rdir, spec["subgroups"])
     if infrastructure_failures:
         print(f"ERROR: {infrastructure_failures} infrastructure failures were excluded; "
               "rerun the same command to retry them.")
@@ -373,14 +416,17 @@ def run(args) -> int:
     return status
 
 
-def _summarize(by_arm: dict[str, list[dict]], rdir: Path) -> None:
+def _summarize(by_arm: dict[str, list[dict]], rdir: Path,
+               subgroup_fields: list[str] | None = None) -> None:
     print("\n=== summary ===")
+    # Subgroup annotations are per benchmark: BEAVER reports category ×
+    # domain-knowledge, BIRD difficulty, Spider 2.0 the source database.
+    subgroup_fields = subgroup_fields or ["category", "contains_domain_knowledge", "query_shape"]
     summary: dict[str, dict] = {}
     for arm, recs in by_arm.items():
         agg = metrics.aggregate(recs)
-        agg["by_category"] = metrics.subgroup_accuracy(recs, "category")
-        agg["by_contains_domain_knowledge"] = metrics.subgroup_accuracy(recs, "contains_domain_knowledge")
-        agg["by_query_shape"] = metrics.subgroup_accuracy(recs, "query_shape")
+        for field in subgroup_fields:
+            agg[f"by_{field}"] = metrics.subgroup_accuracy(recs, field)
         agg["error_taxonomy"] = metrics.value_counts(recs, "error_class")
         summary[arm] = agg
         telemetry = "unavailable" if not agg.get("operational_metrics_available", True) else f"${agg.get('cost_usd')}"

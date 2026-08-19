@@ -66,6 +66,32 @@ uv run python run_experiment.py --dataset neutron --phase pilot --score-only
 
 Completed records are reused only when their protocol fingerprint matches the current prompts, artifacts, model, runner, reasoning effort, and budgets. Prompt or budget changes therefore cannot silently mix incompatible results. While pi runs, the progress bar shows the latest completed agent turn and database-query count.
 
+## Other benchmarks: BIRD Mini-Dev & Spider 2.0-lite (SQLite)
+
+The same profile-vs-raw question, asked on two public text-to-SQL benchmarks. Both run **natively on the benchmarks' original SQLite files** — nothing is loaded into MySQL, so SQLite/MySQL dialect differences cannot distort the results. Agents get a read-only `sqlite3` CLI in the same sandbox container; the scorer follows each benchmark's official semantics (BIRD: unordered set comparison of result rows; Spider 2.0: prediction-vs-gold-CSV column-vector fuzzy match, ported from the official evaluator and verified to score identically on the released gold SQL).
+
+One-time setup (downloads ~2 GB, cached in `~/.cache/custom-bench`):
+
+```bash
+make load-bird         # minidev.zip -> data/bird_mini_dev (500 questions, 11 DBs)
+make load-spider2      # sparse clone of xlang-ai/Spider2 + localdb zip -> data/sp2_lite_sqlite (135 tasks, 30 DBs)
+make agent-image       # rebuild beaver-agent (now ships sqlite3)
+make generate-profiles DB=bird_mini_dev     # profiles/bird_<db>.md via db-snooper --db-type sqlite
+make generate-profiles DB=sp2_lite_sqlite   # profiles/sp2_<db>.md
+make generate-schema-links DB=bird_mini_dev # schema-links/bird_<db>.md (SQLite PRAGMA introspection)
+```
+
+Run the comparison (raw vs profile arms):
+
+```bash
+make benchmark-bird        # or: uv run python run_experiment.py --dataset bird_mini_dev ...
+make benchmark-spider2
+```
+
+Per-question `evidence` (BIRD external knowledge, Spider 2.0 reference documents) is part of the benchmark input and is supplied identically to every arm. Subgroup reporting adapts per benchmark (BIRD: difficulty; Spider 2.0: source database).
+
+Known limitations, verified against the official tooling: BIRD `bird_701`'s gold query exceeds the official 60 s scoring budget and `bird_518`'s gold is nondeterministic (tie broken arbitrarily) — 2/500 questions cannot reliably score correct. Spider 2.0 releases gold SQL for only 24 local tasks; those reproduce the official gold CSVs on 16/24 (the official evaluator agrees exactly — the remaining 8 released SQLs are stale relative to the released CSVs).
+
 ## Switch coding agents
 
 The default is pi. Set `BEAVER_AGENT` before a run; all choices retain the same fresh container, SELECT-only MySQL account, and OpenRouter-only proxy.
@@ -106,13 +132,16 @@ harness/
   network.py               network + SELECT-only MySQL account setup
   egress/egress-proxy.js   exact-host HTTPS CONNECT allow-list
   turn_guard.ts            hard agent turn cap
-  prompts.py               arm-specific prompts
-  scorer.py                execution-accuracy scorer
+  prompts.py               arm-specific prompts (MySQL and SQLite variants)
+  scorer.py                execution-accuracy scorer (beaver | bird | spider2 modes)
+  spider2_eval.py          port of the official Spider 2.0 CSV fuzzy matcher
+  sqlite_io.py             read-only SQLite executor (BIRD / Spider 2.0)
+  generate_profiles.py     db-snooper driver (per-DB for SQLite benchmarks)
   runner_zeroshot.py       no-tools OpenRouter arm
 Dockerfile.agent           coding-agent CLIs + analytics tools image
 Dockerfile.proxy           egress proxy image
 profiles/                  db-snooper profiles
-data/                      BEAVER splits (regenerable via data/download_hf.py)
+data/                      benchmark splits and loaders (build_bird_mini_dev.py, build_spider2.py)
 results/                   per-run records and summaries (ignored)
 ```
 

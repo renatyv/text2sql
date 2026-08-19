@@ -110,7 +110,7 @@ def ensure_agent_db_user(databases: set[str] | None = None) -> None:
         f"ALTER USER {account} IDENTIFIED BY {_sql_literal(config.AGENT_MYSQL_PWD)}",
         f"REVOKE ALL PRIVILEGES, GRANT OPTION FROM {account}",
     ]
-    for dataset in databases or {spec["mysql_db"] for spec in config.DATASETS.values()}:
+    for dataset in databases or config.all_mysql_dbs():
         statements.append(f"GRANT SELECT ON `{dataset.replace('`', '``')}`.* TO {account}")
     env = dict(os.environ, MYSQL_PWD=config.MYSQL_PWD)
     r = subprocess.run(

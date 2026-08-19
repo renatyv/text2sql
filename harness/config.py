@@ -59,15 +59,68 @@ MANIFEST_DIR = REPO_ROOT / "runs"
 # ---------------------------------------------------------------------------
 # Datasets (plan §"Datasets & sampling")
 # ---------------------------------------------------------------------------
-# db_label -> (mysql_database, full question count for Phase-2 default sampling)
+# db_label -> spec. BEAVER datasets run on MySQL (one schema per dataset);
+# bird_mini_dev / sp2_lite_sqlite run natively on SQLite files (one file per
+# benchmark database, referenced per question — nothing is loaded into MySQL,
+# so the original benchmark dialects are preserved end-to-end).
+#
+# Keys (see _DATASET_DEFAULTS for the full shape):
+#   engine   "mysql" | "sqlite" — which executor agents and the scorer use
+#   mysql_db MySQL schema (engine=mysql only); per-question `db` overrides it
+#   scoring  scorer comparison mode: "beaver" | "bird" | "spider2"
+#   strata   question fields used for stratified sampling
+#   subgroups question fields reported as by_<field> subgroups in summary.json
+#   databases_dir (engine=sqlite) host dir holding the .sqlite files; it is
+#            mounted read-only at /dbs in the agent container
 DATASETS: dict[str, dict] = {
     "neutron": {"mysql_db": "neutron", "full": 1017, "profile": "neutron.md"},
     "nova":    {"mysql_db": "nova",    "full": 1053, "profile": "nova.md"},
     "dw":      {"mysql_db": "dw",      "full": 5787, "profile": "dw.md"},
     "dw_real": {"mysql_db": "dw",      "full": 121,  "profile": "dw.md"},  # reuses dw profile/DB
+    # BIRD Mini-Dev (bird-bench/mini_dev), SQLite build: 500 questions, 11
+    # databases, official SQLite gold SQL. Scoring follows BIRD's official
+    # execution-accuracy semantics (unordered set comparison).
+    "bird_mini_dev": {
+        "benchmark": "bird", "engine": "sqlite", "scoring": "bird",
+        "strata": ["difficulty"], "subgroups": ["difficulty", "query_shape"],
+        "full": 500, "databases_dir": "data/bird_mini_dev/databases",
+    },
+    # Spider 2.0-lite, SQLite subset: local .sqlite databases + official gold
+    # CSVs (gold SQL is only partially released, so scoring compares the
+    # predicted result rows against the gold CSV with the official fuzzy match).
+    "sp2_lite_sqlite": {
+        "benchmark": "spider2", "engine": "sqlite", "scoring": "spider2",
+        "strata": ["db_id"], "subgroups": ["db_id", "query_shape"],
+        "full": 135, "databases_dir": "data/sp2_lite_sqlite/databases",
+    },
 }
+
+_DATASET_DEFAULTS = {
+    "benchmark": "beaver",
+    "engine": "mysql",
+    "scoring": "beaver",
+    "strata": ["category", "contains_domain_knowledge"],
+    "subgroups": ["category", "contains_domain_knowledge", "query_shape"],
+}
+
+
+def dataset_spec(db_label: str) -> dict:
+    """Dataset spec with benchmark-plumbing defaults filled in."""
+    try:
+        spec = dict(_DATASET_DEFAULTS)
+        spec.update(DATASETS[db_label])
+    except KeyError:
+        raise KeyError(f"unknown dataset '{db_label}'; choose from {list(DATASETS)}") from None
+    return spec
+
+
+def engine_for(db_label: str) -> str:
+    return dataset_spec(db_label)["engine"]
+
+
 # Phase-2 per-dataset sample sizes (plan). Overridable via --num-samples.
-PHASE2_SAMPLE_SIZES = {"neutron": 1017, "nova": 1053, "dw": 500, "dw_real": 121}
+PHASE2_SAMPLE_SIZES = {"neutron": 1017, "nova": 1053, "dw": 500, "dw_real": 121,
+                       "bird_mini_dev": 500, "sp2_lite_sqlite": 135}
 PILOT_N = 20  # Phase-1 pilot (neutron)
 
 # ---------------------------------------------------------------------------
@@ -274,7 +327,10 @@ def set_openrouter_model(model: str) -> None:
 # ---------------------------------------------------------------------------
 # Caps — identical across all cells (plan §Locked decisions #4)
 # ---------------------------------------------------------------------------
-MYSQL_QUERY_TIMEOUT = 10          # seconds, per MySQL query (gold/pred/exploration)
+MYSQL_QUERY_TIMEOUT = 10          # seconds, per agent-side MySQL/SQLite query (exploration)
+SCORING_QUERY_TIMEOUT = 60        # seconds, per gold/pred query when scoring BIRD/Spider2
+                                  # (their official evaluators use a 60s budget; BEAVER keeps
+                                  # the historical 10s MYSQL_QUERY_TIMEOUT)
 MAX_TURNS_PILOT = 10
 MAX_TURNS_MAIN = 10
 TOKEN_GUARD = 320_000             # runaway guard, total tokens/question
@@ -331,17 +387,50 @@ CONTAINER_PIDS_LIMIT = os.environ.get("BEAVER_CONTAINER_PIDS_LIMIT", "256")
 # The host-side scorer still uses MYSQL_HOST/MYSQL_PORT above (127.0.0.1:3307).
 MYSQL_HOST_CONTAINER = os.environ.get("BEAVER_MYSQL_HOST_CONTAINER", MYSQL_CONTAINER)
 MYSQL_PORT_CONTAINER = int(os.environ.get("BEAVER_MYSQL_PORT_CONTAINER", "3306"))
+def profile_path_for(profile_key: str) -> Path:
+    """Artifact paths are keyed by the question's profile key: the MySQL schema
+    name for BEAVER datasets, `<prefix>_<db_id>` for SQLite benchmarks."""
+    return PROFILES_DIR / f"{profile_key}.md"
+
+
+def schema_links_path_for(profile_key: str) -> Path:
+    return SCHEMA_LINKS_DIR / f"{profile_key}.md"
+
+
+def metadata_path_for(profile_key: str) -> Path:
+    return GENERATED_METADATA_DIR / f"{profile_key}.md"
+
+
 def profile_path(db_label: str) -> Path:
-    return PROFILES_DIR / DATASETS[db_label]["profile"]
+    """Dataset-level profile (single-DB datasets only)."""
+    return profile_path_for(mysql_db_for(db_label))
 
 
 def schema_links_path(db_label: str) -> Path:
-    return SCHEMA_LINKS_DIR / DATASETS[db_label]["profile"]
+    return schema_links_path_for(mysql_db_for(db_label))
 
 
 def metadata_path(db_label: str) -> Path:
-    return GENERATED_METADATA_DIR / DATASETS[db_label]["profile"]
+    return metadata_path_for(mysql_db_for(db_label))
 
 
 def mysql_db_for(db_label: str) -> str:
-    return DATASETS[db_label]["mysql_db"]
+    """MySQL schema for single-DB datasets; empty string for SQLite benchmarks
+    (their per-question `db` field carries the .sqlite file path instead)."""
+    return DATASETS[db_label].get("mysql_db", "")
+
+
+def all_mysql_dbs() -> set[str]:
+    """Every MySQL schema across datasets (for the SELECT-only agent grant)."""
+    return {spec["mysql_db"] for spec in DATASETS.values() if spec.get("mysql_db")}
+
+
+def databases_dir_for(db_label: str) -> Path:
+    """Host dir holding a SQLite benchmark's .sqlite files (mounted at /dbs)."""
+    return REPO_ROOT / dataset_spec(db_label)["databases_dir"]
+
+
+def sqlite_db_path(db: str) -> Path:
+    """Resolve a question's `db` (repo-relative or absolute) to a .sqlite path."""
+    path = Path(db)
+    return path if path.is_absolute() else REPO_ROOT / path

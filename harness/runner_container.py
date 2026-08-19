@@ -33,15 +33,17 @@ from typing import Callable
 from . import config, network, parse_sql, pi_stream, prompts
 
 
-def _container_env(db_label: str, max_turns: int) -> list[str]:
+def _container_env(db_label: str, max_turns: int, engine: str = "mysql",
+                   db: str | None = None, container_db_path: str | None = None) -> list[str]:
     """Build the -e flags for the agent container.
 
     Creds + caps go in via env (the agent never sees the repo or the host).
-    MySQL is pointed at the container-internal name/port. HTTPS_PROXY forces
-    pi's OpenRouter calls through the allow-list proxy.
+    HTTPS_PROXY forces pi's OpenRouter calls through the allow-list proxy.
+    MySQL (BEAVER) is pointed at the container-internal name/port; SQLite
+    (BIRD / Spider 2.0) gets the read-only mounted database file instead and
+    deliberately receives no MySQL credentials at all.
     """
     proxy_url = f"http://{config.EGRESS_PROXY_CONTAINER}:{config.EGRESS_PROXY_PORT}"
-    db = config.mysql_db_for(db_label)
     env = {
         # LLM routing — pi reads these.
         "HTTPS_PROXY": proxy_url,
@@ -60,17 +62,23 @@ def _container_env(db_label: str, max_turns: int) -> list[str]:
         "OPENCODE_DISABLE_AUTOUPDATE": "true",
         "OPENCODE_DISABLE_DEFAULT_PLUGINS": "true",
         "OPENCODE_DISABLE_LSP_DOWNLOAD": "true",
-        # MySQL as seen inside the container (by name, internal port 3306).
-        "MYSQL_HOST": config.MYSQL_HOST_CONTAINER,
-        "MYSQL_PORT": str(config.MYSQL_PORT_CONTAINER),
-        "MYSQL_USER": config.AGENT_MYSQL_USER,
-        "MYSQL_PASSWORD": config.AGENT_MYSQL_PWD,
-        "MYSQL_PWD": config.AGENT_MYSQL_PWD,  # the mysql CLI reads MYSQL_PWD
         # Experiment caps (turn_guard.ts + the prompt read these).
-        "BEAVER_DB": db,
         "BEAVER_MAX_TURNS": str(max_turns),
         "BEAVER_QUERY_TIMEOUT": str(config.MYSQL_QUERY_TIMEOUT),
     }
+    if engine == "sqlite":
+        env["BEAVER_DB_PATH"] = container_db_path or ""
+        env["BEAVER_DB"] = Path(container_db_path or "").stem
+    else:
+        env.update({
+            # MySQL as seen inside the container (by name, internal port 3306).
+            "MYSQL_HOST": config.MYSQL_HOST_CONTAINER,
+            "MYSQL_PORT": str(config.MYSQL_PORT_CONTAINER),
+            "MYSQL_USER": config.AGENT_MYSQL_USER,
+            "MYSQL_PASSWORD": config.AGENT_MYSQL_PWD,
+            "MYSQL_PWD": config.AGENT_MYSQL_PWD,  # the mysql CLI reads MYSQL_PWD
+            "BEAVER_DB": db or config.mysql_db_for(db_label),
+        })
     # Flatten to ["-e", "KEY=VAL", ...]
     flags: list[str] = []
     for k, v in env.items():
@@ -201,14 +209,20 @@ def _run_pi_streamed(argv: list[str], prompt: str, status: Callable[[int, int], 
 
 
 def run(db_label: str, question: str, arm: str, max_turns: int,
-        sandbox: Path, status_callback: Callable[[int, int], None] | None = None) -> dict:
+        sandbox: Path, status_callback: Callable[[int, int], None] | None = None,
+        engine: str = "mysql", db: str | None = None, evidence: str | None = None,
+        profile_key: str | None = None) -> dict:
     """Run one question in a fresh isolated container, return a result record.
 
     ``sandbox`` is accepted for signature parity with runner_pi.run but is NOT
     used as a bind-mount (the container is fully ephemeral); it's recorded in
-    the output for traceability.
+    the output for traceability. ``engine``/``db``/``profile_key`` resolve the
+    per-question database for multi-DB benchmarks (BIRD / Spider 2.0).
     """
-    system_prompt, user_prompt = prompts.agent_prompts(db_label, question, arm, max_turns)
+    system_prompt, user_prompt = prompts.agent_prompts(
+        db_label, question, arm, max_turns, engine=engine, db=db,
+        evidence=evidence, profile_key=profile_key,
+    )
     agent = config.CONTAINER_AGENT
     started = time.time()
     rec: dict = {
@@ -224,15 +238,26 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
 
     # Assemble the full `docker run` command. --network attaches to the internal
     # sandbox net; -v mounts only runner-owned configuration read-only; resource
-    # caps contain runaway work; --rm guarantees teardown.
+    # caps contain runaway work; --rm guarantees teardown. SQLite benchmarks get
+    # their database directory mounted read-only at /dbs instead of MySQL access.
+    container_db_path: str | None = None
     volumes = [
         "-v", f"{config.PI_EXTENSION}:/extensions/sql_exec.ts:ro",
         "-v", f"{config.HARNESS_DIR / 'turn_guard.ts'}:/extensions/turn_guard.ts:ro",
-        "-v", f"{config.HARNESS_DIR / 'mysql_timeout.sh'}:/usr/local/bin/mysql:ro",
         "-v", f"{(config.openrouter_models_path() if agent == 'pi' else config.HARNESS_DIR / 'openrouter_models.json')}:/home/node/.pi/agent/models.json:ro",
         "-v", f"{config.HARNESS_DIR / 'codex_config.toml'}:/home/node/.codex/config.toml:ro",
         "-v", f"{config.HARNESS_DIR / 'opencode.json'}:/config/opencode.json:ro",
     ]
+    if engine == "sqlite":
+        host_dir = config.databases_dir_for(db_label).resolve()
+        rel = config.sqlite_db_path(db).resolve().relative_to(host_dir)
+        container_db_path = f"/dbs/{rel}"
+        volumes += [
+            "-v", f"{host_dir}:/dbs:ro",
+            "-v", f"{config.HARNESS_DIR / 'sqlite_timeout.sh'}:/usr/local/bin/sqlite3:ro",
+        ]
+    else:
+        volumes += ["-v", f"{config.HARNESS_DIR / 'mysql_timeout.sh'}:/usr/local/bin/mysql:ro"]
     container_name = f"beaver-agent-{uuid.uuid4().hex}"
     docker_argv = [
         "docker", "run", "--rm", "-i",
@@ -245,7 +270,7 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
         "--security-opt", "no-new-privileges",
         "--workdir", "/workspace",
         *volumes,
-        *_container_env(db_label, max_turns),
+        *_container_env(db_label, max_turns, engine, db, container_db_path),
         *( [] if agent == "pi" else ["--entrypoint", agent] ),
         config.CONTAINER_IMAGE,
         *_agent_argv(agent, system_prompt, user_prompt, max_turns),

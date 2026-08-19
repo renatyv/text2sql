@@ -3,15 +3,23 @@
 Manifest layout (JSON), one file per (dataset, phase, num_samples):
   {
     "dataset": "neutron",
+    "benchmark": "beaver",           # beaver | bird | spider2
+    "engine": "mysql",               # mysql | sqlite
     "phase": "pilot",
     "seed": 77,
     "num_samples": 20,
-    "mysql_db": "neutron",
+    "mysql_db": "neutron",           # null for multi-DB/SQLite benchmarks
+    "mysql_dbs": ["neutron"],        # schemas to grant for this run
     "profile": "neutron.md",
     "created_at": "...",
-    "questions": [ {id, question, sql, category, detailed_category,
-                    contains_domain_knowledge}, ... ]
+    "questions": [ {id, question, sql, db, category, detailed_category,
+                    contains_domain_knowledge, engine?, profile?, evidence?,
+                    difficulty?, db_id?, gold_csv?}, ... ]
   }
+
+For SQLite benchmarks (BIRD / Spider 2.0) each question's `db` is the .sqlite
+file path and `profile` is the per-database profile key (`bird_<db_id>` /
+`sp2_<db_id>`); the dataset-level mysql_db is null.
 """
 from __future__ import annotations
 
@@ -23,6 +31,14 @@ from pathlib import Path
 from . import config
 
 SAMPLE_SEED = 77  # plan: matches data/build_local.py
+
+# Optional per-question fields carried into the manifest when present. The
+# stratification/subgroup annotations differ per benchmark (BEAVER: category×
+# domain-knowledge; BIRD: difficulty; Spider 2.0: db_id), evidence feeds the
+# prompt (BIRD/Spider 2.0 external knowledge), and the gold_csvs/condition_cols/
+# ignore_order triple drives the official Spider 2.0 CSV comparison.
+_OPTIONAL_Q_FIELDS = ("engine", "profile", "evidence", "difficulty", "db_id",
+                      "gold_csvs", "condition_cols", "ignore_order")
 
 # phase0 is a sanity check ("get 1 question producing valid SQL in all arms"),
 # so we pin the easiest question present in neutron's dev_sampled.json rather
@@ -50,19 +66,21 @@ def _load_questions(db_label: str) -> list[dict]:
     )
 
 
-def _stratify(questions: list[dict]) -> dict[str, list[dict]]:
-    """Bucket by (category, contains_domain_knowledge) for balanced sampling."""
+def _stratify(questions: list[dict], strata: list[str]) -> dict[str, list[dict]]:
+    """Bucket by the benchmark's strata fields for balanced sampling."""
     buckets: dict[str, list[dict]] = {}
     for q in questions:
-        key = f"{q.get('category', '?')}|{bool(q.get('contains_domain_knowledge'))}"
+        key = "|".join(str(q.get(field, "?")) for field in strata)
         buckets.setdefault(key, []).append(q)
     return buckets
 
 
-def _stratified_sample(questions: list[dict], n: int, seed: int) -> list[dict]:
-    """Sample n questions, proportionally across category×dk strata, seed-stable."""
+def _stratified_sample(questions: list[dict], n: int, seed: int,
+                       strata: list[str] | None = None) -> list[dict]:
+    """Sample n questions, proportionally across strata, seed-stable."""
+    strata = strata or ["category", "contains_domain_knowledge"]
     rng = random.Random(seed)
-    buckets = _stratify(questions)
+    buckets = _stratify(questions, strata)
     total = len(questions)
     n = min(n, total)
     quotas = {k: n * len(v) / total for k, v in buckets.items()}
@@ -85,31 +103,42 @@ def build_manifest(db_label: str, phase: str, num_samples: int | None) -> Path:
             return path
         print(f"[manifest] rebuilding undersized {path} ({existing.get('num_samples')} < {num_samples})")
 
+    spec = config.dataset_spec(db_label)
     all_q = _load_questions(db_label)
     if phase == "phase0":
         # Sanity phase: pin one easy question so all arms can succeed end-to-end.
         # Falls back to the sampler if the pinned id is absent (e.g. wrong dataset).
         pin = next((q for q in all_q if q["id"] == PHASE0_PIN_ID), None)
-        chosen = [pin] if pin is not None else _stratified_sample(all_q, 1, SAMPLE_SEED)
+        chosen = [pin] if pin is not None else _stratified_sample(all_q, 1, SAMPLE_SEED, spec["strata"])
     elif num_samples is None or num_samples >= len(all_q):
         chosen = all_q
     else:
-        chosen = _stratified_sample(all_q, num_samples, SAMPLE_SEED)
+        chosen = _stratified_sample(all_q, num_samples, SAMPLE_SEED, spec["strata"])
 
-    slim = [{
-        "id": q["id"],
-        "question": q["question"],
-        "sql": q["sql"],
-        "db": q.get("db", db_label),
-        "category": q.get("category"),
-        "detailed_category": q.get("detailed_category"),
-        "contains_domain_knowledge": bool(q.get("contains_domain_knowledge")),
-    } for q in chosen]
+    slim = []
+    for q in chosen:
+        record = {
+            "id": q["id"],
+            "question": q["question"],
+            "sql": q.get("sql"),
+            "db": q.get("db", config.mysql_db_for(db_label) or db_label),
+            "category": q.get("category"),
+            "detailed_category": q.get("detailed_category"),
+            "contains_domain_knowledge": bool(q.get("contains_domain_knowledge")),
+        }
+        for field in _OPTIONAL_Q_FIELDS:
+            if q.get(field) is not None:
+                record[field] = q[field]
+        slim.append(record)
 
+    mysql_db = config.mysql_db_for(db_label) or None
     manifest = {
         "dataset": db_label,
-        "mysql_db": config.mysql_db_for(db_label),
-        "profile": config.DATASETS[db_label]["profile"],
+        "benchmark": spec.get("benchmark", "beaver"),
+        "engine": spec["engine"],
+        "mysql_db": mysql_db,
+        "mysql_dbs": sorted({r["db"] for r in slim if spec["engine"] == "mysql"} or ({mysql_db} if mysql_db else set())),
+        "profile": spec.get("profile"),
         "phase": phase,
         "seed": SAMPLE_SEED,
         "num_samples": len(slim),

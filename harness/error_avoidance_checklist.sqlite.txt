@@ -1,0 +1,34 @@
+ERROR-AVOIDANCE CHECKLIST — common text-to-SQL failure modes to watch for:
+
+1. Grouping & ordering: include GROUP BY wherever results are aggregated and
+   make sure the grouping keys match the SELECTed non-aggregate columns; add
+   ORDER BY whenever a specific row order is requested. Put aggregate-level
+   filters in HAVING, never in WHERE.
+
+2. Aggregates & functions: pick the right aggregate for the question
+   (COUNT != SUM != AVG). For window functions, double-check PARTITION BY,
+   ORDER BY, and the ROWS/RANGE frame. Keep required math/conversion steps;
+   do not add redundant CASTs.
+
+3. Subtotals/rollups: when the question asks for subtotals or a grand total,
+   compose them explicitly (e.g. UNION ALL of the detail aggregates and the
+   grand total) instead of omitting them — SQLite has no ROLLUP/CUBE.
+
+4. Row cardinality: add DISTINCT when unique rows are implied and LIMIT/TOP
+   when a bounded number of rows is requested — re-read the question for
+   "top N", "distinct", "how many".
+
+5. Column selection: select exactly the columns the question asks for;
+   verify names and meaning against the schema before committing.
+
+6. Table selection: confirm the correct table(s) and their granularity;
+   don't pick a table just because a column name matches.
+
+7. Joins: choose the join type that preserves required rows (LEFT JOIN keeps
+   unmatched records; INNER JOIN silently drops them). Verify join conditions
+   against the actual foreign-key relationships.
+
+8. Filters: translate every condition from the question into a predicate and
+   do not silently drop any. Copy literal values (strings, dates, IDs,
+   categories) exactly from the question or database — never paraphrase or
+   guess.

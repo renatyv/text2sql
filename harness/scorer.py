@@ -1,6 +1,15 @@
 """Execution accuracy scorer (Spider/BEAVER-style ETE).
 
-Runs the gold and predicted SQL on the live MySQL DB and compares result sets.
+Runs the gold and predicted SQL and compares result sets. Engine is per
+dataset: MySQL (BEAVER, schemas on the shared server) or SQLite (BIRD /
+Spider 2.0, original .sqlite files). Comparison mode is per benchmark:
+
+  beaver   multiset row match; ordered positional match when the gold has a
+           top-level ORDER BY
+  bird     official BIRD execution accuracy: exact unordered SET comparison
+           (duplicate rows and row order are irrelevant, no value tolerance)
+  spider2  official Spider 2.0-lite fuzzy match: predicted result columns vs
+           the released gold CSV columns (see harness/spider2_eval.py)
 """
 from __future__ import annotations
 
@@ -9,10 +18,21 @@ from collections import Counter
 from decimal import Decimal
 from datetime import date, datetime
 
-from . import config, mysql_io
+from . import config, mysql_io, spider2_eval, sqlite_io
 
 
-def score_prediction(pred_sql: str | None, gold_sql: str, database: str) -> dict:
+def _execute(sql: str, database: str, engine: str, mode: str = "beaver"):
+    # BEAVER keeps its historical 10s scoring budget; BIRD/Spider2 follow their
+    # official evaluators' 60s budget.
+    timeout = config.MYSQL_QUERY_TIMEOUT if mode == "beaver" else config.SCORING_QUERY_TIMEOUT
+    if engine == "sqlite":
+        return sqlite_io.execute(sql, config.sqlite_db_path(database), timeout)
+    return mysql_io.execute(sql, database, timeout)
+
+
+def score_prediction(pred_sql: str | None, gold_sql: str | None, database: str,
+                     engine: str = "mysql", mode: str = "beaver",
+                     eval_meta: dict | None = None) -> dict:
     """Return a scoring record for one question.
 
     Fields:
@@ -38,17 +58,29 @@ def score_prediction(pred_sql: str | None, gold_sql: str, database: str) -> dict
         "correct": False, "valid_sql": False, "pred_error": None, "gold_error": None,
         "timed_out": False, "pred_rows": None, "gold_rows": None, "ordered": False,
         "gold_sql": gold_sql, "pred_sql": pred_sql,
-        "query_shape": classify_query_shape(gold_sql),
+        "query_shape": classify_query_shape(gold_sql) if gold_sql else "unknown",
     }
 
-    gold = mysql_io.execute(gold_sql, database)
-    if gold.timed_out:
-        rec["gold_error"] = "gold query timed out"
-        return rec
-    if gold.error:
-        rec["gold_error"] = gold.error
-        return rec
-    rec["gold_rows"] = len(gold.rows or [])
+    # Gold rows come either from the released CSVs (spider2, via eval_meta) or
+    # by executing the gold SQL live (beaver/bird).
+    gold = None
+    gold_rows: list | None = None
+    meta = eval_meta or {}
+    gold_csvs = [str(config.REPO_ROOT / p) for p in meta.get("gold_csvs") or []]
+    if mode == "spider2":
+        if not gold_csvs:
+            rec["gold_error"] = "no gold CSVs for spider2 question"
+            return rec
+    else:
+        gold = _execute(gold_sql, database, engine, mode)
+        if gold.timed_out:
+            rec["gold_error"] = "gold query timed out"
+            return rec
+        if gold.error:
+            rec["gold_error"] = gold.error
+            return rec
+        gold_rows = gold.rows or []
+        rec["gold_rows"] = len(gold_rows)
 
     if not pred_sql:
         rec["pred_error"] = "no SQL extracted"
@@ -56,7 +88,7 @@ def score_prediction(pred_sql: str | None, gold_sql: str, database: str) -> dict
         rec["error_class"] = "not_runnable"
         return rec
 
-    pred = mysql_io.execute(pred_sql, database)
+    pred = _execute(pred_sql, database, engine, mode)
     if pred.timed_out:
         rec["timed_out"] = True
         rec["pred_error"] = "predicted query timed out"
@@ -69,7 +101,7 @@ def score_prediction(pred_sql: str | None, gold_sql: str, database: str) -> dict
         err = (rec["pred_error"] or "").lower()
         if "syntax" in err or "you have an error" in err or "near " in err:
             rec["error_class"] = "syntax"
-        elif "unknown column" in err or "unknown table" in err or "doesn't exist" in err:
+        elif "unknown column" in err or "unknown table" in err or "doesn't exist" in err or "no such table" in err or "no such column" in err:
             rec["error_class"] = "wrong_table_or_column"
         else:
             rec["error_class"] = "not_runnable"
@@ -77,11 +109,21 @@ def score_prediction(pred_sql: str | None, gold_sql: str, database: str) -> dict
     rec["valid_sql"] = True
     rec["pred_rows"] = len(pred.rows or [])
 
-    ordered = _has_top_level_order_by(gold_sql)
-    rec["ordered"] = ordered
-    rec["correct"] = _compare(gold.rows, pred.rows, ordered)
+    if mode == "bird":
+        rec["correct"] = _compare_bird(gold_rows, pred.rows or [])
+    elif mode == "spider2":
+        first_gold = spider2_eval.load_gold_csv(gold_csvs[0])
+        rec["gold_rows"] = len(first_gold[0]) if first_gold else 0
+        rec["correct"] = bool(spider2_eval.score_pred(
+            pred.rows or [], gold_csvs,
+            meta.get("condition_cols"), bool(meta.get("ignore_order")),
+        ))
+    else:
+        ordered = _has_top_level_order_by(gold_sql or "")
+        rec["ordered"] = ordered
+        rec["correct"] = _compare(gold_rows, pred.rows or [], ordered)
     _add_cardinality_diagnostics(rec)
-    rec["error_class"] = "correct" if rec["correct"] else _classify_error(rec, pred_sql, gold_sql)
+    rec["error_class"] = "correct" if rec["correct"] else _classify_error(rec, pred_sql, gold_sql or "")
     return rec
 
 
@@ -244,6 +286,14 @@ def _compare(gold: list[tuple] | None, pred: list[tuple] | None, ordered: bool) 
         else:
             return False
     return not pending
+
+
+def _compare_bird(gold: list[tuple] | None, pred: list[tuple] | None) -> bool:
+    """Official BIRD EX (mini_dev evaluation_ex.calculate_ex): exact set
+    equality of raw result tuples — duplicates and row order are ignored,
+    values compare with NO tolerance (1.0 != 1), column order within a row
+    matters. Kept deliberately faithful to the official evaluator."""
+    return set(gold or []) == set(pred or [])
 
 
 # quick self-test: python -m harness.scorer

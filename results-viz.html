@@ -182,7 +182,7 @@
         <div class="chartbox"><h3>Latency by setup <span id="latRunTag" class="pill"></span></h3><div class="hint2">mean seconds per question · lower is faster</div><div id="latChart"></div></div>
       </div>
       <div class="charts">
-        <div class="chartbox wide"><h3>Accuracy by subgroup <span id="subRunTag" class="pill"></span></h3><div class="hint2">focused run · grouped by category / domain-knowledge</div><div id="subChart"></div></div>
+        <div class="chartbox wide"><h3>Accuracy by subgroup <span id="subRunTag" class="pill"></span></h3><div class="hint2">focused run · grouped by the benchmark's subgroup fields</div><div id="subChart"></div></div>
         <div class="chartbox wide"><h3>Pairwise Δ (accuracy)</h3><div class="hint2">setup differences · whiskers = 95% CI on Δ</div><div id="forestChart"></div></div>
       </div>
     </section>
@@ -427,6 +427,28 @@ function subgroupAgg(recs, keyFn){
 const domainKey = r => r.contains_domain_knowledge===true ? "True"
   : r.contains_domain_knowledge===false ? "False" : String(r.contains_domain_knowledge ?? "?");
 
+/** Subgroup fields summaries may segment by (BEAVER: category/domain-knowledge,
+ *  BIRD: difficulty, Spider 2.0: source database; query_shape is universal). */
+const GROUP_DEFS = [
+  {key:"category", title:"by category", label:l=>l,
+   keyFn:r=>String(r.category ?? "?"), has:r=>r.category !== undefined},
+  {key:"contains_domain_knowledge", title:"by domain-knowledge", label:l=>"domain_knowledge = "+l,
+   keyFn:domainKey, has:r=>r.contains_domain_knowledge !== undefined},
+  {key:"difficulty", title:"by difficulty", label:l=>l,
+   keyFn:r=>String(r.difficulty ?? "?"), has:r=>r.difficulty !== undefined},
+  {key:"db_id", title:"by database", label:l=>l,
+   keyFn:r=>String(r.db_id ?? "?"), has:r=>r.db_id !== undefined},
+  {key:"query_shape", title:"by query shape", label:l=>l,
+   keyFn:r=>String(r.query_shape ?? "?"), has:()=>true},
+];
+
+/** Which subgroup fields actually have data in this run (summary by_* or records). */
+function runGroups(run){
+  return GROUP_DEFS.filter(def =>
+    ARMS.some(a=>armSummary(run,a)?.["by_"+def.key]) ||
+    ARMS.some(a=>(run.arms[a]||[]).some(def.has)));
+}
+
 /** Port of metrics.mcnemar() — exact two-sided binomial p over discordant pairs. */
 function mcnemarJS(a, b){
   let bb=0, cc=0;
@@ -470,8 +492,9 @@ function buildCombinedRun(){
     if (!recs.length) continue;
     run.arms[arm] = recs;
     const s = aggregateRecords(recs);
-    s.by_category = subgroupAgg(recs, r=>String(r.category ?? "?"));
-    s.by_contains_domain_knowledge = subgroupAgg(recs, domainKey);
+    for (const def of GROUP_DEFS){
+      if (recs.some(def.has)) s["by_"+def.key] = subgroupAgg(recs, def.keyFn);
+    }
     const tax = {};
     for (const r of recs){ const k = r.error_class ?? "?"; tax[k]=(tax[k]||0)+1; }
     s.error_taxonomy = Object.fromEntries(Object.entries(tax).sort((x,y)=>y[1]-x[1]));
@@ -635,7 +658,7 @@ function renderArmBars(hostId, tagId, run, data, opts){
   host.appendChild(svg);
 }
 
-/** Grouped bars: accuracy by category and by domain-knowledge flag (focused run). */
+/** Grouped bars: accuracy per subgroup field present in the focused run. */
 function renderSubChart(){
   const host = document.getElementById("subChart");
   const tag = document.getElementById("subRunTag");
@@ -644,54 +667,51 @@ function renderSubChart(){
   if (!run){ tag.textContent=""; host.innerHTML=`<div class="empty">Select a run.</div>`; return; }
   tag.textContent = prettyName(run.name);
 
-  // Two panels stacked: by category, by domain_knowledge
-  host.appendChild(subgroupSvg(run, "category"));
-  host.appendChild(subgroupSvg(run, "domain"));
+  const defs = runGroups(run);
+  if (!defs.length){ host.innerHTML=`<div class="empty">No subgroup fields in this run.</div>`; return; }
+  for (const def of defs) host.appendChild(subgroupSvg(run, def));
 }
 
-function subgroupSvg(run, kind){
+function subgroupSvg(run, def){
   // compute per-arm accuracy per group from summary if present, else JSONL
-  /** @type {{label:string, byArm:Record<Arm,{acc:number,ci:[number,number],n:number}>}[]} */
-  let groups = [];
-  if (kind === "category"){
-    // union of categories across arms
-    const cats = new Set();
-    for (const arm of ARMS){
-      const s = armSummary(run,arm);
-      if (s?.by_category) Object.keys(s.by_category).forEach(c=>cats.add(c));
-      else (run.arms[arm]||[]).forEach(r=>{ if(r.category) cats.add(r.category); });
-    }
-    groups = [...cats].sort().map(c=>{
-      const byArm = /** @type {Record<Arm,{acc:number,ci:[number,number],n:number}>} */ ({});
-      for (const arm of ARMS){
-        const s = armSummary(run,arm)?.by_category?.[c];
-        const recs = (run.arms[arm]||[]).filter(r=>r.category===c);
-        if (s){ byArm[arm] = {acc:s.accuracy, ci:s.accuracy_ci95, n:s.n}; }
-        else { const j=recs.filter(r=>r.correct===true||r.correct===false); const k=j.filter(r=>r.correct).length; byArm[arm]={acc:j.length?k/j.length:0,ci:wilson(k,j.length),n:j.length}; }
-      }
-      return {label:c, byArm};
-    });
-  } else { // domain
-    const keys = ["True","False"];
-    groups = keys.map(k=>{
-      const want = (k==="True");
-      const byArm = /** @type {Record<Arm,{acc:number,ci:[number,number],n:number}>} */ ({});
-      for (const arm of ARMS){
-        const s = armSummary(run,arm)?.by_contains_domain_knowledge?.[k];
-        const recs = (run.arms[arm]||[]).filter(r=> !!r.contains_domain_knowledge === want);
-        if (s){ byArm[arm] = {acc:s.accuracy, ci:s.accuracy_ci95, n:s.n}; }
-        else { const j=recs.filter(r=>r.correct===true||r.correct===false); const kk=j.filter(r=>r.correct).length; byArm[arm]={acc:j.length?kk/j.length:0,ci:wilson(kk,j.length),n:j.length}; }
-      }
-      return {label:"domain_knowledge = "+k, byArm};
-    }).filter(g => ARMS.some(a=>g.byArm[a]?.n>0));
+  const summaryKey = "by_"+def.key;
+  const labels = new Set();
+  let anySummary = false;
+  for (const arm of ARMS){
+    const s = armSummary(run,arm)?.[summaryKey];
+    if (s){ anySummary = true; Object.keys(s).forEach(k=>labels.add(k)); }
   }
+  if (!anySummary){
+    for (const arm of ARMS) (run.arms[arm]||[]).forEach(r=>{
+      const k = def.keyFn(r);
+      if (k !== "?") labels.add(k);
+    });
+  }
+  const labelList = def.key === "contains_domain_knowledge"
+    ? ["True","False"].filter(k=>labels.has(k))
+    : [...labels].sort();
+  /** @type {{label:string, byArm:Record<Arm,{acc:number,ci:[number,number],n:number}>}[]} */
+  const groups = labelList.map(l=>{
+    const byArm = /** @type {Record<Arm,{acc:number,ci:[number,number],n:number}>} */ ({});
+    for (const arm of ARMS){
+      const s = armSummary(run,arm)?.[summaryKey]?.[l];
+      const recs = (run.arms[arm]||[]).filter(r=>def.keyFn(r)===l);
+      if (s){ byArm[arm] = {acc:s.accuracy, ci:s.accuracy_ci95, n:s.n}; }
+      else { const j=recs.filter(r=>r.correct===true||r.correct===false); const k=j.filter(r=>r.correct).length; byArm[arm]={acc:j.length?k/j.length:0,ci:wilson(k,j.length),n:j.length}; }
+    }
+    return {label:def.label(l), byArm};
+  }).filter(g => ARMS.some(a=>g.byArm[a]?.n>0));
 
   const nG = groups.length;
-  const W=660, groupH=92, m={t:28,r:92,b:20,l:190};
+  // tall layout for a handful of groups, compact rows when a field is wide
+  // (e.g. Spider 2.0's ~30 databases)
+  const compact = nG > 12;
+  const groupH = compact ? 44 : 92;
+  const W=660, m={t:28,r:92,b:20,l:190};
   const H = m.t + nG*groupH + m.b;
   const svg = makeSvg(W,H);
   const g0 = svgEl("g",{},svg);
-  svgEl("text",{x:8,y:14,class:"title"},g0).textContent = (kind==="category"?"by category":"by domain-knowledge");
+  svgEl("text",{x:8,y:14,class:"title"},g0).textContent = def.title;
 
   const innerW = W - m.l - m.r;
   for (const v of [0,.5,1]){
@@ -701,16 +721,16 @@ function subgroupSvg(run, kind){
   }
   groups.forEach((grp,gi)=>{
     const top=m.t+gi*groupH, label=grp.label.length>27?grp.label.slice(0,26)+"…":grp.label;
-    const labelEl=svgEl("text",{x:8,y:top+13,class:"lbl"},g0); labelEl.textContent=label;
+    const labelEl=svgEl("text",{x:8,y:top+(compact?9:13),class:"lbl"},g0); labelEl.textContent=label;
     svgEl("title",{},labelEl).textContent=grp.label;
     ARMS.forEach((arm,ai)=>{
       const d = grp.byArm[arm];
-      const y=top+24+ai*20;
-      const armLabel=svgEl("text",{x:m.l-10,y:y+9,"text-anchor":"end",class:"lbl"},g0); armLabel.textContent=ARM_BADGE[arm];
+      const y=top+(compact?12:24)+ai*(compact?11:20);
+      const armLabel=svgEl("text",{x:m.l-10,y:y+(compact?7:9),"text-anchor":"end",class:"lbl"},g0); armLabel.textContent=ARM_BADGE[arm];
       svgEl("title",{},armLabel).textContent=ARM_LABEL[arm];
       if (!d || !d.n){ svgEl("text",{x:m.l+5,y:y+9,class:"tick"},g0).textContent="—"; return; }
-      svgEl("rect",{x:m.l,y,width:d.acc*innerW,height:12,fill:ARM_COLOR[arm]||"var(--muted)",rx:2},g0);
-      svgEl("line",{x1:m.l+d.ci[0]*innerW,x2:m.l+d.ci[1]*innerW,y1:y+15,y2:y+15,stroke:ARM_COLOR[arm]||"var(--muted)","stroke-width":2},g0);
+      svgEl("rect",{x:m.l,y,width:d.acc*innerW,height:compact?8:12,fill:ARM_COLOR[arm]||"var(--muted)",rx:2},g0);
+      svgEl("line",{x1:m.l+d.ci[0]*innerW,x2:m.l+d.ci[1]*innerW,y1:y+(compact?10:15),y2:y+(compact?10:15),stroke:ARM_COLOR[arm]||"var(--muted)","stroke-width":2},g0);
       svgEl("text",{x:W-m.r+7,y:y+10,class:"tick"},g0).textContent=`${fmtPct(d.acc)} · n=${d.n}`;
     });
   });
@@ -1106,7 +1126,12 @@ function openPanel(key){
   if (!anyRec) return;
 
   document.getElementById("pTitle").innerHTML = `<code class="inl">${escapeHtml(id)}</code>`;
-  document.getElementById("pSub").innerHTML = `${prettyName(run.name)} · category: <b>${escapeHtml(anyRec.category||"—")}</b> · domain_knowledge: <b>${anyRec.contains_domain_knowledge===true?"true":anyRec.contains_domain_knowledge===false?"false":"—"}</b>`;
+  const tags = [];
+  if (anyRec.category !== undefined) tags.push(`category: <b>${escapeHtml(anyRec.category||"—")}</b>`);
+  if (anyRec.contains_domain_knowledge !== undefined) tags.push(`domain_knowledge: <b>${anyRec.contains_domain_knowledge===true?"true":anyRec.contains_domain_knowledge===false?"false":"—"}</b>`);
+  if (anyRec.difficulty !== undefined) tags.push(`difficulty: <b>${escapeHtml(anyRec.difficulty)}</b>`);
+  if (anyRec.db_id !== undefined) tags.push(`db: <b>${escapeHtml(anyRec.db_id)}</b>`);
+  document.getElementById("pSub").innerHTML = `${prettyName(run.name)}${tags.length ? " · " + tags.join(" · ") : ""}`;
 
   const body = document.getElementById("panelBody");
   body.innerHTML = "";

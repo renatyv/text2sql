@@ -14,7 +14,8 @@
 
 FROM node:24-bookworm-slim
 
-# Core shell + data tooling. default-mysql-client gives the `mysql` CLI.
+# Core shell + data tooling. default-mysql-client gives the `mysql` CLI;
+# sqlite3 runs the BIRD / Spider 2.0 benchmarks on their original files.
 # python3-pip + --break-system-packages (Debian 12 PEP 668) for pandas/pyarrow.
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
@@ -25,6 +26,7 @@ RUN apt-get update \
        jq \
        ripgrep \
        default-mysql-client \
+       sqlite3 \
        python3 \
        python3-pip \
        python3-venv \

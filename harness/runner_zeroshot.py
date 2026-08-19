@@ -43,8 +43,11 @@ def _cost_from_tokens(usage: dict) -> dict:
     }
 
 
-def _direct_openrouter(db_label: str, question: str, arm: str) -> dict:
-    system, user = prompts.zeroshot_prompt(db_label, question, arm)
+def _direct_openrouter(db_label: str, question: str, arm: str, engine: str = "mysql",
+                       db: str | None = None, evidence: str | None = None,
+                       profile_key: str | None = None) -> dict:
+    system, user = prompts.zeroshot_prompt(db_label, question, arm, engine=engine,
+                                           db=db, evidence=evidence, profile_key=profile_key)
     body = {
         "model": config.ZEROSHOT_MODEL_SLUG,
         "messages": [
@@ -94,9 +97,12 @@ def _direct_openrouter(db_label: str, question: str, arm: str) -> dict:
     return rec
 
 
-def _pi_fallback(db_label: str, question: str, arm: str, sandbox: Path) -> dict:
+def _pi_fallback(db_label: str, question: str, arm: str, sandbox: Path,
+                 engine: str = "mysql", db: str | None = None,
+                 evidence: str | None = None, profile_key: str | None = None) -> dict:
     """Single pi call, no tools, no agent loop, clean zero-shot system prompt."""
-    system, user = prompts.zeroshot_prompt(db_label, question, arm)
+    system, user = prompts.zeroshot_prompt(db_label, question, arm, engine=engine,
+                                           db=db, evidence=evidence, profile_key=profile_key)
     sandbox.mkdir(parents=True, exist_ok=True)
     argv = [
         config.PI_BIN, "-p",
@@ -165,7 +171,9 @@ def _parse_pi(stdout: str) -> dict:
             "turns": 1, "db_queries": 0, "model": model}
 
 
-def run(db_label: str, question: str, arm: str, sandbox: Path) -> dict:
+def run(db_label: str, question: str, arm: str, sandbox: Path, engine: str = "mysql",
+        db: str | None = None, evidence: str | None = None,
+        profile_key: str | None = None) -> dict:
     if _has_openrouter_key():
-        return _direct_openrouter(db_label, question, arm)
-    return _pi_fallback(db_label, question, arm, sandbox)
+        return _direct_openrouter(db_label, question, arm, engine, db, evidence, profile_key)
+    return _pi_fallback(db_label, question, arm, sandbox, engine, db, evidence, profile_key)

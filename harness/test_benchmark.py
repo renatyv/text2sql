@@ -28,12 +28,12 @@ class BenchmarkTests(unittest.TestCase):
         }))
 
     @patch("run_experiment._protocol_fingerprint", return_value="new")
-    @patch("run_experiment._score", side_effect=lambda rec, _q, _db: rec | {"correct": False})
+    @patch("run_experiment._score", side_effect=lambda rec, *_a: rec | {"correct": False})
     @patch("run_experiment._run_one", return_value={"budget_exhausted": "wall_clock"})
     def test_budget_timeout_is_scored_not_retried(self, run_one, _score, _fingerprint) -> None:
         rec, _ = run_experiment._run_one_and_score(
             {"id": "q", "question": "?", "sql": "SELECT 1"},
-            "raw", "neutron", "neutron", 6, 1,
+            "raw", "neutron", 6, 1,
         )
         self.assertEqual(run_one.call_count, 1)
         self.assertEqual(rec["harness_attempts"], 1)
@@ -75,8 +75,8 @@ class BenchmarkTests(unittest.TestCase):
         self.assertIn("Use turn 15 only to repair", system)
         self.assertIn("Turn 16 is reserved", system)
 
-    @patch("harness.prompts._profile", return_value="PROFILE")
-    @patch("harness.prompts._metadata", return_value="METADATA")
+    @patch("harness.prompts._profile_for", return_value="PROFILE")
+    @patch("harness.prompts._metadata_for", return_value="METADATA")
     def test_four_arms_only_change_context(self, _metadata, _profile) -> None:
         expected = {
             "raw": (False, False), "profile": (True, False),

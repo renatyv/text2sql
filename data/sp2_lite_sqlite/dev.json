@@ -1,0 +1,2514 @@
+[
+  {
+    "id": "local002",
+    "question": "Can you calculate the 5-day symmetric moving average of predicted toy sales for December 5 to 8, 2018, using daily sales data from January 1, 2017, to August 29, 2018, with a simple linear regression model? Finally provide the sum of those four 5-day moving averages?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/E_commerce.sqlite",
+    "db_id": "E_commerce",
+    "engine": "sqlite",
+    "profile": "sp2_E_commerce",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local002_a.csv",
+      "data/sp2_lite_sqlite/gold/local002_b.csv",
+      "data/sp2_lite_sqlite/gold/local002_c.csv"
+    ],
+    "condition_cols": [
+      [
+        1
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local003",
+    "question": "According to the RFM definition document, calculate the average sales per order for each customer within distinct RFM segments, considering only 'delivered' orders. Use the customer unique identifier. Clearly define how to calculate Recency based on the latest purchase timestamp and specify the criteria for classifying RFM segments. The average sales should be computed as the total spend divided by the total number of orders. Please analyze and report the differences in average sales across the RFM segments",
+    "evidence": "# Introduction to the RFM Model\n\nThe RFM (Recency, Frequency, Monetary) model segments and scores customers based on three key dimensions:\n\n• Recency (R): How long it has been since the customer’s last purchase. A lower R score (e.g., R = 1) indicates a very recent purchase, while a higher R score (e.g., R = 5) indicates a longer time since the last purchase.\n\n• Frequency (F): How often the customer purchases within a given time period. A lower F score (e.g., F = 1) signifies that the customer buys very frequently, whereas a higher F score (e.g., F = 5) indicates less frequent purchasing.\n\n• Monetary (M): The total amount of money the customer spends. A lower M score (e.g., M = 1) indicates higher overall spending, while a higher M score (e.g., M = 5) signifies lower spending over the measured period.\n\nEach customer’s R, F, and M scores are determined by their respective percentiles when compared to other customers. By concatenating the three scores, you get an “RFM cell”—for instance, a customer with R=1, F=5, and M=2 would fall into the 152 segment.\n\n# RFM Segmentation Calculation\n\nAfter scoring customers on Recency, Frequency, and Monetary values, the next step is to group them into segments that require different marketing or sales strategies. Typically:\n\n1. Determine each customer’s recency score (R) from 1 to 5 (1 = very recent purchase, 5 = not recent).  \n2. Determine each customer’s frequency score (F) from 1 to 5 (1 = most frequent purchases, 5 = least frequent).  \n3. Determine each customer’s monetary score (M) from 1 to 5 (1 = highest spending, 5 = lowest spending).  \n4. Concatenate these three scores into an RFM score (e.g., 153, 514).\n\nBy analyzing the distribution of RFM scores and placing them into buckets—for example, “Champions,” “Loyal Customers,” “At Risk,” “Lost,” etc.—you can tailor marketing, sales, and retention strategies to maximize the potential of each segment. \n\nFor instance, a “Champion” (R=1, F=1, M=1) is a recent, frequent, and high-spending user who is highly valuable to your business, whereas a “Lost” customer (e.g., R=5, F=5, M=5) may require re-engagement offers or might no longer be cost-effective to target. Different segments can thus be prioritized based on their profitability and likelihood of responding positively to marketing efforts.\n\n## RFM Segmentation Logic\n\nCustomers are assigned to specific segments (RFM Buckets) based on a combination of their Recency, Frequency, and Monetary scores. The segmentation logic is as follows:\n\n- **Champions**: Customers who have made a recent purchase, with high frequency and high monetary value. These are considered the most valuable customers.\n  - Criteria: Recency = 1 and Frequency + Monetary score between 1 and 4.\n\n- **Can't Lose Them**: Previously frequent and high-spending customers who have not made a recent purchase. These customers are at risk of leaving and need attention.\n  - Criteria: Recency = 4 or 5 and Frequency + Monetary score between 1 and 2.\n\n- **Hibernating**: Customers whose last purchase was a while ago, with low to moderate frequency and spending. These customers might have lost interest in the products.\n  - Criteria: Recency = 4 or 5 and Frequency + Monetary score between 3 and 6.\n\n- **Lost**: Customers who have not purchased in a long time and have low frequency and monetary value. These customers are likely lost.\n  - Criteria: Recency = 4 or 5 and Frequency + Monetary score between 7 and 10.\n\n- **Loyal Customers**: Customers who are frequent buyers with decent spending levels, and they have made a purchase relatively recently. These customers are likely to be very loyal.\n  - Criteria: Recency = 2 or 3 and Frequency + Monetary score between 1 and 4.\n\n- **Needs Attention**: Customers whose purchase frequency and spending are moderate. They haven't bought very recently, but they could be incentivized to become more active.\n  - Criteria: Recency = 3 and Frequency + Monetary score between 5 and 6.\n\n- **Recent Users**: Customers who made a purchase recently, but their frequency and spending are moderate. These are relatively new or inconsistent buyers.\n  - Criteria: Recency = 1 and Frequency + Monetary score between 7 and 8.\n\n- **Potential Loyalists**: Customers who show potential to become loyal customers. They have good frequency and monetary scores, and they have made recent purchases. With the right engagement, they could become loyal customers.\n  - Criteria:\n    - Recency = 1 and Frequency + Monetary score between 5 and 6.\n    - OR Recency = 2 and Frequency + Monetary score between 5 and 8.\n\n- **Price Sensitive**: Customers who have made recent purchases but tend to spend less, indicating they may be more sensitive to price.\n  - Criteria: Recency = 1 and Frequency + Monetary score between 9 and 10.\n\n- **Promising**: These customers exhibit high potential with decent frequency and monetary scores, and they could become more valuable over time.\n  - Criteria: Recency = 2 and Frequency + Monetary score between 9 and 10.\n\n- **About to Sleep**: Customers whose frequency and spending are low, and their last purchase was some time ago. These customers are likely to become inactive.\n  - Criteria: Recency = 3 and Frequency + Monetary score between 7 and 10.\n\n## Summary\n\nThis segmentation logic groups customers based on their behavior in terms of when they last purchased (Recency), how often they purchase (Frequency), and how much they spend (Monetary). By understanding which group a customer belongs to, organizations can tailor marketing strategies to engage the right audience more effectively, improving customer retention and maximizing value.",
+    "sql": "WITH RecencyScore AS (\n    SELECT customer_unique_id,\n           MAX(order_purchase_timestamp) AS last_purchase,\n           NTILE(5) OVER (ORDER BY MAX(order_purchase_timestamp) DESC) AS recency\n    FROM orders\n        JOIN customers USING (customer_id)\n    WHERE order_status = 'delivered'\n    GROUP BY customer_unique_id\n),\nFrequencyScore AS (\n    SELECT customer_unique_id,\n           COUNT(order_id) AS total_orders,\n           NTILE(5) OVER (ORDER BY COUNT(order_id) DESC) AS frequency\n    FROM orders\n        JOIN customers USING (customer_id)\n    WHERE order_status = 'delivered'\n    GROUP BY customer_unique_id\n),\nMonetaryScore AS (\n    SELECT customer_unique_id,\n           SUM(price) AS total_spent,\n           NTILE(5) OVER (ORDER BY SUM(price) DESC) AS monetary\n    FROM orders\n        JOIN order_items USING (order_id)\n        JOIN customers USING (customer_id)\n    WHERE order_status = 'delivered'\n    GROUP BY customer_unique_id\n),\n\n-- 2. Assign each customer to a group\nRFM AS (\n    SELECT last_purchase, total_orders, total_spent,\n        CASE\n            WHEN recency = 1 AND frequency + monetary IN (1, 2, 3, 4) THEN \"Champions\"\n            WHEN recency IN (4, 5) AND frequency + monetary IN (1, 2) THEN \"Can't Lose Them\"\n            WHEN recency IN (4, 5) AND frequency + monetary IN (3, 4, 5, 6) THEN \"Hibernating\"\n            WHEN recency IN (4, 5) AND frequency + monetary IN (7, 8, 9, 10) THEN \"Lost\"\n            WHEN recency IN (2, 3) AND frequency + monetary IN (1, 2, 3, 4) THEN \"Loyal Customers\"\n            WHEN recency = 3 AND frequency + monetary IN (5, 6) THEN \"Needs Attention\"\n            WHEN recency = 1 AND frequency + monetary IN (7, 8) THEN \"Recent Users\"\n            WHEN recency = 1 AND frequency + monetary IN (5, 6) OR\n                recency = 2 AND frequency + monetary IN (5, 6, 7, 8) THEN \"Potentital Loyalists\"\n            WHEN recency = 1 AND frequency + monetary IN (9, 10) THEN \"Price Sensitive\"\n            WHEN recency = 2 AND frequency + monetary IN (9, 10) THEN \"Promising\"\n            WHEN recency = 3 AND frequency + monetary IN (7, 8, 9, 10) THEN \"About to Sleep\"\n        END AS RFM_Bucket\n    FROM RecencyScore\n        JOIN FrequencyScore USING (customer_unique_id)\n        JOIN MonetaryScore USING (customer_unique_id)\n)\n\nSELECT RFM_Bucket, \n       AVG(total_spent / total_orders) AS avg_sales_per_customer\nFROM RFM\nGROUP BY RFM_Bucket",
+    "db": "data/sp2_lite_sqlite/databases/E_commerce.sqlite",
+    "db_id": "E_commerce",
+    "engine": "sqlite",
+    "profile": "sp2_E_commerce",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local003_a.csv",
+      "data/sp2_lite_sqlite/gold/local003_b.csv",
+      "data/sp2_lite_sqlite/gold/local003_c.csv",
+      "data/sp2_lite_sqlite/gold/local003_d.csv"
+    ],
+    "condition_cols": [
+      0
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local004",
+    "question": "Could you tell me the number of orders, average payment per order and customer lifespan in weeks of the 3 custumers with the highest average payment per order, where the lifespan is calculated by subtracting the earliest purchase date from the latest purchase date in days, dividing by seven, and if the result is less than seven days, setting it to 1.0?",
+    "evidence": "",
+    "sql": "WITH CustomerData AS (\n    SELECT\n        customer_unique_id,\n        COUNT(DISTINCT orders.order_id) AS order_count,\n        SUM(payment_value) AS total_payment,\n        JULIANDAY(MIN(order_purchase_timestamp)) AS first_order_day,\n        JULIANDAY(MAX(order_purchase_timestamp)) AS last_order_day\n    FROM customers\n        JOIN orders USING (customer_id)\n        JOIN order_payments USING (order_id)\n    GROUP BY customer_unique_id\n)\nSELECT\n    customer_unique_id,\n    order_count AS PF,\n    ROUND(total_payment / order_count, 2) AS AOV,\n    CASE\n        WHEN (last_order_day - first_order_day) < 7 THEN\n            1\n        ELSE\n            (last_order_day - first_order_day) / 7\n        END AS ACL\nFROM CustomerData\nORDER BY AOV DESC\nLIMIT 3",
+    "db": "data/sp2_lite_sqlite/databases/E_commerce.sqlite",
+    "db_id": "E_commerce",
+    "engine": "sqlite",
+    "profile": "sp2_E_commerce",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local004_a.csv",
+      "data/sp2_lite_sqlite/gold/local004_b.csv"
+    ],
+    "condition_cols": [
+      0,
+      1,
+      2
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local007",
+    "question": "Could you help me calculate the average single career span value in years for all baseball players? Please precise the result as a float number. First, calculate the difference in years, months, and days between the debut and final game dates. For each player, the career span is computed as the sum of the absolute number of years, plus the absolute number of months divided by 12, plus the absolute number of days divided by 365. Round each part to two decimal places before summing. Finally, average the career spans and round the result to a float number.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/Baseball.sqlite",
+    "db_id": "Baseball",
+    "engine": "sqlite",
+    "profile": "sp2_Baseball",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local007_a.csv",
+      "data/sp2_lite_sqlite/gold/local007_b.csv",
+      "data/sp2_lite_sqlite/gold/local007_c.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local008",
+    "question": "I would like to know the given names of baseball players who have achieved the highest value of games played, runs, hits, and home runs, with their corresponding score values.",
+    "evidence": "",
+    "sql": "WITH player_stats AS (\n    SELECT\n        b.player_id,\n        p.name_given AS player_name,\n        SUM(b.g) AS games_played,\n        SUM(b.r) AS runs,\n        SUM(b.h) AS hits,\n        SUM(b.hr) AS home_runs\n    FROM player p\n    JOIN batting b ON p.player_id = b.player_id\n    GROUP BY b.player_id, p.name_given\n)\n\nSELECT 'Games Played' AS Category, player_name AS Player_Name, games_played AS Batting_Table_Topper\nFROM player_stats\nWHERE games_played = (SELECT MAX(games_played) FROM player_stats)\n\nUNION ALL\n\nSELECT 'Runs' AS Category, player_name AS Player_Name, runs AS Batting_Table_Topper\nFROM player_stats\nWHERE runs = (SELECT MAX(runs) FROM player_stats)\n\nUNION ALL\n\nSELECT 'Hits' AS Category, player_name AS Player_Name, hits AS Batting_Table_Topper\nFROM player_stats\nWHERE hits = (SELECT MAX(hits) FROM player_stats)\n\nUNION ALL\n\nSELECT 'Home Runs' AS Category, player_name AS Player_Name, home_runs AS Batting_Table_Topper\nFROM player_stats\nWHERE home_runs = (SELECT MAX(home_runs) FROM player_stats);",
+    "db": "data/sp2_lite_sqlite/databases/Baseball.sqlite",
+    "db_id": "Baseball",
+    "engine": "sqlite",
+    "profile": "sp2_Baseball",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local008_a.csv",
+      "data/sp2_lite_sqlite/gold/local008_b.csv",
+      "data/sp2_lite_sqlite/gold/local008_c.csv"
+    ],
+    "condition_cols": [
+      [
+        2
+      ],
+      [
+        2
+      ],
+      [
+        1
+      ]
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local009",
+    "question": "What is the distance of the longest route where Abakan is either the departure or destination city (in kilometers)?",
+    "evidence": "# Flight Route Distance Calculation\n\n## Introduction\n\nThis document describes the method used to calculate the distance between two cities for flight routes. The calculation is based on the Haversine formula, which is commonly used to find the shortest distance between two points on a sphere given their latitude and longitude. This method is especially useful for determining flight distances between airports located in different cities around the world.\n\n## City and Coordinate Extraction\n\nFor each flight, the following data is obtained:\n\n- **Departure city** (referred to as `from_city`) and its geographical coordinates (longitude and latitude).\n- **Arrival city** (referred to as `to_city`) and its geographical coordinates (longitude and latitude).\n\nThe coordinates are extracted as decimal values, with longitude and latitude represented in degrees. This ensures that trigonometric operations can be applied during the distance calculation.\n\n## Haversine Formula\n\nThe Haversine formula is used to calculate the great-circle distance between two points on a sphere using their latitude and longitude. The formula is given as:\n\n\\[\nd = 2r \\cdot \\arcsin\\left(\\sqrt{\\sin^2\\left(\\frac{\\Delta \\phi}{2}\\right) + \\cos(\\phi_1) \\cdot \\cos(\\phi_2) \\cdot \\sin^2\\left(\\frac{\\Delta \\lambda}{2}\\right)}\\right)\n\\]\n\nWhere:\n\n- \\( d \\) is the distance between the two points (in kilometers).\n- \\( r \\) is the radius of the Earth (approximately 6371 km).\n- \\( \\phi_1 \\) and \\( \\phi_2 \\) are the latitudes of the departure and arrival points, respectively, in radians.\n- \\( \\Delta \\phi = \\phi_2 - \\phi_1 \\) is the difference in latitudes.\n- \\( \\lambda_1 \\) and \\( \\lambda_2 \\) are the longitudes of the departure and arrival points, respectively, in radians.\n- \\( \\Delta \\lambda = \\lambda_2 - \\lambda_1 \\) is the difference in longitudes.\n\n### Conversion to Radians\n\nSince the input coordinates are in degrees, they must be converted to radians before applying the Haversine formula. This conversion is done using the formula:\n\n\\[\n\\text{radians} = \\text{degrees} \\times \\frac{\\pi}{180}\n\\]\n\n## Symmetry of Routes\n\nTo identify unique flight routes between two cities, we standardize the order of cities in each route. Specifically, we ensure that the lexicographically smaller city name is always listed as the first city (`city1`), and the larger city is listed as the second city (`city2`). This ensures that a flight from City A to City B is treated the same as a flight from City B to City A.\n\n## Average Route Distance\n\nOnce the distances for all flights between two cities are computed, the average distance for each city pair is calculated by summing the distances and dividing by the total number of flights between those cities:\n\n\\[\n\\text{Average Distance} = \\frac{\\sum \\text{Flight Distances}}{\\text{Number of Flights}}\n\\]\n\n## Conclusion\n\nThis method of flight route distance calculation provides a reliable way to determine the great-circle distance between cities based on the coordinates of their respective airports. The use of the Haversine formula ensures accurate results for distances on the Earth's surface, making it ideal for aviation and travel analysis.",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/Airlines.sqlite",
+    "db_id": "Airlines",
+    "engine": "sqlite",
+    "profile": "sp2_Airlines",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local009_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local010",
+    "question": "Distribute all the unique city pairs into the distance ranges 0, 1000, 2000, 3000, 4000, 5000, and 6000+, based on their average distance of all routes between them. Then how many pairs are there in the distance range with the fewest unique city paires?",
+    "evidence": "# Flight Route Distance Calculation\n\n## Introduction\n\nThis document describes the method used to calculate the distance between two cities for flight routes. The calculation is based on the Haversine formula, which is commonly used to find the shortest distance between two points on a sphere given their latitude and longitude. This method is especially useful for determining flight distances between airports located in different cities around the world.\n\n## City and Coordinate Extraction\n\nFor each flight, the following data is obtained:\n\n- **Departure city** (referred to as `from_city`) and its geographical coordinates (longitude and latitude).\n- **Arrival city** (referred to as `to_city`) and its geographical coordinates (longitude and latitude).\n\nThe coordinates are extracted as decimal values, with longitude and latitude represented in degrees. This ensures that trigonometric operations can be applied during the distance calculation.\n\n## Haversine Formula\n\nThe Haversine formula is used to calculate the great-circle distance between two points on a sphere using their latitude and longitude. The formula is given as:\n\n\\[\nd = 2r \\cdot \\arcsin\\left(\\sqrt{\\sin^2\\left(\\frac{\\Delta \\phi}{2}\\right) + \\cos(\\phi_1) \\cdot \\cos(\\phi_2) \\cdot \\sin^2\\left(\\frac{\\Delta \\lambda}{2}\\right)}\\right)\n\\]\n\nWhere:\n\n- \\( d \\) is the distance between the two points (in kilometers).\n- \\( r \\) is the radius of the Earth (approximately 6371 km).\n- \\( \\phi_1 \\) and \\( \\phi_2 \\) are the latitudes of the departure and arrival points, respectively, in radians.\n- \\( \\Delta \\phi = \\phi_2 - \\phi_1 \\) is the difference in latitudes.\n- \\( \\lambda_1 \\) and \\( \\lambda_2 \\) are the longitudes of the departure and arrival points, respectively, in radians.\n- \\( \\Delta \\lambda = \\lambda_2 - \\lambda_1 \\) is the difference in longitudes.\n\n### Conversion to Radians\n\nSince the input coordinates are in degrees, they must be converted to radians before applying the Haversine formula. This conversion is done using the formula:\n\n\\[\n\\text{radians} = \\text{degrees} \\times \\frac{\\pi}{180}\n\\]\n\n## Symmetry of Routes\n\nTo identify unique flight routes between two cities, we standardize the order of cities in each route. Specifically, we ensure that the lexicographically smaller city name is always listed as the first city (`city1`), and the larger city is listed as the second city (`city2`). This ensures that a flight from City A to City B is treated the same as a flight from City B to City A.\n\n## Average Route Distance\n\nOnce the distances for all flights between two cities are computed, the average distance for each city pair is calculated by summing the distances and dividing by the total number of flights between those cities:\n\n\\[\n\\text{Average Distance} = \\frac{\\sum \\text{Flight Distances}}{\\text{Number of Flights}}\n\\]\n\n## Conclusion\n\nThis method of flight route distance calculation provides a reliable way to determine the great-circle distance between cities based on the coordinates of their respective airports. The use of the Haversine formula ensures accurate results for distances on the Earth's surface, making it ideal for aviation and travel analysis.",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/Airlines.sqlite",
+    "db_id": "Airlines",
+    "engine": "sqlite",
+    "profile": "sp2_Airlines",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local010.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local015",
+    "question": "Please calculate the fatality rate for motorcycle collisions, separated by helmet usage. Specifically, calculate two percentages: 1) the percentage of motorcyclist fatalities in collisions where parties (drivers or passengers) were wearing helmets, and 2) the percentage of motorcyclist fatalities in collisions where parties were not wearing helmets. For each group, compute this by dividing the total number of motorcyclist fatalities by the total number of collisions involving that group. Use the parties table to determine helmet usage (from party_safety_equipment fields).",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/California_Traffic_Collision.sqlite",
+    "db_id": "California_Traffic_Collision",
+    "engine": "sqlite",
+    "profile": "sp2_California_Traffic_Collision",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local015_a.csv",
+      "data/sp2_lite_sqlite/gold/local015_b.csv",
+      "data/sp2_lite_sqlite/gold/local015_c.csv",
+      "data/sp2_lite_sqlite/gold/local015_d.csv",
+      "data/sp2_lite_sqlite/gold/local015_e.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local017",
+    "question": "In which year were the two most common causes of traffic accidents different from those in other years?",
+    "evidence": "",
+    "sql": "WITH AnnualTotals AS (\n    SELECT \n        STRFTIME('%Y', collision_date) AS Year, \n        COUNT(case_id) AS AnnualTotal\n    FROM \n        collisions\n    GROUP BY \n        Year\n),\nCategoryTotals AS (\n    SELECT \n        STRFTIME('%Y', collision_date) AS Year,\n        pcf_violation_category AS Category,\n        COUNT(case_id) AS Subtotal\n    FROM \n        collisions\n    GROUP BY \n        Year, Category\n),\nCategoryPercentages AS (\n    SELECT \n        ct.Year,\n        ct.Category,\n        ROUND((ct.Subtotal * 100.0) / at.AnnualTotal, 1) AS PercentageOfAnnualRoadIncidents\n    FROM \n        CategoryTotals ct\n    JOIN \n        AnnualTotals at ON ct.Year = at.Year\n),\nRankedCategories AS (\n    SELECT\n        Year,\n        Category,\n        PercentageOfAnnualRoadIncidents,\n        ROW_NUMBER() OVER (PARTITION BY Year ORDER BY PercentageOfAnnualRoadIncidents DESC) AS Rank\n    FROM\n        CategoryPercentages\n),\nTopTwoCategories AS (\n    SELECT\n        Year,\n        GROUP_CONCAT(Category, ', ') AS TopCategories\n    FROM\n        RankedCategories\n    WHERE\n        Rank <= 2\n    GROUP BY\n        Year\n),\nUniqueYear AS (\n    SELECT\n        Year\n    FROM\n        TopTwoCategories\n    GROUP BY\n        TopCategories\n    HAVING COUNT(Year) = 1\n),\nresults AS (\nSELECT \n    rc.Year, \n    rc.Category, \n    rc.PercentageOfAnnualRoadIncidents\nFROM \n    UniqueYear u\nJOIN \n    RankedCategories rc ON u.Year = rc.Year\nWHERE \n    rc.Rank <= 2\n)\n\nSELECT distinct Year FROM results",
+    "db": "data/sp2_lite_sqlite/databases/California_Traffic_Collision.sqlite",
+    "db_id": "California_Traffic_Collision",
+    "engine": "sqlite",
+    "profile": "sp2_California_Traffic_Collision",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local017_a.csv",
+      "data/sp2_lite_sqlite/gold/local017_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local018",
+    "question": "For the primary collision factor violation category that was the most common cause of traffic accidents in 2021, how many percentage points did its share of annual road incidents in 2021 decrease compared to its share in 2011?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/California_Traffic_Collision.sqlite",
+    "db_id": "California_Traffic_Collision",
+    "engine": "sqlite",
+    "profile": "sp2_California_Traffic_Collision",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local018_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local019",
+    "question": "For the NXT title that had the shortest match (excluding titles with \"title change\"), what were the names of the two wrestlers involved?",
+    "evidence": "",
+    "sql": "WITH MatchDetails AS (\n    SELECT\n        b.name AS titles,\n        m.duration AS match_duration,\n        w1.name || ' vs ' || w2.name AS matches,\n        m.win_type AS win_type,\n        l.name AS location,\n        e.name AS event,\n        ROW_NUMBER() OVER (PARTITION BY b.name ORDER BY m.duration ASC) AS rank\n    FROM \n        Belts b\n    INNER JOIN Matches m ON m.title_id = b.id\n    INNER JOIN Wrestlers w1 ON w1.id = m.winner_id\n    INNER JOIN Wrestlers w2 ON w2.id = m.loser_id\n    INNER JOIN Cards c ON c.id = m.card_id\n    INNER JOIN Locations l ON l.id = c.location_id\n    INNER JOIN Events e ON e.id = c.event_id\n    INNER JOIN Promotions p ON p.id = c.promotion_id\n    WHERE\n        p.name = 'NXT'\n        AND m.duration <> ''\n        AND b.name <> ''\n        AND b.name NOT IN (\n            SELECT name \n            FROM Belts \n            WHERE name LIKE '%title change%'\n        )\n),\nRank1 AS (\nSELECT \n    titles,\n    match_duration,\n    matches,\n    win_type,\n    location,\n    event\nFROM \n    MatchDetails\nWHERE \n    rank = 1\n)\nSELECT\n    SUBSTR(matches, 1, INSTR(matches, ' vs ') - 1) AS wrestler1,\n    SUBSTR(matches, INSTR(matches, ' vs ') + 4) AS wrestler2\nFROM\nRank1\nORDER BY match_duration \nLIMIT 1",
+    "db": "data/sp2_lite_sqlite/databases/WWE.sqlite",
+    "db_id": "WWE",
+    "engine": "sqlite",
+    "profile": "sp2_WWE",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local019_a.csv",
+      "data/sp2_lite_sqlite/gold/local019_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local026",
+    "question": "Please help me identify the top 3 bowlers who, in the overs where the maximum runs were conceded in each match, gave up the highest number of runs in a single over across all matches. For each of these bowlers, provide the match in which they conceded these maximum runs. Only consider overs that had the most runs conceded within their respective matches, and among these, determine which bowlers conceded the most runs in a single over overall.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/IPL.sqlite",
+    "db_id": "IPL",
+    "engine": "sqlite",
+    "profile": "sp2_IPL",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local026_a.csv"
+    ],
+    "condition_cols": [
+      0,
+      1
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local020",
+    "question": "Which bowler has the lowest bowling average per wicket taken?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/IPL.sqlite",
+    "db_id": "IPL",
+    "engine": "sqlite",
+    "profile": "sp2_IPL",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local020_a.csv",
+      "data/sp2_lite_sqlite/gold/local020_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local021",
+    "question": "Could you calculate the average of the total runs scored by all strikers who have scored more than 50 runs in any single match?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/IPL.sqlite",
+    "db_id": "IPL",
+    "engine": "sqlite",
+    "profile": "sp2_IPL",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local021_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local022",
+    "question": "Retrieve the names of players who scored no less than 100 runs in a match while playing for the team that lost that match.",
+    "evidence": "",
+    "sql": "-- Step 1: Calculate players' total runs in each match\nWITH player_runs AS (\n    SELECT \n        bbb.striker AS player_id, \n        bbb.match_id, \n        SUM(bsc.runs_scored) AS total_runs \n    FROM \n        ball_by_ball AS bbb\n    JOIN \n        batsman_scored AS bsc\n    ON \n        bbb.match_id = bsc.match_id \n        AND bbb.over_id = bsc.over_id \n        AND bbb.ball_id = bsc.ball_id \n        AND bbb.innings_no = bsc.innings_no\n    GROUP BY \n        bbb.striker, bbb.match_id\n    HAVING \n        SUM(bsc.runs_scored) >= 100\n),\n\n-- Step 2: Identify losing teams for each match\nlosing_teams AS (\n    SELECT \n        match_id, \n        CASE \n            WHEN match_winner = team_1 THEN team_2 \n            ELSE team_1 \n        END AS loser \n    FROM \n        match\n),\n\n-- Step 3: Combine the above results to get players who scored 100 or more runs in losing teams\nplayers_in_losing_teams AS (\n    SELECT \n        pr.player_id, \n        pr.match_id \n    FROM \n        player_runs AS pr\n    JOIN \n        losing_teams AS lt\n    ON \n        pr.match_id = lt.match_id\n    JOIN \n        player_match AS pm\n    ON \n        pr.player_id = pm.player_id \n        AND pr.match_id = pm.match_id \n        AND lt.loser = pm.team_id\n)\n\n-- Step 4: Select distinct player names from the player table\nSELECT DISTINCT \n    p.player_name \nFROM \n    player AS p\nJOIN \n    players_in_losing_teams AS plt\nON \n    p.player_id = plt.player_id\nORDER BY \n    p.player_name;",
+    "db": "data/sp2_lite_sqlite/databases/IPL.sqlite",
+    "db_id": "IPL",
+    "engine": "sqlite",
+    "profile": "sp2_IPL",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local022_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local023",
+    "question": "Please help me find the names of top 5 players with the highest average runs per match in season 5, along with their batting averages.",
+    "evidence": "",
+    "sql": "WITH runs_scored AS (\n    SELECT \n        bb.striker AS player_id,\n        bb.match_id,\n        bs.runs_scored AS runs\n    FROM \n        ball_by_ball AS bb\n    JOIN \n        batsman_scored AS bs ON bb.match_id = bs.match_id \n            AND bb.over_id = bs.over_id \n            AND bb.ball_id = bs.ball_id \n            AND bb.innings_no = bs.innings_no\n    WHERE \n        bb.match_id IN (SELECT match_id FROM match WHERE season_id = 5)\n),\ntotal_runs AS (\n    SELECT \n        player_id, \n        match_id, \n        SUM(runs) AS total_runs \n    FROM \n        runs_scored \n    GROUP BY \n        player_id, match_id\n),\nbatting_averages AS (\n    SELECT \n        player_id, \n        SUM(total_runs) AS runs, \n        COUNT(match_id) AS num_matches,\n        ROUND(SUM(total_runs) / CAST(COUNT(match_id) AS FLOAT), 3) AS batting_avg\n    FROM \n        total_runs \n    GROUP BY \n        player_id \n    ORDER BY \n        batting_avg DESC \n    LIMIT 5\n)\nSELECT \n    p.player_name,\n    b.batting_avg\nFROM \n    player AS p\nJOIN \n    batting_averages AS b ON p.player_id = b.player_id\nORDER BY \n    b.batting_avg DESC;",
+    "db": "data/sp2_lite_sqlite/databases/IPL.sqlite",
+    "db_id": "IPL",
+    "engine": "sqlite",
+    "profile": "sp2_IPL",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local023_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local024",
+    "question": "Can you help me find the top 5 countries whose players have the highest average of their individual average runs per match across all seasons? Specifically, for each player, calculate their average runs per match over all matches they played, then compute the average of these player averages for each country, and include these country batting averages in the result.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/IPL.sqlite",
+    "db_id": "IPL",
+    "engine": "sqlite",
+    "profile": "sp2_IPL",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local024_a.csv",
+      "data/sp2_lite_sqlite/gold/local024_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local025",
+    "question": "For each match, considering every innings, please combine runs from both batsman scored and extra runs for each over, then identify the single over with the highest total runs, retrieve the bowler for that over from the ball by ball table, and calculate the average of these highest over totals across all matches, ensuring that all runs and bowler details are accurately reflected.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/IPL.sqlite",
+    "db_id": "IPL",
+    "engine": "sqlite",
+    "profile": "sp2_IPL",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local025_a.csv",
+      "data/sp2_lite_sqlite/gold/local025_b.csv",
+      "data/sp2_lite_sqlite/gold/local025_c.csv",
+      "data/sp2_lite_sqlite/gold/local025_d.csv",
+      "data/sp2_lite_sqlite/gold/local025_e.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local028",
+    "question": "Could you generate a report that shows the number of delivered orders for each month in the years 2016, 2017, and 2018? Each column represents a year, and each row represents a month",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/Brazilian_E_Commerce.sqlite",
+    "db_id": "Brazilian_E_Commerce",
+    "engine": "sqlite",
+    "profile": "sp2_Brazilian_E_Commerce",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local028_a.csv",
+      "data/sp2_lite_sqlite/gold/local028_b.csv"
+    ],
+    "condition_cols": [
+      1,
+      2,
+      3
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local031",
+    "question": "What is the highest monthly delivered orders volume in the year with the lowest annual delivered orders volume among 2016, 2017, and 2018?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/Brazilian_E_Commerce.sqlite",
+    "db_id": "Brazilian_E_Commerce",
+    "engine": "sqlite",
+    "profile": "sp2_Brazilian_E_Commerce",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local031_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local029",
+    "question": "Please identify the top three customers, based on their customer_unique_id, who have the highest number of delivered orders, and provide the average payment value, city, and state for each of these customers.",
+    "evidence": "",
+    "sql": "WITH customer_orders AS (\n    SELECT\n        c.customer_unique_id,\n        COUNT(o.order_id) AS Total_Orders_By_Customers,\n        AVG(p.payment_value) AS Average_Payment_By_Customer,\n        c.customer_city,\n        c.customer_state\n    FROM olist_customers c\n    JOIN olist_orders o ON c.customer_id = o.customer_id\n    JOIN olist_order_payments p ON o.order_id = p.order_id\n    WHERE o.order_status = 'delivered'\n    GROUP BY c.customer_unique_id, c.customer_city, c.customer_state\n)\n\nSELECT \n    Average_Payment_By_Customer,\n    customer_city,\n    customer_state\nFROM customer_orders\nORDER BY Total_Orders_By_Customers DESC\nLIMIT 3;",
+    "db": "data/sp2_lite_sqlite/databases/Brazilian_E_Commerce.sqlite",
+    "db_id": "Brazilian_E_Commerce",
+    "engine": "sqlite",
+    "profile": "sp2_Brazilian_E_Commerce",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local029_a.csv",
+      "data/sp2_lite_sqlite/gold/local029_b.csv"
+    ],
+    "condition_cols": [
+      1,
+      2
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local030",
+    "question": "Among all cities with delivered orders, find the five cities whose summed payments are the lowest, then calculate the average of their total payments and the average of their total delivered order counts.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/Brazilian_E_Commerce.sqlite",
+    "db_id": "Brazilian_E_Commerce",
+    "engine": "sqlite",
+    "profile": "sp2_Brazilian_E_Commerce",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local030_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local032",
+    "question": "Could you help me find the sellers who excel in the following categories, considering only delivered orders: the seller with the highest number of distinct customer unique IDs, the seller with the highest profit (calculated as price minus freight value), the seller with the highest number of distinct orders, and the seller with the most 5-star ratings? For each category, please provide the seller ID and the corresponding value, labeling each row with a description of the achievement.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/Brazilian_E_Commerce.sqlite",
+    "db_id": "Brazilian_E_Commerce",
+    "engine": "sqlite",
+    "profile": "sp2_Brazilian_E_Commerce",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local032_a.csv",
+      "data/sp2_lite_sqlite/gold/local032_b.csv",
+      "data/sp2_lite_sqlite/gold/local032_c.csv",
+      "data/sp2_lite_sqlite/gold/local032_d.csv",
+      "data/sp2_lite_sqlite/gold/local032_e.csv",
+      "data/sp2_lite_sqlite/gold/local032_f.csv",
+      "data/sp2_lite_sqlite/gold/local032_g.csv",
+      "data/sp2_lite_sqlite/gold/local032_h.csv",
+      "data/sp2_lite_sqlite/gold/local032_i.csv",
+      "data/sp2_lite_sqlite/gold/local032_j.csv",
+      "data/sp2_lite_sqlite/gold/local032_k.csv",
+      "data/sp2_lite_sqlite/gold/local032_l.csv"
+    ],
+    "condition_cols": [
+      2
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local034",
+    "question": "Could you help me calculate the average of the total number of payments made using the most preferred payment method for each product category, where the most preferred payment method in a category is the one with the highest number of payments?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/Brazilian_E_Commerce.sqlite",
+    "db_id": "Brazilian_E_Commerce",
+    "engine": "sqlite",
+    "profile": "sp2_Brazilian_E_Commerce",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local034_a.csv",
+      "data/sp2_lite_sqlite/gold/local034_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local037",
+    "question": "Identify the top three product categories whose most commonly used payment type has the highest number of payments across all categories, and specify the number of payments made in each category using that payment type.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/Brazilian_E_Commerce.sqlite",
+    "db_id": "Brazilian_E_Commerce",
+    "engine": "sqlite",
+    "profile": "sp2_Brazilian_E_Commerce",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local037_a.csv",
+      "data/sp2_lite_sqlite/gold/local037_b.csv"
+    ],
+    "condition_cols": [
+      2
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local035",
+    "question": "In the “olist_geolocation” table, please identify which two consecutive cities, when sorted by geolocation_state, geolocation_city, geolocation_zip_code_prefix, geolocation_lat, and geolocation_lng, have the greatest distance between them based on the difference in distance computed between each city and its immediate predecessor in that ordering.",
+    "evidence": "The distance between two cities can be calculated using the **Spherical Law of Cosines**. This method estimates the distance based on the geographical coordinates (latitude and longitude) of the cities. Below is a detailed explanation of the calculation process, including the relevant formula.\n\nThe distance $d$ between two cities is calculated using the following formula:\n\n$$\nd = 6371 \\times \\arccos \\left( \\cos(\\text{lat}_1) \\times \\cos(\\text{lat}_2) \\times \\cos(\\text{lon}_2 - \\text{lon}_1) + \\sin(\\text{lat}_1) \\times \\sin(\\text{lat}_2) \\right)\n$$\n\nWhere:\n- $\\text{lat}_1$ and $\\text{lat}_2$ are the latitudes of the first and second cities in **radians**.\n- $\\text{lon}_1$ and $\\text{lon}_2$ are the longitudes of the first and second cities in **radians**.\n- `6371` is the Earth's average radius in kilometers.",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/Brazilian_E_Commerce.sqlite",
+    "db_id": "Brazilian_E_Commerce",
+    "engine": "sqlite",
+    "profile": "sp2_Brazilian_E_Commerce",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local035_a.csv",
+      "data/sp2_lite_sqlite/gold/local035_b.csv",
+      "data/sp2_lite_sqlite/gold/local035_c.csv"
+    ],
+    "condition_cols": [
+      0,
+      1
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local038",
+    "question": "Could you help me determine which actor starred most frequently in English-language children's category films that were rated either G or PG, had a running time of 120 minutes or less, and were released between 2000 and 2010? Please provide the actor's full name.",
+    "evidence": "",
+    "sql": "SELECT\n    actor.first_name || ' ' || actor.last_name AS full_name\nFROM\n    actor\nINNER JOIN film_actor ON actor.actor_id = film_actor.actor_id\nINNER JOIN film ON film_actor.film_id = film.film_id\nINNER JOIN film_category ON film.film_id = film_category.film_id\nINNER JOIN category ON film_category.category_id = category.category_id\n-- Join with the language table\nINNER JOIN language ON film.language_id = language.language_id\nWHERE\n    category.name = 'Children' AND\n    film.release_year BETWEEN 2000 AND 2010 AND\n    film.rating IN ('G', 'PG') AND\n    language.name = 'English' AND\n    film.length <= 120\nGROUP BY\n    actor.actor_id, actor.first_name, actor.last_name\nORDER BY\n    COUNT(film.film_id) DESC\nLIMIT 1;",
+    "db": "data/sp2_lite_sqlite/databases/Pagila.sqlite",
+    "db_id": "Pagila",
+    "engine": "sqlite",
+    "profile": "sp2_Pagila",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local038_a.csv",
+      "data/sp2_lite_sqlite/gold/local038_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local039",
+    "question": "Please help me find the film category with the highest total rental hours in cities where the city's name either starts with \"A\" or contains a hyphen. ",
+    "evidence": "",
+    "sql": "SELECT\n    category.name\nFROM\n    category\nINNER JOIN film_category USING (category_id)\nINNER JOIN film USING (film_id)\nINNER JOIN inventory USING (film_id)\nINNER JOIN rental USING (inventory_id)\nINNER JOIN customer USING (customer_id)\nINNER JOIN address USING (address_id)\nINNER JOIN city USING (city_id)\nWHERE\n    LOWER(city.city) LIKE 'a%' OR city.city LIKE '%-%'\nGROUP BY\n    category.name\nORDER BY\n    SUM(CAST((julianday(rental.return_date) - julianday(rental.rental_date)) * 24 AS INTEGER)) DESC\nLIMIT\n    1;",
+    "db": "data/sp2_lite_sqlite/databases/Pagila.sqlite",
+    "db_id": "Pagila",
+    "engine": "sqlite",
+    "profile": "sp2_Pagila",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local039_a.csv",
+      "data/sp2_lite_sqlite/gold/local039_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local040",
+    "question": "In the combined dataset that unifies the trees data with the income data by ZIP code, filling missing ZIP values where necessary, which three boroughs, restricted to records with median and mean income both greater than zero and a valid borough name, contain the highest number of trees, and what is the average mean income for each of these three boroughs?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/modern_data.sqlite",
+    "db_id": "modern_data",
+    "engine": "sqlite",
+    "profile": "sp2_modern_data",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local040_a.csv",
+      "data/sp2_lite_sqlite/gold/local040_b.csv",
+      "data/sp2_lite_sqlite/gold/local040_c.csv",
+      "data/sp2_lite_sqlite/gold/local040_d.csv"
+    ],
+    "condition_cols": [
+      [
+        2
+      ],
+      [
+        2
+      ],
+      [
+        2
+      ],
+      [
+        1
+      ]
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local041",
+    "question": "What percentage of trees in the Bronx have a health status of Good?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/modern_data.sqlite",
+    "db_id": "modern_data",
+    "engine": "sqlite",
+    "profile": "sp2_modern_data",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local041_a.csv",
+      "data/sp2_lite_sqlite/gold/local041_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local049",
+    "question": "Can you help me calculate the average number of new unicorn companies per year in the top industry from 2019 to 2021?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/modern_data.sqlite",
+    "db_id": "modern_data",
+    "engine": "sqlite",
+    "profile": "sp2_modern_data",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local049_a.csv",
+      "data/sp2_lite_sqlite/gold/local049_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local054",
+    "question": "Could you tell me the first names of customers who spent less than $1 on albums by the best-selling artist, along with the amounts they spent?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/chinook.sqlite",
+    "db_id": "chinook",
+    "engine": "sqlite",
+    "profile": "sp2_chinook",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local054_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local055",
+    "question": "Identify the artist with the highest overall sales of albums (tie broken by alphabetical order) and the artist with the lowest overall sales of albums (tie broken by alphabetical order), then calculate the amount each customer spent specifically on those two artists’ albums. Next, compute the average spending for the customers who purchased from the top-selling artist and the average spending for the customers who purchased from the lowest-selling artist, and finally return the absolute difference between these two averages.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/chinook.sqlite",
+    "db_id": "chinook",
+    "engine": "sqlite",
+    "profile": "sp2_chinook",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local055_a.csv",
+      "data/sp2_lite_sqlite/gold/local055_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local198",
+    "question": "Using the sales data, what is the median value of total sales made in countries where the number of customers is greater than 4?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/chinook.sqlite",
+    "db_id": "chinook",
+    "engine": "sqlite",
+    "profile": "sp2_chinook",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local198_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local056",
+    "question": "Which customer has the highest average monthly change in payment amounts? Provide the customer's full name.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/sqlite-sakila.sqlite",
+    "db_id": "sqlite-sakila",
+    "engine": "sqlite",
+    "profile": "sp2_sqlite-sakila",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local056_a.csv",
+      "data/sp2_lite_sqlite/gold/local056_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local058",
+    "question": "Can you provide a list of hardware product segments along with their unique product counts for 2020 in the output, ordered by the highest percentage increase in unique fact sales products from 2020 to 2021?",
+    "evidence": "",
+    "sql": "WITH UniqueProducts2020 AS (\n    SELECT\n        dp.segment,\n        COUNT(DISTINCT fsm.product_code) AS unique_products_2020\n    FROM\n        hardware_fact_sales_monthly fsm\n    JOIN\n        hardware_dim_product dp ON fsm.product_code = dp.product_code\n    WHERE\n        fsm.fiscal_year = 2020\n    GROUP BY\n        dp.segment\n),\nUniqueProducts2021 AS (\n    SELECT\n        dp.segment,\n        COUNT(DISTINCT fsm.product_code) AS unique_products_2021\n    FROM\n        hardware_fact_sales_monthly fsm\n    JOIN\n        hardware_dim_product dp ON fsm.product_code = dp.product_code\n    WHERE\n        fsm.fiscal_year = 2021\n    GROUP BY\n        dp.segment\n)\nSELECT\n    spc.segment,\n    spc.unique_products_2020 AS product_count_2020\nFROM\n    UniqueProducts2020 spc\nJOIN\n    UniqueProducts2021 fup ON spc.segment = fup.segment\nORDER BY\n    ((fup.unique_products_2021 - spc.unique_products_2020) * 100.0) / (spc.unique_products_2020) DESC;",
+    "db": "data/sp2_lite_sqlite/databases/education_business.sqlite",
+    "db_id": "education_business",
+    "engine": "sqlite",
+    "profile": "sp2_education_business",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local058_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local059",
+    "question": "For the calendar year 2021, what is the overall average quantity sold of the top three best-selling hardware products (by total quantity sold) in each division?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/education_business.sqlite",
+    "db_id": "education_business",
+    "engine": "sqlite",
+    "profile": "sp2_education_business",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local059_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local060",
+    "question": "In the United States, for Q4 2019 and Q4 2020, first select only those cities where total sales (with no promotions) rose by at least 20% from Q4 2019 to Q4 2020. Among these cities, rank products by their overall sales (still excluding promotions) in those quarters and take the top 20%. Then compute each top product’s share of total sales in Q4 2019 and Q4 2020 and calculate the difference in share from Q4 2019 to Q4 2020, returning the results in descending order of that share change.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/complex_oracle.sqlite",
+    "db_id": "complex_oracle",
+    "engine": "sqlite",
+    "profile": "sp2_complex_oracle",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local060_a.csv",
+      "data/sp2_lite_sqlite/gold/local060_b.csv"
+    ],
+    "condition_cols": [
+      [
+        2,
+        3,
+        4
+      ],
+      [
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local063",
+    "question": "Among all products sold in the United States with promo_id=999, considering only those cities whose sales increased by at least 20% from Q4 2019 (calendar_quarter_id=1772) to Q4 2020 (calendar_quarter_id=1776), which product that ranks in the top 20% of total sales has the smallest percentage-point change in its share of total sales between these two quarters?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/complex_oracle.sqlite",
+    "db_id": "complex_oracle",
+    "engine": "sqlite",
+    "profile": "sp2_complex_oracle",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local063_a.csv",
+      "data/sp2_lite_sqlite/gold/local063_b.csv",
+      "data/sp2_lite_sqlite/gold/local063_c.csv",
+      "data/sp2_lite_sqlite/gold/local063_d.csv",
+      "data/sp2_lite_sqlite/gold/local063_e.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local061",
+    "question": "What is the average projected monthly sales in USD for France in 2021, considering only product sales with promotions where promo_total_id = 1 and channels where channel_total_id = 1, by taking each product’s monthly sales from 2019 and 2020, calculating the growth rate from 2019 to 2020 for that same product and month, applying this growth rate to project 2021 monthly sales, converting all projected 2021 amounts to USD with the 2021 exchange rates, and finally averaging and listing them by month?",
+    "evidence": "## Projection Calculation Method\n\n### Steps for Projection Calculation\n\n1. **Aggregate Historical Sales Data**\n\n   - **Data Collection**: Gather sales data for products sold in France, including sales amounts each month for the years 2019, 2020, and 2021.\n   - **Summarize Sales**: Sum up the sales amounts for each product, country, month, and year.\n\n2. **Calculate Average Sales**\n\n   - **Monthly Averages**: Compute the average sales amount for each product and month across all available months to establish a baseline of typical sales.\n\n3. **Project Sales for 2021**\n\n   - **Identify Changes**: Determine how sales changed from 2019 to 2020 for each product and month. Calculate the percentage change in sales from 2019 to 2020.\n   - **Apply Changes**: Use this percentage change to estimate the sales for each month in 2021.\n\n   **Projection Formula**:\n   - For 2021:\n     - Calculate the difference in sales between 2020 and 2019.\n     - Compute the percentage change relative to 2019 sales.\n     - Apply this percentage change to the 2020 sales to estimate 2021 sales.\n     - The formula used in the SQL query is:\n\n       ```plaintext\n       (((Sales in 2020 - Sales in 2019) / Sales in 2019) * Sales in 2020) + Sales in 2020\n       ```\n\n     - This formula calculates the projected sales for 2021 based on the observed trend from 2019 to 2020.\n\n   - For other years (not 2021):\n     - Use the average sales value calculated for each month.\n\n4. **Adjust for Currency Conversion**\n\n   - **Conversion Rates**: Convert the projected sales figures into USD using monthly conversion rates.\n   - **Currency Adjustment**: Multiply the projected sales figures by the conversion rates to adjust to USD. If specific rates are not available, use a default rate of 1.\n\n5. **Calculate Monthly Averages in USD**\n\n   - **Monthly Projections**: Compute the average projected sales for each month in 2021, adjusting for currency conversion. Round the results to two decimal places.\n\n6. **Compile Results**\n\n   - **Organize Data**: Arrange the projected sales figures in a report, showing the estimated sales for each month in USD.\n\n### Summary\n\nThe projection calculation involves analyzing historical sales data from 2019 and 2020 to determine trends, applying these trends to estimate sales for 2021, and adjusting for currency differences. The result is a forecast of monthly sales in USD for 2021.",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/complex_oracle.sqlite",
+    "db_id": "complex_oracle",
+    "engine": "sqlite",
+    "profile": "sp2_complex_oracle",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local061_a.csv",
+      "data/sp2_lite_sqlite/gold/local061_b.csv"
+    ],
+    "condition_cols": [
+      1
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local050",
+    "question": "What is the median of the average monthly projected sales in USD for France in 2021, calculated by using the monthly sales data from 2019 and 2020 (filtered by promo_total_id=1 and channel_total_id=1), applying the growth rate from 2019 to 2020 to project 2021, converting to USD based on the currency table, and then determining the monthly averages before finding their median?",
+    "evidence": "## Projection Calculation Method\n\n### Steps for Projection Calculation\n\n1. **Aggregate Historical Sales Data**\n\n   - **Data Collection**: Gather sales data for products sold in France, including sales amounts each month for the years 2019, 2020, and 2021.\n   - **Summarize Sales**: Sum up the sales amounts for each product, country, month, and year.\n\n2. **Calculate Average Sales**\n\n   - **Monthly Averages**: Compute the average sales amount for each product and month across all available months to establish a baseline of typical sales.\n\n3. **Project Sales for 2021**\n\n   - **Identify Changes**: Determine how sales changed from 2019 to 2020 for each product and month. Calculate the percentage change in sales from 2019 to 2020.\n   - **Apply Changes**: Use this percentage change to estimate the sales for each month in 2021.\n\n   **Projection Formula**:\n   - For 2021:\n     - Calculate the difference in sales between 2020 and 2019.\n     - Compute the percentage change relative to 2019 sales.\n     - Apply this percentage change to the 2020 sales to estimate 2021 sales.\n     - The formula used in the SQL query is:\n\n       ```plaintext\n       (((Sales in 2020 - Sales in 2019) / Sales in 2019) * Sales in 2020) + Sales in 2020\n       ```\n\n     - This formula calculates the projected sales for 2021 based on the observed trend from 2019 to 2020.\n\n   - For other years (not 2021):\n     - Use the average sales value calculated for each month.\n\n4. **Adjust for Currency Conversion**\n\n   - **Conversion Rates**: Convert the projected sales figures into USD using monthly conversion rates.\n   - **Currency Adjustment**: Multiply the projected sales figures by the conversion rates to adjust to USD. If specific rates are not available, use a default rate of 1.\n\n5. **Calculate Monthly Averages in USD**\n\n   - **Monthly Projections**: Compute the average projected sales for each month in 2021, adjusting for currency conversion. Round the results to two decimal places.\n\n6. **Compile Results**\n\n   - **Organize Data**: Arrange the projected sales figures in a report, showing the estimated sales for each month in USD.\n\n### Summary\n\nThe projection calculation involves analyzing historical sales data from 2019 and 2020 to determine trends, applying these trends to estimate sales for 2021, and adjusting for currency differences. The result is a forecast of monthly sales in USD for 2021.",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/complex_oracle.sqlite",
+    "db_id": "complex_oracle",
+    "engine": "sqlite",
+    "profile": "sp2_complex_oracle",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local050_a.csv",
+      "data/sp2_lite_sqlite/gold/local050_b.csv",
+      "data/sp2_lite_sqlite/gold/local050_c.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local062",
+    "question": "Please group all Italian customers into ten buckets for December 2021 by summing their profits from all products purchased (where profit is calculated as quantity_sold multiplied by the difference between unit_price and unit_cost), then divide the overall range of total monthly profits into ten equal intervals. For each bucket, provide the number of customers, and identify the minimum and maximum total profits within that bucket.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/complex_oracle.sqlite",
+    "db_id": "complex_oracle",
+    "engine": "sqlite",
+    "profile": "sp2_complex_oracle",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local062_a.csv"
+    ],
+    "condition_cols": [
+      1,
+      2,
+      3
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local067",
+    "question": "Can you provide the highest and lowest profits for Italian customers segmented into ten evenly divided tiers based on their December 2021 sales profits?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/complex_oracle.sqlite",
+    "db_id": "complex_oracle",
+    "engine": "sqlite",
+    "profile": "sp2_complex_oracle",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local067_a.csv",
+      "data/sp2_lite_sqlite/gold/local067_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local070",
+    "question": "Please examine our database records for Chinese cities (country_code_2 = 'cn') during July 2021 and identify both the shortest and longest streaks of consecutive date entries. For each date in these streaks, return exactly one record per date along with the corresponding city name. In your output, please ensure the first letter of each city name is capitalized and the rest are lowercase. Display the dates and city names for both the shortest and longest consecutive date streaks, ordered by date.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/city_legislation.sqlite",
+    "db_id": "city_legislation",
+    "engine": "sqlite",
+    "profile": "sp2_city_legislation",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local070_a.csv",
+      "data/sp2_lite_sqlite/gold/local070_b.csv"
+    ],
+    "condition_cols": [
+      1
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local071",
+    "question": "Could you review our records in June 2022 and identify which countries have the longest streak of consecutive inserted city dates? Please list the 2-letter length country codes of these countries.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/city_legislation.sqlite",
+    "db_id": "city_legislation",
+    "engine": "sqlite",
+    "profile": "sp2_city_legislation",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local071_a.csv",
+      "data/sp2_lite_sqlite/gold/local071_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local072",
+    "question": "Identify the country with data inserted on nine different days in January 2022. Then, find the longest consecutive period with data insertions for this country during January 2022, and calculate the proportion of entries that are from its capital city within this longest consecutive insertion period.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/city_legislation.sqlite",
+    "db_id": "city_legislation",
+    "engine": "sqlite",
+    "profile": "sp2_city_legislation",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local072_a.csv",
+      "data/sp2_lite_sqlite/gold/local072_b.csv",
+      "data/sp2_lite_sqlite/gold/local072_c.csv",
+      "data/sp2_lite_sqlite/gold/local072_d.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local068",
+    "question": "Calculate the number of new cities inserted in April, May, and June for each year from 2021 to 2023. For each month, compute the cumulative running total of cities added for that specific month across the years up to and including the given year (i.e., sum the counts of that month over the years). Additionally, calculate the year-over-year growth percentages for both the monthly total and the running total for each month, comparing each year to the previous year. Present the results only for 2022 and 2023, listing the year, the month, the total number of cities added in that month, the cumulative running total for that month, and the year-over-year growth percentages for both the monthly total and the running total. Use the data from 2021 solely as a baseline for calculating growth rates, and exclude it from the final output.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/city_legislation.sqlite",
+    "db_id": "city_legislation",
+    "engine": "sqlite",
+    "profile": "sp2_city_legislation",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local068_a.csv",
+      "data/sp2_lite_sqlite/gold/local068_b.csv",
+      "data/sp2_lite_sqlite/gold/local068_c.csv"
+    ],
+    "condition_cols": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local073",
+    "question": "For each pizza order, provide a single result row with the row ID, order ID, customer ID, pizza name, and final set of ingredients. The final ingredients are determined by starting with the standard toppings from the pizza’s recipe, removing any excluded toppings, and adding any extra toppings. Present the ingredients in a string starting with the pizza name followed by ': ', with ingredients listed in alphabetical order. Ingredients appearing multiple times (e.g., from standard and extra toppings) should be prefixed with '2x' and listed first, followed by single-occurrence ingredients, both in alphabetical order. Group by row ID, order ID, pizza name, and order time to ensure each order appears once. Sort results by row ID in ascending order. Assign pizza_id 1 to 'Meatlovers' pizzas and pizza_id 2 to all others.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/modern_data.sqlite",
+    "db_id": "modern_data",
+    "engine": "sqlite",
+    "profile": "sp2_modern_data",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local073_a.csv",
+      "data/sp2_lite_sqlite/gold/local073_b.csv"
+    ],
+    "condition_cols": [
+      0,
+      4
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local066",
+    "question": "Based on our customer pizza order information, summarize the total quantity of each ingredient used in the pizzas we delivered. Output the name and quantity for each ingredient.",
+    "evidence": "",
+    "sql": "WITH cte_cleaned_customer_orders AS (\n    SELECT\n        *,\n        ROW_NUMBER() OVER () AS original_row_number\n    FROM \n        pizza_clean_customer_orders\n),\nsplit_regular_toppings AS (\n    SELECT\n        pizza_id,\n        TRIM(SUBSTR(toppings, 1, INSTR(toppings || ',', ',') - 1)) AS topping_id,\n        SUBSTR(toppings || ',', INSTR(toppings || ',', ',') + 1) AS remaining_toppings\n    FROM \n        pizza_recipes\n    UNION ALL\n    SELECT\n        pizza_id,\n        TRIM(SUBSTR(remaining_toppings, 1, INSTR(remaining_toppings, ',') - 1)) AS topping_id,\n        SUBSTR(remaining_toppings, INSTR(remaining_toppings, ',') + 1) AS remaining_toppings\n    FROM \n        split_regular_toppings\n    WHERE\n        remaining_toppings <> ''\n),\ncte_base_toppings AS (\n    SELECT\n        t1.order_id,\n        t1.customer_id,\n        t1.pizza_id,\n        t1.order_time,\n        t1.original_row_number,\n        t2.topping_id\n    FROM \n        cte_cleaned_customer_orders AS t1\n    LEFT JOIN \n        split_regular_toppings AS t2\n    ON \n        t1.pizza_id = t2.pizza_id\n),\nsplit_exclusions AS (\n    SELECT\n        order_id,\n        customer_id,\n        pizza_id,\n        order_time,\n        original_row_number,\n        TRIM(SUBSTR(exclusions, 1, INSTR(exclusions || ',', ',') - 1)) AS topping_id,\n        SUBSTR(exclusions || ',', INSTR(exclusions || ',', ',') + 1) AS remaining_exclusions\n    FROM \n        cte_cleaned_customer_orders\n    WHERE \n        exclusions IS NOT NULL\n    UNION ALL\n    SELECT\n        order_id,\n        customer_id,\n        pizza_id,\n        order_time,\n        original_row_number,\n        TRIM(SUBSTR(remaining_exclusions, 1, INSTR(remaining_exclusions, ',') - 1)) AS topping_id,\n        SUBSTR(remaining_exclusions, INSTR(remaining_exclusions, ',') + 1) AS remaining_exclusions\n    FROM \n        split_exclusions\n    WHERE\n        remaining_exclusions <> ''\n),\nsplit_extras AS (\n    SELECT\n        order_id,\n        customer_id,\n        pizza_id,\n        order_time,\n        original_row_number,\n        TRIM(SUBSTR(extras, 1, INSTR(extras || ',', ',') - 1)) AS topping_id,\n        SUBSTR(extras || ',', INSTR(extras || ',', ',') + 1) AS remaining_extras\n    FROM \n        cte_cleaned_customer_orders\n    WHERE \n        extras IS NOT NULL\n    UNION ALL\n    SELECT\n        order_id,\n        customer_id,\n        pizza_id,\n        order_time,\n        original_row_number,\n        TRIM(SUBSTR(remaining_extras, 1, INSTR(remaining_extras, ',') - 1)) AS topping_id,\n        SUBSTR(remaining_extras, INSTR(remaining_extras, ',') + 1) AS remaining_extras\n    FROM \n        split_extras\n    WHERE\n        remaining_extras <> ''\n),\ncte_combined_orders AS (\n    SELECT \n        order_id,\n        customer_id,\n        pizza_id,\n        order_time,\n        original_row_number,\n        topping_id\n    FROM \n        cte_base_toppings\n    WHERE topping_id NOT IN (SELECT topping_id FROM split_exclusions WHERE split_exclusions.order_id = cte_base_toppings.order_id)\n    UNION ALL\n    SELECT \n        order_id,\n        customer_id,\n        pizza_id,\n        order_time,\n        original_row_number,\n        topping_id\n    FROM \n        split_extras\n)\nSELECT\n    t2.topping_name,\n    COUNT(*) AS topping_count\nFROM \n    cte_combined_orders AS t1\nJOIN \n    pizza_toppings AS t2\nON \n    t1.topping_id = t2.topping_id\nGROUP BY \n    t2.topping_name\nORDER BY \n    topping_count DESC;",
+    "db": "data/sp2_lite_sqlite/databases/modern_data.sqlite",
+    "db_id": "modern_data",
+    "engine": "sqlite",
+    "profile": "sp2_modern_data",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local066_a.csv",
+      "data/sp2_lite_sqlite/gold/local066_b.csv",
+      "data/sp2_lite_sqlite/gold/local066_c.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local065",
+    "question": "Calculate the total income from Meat Lovers pizzas priced at $12 and Vegetarian pizzas at $10. Include any extra toppings charged at $1 each. Ensure that canceled orders are filtered out. How much money has Pizza Runner earned in total?",
+    "evidence": "",
+    "sql": "WITH get_extras_count AS (\n    WITH RECURSIVE split_extras AS (\n        SELECT\n            order_id,\n            TRIM(SUBSTR(extras, 1, INSTR(extras || ',', ',') - 1)) AS each_extra,\n            SUBSTR(extras || ',', INSTR(extras || ',', ',') + 1) AS remaining_extras\n        FROM\n            pizza_clean_customer_orders\n        UNION ALL\n        SELECT\n            order_id,\n            TRIM(SUBSTR(remaining_extras, 1, INSTR(remaining_extras, ',') - 1)) AS each_extra,\n            SUBSTR(remaining_extras, INSTR(remaining_extras, ',') + 1)\n        FROM\n            split_extras\n        WHERE\n            remaining_extras <> ''\n    )\n    SELECT\n        order_id,\n        COUNT(each_extra) AS total_extras\n    FROM\n        split_extras\n    GROUP BY\n        order_id\n),\ncalculate_totals AS (\n    SELECT\n        t1.order_id,\n        t1.pizza_id,\n        SUM(\n            CASE\n                WHEN pizza_id = 1 THEN 12\n                WHEN pizza_id = 2 THEN 10\n            END\n        ) AS total_price,\n        t3.total_extras\n    FROM \n        pizza_clean_customer_orders AS t1\n    JOIN\n        pizza_clean_runner_orders AS t2 \n    ON\n        t2.order_id = t1.order_id\n    LEFT JOIN\n        get_extras_count AS t3\n    ON\n        t3.order_id = t1.order_id\n    WHERE\n        t2.cancellation IS NULL\n    GROUP BY \n        t1.order_id,\n        t1.pizza_id,\n        t3.total_extras\n)\nSELECT \n    SUM(total_price) + SUM(total_extras) AS total_income\nFROM \n    calculate_totals;",
+    "db": "data/sp2_lite_sqlite/databases/modern_data.sqlite",
+    "db_id": "modern_data",
+    "engine": "sqlite",
+    "profile": "sp2_modern_data",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local065_a.csv",
+      "data/sp2_lite_sqlite/gold/local065_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local074",
+    "question": "Please generate a summary of the closing balances at the end of each month for each customer transactions, show the monthly changes and monthly cumulative bank account balances. Ensure that even if a customer has no account activity in a given month, the balance for that month is still included in the output.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/bank_sales_trading.sqlite",
+    "db_id": "bank_sales_trading",
+    "engine": "sqlite",
+    "profile": "sp2_bank_sales_trading",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local074_a.csv",
+      "data/sp2_lite_sqlite/gold/local074_b.csv",
+      "data/sp2_lite_sqlite/gold/local074_c.csv",
+      "data/sp2_lite_sqlite/gold/local074_d.csv"
+    ],
+    "condition_cols": [
+      2,
+      3
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local064",
+    "question": "For each customer and each month of 2020, first calculate the month-end balance by adding all deposit amounts and subtracting all withdrawal amounts that occurred during that specific month. Then determine which month in 2020 has the highest count of customers with a positive month-end balance and which month has the lowest count. For each of these two months, compute the average month-end balance across all customers and provide the difference between these two averages",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/bank_sales_trading.sqlite",
+    "db_id": "bank_sales_trading",
+    "engine": "sqlite",
+    "profile": "sp2_bank_sales_trading",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local064_a.csv",
+      "data/sp2_lite_sqlite/gold/local064_b.csv",
+      "data/sp2_lite_sqlite/gold/local064_c.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local297",
+    "question": "For each customer, group all deposits and withdrawals by the first day of each month to obtain a monthly net amount, then calculate each month’s closing balance by cumulatively summing these monthly nets. Next, determine the most recent month’s growth rate by comparing its closing balance to the prior month’s balance, treating deposits as positive and withdrawals as negative, and if the previous month’s balance is zero, the growth rate should be the current month’s balance multiplied by 100. Finally, compute the percentage of customers whose most recent month shows a growth rate of more than 5%.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/bank_sales_trading.sqlite",
+    "db_id": "bank_sales_trading",
+    "engine": "sqlite",
+    "profile": "sp2_bank_sales_trading",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local297_a.csv",
+      "data/sp2_lite_sqlite/gold/local297_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local298",
+    "question": "For each month, calculate the total balance from all users for the previous month (measured as of the 1st of each month), replacing any negative balances with zero. Ensure that data from the first month is used only as a baseline for calculating previous total balance, and exclude it from the final output. Sort the results in ascending order by month. ",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/bank_sales_trading.sqlite",
+    "db_id": "bank_sales_trading",
+    "engine": "sqlite",
+    "profile": "sp2_bank_sales_trading",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local298_a.csv"
+    ],
+    "condition_cols": [
+      1
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local299",
+    "question": "For a bank database with customer transactions, calculate each customer's daily running balance (where deposits add to the balance and other transaction types subtract). For each customer and each day, compute the 30-day rolling average balance (only after having 30 days of data, and treating negative averages as zero). Then group these daily averages by month and find each customer's maximum 30-day average balance within each month. Sum these maximum values across all customers for each month. Consider the first month of each customer's transaction history as the baseline period and exclude it from the final results, presenting monthly totals of these summed maximum 30-day average balances.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/bank_sales_trading.sqlite",
+    "db_id": "bank_sales_trading",
+    "engine": "sqlite",
+    "profile": "sp2_bank_sales_trading",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local299_a.csv",
+      "data/sp2_lite_sqlite/gold/local299_b.csv"
+    ],
+    "condition_cols": [
+      1
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local300",
+    "question": "For each customer, calculate their daily balances for every day between their earliest and latest transaction dates, including days without transactions by carrying forward the previous day's balance. Treat any negative daily balances as zero. Then, for each month, determine the highest daily balance each customer had during that month. Finally, for each month, sum these maximum daily balances across all customers to obtain a monthly total.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/bank_sales_trading.sqlite",
+    "db_id": "bank_sales_trading",
+    "engine": "sqlite",
+    "profile": "sp2_bank_sales_trading",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local300_a.csv",
+      "data/sp2_lite_sqlite/gold/local300_b.csv",
+      "data/sp2_lite_sqlite/gold/local300_c.csv",
+      "data/sp2_lite_sqlite/gold/local300_d.csv"
+    ],
+    "condition_cols": [
+      [
+        0
+      ],
+      [
+        1
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local075",
+    "question": "Can you provide a breakdown of how many times each product was viewed, how many times they were added to the shopping cart, and how many times they were left in the cart without being purchased? Also, give me the count of actual purchases for each product. Ensure that products with a page id in (1, 2, 12, 13) are filtered out.",
+    "evidence": "",
+    "sql": "WITH product_viewed AS (\n    SELECT\n        t1.page_id,\n        SUM(CASE WHEN event_type = 1 THEN 1 ELSE 0 END) AS n_page_views,\n        SUM(CASE WHEN event_type = 2 THEN 1 ELSE 0 END) AS n_added_to_cart\n    FROM\n        shopping_cart_page_hierarchy AS t1\n    JOIN\n        shopping_cart_events AS t2\n    ON\n        t1.page_id = t2.page_id\n    WHERE\n        t1.product_id IS NOT NULL\n    GROUP BY\n        t1.page_id\n),\nproduct_purchased AS (\n    SELECT\n        t2.page_id,\n        SUM(CASE WHEN event_type = 2 THEN 1 ELSE 0 END) AS purchased_from_cart\n    FROM\n        shopping_cart_page_hierarchy AS t1\n    JOIN\n        shopping_cart_events AS t2\n    ON\n        t1.page_id = t2.page_id\n    WHERE\n        t1.product_id IS NOT NULL\n        AND EXISTS (\n            SELECT\n                visit_id\n            FROM\n                shopping_cart_events\n            WHERE\n                event_type = 3\n                AND t2.visit_id = visit_id\n        )\n        AND t1.page_id NOT IN (1, 2, 12, 13)\n    GROUP BY\n        t2.page_id\n),\nproduct_abandoned AS (\n    SELECT\n        t2.page_id,\n        SUM(CASE WHEN event_type = 2 THEN 1 ELSE 0 END) AS abandoned_in_cart\n    FROM\n        shopping_cart_page_hierarchy AS t1\n    JOIN\n        shopping_cart_events AS t2\n    ON\n        t1.page_id = t2.page_id\n    WHERE\n        t1.product_id IS NOT NULL\n        AND NOT EXISTS (\n            SELECT\n                visit_id\n            FROM\n                shopping_cart_events\n            WHERE\n                event_type = 3\n                AND t2.visit_id = visit_id\n        )\n        AND t1.page_id NOT IN (1, 2, 12, 13)\n    GROUP BY\n        t2.page_id\n)\nSELECT\n    t1.page_id,\n    t1.page_name,\n    t2.n_page_views AS 'number of product being viewed',\n    t2.n_added_to_cart AS 'number added to the cart',\n    t4.abandoned_in_cart AS 'without being purchased in cart',\n    t3.purchased_from_cart AS 'count of actual purchases'\nFROM\n    shopping_cart_page_hierarchy AS t1\nJOIN\n    product_viewed AS t2 \nON\n    t2.page_id = t1.page_id\nJOIN\n    product_purchased AS t3 \nON \n    t3.page_id = t1.page_id\nJOIN\n    product_abandoned AS t4 \nON \n    t4.page_id = t1.page_id;",
+    "db": "data/sp2_lite_sqlite/databases/bank_sales_trading.sqlite",
+    "db_id": "bank_sales_trading",
+    "engine": "sqlite",
+    "profile": "sp2_bank_sales_trading",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local075_a.csv",
+      "data/sp2_lite_sqlite/gold/local075_b.csv"
+    ],
+    "condition_cols": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local077",
+    "question": "Please analyze our interest data from September 2018 to August 2019. For each month, calculate the average composition for each interest by dividing the composition by the index value. Identify the interest with the highest average composition value each month and report its average composition as the max index composition for that month. Compute the three-month rolling average of these monthly max index compositions. Ensure the output includes the date, the interest name, the max index composition for that month, the rolling average, and the names and max index compositions of the top interests from one month ago and two months ago.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/bank_sales_trading.sqlite",
+    "db_id": "bank_sales_trading",
+    "engine": "sqlite",
+    "profile": "sp2_bank_sales_trading",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local077_a.csv",
+      "data/sp2_lite_sqlite/gold/local077_b.csv",
+      "data/sp2_lite_sqlite/gold/local077_c.csv",
+      "data/sp2_lite_sqlite/gold/local077_d.csv"
+    ],
+    "condition_cols": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local078",
+    "question": "Identify the top 10 and bottom 10 interest categories based on their highest composition values across all months. For each category, display the time(MM-YYYY), interest name, and the composition value",
+    "evidence": "",
+    "sql": "WITH get_interest_rank AS (\n    SELECT\n        t1.month_year,\n        t2.interest_name,\n        t1.composition,\n        RANK() OVER (\n            PARTITION BY t2.interest_name\n            ORDER BY t1.composition DESC\n        ) AS interest_rank\n    FROM \n        interest_metrics AS t1\n    JOIN \n        interest_map AS t2\n    ON \n        t1.interest_id = t2.id\n    WHERE \n        t1.month_year IS NOT NULL\n),\nget_top_10 AS (\n    SELECT\n        month_year,\n        interest_name,\n        composition\n    FROM \n        get_interest_rank\n    WHERE \n        interest_rank = 1\n    ORDER BY \n        composition DESC\n    LIMIT 10\n),\nget_bottom_10 AS (\n    SELECT\n        month_year,\n        interest_name,\n        composition\n    FROM \n        get_interest_rank\n    WHERE \n        interest_rank = 1\n    ORDER BY \n        composition ASC\n    LIMIT 10\n)\nSELECT * \nFROM \n    get_top_10\nUNION\nSELECT * \nFROM \n    get_bottom_10\nORDER BY \n    composition DESC;",
+    "db": "data/sp2_lite_sqlite/databases/bank_sales_trading.sqlite",
+    "db_id": "bank_sales_trading",
+    "engine": "sqlite",
+    "profile": "sp2_bank_sales_trading",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local078_a.csv"
+    ],
+    "condition_cols": [
+      1,
+      2
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local081",
+    "question": "Considering only the customers who placed orders in 1998, calculate the total amount each customer spent by summing the unit price multiplied by the quantity of all products in their orders, excluding any discounts. Assign each customer to a spending group based on the customer group thresholds, and determine how many customers are in each spending group and what percentage of the total number of customers who placed orders in 1998 each group represents.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/northwind.sqlite",
+    "db_id": "northwind",
+    "engine": "sqlite",
+    "profile": "sp2_northwind",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local081_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local085",
+    "question": "Among employees who have more than 50 total orders, which three have the highest percentage of late orders, where an order is considered late if the shipped date is on or after its required date? Please list each employee's ID, the number of late orders, and the corresponding late-order percentage.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/northwind.sqlite",
+    "db_id": "northwind",
+    "engine": "sqlite",
+    "profile": "sp2_northwind",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local085_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local096",
+    "question": "For each year, calculate the percentage of films that had exclusively female actors (meaning no male actors and no actors with unknown/unspecified gender). Consider actors with gender marked as 'Male' or 'None' as non-female. For the results, display the year, the total number of movies in that year, and the percentage of movies with exclusively female actors. Extract the year from the Movie.year field by taking the last 4 characters and converting to a number.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/Db-IMDB.sqlite",
+    "db_id": "Db-IMDB",
+    "engine": "sqlite",
+    "profile": "sp2_Db-IMDB",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local096_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local097",
+    "question": "Could you analyze our data and identify which ten-year period starting from any movie release year present in the data had the largest number of films, considering consecutive ten-year periods beginning at each unique year? Only output the start year and the total count for that specific period.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/Db-IMDB.sqlite",
+    "db_id": "Db-IMDB",
+    "engine": "sqlite",
+    "profile": "sp2_Db-IMDB",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local097_a.csv"
+    ],
+    "condition_cols": [
+      1
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local098",
+    "question": "From the first year each actor appeared in a film to the last, how many actors in the database never had a gap longer than three consecutive years without at least one new movie appearance, meaning there is no four-year span anywhere in their active career without at least a single film credit?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/Db-IMDB.sqlite",
+    "db_id": "Db-IMDB",
+    "engine": "sqlite",
+    "profile": "sp2_Db-IMDB",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local098_a.csv",
+      "data/sp2_lite_sqlite/gold/local098_b.csv",
+      "data/sp2_lite_sqlite/gold/local098_c.csv",
+      "data/sp2_lite_sqlite/gold/local098_d.csv",
+      "data/sp2_lite_sqlite/gold/local098_e.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local099",
+    "question": "I need you to look into the actor collaborations and tell me how many actors have made more films with Yash Chopra than with any other director. This will help us understand his influence on the industry better.",
+    "evidence": "",
+    "sql": "WITH YASH_CHOPRAS_PID AS (\n    SELECT\n        TRIM(P.PID) AS PID\n    FROM\n        Person P\n    WHERE\n        TRIM(P.Name) = 'Yash Chopra'\n),\nNUM_OF_MOV_BY_ACTOR_DIRECTOR AS (\n    SELECT\n        TRIM(MC.PID) AS ACTOR_PID,\n        TRIM(MD.PID) AS DIRECTOR_PID,\n        COUNT(DISTINCT TRIM(MD.MID)) AS NUM_OF_MOV\n    FROM\n        M_Cast MC\n    JOIN\n        M_Director MD ON TRIM(MC.MID) = TRIM(MD.MID)\n    GROUP BY\n        ACTOR_PID,\n        DIRECTOR_PID\n),\nNUM_OF_MOVIES_BY_YC AS (\n    SELECT\n        NM.ACTOR_PID,\n        NM.DIRECTOR_PID,\n        NM.NUM_OF_MOV AS NUM_OF_MOV_BY_YC\n    FROM\n        NUM_OF_MOV_BY_ACTOR_DIRECTOR NM\n    JOIN\n        YASH_CHOPRAS_PID YCP ON NM.DIRECTOR_PID = YCP.PID\n),\nMAX_MOV_BY_OTHER_DIRECTORS AS (\n    SELECT\n        ACTOR_PID,\n        MAX(NUM_OF_MOV) AS MAX_NUM_OF_MOV\n    FROM\n        NUM_OF_MOV_BY_ACTOR_DIRECTOR NM\n    JOIN\n        YASH_CHOPRAS_PID YCP ON NM.DIRECTOR_PID <> YCP.PID\n    GROUP BY\n        ACTOR_PID\n),\nACTORS_MOV_COMPARISION AS (\n    SELECT\n        NMY.ACTOR_PID,\n        CASE WHEN NMY.NUM_OF_MOV_BY_YC > IFNULL(NMO.MAX_NUM_OF_MOV, 0) THEN 'Y' ELSE 'N' END AS MORE_MOV_BY_YC\n    FROM\n        NUM_OF_MOVIES_BY_YC NMY\n    LEFT OUTER JOIN\n        MAX_MOV_BY_OTHER_DIRECTORS NMO ON NMY.ACTOR_PID = NMO.ACTOR_PID\n)\nSELECT\n    COUNT(DISTINCT TRIM(P.PID)) AS \"Number of actor\"\nFROM\n    Person P\nWHERE\n    TRIM(P.PID) IN (\n        SELECT\n            DISTINCT ACTOR_PID\n        FROM\n            ACTORS_MOV_COMPARISION\n        WHERE\n            MORE_MOV_BY_YC = 'Y'\n    );",
+    "db": "data/sp2_lite_sqlite/databases/Db-IMDB.sqlite",
+    "db_id": "Db-IMDB",
+    "engine": "sqlite",
+    "profile": "sp2_Db-IMDB",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local099_a.csv",
+      "data/sp2_lite_sqlite/gold/local099_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local100",
+    "question": "Find out how many actors have a 'Shahrukh number' of 2? This means they acted in a film with someone who acted with Shahrukh Khan, but not directly with him.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/Db-IMDB.sqlite",
+    "db_id": "Db-IMDB",
+    "engine": "sqlite",
+    "profile": "sp2_Db-IMDB",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local100_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local114",
+    "question": "Provide a detailed web sales report for each region, including the number of orders, total sales amount, and the name and sales amount of all sales representatives who achieved the highest total sales amount in that region (include all representatives in case of a tie).",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/education_business.sqlite",
+    "db_id": "education_business",
+    "engine": "sqlite",
+    "profile": "sp2_education_business",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local114_a.csv",
+      "data/sp2_lite_sqlite/gold/local114_b.csv",
+      "data/sp2_lite_sqlite/gold/local114_c.csv",
+      "data/sp2_lite_sqlite/gold/local114_d.csv",
+      "data/sp2_lite_sqlite/gold/local114_e.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local128",
+    "question": "List the bowlers (including their ID, first name, and last name), match number, game number, handicap score, tournament date, and location for only those bowlers who have won games with a handicap score of 190 or less at all three venues: Thunderbird Lanes, Totem Lanes, and Bolero Lanes. Only include the specific game records where they won with a handicap score of 190 or less at these three locations.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/BowlingLeague.sqlite",
+    "db_id": "BowlingLeague",
+    "engine": "sqlite",
+    "profile": "sp2_BowlingLeague",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local128_a.csv"
+    ],
+    "condition_cols": [
+      1,
+      2,
+      3,
+      7
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local130",
+    "question": "Could you provide a list of last names for all students who have completed English courses (where completion is defined as having a ClassStatus of 2), along with their quintile ranks based on their individual grades in those courses? The quintile should be determined by calculating how many students have grades greater than or equal to each student's grade, then dividing this ranking by the total number of students who completed English courses. The quintiles should be labeled as \"First\" (top 20%), \"Second\" (top 21-40%), \"Third\" (top 41-60%), \"Fourth\" (top 61-80%), and \"Fifth\" (bottom 20%). Please sort the results from highest performing quintile to lowest (First to Fifth).",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/school_scheduling.sqlite",
+    "db_id": "school_scheduling",
+    "engine": "sqlite",
+    "profile": "sp2_school_scheduling",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local130_a.csv"
+    ],
+    "condition_cols": [
+      0,
+      1
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local131",
+    "question": "Could you list each musical style with the number of times it appears as a 1st, 2nd, or 3rd preference in a single row per style?",
+    "evidence": "",
+    "sql": "SELECT \n  Musical_Styles.StyleName,\n  COUNT(RankedPreferences.FirstStyle)\n    AS FirstPreference,\n  COUNT(RankedPreferences.SecondStyle)\n    AS SecondPreference,\n  COUNT(RankedPreferences.ThirdStyle)\n    AS ThirdPreference\nFROM Musical_Styles,\n (SELECT (CASE WHEN\n    Musical_Preferences.PreferenceSeq = 1\n               THEN Musical_Preferences.StyleID\n               ELSE Null END) As FirstStyle,\n         (CASE WHEN\n    Musical_Preferences.PreferenceSeq = 2\n               THEN Musical_Preferences.StyleID\n               ELSE Null END) As SecondStyle,\n         (CASE WHEN\n    Musical_Preferences.PreferenceSeq = 3\n               THEN Musical_Preferences.StyleID\n               ELSE Null END) AS ThirdStyle\n   FROM Musical_Preferences)  AS RankedPreferences\nWHERE Musical_Styles.StyleID =\n         RankedPreferences.FirstStyle\n  OR Musical_Styles.StyleID =\n         RankedPreferences.SecondStyle\n  OR Musical_Styles.StyleID =\n         RankedPreferences.ThirdStyle\nGROUP BY StyleID, StyleName\nHAVING COUNT(FirstStyle) > 0\n     OR     COUNT(SecondStyle) > 0\n     OR     COUNT(ThirdStyle) > 0\nORDER BY FirstPreference DESC,\n        SecondPreference DESC,\n        ThirdPreference DESC, StyleID;",
+    "db": "data/sp2_lite_sqlite/databases/EntertainmentAgency.sqlite",
+    "db_id": "EntertainmentAgency",
+    "engine": "sqlite",
+    "profile": "sp2_EntertainmentAgency",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local131_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local133",
+    "question": "Given a database of musical styles and user preferences, where Musical_Preferences contains user rankings of musical styles (PreferenceSeq=1 for first choice, PreferenceSeq=2 for second choice, PreferenceSeq=3 for third choice): Calculate a weighted score for each musical style by assigning 3 points for each time it was ranked as first choice, 2 points for each second choice, and 1 point for each third choice ranking. Calculate the total weighted score for each musical style that has been ranked by at least one user. Then, compute the absolute difference between each style's total weighted score and the average total weighted score across all such styles.\t",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/EntertainmentAgency.sqlite",
+    "db_id": "EntertainmentAgency",
+    "engine": "sqlite",
+    "profile": "sp2_EntertainmentAgency",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local133_a.csv",
+      "data/sp2_lite_sqlite/gold/local133_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local132",
+    "question": "Show all pairs of entertainers and customers who each have up to three style strengths or preferences, where the first and second style preferences of the customers match the first and second style strengths of the entertainers (or in reverse order). Only return the entertainer’s stage name and the customer’s last name",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/EntertainmentAgency.sqlite",
+    "db_id": "EntertainmentAgency",
+    "engine": "sqlite",
+    "profile": "sp2_EntertainmentAgency",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local132_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local141",
+    "question": "How did each salesperson's annual total sales compare to their annual sales quota? Provide the difference between their total sales and the quota for each year, organized by salesperson and year.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/AdventureWorks.sqlite",
+    "db_id": "AdventureWorks",
+    "engine": "sqlite",
+    "profile": "sp2_AdventureWorks",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local141_a.csv",
+      "data/sp2_lite_sqlite/gold/local141_b.csv"
+    ],
+    "condition_cols": [
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3,
+        4
+      ]
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local152",
+    "question": "Can you provide the top 9 directors by movie count, including their ID, name, number of movies, average inter-movie duration (rounded to the nearest integer), average rating (rounded to 2 decimals), total votes, minimum and maximum ratings, and total movie duration? Sort the output first by movie count in descending order and then by total movie duration in descending order.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/imdb_movies.sqlite",
+    "db_id": "imdb_movies",
+    "engine": "sqlite",
+    "profile": "sp2_imdb_movies",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local152_a.csv"
+    ],
+    "condition_cols": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local230",
+    "question": "Determine the top three genres with the most movies rated above 8, and then identify the top four directors who have directed the most films rated above 8 within those genres. List these directors and their respective movie counts.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/imdb_movies.sqlite",
+    "db_id": "imdb_movies",
+    "engine": "sqlite",
+    "profile": "sp2_imdb_movies",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local230_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local156",
+    "question": "Analyze the annual average purchase price per Bitcoin by region, computed as the total dollar amount spent divided by the total quantity purchased each year, excluding the first year's data for each region. Then, for each year, rank the regions based on these average purchase prices, and calculate the annual percentage change in cost for each region compared to the previous year.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/bank_sales_trading.sqlite",
+    "db_id": "bank_sales_trading",
+    "engine": "sqlite",
+    "profile": "sp2_bank_sales_trading",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local156_a.csv",
+      "data/sp2_lite_sqlite/gold/local156_b.csv",
+      "data/sp2_lite_sqlite/gold/local156_c.csv",
+      "data/sp2_lite_sqlite/gold/local156_d.csv"
+    ],
+    "condition_cols": [
+      0,
+      1,
+      2,
+      4
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local157",
+    "question": "Using the \"bitcoin_prices\" table, please calculate the daily percentage change in trading volume for each ticker from August 1 to August 10, 2021, ensuring that any volume ending in \"K\" or \"M\" is accurately converted to thousands or millions, any \"-\" volume is treated as zero, only non-zero volumes are used to determine the previous day's volume, and the results are ordered by ticker and date.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/bank_sales_trading.sqlite",
+    "db_id": "bank_sales_trading",
+    "engine": "sqlite",
+    "profile": "sp2_bank_sales_trading",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local157_a.csv",
+      "data/sp2_lite_sqlite/gold/local157_b.csv",
+      "data/sp2_lite_sqlite/gold/local157_c.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local163",
+    "question": "Which university faculty members' salaries are closest to the average salary for their respective ranks? Please provide the ranks, first names, last names, and salaries.university",
+    "evidence": "",
+    "sql": "WITH AvgSalaries AS (\n    SELECT \n        facrank AS FacRank,\n        AVG(facsalary) AS AvSalary\n    FROM \n        university_faculty\n    GROUP BY \n        facrank\n),\nSalaryDifferences AS (\n    SELECT \n        university_faculty.facrank AS FacRank, \n        university_faculty.facfirstname AS FacFirstName, \n        university_faculty.faclastname AS FacLastName, \n        university_faculty.facsalary AS Salary, \n        ABS(university_faculty.facsalary - AvgSalaries.AvSalary) AS Diff\n    FROM \n        university_faculty\n    JOIN \n        AvgSalaries ON university_faculty.facrank = AvgSalaries.FacRank\n),\nMinDifferences AS (\n    SELECT \n        FacRank, \n        MIN(Diff) AS MinDiff\n    FROM \n        SalaryDifferences\n    GROUP BY \n        FacRank\n)\nSELECT \n    s.FacRank, \n    s.FacFirstName, \n    s.FacLastName, \n    s.Salary\nFROM \n    SalaryDifferences s\nJOIN \n    MinDifferences m ON s.FacRank = m.FacRank AND s.Diff = m.MinDiff;",
+    "db": "data/sp2_lite_sqlite/databases/education_business.sqlite",
+    "db_id": "education_business",
+    "engine": "sqlite",
+    "profile": "sp2_education_business",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local163_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local168",
+    "question": "Among job postings that specifically have the Data Analyst, require a non-null annual average salary, and are remote, what is the overall average salary when considering only the top three most frequently demanded skills for these positions?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/city_legislation.sqlite",
+    "db_id": "city_legislation",
+    "engine": "sqlite",
+    "profile": "sp2_city_legislation",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local168_a.csv",
+      "data/sp2_lite_sqlite/gold/local168_b.csv",
+      "data/sp2_lite_sqlite/gold/local168_c.csv",
+      "data/sp2_lite_sqlite/gold/local168_d.csv",
+      "data/sp2_lite_sqlite/gold/local168_e.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local169",
+    "question": "What is the annual retention rate of legislators who began their first term between January 1, 1917 and December 31, 1999, measured as the proportion of this cohort still in office on December 31st for each of the first 20 years following their initial term start? The results should show all 20 periods in sequence regardless of whether any legislators were retained in a particular year.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/city_legislation.sqlite",
+    "db_id": "city_legislation",
+    "engine": "sqlite",
+    "profile": "sp2_city_legislation",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local169_a.csv",
+      "data/sp2_lite_sqlite/gold/local169_b.csv",
+      "data/sp2_lite_sqlite/gold/local169_c.csv",
+      "data/sp2_lite_sqlite/gold/local169_d.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local171",
+    "question": "For male legislators from Louisiana, how many distinct legislators were actively serving on December 31 of each year from more than 30 years since their first term up to less than 50 years, grouping the results by the exact number of years elapsed since their first term?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/city_legislation.sqlite",
+    "db_id": "city_legislation",
+    "engine": "sqlite",
+    "profile": "sp2_city_legislation",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local171_a.csv",
+      "data/sp2_lite_sqlite/gold/local171_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local167",
+    "question": "Based on the state each female legislator first represented, which state has the highest number of female legislators whose terms included December 31st at any point, and what is that count? Please provide the state's abbreviation.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/city_legislation.sqlite",
+    "db_id": "city_legislation",
+    "engine": "sqlite",
+    "profile": "sp2_city_legislation",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local167_a.csv",
+      "data/sp2_lite_sqlite/gold/local167_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local170",
+    "question": "Identify the state abbreviations where, for both male and female legislators, the retention rate remains greater than zero at specific intervals of 0, 2, 4, 6, 8, and 10 years after their first term start date. A legislator is considered retained if they are serving on December 31 of the respective year. Only include states where both gender cohorts maintain non-zero retention rates at all six of these time points during the first decade of service.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/city_legislation.sqlite",
+    "db_id": "city_legislation",
+    "engine": "sqlite",
+    "profile": "sp2_city_legislation",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local170_a.csv",
+      "data/sp2_lite_sqlite/gold/local170_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local193",
+    "question": "Could you find out the average percentage of the total lifetime sales (LTV) that occur in the first 7 and 30 days after a customer's initial purchase? Also, include the average total lifetime sales (LTV). Please exclude customers with zero lifetime sales. The 7- and 30-day periods should be based on the exact number of hours-minutes-seconds, not calendar days.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/sqlite-sakila.sqlite",
+    "db_id": "sqlite-sakila",
+    "engine": "sqlite",
+    "profile": "sp2_sqlite-sakila",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local193_a.csv"
+    ],
+    "condition_cols": [
+      0,
+      1,
+      2
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local194",
+    "question": "Please provide a list of the top three revenue-generating films for each actor, along with the average revenue per actor in those films, calculated by dividing the total film revenue equally among the actors for each film.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/sqlite-sakila.sqlite",
+    "db_id": "sqlite-sakila",
+    "engine": "sqlite",
+    "profile": "sp2_sqlite-sakila",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local194_a.csv",
+      "data/sp2_lite_sqlite/gold/local194_b.csv",
+      "data/sp2_lite_sqlite/gold/local194_c.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local195",
+    "question": "Please find out how widespread the appeal of our top five actors is. What percentage of our customers have rented films featuring these actors?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/sqlite-sakila.sqlite",
+    "db_id": "sqlite-sakila",
+    "engine": "sqlite",
+    "profile": "sp2_sqlite-sakila",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local195_a.csv",
+      "data/sp2_lite_sqlite/gold/local195_b.csv",
+      "data/sp2_lite_sqlite/gold/local195_c.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local196",
+    "question": "For each rating category of the first movie rented by customers—where the first movie is identified based on the earliest payment date per customer—please provide the average total amount spent per customer and the average number of subsequent rentals (calculated as the total number of rentals minus one) for customers whose first rented movie falls into that rating category.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/sqlite-sakila.sqlite",
+    "db_id": "sqlite-sakila",
+    "engine": "sqlite",
+    "profile": "sp2_sqlite-sakila",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local196_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local197",
+    "question": "Among our top 10 paying customers, can you identify the largest change in payment amounts from one month to the immediately following month? Specifically, please determine for which customer and during which month this maximum month-over-month difference occurred, and provide the difference rounded to two decimal places.",
+    "evidence": "",
+    "sql": "WITH result_table AS (\n  SELECT \n    strftime('%m', pm.payment_date) AS pay_mon, \n    customer_id,\n    COUNT(pm.amount) AS pay_countpermon, \n    SUM(pm.amount) AS pay_amount \n  FROM \n    payment AS pm \n  GROUP BY \n    pay_mon, \n    customer_id\n), \ntop10_customer AS (\n  SELECT \n    customer_id,\n    SUM(tb.pay_amount) AS total_payments \n  FROM \n    result_table AS tb \n  GROUP BY \n    customer_id\n  ORDER BY \n    SUM(tb.pay_amount) DESC \n  LIMIT \n    10\n), \ndifference_per_mon AS (\n  SELECT \n    pay_mon AS month_number, \n    pay_mon AS month, \n    tb.pay_countpermon, \n    tb.pay_amount, \n    ABS(tb.pay_amount - LAG(tb.pay_amount) OVER (PARTITION BY tb.customer_id)) AS diff \n  FROM \n    result_table tb \n    JOIN top10_customer top ON top.customer_id = tb.customer_id\n) \nSELECT \n  month, \n  ROUND(max_diff, 2) AS max_diff \nFROM (\n  SELECT \n    month, \n    diff, \n    month_number, \n    MAX(diff) OVER (PARTITION BY month) AS max_diff \n  FROM \n    difference_per_mon\n) AS max_per_mon \nWHERE \n  diff = max_diff \nORDER BY \n  max_diff DESC \nLIMIT \n  1;",
+    "db": "data/sp2_lite_sqlite/databases/sqlite-sakila.sqlite",
+    "db_id": "sqlite-sakila",
+    "engine": "sqlite",
+    "profile": "sp2_sqlite-sakila",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local197_a.csv",
+      "data/sp2_lite_sqlite/gold/local197_b.csv",
+      "data/sp2_lite_sqlite/gold/local197_c.csv"
+    ],
+    "condition_cols": [
+      [
+        4
+      ],
+      [
+        4
+      ],
+      [
+        3
+      ]
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local199",
+    "question": "Can you identify the year and month with the highest rental orders created by the store's staff for each store? Please list the store ID, the year, the month, and the total rentals for those dates.",
+    "evidence": "",
+    "sql": "WITH result_table AS (\n  SELECT \n    strftime('%Y', RE.RENTAL_DATE) AS YEAR, \n    strftime('%m', RE.RENTAL_DATE) AS RENTAL_MONTH, \n    ST.STORE_ID, \n    COUNT(RE.RENTAL_ID) AS count \n  FROM \n    RENTAL RE \n    JOIN STAFF ST ON RE.STAFF_ID = ST.STAFF_ID \n  GROUP BY \n    YEAR, \n    RENTAL_MONTH, \n    ST.STORE_ID \n), \nmonthly_sales AS (\n  SELECT \n    YEAR, \n    RENTAL_MONTH, \n    STORE_ID, \n    SUM(count) AS total_rentals \n  FROM \n    result_table \n  GROUP BY \n    YEAR, \n    RENTAL_MONTH, \n    STORE_ID\n),\nstore_max_sales AS (\n  SELECT \n    STORE_ID, \n    YEAR, \n    RENTAL_MONTH, \n    total_rentals, \n    MAX(total_rentals) OVER (PARTITION BY STORE_ID) AS max_rentals \n  FROM \n    monthly_sales\n)\nSELECT \n  STORE_ID, \n  YEAR, \n  RENTAL_MONTH, \n  total_rentals \nFROM \n  store_max_sales \nWHERE \n  total_rentals = max_rentals\nORDER BY \n  STORE_ID;",
+    "db": "data/sp2_lite_sqlite/databases/sqlite-sakila.sqlite",
+    "db_id": "sqlite-sakila",
+    "engine": "sqlite",
+    "profile": "sp2_sqlite-sakila",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local199_a.csv",
+      "data/sp2_lite_sqlite/gold/local199_b.csv"
+    ],
+    "condition_cols": [
+      3
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local201",
+    "question": "Identify the first 10 words, sorted alphabetically, that are 4 to 5 characters long, start with 'r', and have at least one anagram of the same length, considering case-sensitive letters. Provide the count of such anagrams for each word.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/modern_data.sqlite",
+    "db_id": "modern_data",
+    "engine": "sqlite",
+    "profile": "sp2_modern_data",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local201_a.csv",
+      "data/sp2_lite_sqlite/gold/local201_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local202",
+    "question": "For alien data, how many of the top 10 states by alien population have a higher percentage of friendly aliens than hostile aliens, with an average alien age exceeding 200?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/city_legislation.sqlite",
+    "db_id": "city_legislation",
+    "engine": "sqlite",
+    "profile": "sp2_city_legislation",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local202_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local209",
+    "question": "In the dataset of orders joined with store information, which store has the highest total number of orders, and among that store’s orders, what is the ratio of orders that appear in the deliveries table with a 'DELIVERED' status to the total orders for that store?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/delivery_center.sqlite",
+    "db_id": "delivery_center",
+    "engine": "sqlite",
+    "profile": "sp2_delivery_center",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local209_a.csv",
+      "data/sp2_lite_sqlite/gold/local209_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local210",
+    "question": "Can you identify the hubs that saw more than a 20% increase in finished orders from February to March?",
+    "evidence": "",
+    "sql": "WITH february_orders AS (\n    SELECT\n        h.hub_name AS hub_name,\n        COUNT(*) AS orders_february\n    FROM \n        orders o \n    LEFT JOIN\n        stores s ON o.store_id = s.store_id \n    LEFT JOIN \n        hubs h ON s.hub_id = h.hub_id \n    WHERE o.order_created_month = 2 AND o.order_status = 'FINISHED'\n    GROUP BY\n        h.hub_name\n),\nmarch_orders AS (\n    SELECT\n        h.hub_name AS hub_name,\n        COUNT(*) AS orders_march\n    FROM \n        orders o \n    LEFT JOIN\n        stores s ON o.store_id = s.store_id \n    LEFT JOIN \n        hubs h ON s.hub_id = h.hub_id \n    WHERE o.order_created_month = 3 AND o.order_status = 'FINISHED'\n    GROUP BY\n        h.hub_name\n)\nSELECT\n    fo.hub_name\nFROM\n    february_orders fo\nLEFT JOIN \n    march_orders mo ON fo.hub_name = mo.hub_name\nWHERE \n    fo.orders_february > 0 AND \n    mo.orders_march > 0 AND\n    (CAST((mo.orders_march - fo.orders_february) AS REAL) / CAST(fo.orders_february AS REAL)) > 0.2  -- Filter for hubs with more than a 20% increase",
+    "db": "data/sp2_lite_sqlite/databases/delivery_center.sqlite",
+    "db_id": "delivery_center",
+    "engine": "sqlite",
+    "profile": "sp2_delivery_center",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local210_a.csv",
+      "data/sp2_lite_sqlite/gold/local210_b.csv"
+    ],
+    "condition_cols": [
+      [
+        5
+      ],
+      [
+        4
+      ]
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local212",
+    "question": "Can you find 5 delivery drivers with the highest average number of daily deliveries?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/delivery_center.sqlite",
+    "db_id": "delivery_center",
+    "engine": "sqlite",
+    "profile": "sp2_delivery_center",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local212_a.csv",
+      "data/sp2_lite_sqlite/gold/local212_b.csv",
+      "data/sp2_lite_sqlite/gold/local212_c.csv"
+    ],
+    "condition_cols": [
+      [
+        1
+      ],
+      [
+        3
+      ],
+      [
+        1
+      ]
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local218",
+    "question": "Can you calculate the median from the highest season goals of each team?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/EU_soccer.sqlite",
+    "db_id": "EU_soccer",
+    "engine": "sqlite",
+    "profile": "sp2_EU_soccer",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local218_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local219",
+    "question": "In each league, considering all seasons, which single team has the fewest total match wins based on comparing home and away goals, including teams with zero wins, ensuring that if multiple teams tie for the fewest wins, only one team is returned for each league?",
+    "evidence": "",
+    "sql": "WITH match_view AS(\nSELECT\n    M.id,\n    L.name AS league,\n    M.season,\n    M.match_api_id,\n    T.team_long_name AS home_team,\n    TM.team_long_name AS away_team,\n    M.home_team_goal,\n    M.away_team_goal,\n    P1.player_name AS home_gk,\n    P2.player_name AS home_center_back_1,\n    P3.player_name AS home_center_back_2,\n    P4.player_name AS home_right_back,\n    P5.player_name AS home_left_back,\n    P6.player_name AS home_midfield_1,\n    P7.player_name AS home_midfield_2,\n    P8.player_name AS home_midfield_3,\n    P9.player_name AS home_midfield_4,\n    P10.player_name AS home_second_forward,\n    P11.player_name AS home_center_forward,\n    P12.player_name AS away_gk,\n    P13.player_name AS away_center_back_1,\n    P14.player_name AS away_center_back_2,\n    P15.player_name AS away_right_back,\n    P16.player_name AS away_left_back,\n    P17.player_name AS away_midfield_1,\n    P18.player_name AS away_midfield_2,\n    P19.player_name AS away_midfield_3,\n    P20.player_name AS away_midfield_4,\n    P21.player_name AS away_second_forward,\n    P22.player_name AS away_center_forward,\n    M.goal,\n    M.card\nFROM\n    match M\nLEFT JOIN\n    league L ON M.league_id = L.id\nLEFT JOIN\n    team T ON M.home_team_api_id = T.team_api_id\nLEFT JOIN\n    team TM ON M.away_team_api_id = TM.team_api_id\nLEFT JOIN\n    player P1 ON M.home_player_1 = P1.player_api_id\nLEFT JOIN\n    player P2 ON M.home_player_2 = P2.player_api_id\nLEFT JOIN\n    player P3 ON M.home_player_3 = P3.player_api_id\nLEFT JOIN\n    player P4 ON M.home_player_4 = P4.player_api_id\nLEFT JOIN\n    player P5 ON M.home_player_5 = P5.player_api_id\nLEFT JOIN\n    player P6 ON M.home_player_6 = P6.player_api_id\nLEFT JOIN\n    player P7 ON M.home_player_7 = P7.player_api_id\nLEFT JOIN\n    player P8 ON M.home_player_8 = P8.player_api_id\nLEFT JOIN\n    player P9 ON M.home_player_9 = P9.player_api_id\nLEFT JOIN\n    player P10 ON M.home_player_10 = P10.player_api_id\nLEFT JOIN\n    player P11 ON M.home_player_11 = P11.player_api_id\nLEFT JOIN\n    player P12 ON M.away_player_1 = P12.player_api_id\nLEFT JOIN\n    player P13 ON M.away_player_2 = P13.player_api_id\nLEFT JOIN\n    player P14 ON M.away_player_3 = P14.player_api_id\nLEFT JOIN\n    player P15 ON M.away_player_4 = P15.player_api_id\nLEFT JOIN\n    player P16 ON M.away_player_5 = P16.player_api_id\nLEFT JOIN\n    player P17 ON M.away_player_6 = P17.player_api_id\nLEFT JOIN\n    player P18 ON M.away_player_7 = P18.player_api_id\nLEFT JOIN\n    player P19 ON M.away_player_8 = P19.player_api_id\nLEFT JOIN\n    player P20 ON M.away_player_9 = P20.player_api_id\nLEFT JOIN\n    player P21 ON M.away_player_10 = P21.player_api_id\nLEFT JOIN\n    player P22 ON M.away_player_11 = P22.player_api_id\n),\nmatch_score AS\n(\n    SELECT  -- Displaying teams and their goals as home_team\n        id,\n        home_team AS team,\n        CASE\n            WHEN home_team_goal > away_team_goal THEN 1 ELSE 0 END AS Winning_match\n    FROM\n        match_view\n\n    UNION ALL\n\n    SELECT  -- Displaying teams and their goals as away_team\n        id,\n        away_team AS team,\n        CASE\n            WHEN away_team_goal > home_team_goal THEN 1 ELSE 0 END AS Winning_match\n    FROM\n        match_view\n),\nwinning_matches AS\n(\n    SELECT  -- Displaying total match wins for each team\n        MV.league,\n        M.team,\n        COUNT(CASE WHEN M.Winning_match = 1 THEN 1 END) AS wins,\n        ROW_NUMBER() OVER(PARTITION BY MV.league ORDER BY COUNT(CASE WHEN M.Winning_match = 1 THEN 1 END) ASC) AS rn\n    FROM\n        match_score M\n    JOIN\n        match_view MV\n    ON\n        M.id = MV.id\n    GROUP BY\n        MV.league,\n        team\n    ORDER BY\n        league,\n        wins ASC\n)\nSELECT\n    league,\n    team\nFROM\n    winning_matches\nWHERE\n    rn = 1  -- Getting the team with the least number of wins in each league\nORDER BY\n    league;",
+    "db": "data/sp2_lite_sqlite/databases/EU_soccer.sqlite",
+    "db_id": "EU_soccer",
+    "engine": "sqlite",
+    "profile": "sp2_EU_soccer",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local219_a.csv",
+      "data/sp2_lite_sqlite/gold/local219_b.csv",
+      "data/sp2_lite_sqlite/gold/local219_c.csv",
+      "data/sp2_lite_sqlite/gold/local219_d.csv",
+      "data/sp2_lite_sqlite/gold/local219_e.csv",
+      "data/sp2_lite_sqlite/gold/local219_f.csv"
+    ],
+    "condition_cols": [
+      [
+        2
+      ],
+      [
+        2
+      ],
+      [
+        1
+      ],
+      [
+        1
+      ],
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local221",
+    "question": "Tell me top10 teams with the most wins across the league",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/EU_soccer.sqlite",
+    "db_id": "EU_soccer",
+    "engine": "sqlite",
+    "profile": "sp2_EU_soccer",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local221_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local220",
+    "question": "Which player has participated in the highest number of winning matches and which player has participated in the highest number of losing matches, considering only matches where they actually played (excluding null entries) and where their team won or lost (excluding draws)?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/EU_soccer.sqlite",
+    "db_id": "EU_soccer",
+    "engine": "sqlite",
+    "profile": "sp2_EU_soccer",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local220_a.csv",
+      "data/sp2_lite_sqlite/gold/local220_b.csv",
+      "data/sp2_lite_sqlite/gold/local220_c.csv",
+      "data/sp2_lite_sqlite/gold/local220_d.csv",
+      "data/sp2_lite_sqlite/gold/local220_e.csv",
+      "data/sp2_lite_sqlite/gold/local220_f.csv",
+      "data/sp2_lite_sqlite/gold/local220_g.csv",
+      "data/sp2_lite_sqlite/gold/local220_h.csv",
+      "data/sp2_lite_sqlite/gold/local220_i.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local228",
+    "question": "For each IPL season, identify the top three batsmen with the highest total runs scored and the top three bowlers with the most wickets taken, excluding ‘run out’, ‘hit wicket’, and ‘retired hurt’ dismissals. In the event of ties in runs or wickets, break the tie using the smaller player ID. Then output these six players in matched positions—batsman 1 with bowler 1, batsman 2 with bowler 2, and batsman 3 with bowler 3—in ascending order of the season ID, along with each player’s total runs or wickets.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/IPL.sqlite",
+    "db_id": "IPL",
+    "engine": "sqlite",
+    "profile": "sp2_IPL",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local228_a.csv",
+      "data/sp2_lite_sqlite/gold/local228_b.csv"
+    ],
+    "condition_cols": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local229",
+    "question": "Find the IDs of players who scored the highest number of partnership runs for each match. The output should include the IDs of two players, each with their individual scores and the total partnership score. For each pair, the player with the higher individual score should be listed as player 1, and the player with the lower score as player 2. In cases where both players have the same score, the player with the higher ID should be player 1, and the player with the lower ID should be player 2. There can be multiple rows for a single match.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/IPL.sqlite",
+    "db_id": "IPL",
+    "engine": "sqlite",
+    "profile": "sp2_IPL",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local229_a.csv",
+      "data/sp2_lite_sqlite/gold/local229_b.csv"
+    ],
+    "condition_cols": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local244",
+    "question": "Calculate the duration of each track, classify them as short, medium, or long, output the minimum and maximum time for each kind (in minutes) and the total revenue for each category, group by the category.",
+    "evidence": "# Music Length Types\n\n## Short \n- Duration between the minimum value and the midpoint between the minimum and average values.\n\n## Medium \n- Duration between the midpoint between the minimum and average values and the midpoint between the average and maximum values.\n\n## Long \n- Duration between the midpoint between the average and maximum values and the maximum value.",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/music.sqlite",
+    "db_id": "music",
+    "engine": "sqlite",
+    "profile": "sp2_music",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local244_a.csv",
+      "data/sp2_lite_sqlite/gold/local244_b.csv"
+    ],
+    "condition_cols": [
+      2,
+      3
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local253",
+    "question": "Using a Salary Dataset where the salary values need to be cleaned by removing non-numeric characters and converting them to a numeric type, write a detailed SQL query that identifies the top 5 companies by average salary in each of Mumbai, Pune, New Delhi, and Hyderabad, then compares each company’s average salary in those cities to the overall national average salary. The final result should display four columns: Location, Company Name, Average Salary in State, and Average Salary in Country, listing only the top 5 companies in each of the specified locations.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/education_business.sqlite",
+    "db_id": "education_business",
+    "engine": "sqlite",
+    "profile": "sp2_education_business",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local253_a.csv",
+      "data/sp2_lite_sqlite/gold/local253_b.csv",
+      "data/sp2_lite_sqlite/gold/local253_c.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local258",
+    "question": "Calculate the total number of wickets taken by each bowler (excluding run-outs and other dismissals not attributed to the bowler), their economy rate (total runs conceded divided by total overs bowled, considering only runs scored off the bat and ignoring any extra runs like wides and no-balls), their strike rate (average number of balls bowled per wicket taken), and their best bowling performance in a single match (the match with the most wickets taken by the bowler, formatted as \"wickets-runs\" where runs are the runs conceded excluding extras).",
+    "evidence": "# Special Words Definition\n\n## Batting Average\n- Batting average is a measure of a batsman's performance, calculated by dividing the total number of runs scored by the number of times they have been dismissed. A higher batting average indicates a more consistent and successful batsman.\n- Batting Average = Total Runs ÷ Total Dismissals\n\n## Strike Rate\n- In batting, strike rate indicates the scoring rate of a batsman, showing the average number of runs scored per 100 balls faced. A higher strike rate reflects an aggressive and fast-scoring batsman.\n- Strike Rate = (Total Runs ÷ Balls Faced) × 100\n\n## Wickets Taken\n- Wickets taken refers to the total number of times a bowler has successfully dismissed an opposing batsman. This statistic is a core measure of a bowler's effectiveness and impact on the game.\n\n## Economy Rate\n- Economy rate measures a bowler's efficiency by indicating the average number of runs conceded per over (6 balls) bowled. A lower economy rate shows greater control and efficiency in restricting the opposition's scoring.\n- Economy Rate = (Total Runs Conceded ÷ Balls Bowled) × 6\n\n## Wickets Taken\n- The number of times a bowler successfully dismisses a batsman in a single match.  This metric is a direct indicator of the bowler's effectiveness, showing how many players they were able to remove from play.\n\n## Runs Given\n- The total number of runs scored by the batting side off a particular bowler’s deliveries in a single match.  This value reflects the runs the bowler has conceded to the batting team, and a lower runs-given value is typically favorable for the bowler's performance.",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/IPL.sqlite",
+    "db_id": "IPL",
+    "engine": "sqlite",
+    "profile": "sp2_IPL",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local258_a.csv",
+      "data/sp2_lite_sqlite/gold/local258_b.csv",
+      "data/sp2_lite_sqlite/gold/local258_c.csv",
+      "data/sp2_lite_sqlite/gold/local258_d.csv",
+      "data/sp2_lite_sqlite/gold/local258_e.csv"
+    ],
+    "condition_cols": [
+      2,
+      3,
+      4
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local259",
+    "question": "For each player, list their ID, name, their most frequent role across all matches, batting hand, bowling skill, total runs scored, total matches played, total times they were dismissed, batting average (total runs divided by total dismissals), highest score in a single match, the number of matches in which they scored at least 30 runs, at least 50 runs, and at least 100 runs, total balls faced in their career, strike rate (total runs divided by total balls faced, multiplied by 100), total wickets taken, economy rate (average runs conceded per over), and their best bowling performance in a single match (most wickets taken in a match, formatted as \"wickets taken-runs given\", where the best performance is the one with the most wickets, and if tied, the fewest runs conceded). Ignore the extra runs data.",
+    "evidence": "# Special Words Definition\n\n## Batting Average\n- Batting average is a measure of a batsman's performance, calculated by dividing the total number of runs scored by the number of times they have been dismissed. A higher batting average indicates a more consistent and successful batsman.\n- Batting Average = Total Runs ÷ Total Dismissals\n\n## Strike Rate\n- In batting, strike rate indicates the scoring rate of a batsman, showing the average number of runs scored per 100 balls faced. A higher strike rate reflects an aggressive and fast-scoring batsman.\n- Strike Rate = (Total Runs ÷ Balls Faced) × 100\n\n## Wickets Taken\n- Wickets taken refers to the total number of times a bowler has successfully dismissed an opposing batsman. This statistic is a core measure of a bowler's effectiveness and impact on the game.\n\n## Economy Rate\n- Economy rate measures a bowler's efficiency by indicating the average number of runs conceded per over (6 balls) bowled. A lower economy rate shows greater control and efficiency in restricting the opposition's scoring.\n- Economy Rate = (Total Runs Conceded ÷ Balls Bowled) × 6\n\n## Wickets Taken\n- The number of times a bowler successfully dismisses a batsman in a single match.  This metric is a direct indicator of the bowler's effectiveness, showing how many players they were able to remove from play.\n\n## Runs Given\n- The total number of runs scored by the batting side off a particular bowler’s deliveries in a single match.  This value reflects the runs the bowler has conceded to the batting team, and a lower runs-given value is typically favorable for the bowler's performance.",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/IPL.sqlite",
+    "db_id": "IPL",
+    "engine": "sqlite",
+    "profile": "sp2_IPL",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local259_a.csv",
+      "data/sp2_lite_sqlite/gold/local259_b.csv",
+      "data/sp2_lite_sqlite/gold/local259_c.csv"
+    ],
+    "condition_cols": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local262",
+    "question": "Which problems exceed the total number of times they appear in the solution table when counting all occurrences, across steps 1, 2, and 3, where any non-\"Stack\" model's maximum test score is lower than the \"Stack\" model's test score for the same step and version?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/stacking.sqlite",
+    "db_id": "stacking",
+    "engine": "sqlite",
+    "profile": "sp2_stacking",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local262_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local263",
+    "question": "Identify the L1_model associated with each model (specified by name and version) that occurs most frequently for each status ('strong' or 'soft'), along with the number of times it occurs. A model has a 'strong' status if, for any of its steps, the maximum test score among non-'Stack' models is less than the 'Stack' model's test score. It has a 'soft' status if the maximum test score among non-'Stack' models equals the 'Stack' model's test score. Count how many times each L1_model is associated with a 'strong' or 'soft' status across all models, and determine which L1_model has the highest occurrence for each status.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/stacking.sqlite",
+    "db_id": "stacking",
+    "engine": "sqlite",
+    "profile": "sp2_stacking",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local263_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local264",
+    "question": "Which model category (L1_model) appears the most frequently across all steps and versions when comparing traditional models to the Stack model, and what is the total count of its occurrences?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/stacking.sqlite",
+    "db_id": "stacking",
+    "engine": "sqlite",
+    "profile": "sp2_stacking",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local264_a.csv",
+      "data/sp2_lite_sqlite/gold/local264_b.csv",
+      "data/sp2_lite_sqlite/gold/local264_c.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local269",
+    "question": "What is the average total quantity across all final packaging combinations, considering only the leaf-level items within each combination after fully expanding any nested packaging relationships?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/oracle_sql.sqlite",
+    "db_id": "oracle_sql",
+    "engine": "sqlite",
+    "profile": "sp2_oracle_sql",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local269_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local270",
+    "question": "Which top-level packaging containers, meaning those not contained within any other packaging, have any item for which the total quantity accumulated across all nested levels in the hierarchy exceeds 500, and what are the names of both these containers and the corresponding items?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/oracle_sql.sqlite",
+    "db_id": "oracle_sql",
+    "engine": "sqlite",
+    "profile": "sp2_oracle_sql",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local270_a.csv",
+      "data/sp2_lite_sqlite/gold/local270_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local272",
+    "question": "For order 423, identify the product IDs, aisles, and positions from which to pick the exact quantities needed for each order line, ensuring that the total picked quantity for each product matches the cumulative quantities ordered without exceeding the available inventory in warehouse 1. Calculate the quantities to be picked from each location by prioritizing inventory with earlier purchased dates and smaller quantities, and ensure that picking respects the sequence and cumulative quantities of the order lines for products with multiple entries.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/oracle_sql.sqlite",
+    "db_id": "oracle_sql",
+    "engine": "sqlite",
+    "profile": "sp2_oracle_sql",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local272_a.csv"
+    ],
+    "condition_cols": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local273",
+    "question": "Calculate the average pick percentage for each product name, using a first-in-first-out approach that selects from inventory locations based on the earliest purchase date and smallest available quantity, ensuring that the picked quantity reflects only the overlapping range between each order’s required quantity and the inventory’s available quantity, and then grouping and ordering the results by product name?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/oracle_sql.sqlite",
+    "db_id": "oracle_sql",
+    "engine": "sqlite",
+    "profile": "sp2_oracle_sql",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local273_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local274",
+    "question": "Which products were picked for order 421, and what is the average number of units picked for each product, using FIFO (First-In, First-Out) method?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/oracle_sql.sqlite",
+    "db_id": "oracle_sql",
+    "engine": "sqlite",
+    "profile": "sp2_oracle_sql",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local274_a.csv",
+      "data/sp2_lite_sqlite/gold/local274_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local275",
+    "question": "Based on monthly sales data starting in January 2016 and using a centered moving average to adjust for seasonality, which products had a seasonality-adjusted sales ratio that stayed consistently above 2 for every month in the year 2017?",
+    "evidence": "# Explanation of Metrics\n\n## 1. Sales-to-CMA Ratio\n- **Definition**: This ratio compares actual sales to the centered moving average (CMA) of sales.\n- **Calculation**:\n  - **Centered Moving Average (CMA)**: The CMA is a smoothed value of sales calculated over a rolling 12-month period. It averages sales from the months before and after a given month, specifically using two overlapping windows (5 months before and 6 months after, and vice versa).\n  - **Sales-to-CMA Ratio**: The ratio is computed by dividing the actual sales amount for a month by its corresponding CMA value. A ratio greater than 2 indicates that the actual sales are more than twice the smoothed average for that period, suggesting significantly higher-than-average sales.\n\n## 2. 12-Month Overlapping Windows\n- **Definition**: A method to smooth sales data over time by averaging values in a specified window.\n- **Calculation**:\n  - **Window Size**: The window spans 12 months, with the specific approach involving overlapping periods. \n  - **First Window**: For a given month, this window includes 5 months before and 6 months after.\n  - **Second Window**: Another window includes 6 months before and 5 months after the given month.\n  - **Averaging**: Sales data is averaged over these two overlapping windows to compute the CMA. This method smooths out fluctuations by considering both the past and future sales in the calculation.\n\n## 3. Restriction to the 7th and 30th Months\n- **Definition**: A filter applied to focus calculations within a specific range of months.\n- **Calculation**:\n  - **Time Range**: Only the months between the 7th and 30th time steps (which correspond to specific periods) are considered for calculating the CMA and ratio.\n  - **Purpose**: This restriction is used to avoid edge effects in the data where the moving average might be less reliable (e.g., at the very beginning or end of the available data). By focusing on these months, the calculations are more stable and meaningful.",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/oracle_sql.sqlite",
+    "db_id": "oracle_sql",
+    "engine": "sqlite",
+    "profile": "sp2_oracle_sql",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local275_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local277",
+    "question": "What is the average forecasted annual sales for products 4160 and 7790 during 2018, using monthly sales data starting from January 2016 for the first 36 months, applying seasonality adjustments from time steps 7 through 30, and employing a weighted regression method to estimate sales?",
+    "evidence": "# Explanation of Metrics\n\n## 1. Sales-to-CMA Ratio\n- **Definition**: This ratio compares actual sales to the centered moving average (CMA) of sales.\n- **Calculation**:\n  - **Centered Moving Average (CMA)**: The CMA is a smoothed value of sales calculated over a rolling 12-month period. It averages sales from the months before and after a given month, specifically using two overlapping windows (5 months before and 6 months after, and vice versa).\n  - **Sales-to-CMA Ratio**: The ratio is computed by dividing the actual sales amount for a month by its corresponding CMA value. A ratio greater than 2 indicates that the actual sales are more than twice the smoothed average for that period, suggesting significantly higher-than-average sales.\n\n## 2. 12-Month Overlapping Windows\n- **Definition**: A method to smooth sales data over time by averaging values in a specified window.\n- **Calculation**:\n  - **Window Size**: The window spans 12 months, with the specific approach involving overlapping periods. \n  - **First Window**: For a given month, this window includes 5 months before and 6 months after.\n  - **Second Window**: Another window includes 6 months before and 5 months after the given month.\n  - **Averaging**: Sales data is averaged over these two overlapping windows to compute the CMA. This method smooths out fluctuations by considering both the past and future sales in the calculation.\n\n## 3. Restriction to the 7th and 30th Months\n- **Definition**: A filter applied to focus calculations within a specific range of months.\n- **Calculation**:\n  - **Time Range**: Only the months between the 7th and 30th time steps (which correspond to specific periods) are considered for calculating the CMA and ratio.\n  - **Purpose**: This restriction is used to avoid edge effects in the data where the moving average might be less reliable (e.g., at the very beginning or end of the available data). By focusing on these months, the calculations are more stable and meaningful.",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/oracle_sql.sqlite",
+    "db_id": "oracle_sql",
+    "engine": "sqlite",
+    "profile": "sp2_oracle_sql",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local277_a.csv",
+      "data/sp2_lite_sqlite/gold/local277_b.csv",
+      "data/sp2_lite_sqlite/gold/local277_c.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local279",
+    "question": "Using a recursive monthly inventory adjustment model starting from December 2018 inventory levels, where we restock a product if its ending inventory drops below the minimum required level, determine for each product the month in 2019 where the absolute difference between its ending inventory and the minimum required level is the smallest, and return the product_id, that month, and the absolute difference.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/oracle_sql.sqlite",
+    "db_id": "oracle_sql",
+    "engine": "sqlite",
+    "profile": "sp2_oracle_sql",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local279_a.csv"
+    ],
+    "condition_cols": [
+      0,
+      2
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local283",
+    "question": "Analyze the soccer match dataset to determine the champion team for each season across all countries and leagues, awarding 3 points for every win, 1 point for every tie, and 0 points for every loss. For each season, return the champion’s team name, the league, the country, and the total points accumulated.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/EU_soccer.sqlite",
+    "db_id": "EU_soccer",
+    "engine": "sqlite",
+    "profile": "sp2_EU_soccer",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local283_a.csv"
+    ],
+    "condition_cols": [
+      4
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local284",
+    "question": "For veg whsle data, can you generate a summary of our items' loss rates? Include the average loss rate, and also break down the count of items that are below, above, and within one standard deviation from this average.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/bank_sales_trading.sqlite",
+    "db_id": "bank_sales_trading",
+    "engine": "sqlite",
+    "profile": "sp2_bank_sales_trading",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local284_a.csv",
+      "data/sp2_lite_sqlite/gold/local284_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local285",
+    "question": "For veg whsle data, can you analyze our financial performance over the years 2020 to 2023? I need insights into the average wholesale price, maximum wholesale price, minimum wholesale price, wholesale price difference, total wholesale price, total selling price, average loss rate, total loss, and profit for each category within each year. Round all calculated values to two decimal places.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/bank_sales_trading.sqlite",
+    "db_id": "bank_sales_trading",
+    "engine": "sqlite",
+    "profile": "sp2_bank_sales_trading",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local285_a.csv",
+      "data/sp2_lite_sqlite/gold/local285_b.csv",
+      "data/sp2_lite_sqlite/gold/local285_c.csv",
+      "data/sp2_lite_sqlite/gold/local285_d.csv"
+    ],
+    "condition_cols": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local286",
+    "question": "Prepare a comprehensive performance report on our sellers, focusing on total sales, average item price, average review scores, and packing times. Ensure that the report includes only those sellers who have sold a quantity of more than 100 products and highlight the product category names in English with the highest sales volume.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/electronic_sales.sqlite",
+    "db_id": "electronic_sales",
+    "engine": "sqlite",
+    "profile": "sp2_electronic_sales",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local286_a.csv",
+      "data/sp2_lite_sqlite/gold/local286_b.csv",
+      "data/sp2_lite_sqlite/gold/local286_c.csv",
+      "data/sp2_lite_sqlite/gold/local286_d.csv",
+      "data/sp2_lite_sqlite/gold/local286_e.csv",
+      "data/sp2_lite_sqlite/gold/local286_f.csv",
+      "data/sp2_lite_sqlite/gold/local286_g.csv",
+      "data/sp2_lite_sqlite/gold/local286_h.csv",
+      "data/sp2_lite_sqlite/gold/local286_i.csv"
+    ],
+    "condition_cols": [
+      0,
+      1,
+      2,
+      3,
+      6
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local301",
+    "question": "For weekly-sales data, I need an analysis of our sales performance around mid-June for the years 2018, 2019, and 2020. Specifically, calculate the percentage change in sales between the four weeks leading up to June 15 and the four weeks following June 15 for each year.",
+    "evidence": "",
+    "sql": "SELECT \n    before_effect,\n    after_effect,\n    after_effect - before_effect AS change_amount,\n    ROUND(((after_effect * 1.0 / before_effect) - 1) * 100, 2) AS percent_change,\n    '2018' AS year\nFROM (\n    SELECT \n        SUM(CASE WHEN delta_weeks BETWEEN 1 AND 4 THEN sales END) AS after_effect,\n        SUM(CASE WHEN delta_weeks BETWEEN -3 AND 0 THEN sales END) AS before_effect\n    FROM (\n        SELECT \n            week_date,\n            ROUND((JULIANDAY(week_date) - JULIANDAY('2018-06-15')) / 7.0) + 1 AS delta_weeks,\n            sales \n        FROM cleaned_weekly_sales\n    ) add_delta_weeks\n) AS add_before_after\nUNION ALL\nSELECT \n    before_effect,\n    after_effect,\n    after_effect - before_effect AS change_amount,\n    ROUND(((after_effect * 1.0 / before_effect) - 1) * 100, 2) AS percent_change,\n    '2019' AS year\nFROM (\n    SELECT \n        SUM(CASE WHEN delta_weeks BETWEEN 1 AND 4 THEN sales END) AS after_effect,\n        SUM(CASE WHEN delta_weeks BETWEEN -3 AND 0 THEN sales END) AS before_effect\n    FROM (\n        SELECT \n            week_date,\n            ROUND((JULIANDAY(week_date) - JULIANDAY('2019-06-15')) / 7.0) + 1 AS delta_weeks,\n            sales \n        FROM cleaned_weekly_sales\n    ) add_delta_weeks\n) AS add_before_after\nUNION ALL\nSELECT \n    before_effect,\n    after_effect,\n    after_effect - before_effect AS change_amount,\n    ROUND(((after_effect * 1.0 / before_effect) - 1) * 100, 2) AS percent_change,\n    '2020' AS year\nFROM (\n    SELECT \n        SUM(CASE WHEN delta_weeks BETWEEN 1 AND 4 THEN sales END) AS after_effect,\n        SUM(CASE WHEN delta_weeks BETWEEN -3 AND 0 THEN sales END) AS before_effect\n    FROM (\n        SELECT \n            week_date,\n            ROUND((JULIANDAY(week_date) - JULIANDAY('2020-06-15')) / 7.0) + 1 AS delta_weeks,\n            sales \n        FROM cleaned_weekly_sales\n    ) add_delta_weeks\n) AS add_before_after\nORDER BY year;",
+    "db": "data/sp2_lite_sqlite/databases/bank_sales_trading.sqlite",
+    "db_id": "bank_sales_trading",
+    "engine": "sqlite",
+    "profile": "sp2_bank_sales_trading",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local301_a.csv",
+      "data/sp2_lite_sqlite/gold/local301_b.csv",
+      "data/sp2_lite_sqlite/gold/local301_c.csv"
+    ],
+    "condition_cols": [
+      [
+        1
+      ],
+      [
+        3
+      ],
+      [
+        3
+      ]
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local302",
+    "question": "Analyze the average percentage change in sales between the 12 weeks before and after June 15, 2020, for each attribute type: region, platform, age band, demographic, and customer type. For each attribute type, calculate the average percentage change in sales across all its attribute values. Identify the attribute type with the highest negative impact on sales and provide its average percentage change in sales.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/bank_sales_trading.sqlite",
+    "db_id": "bank_sales_trading",
+    "engine": "sqlite",
+    "profile": "sp2_bank_sales_trading",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local302_a.csv",
+      "data/sp2_lite_sqlite/gold/local302_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local329",
+    "question": "How many unique sessions visited the /regist/input page and then the /regist/confirm page, in that order?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/log.sqlite",
+    "db_id": "log",
+    "engine": "sqlite",
+    "profile": "sp2_log",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local329_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local330",
+    "question": "Using the activity log table, compute the total number of unique user sessions where each web page appears as either a landing page (the first page visited in a session based on timestamp) or an exit page (the last page visited in a session based on timestamp), or both. Count each session only once per page even if the page serves as both landing and exit for that session. ",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/log.sqlite",
+    "db_id": "log",
+    "engine": "sqlite",
+    "profile": "sp2_log",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local330_a.csv",
+      "data/sp2_lite_sqlite/gold/local330_b.csv",
+      "data/sp2_lite_sqlite/gold/local330_c.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local331",
+    "question": "Which three distinct third-page visits are most frequently observed immediately after two consecutive visits to the '/detail' page, and how many times does each third-page visit occur?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/log.sqlite",
+    "db_id": "log",
+    "engine": "sqlite",
+    "profile": "sp2_log",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local331_a.csv",
+      "data/sp2_lite_sqlite/gold/local331_b.csv",
+      "data/sp2_lite_sqlite/gold/local331_c.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local358",
+    "question": "How many users are there in each age category (20s, 30s, 40s, 50s, and others)?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/log.sqlite",
+    "db_id": "log",
+    "engine": "sqlite",
+    "profile": "sp2_log",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local358_a.csv",
+      "data/sp2_lite_sqlite/gold/local358_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local360",
+    "question": "For each user session in the activity log table, identify the number of events that occurred before the first '/detail' click or '/complete' conversion, counting only events that have a non-empty search type. Find the sessions with the minimum count of such pre-click/pre-conversion events. If multiple sessions share this minimum count, include all of them in the results. Return each qualifying session along with the corresponding path and search type.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/log.sqlite",
+    "db_id": "log",
+    "engine": "sqlite",
+    "profile": "sp2_log",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local360_a.csv",
+      "data/sp2_lite_sqlite/gold/local360_b.csv",
+      "data/sp2_lite_sqlite/gold/local360_c.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local344",
+    "question": "Considering all races where pit stop data is available, and focusing on instances when a driver was not behind another car on the previous lap but is behind on the current lap (accounting for retirements, pit-stop entries, pit-stop exits, and race starts), how many times has each type of overtake occurred in Formula 1?",
+    "evidence": "# Overtake Label Classification\n\nIn racing, overtakes are categorized into different states based on specific conditions, reflecting the circumstances in which the overtaking occurred. Below are the classifications and their detailed explanations:\n\n## 1. R (Retirement) - Overtake during Retirement\nAn overtake is labeled as **R (Retirement)** if the overtaken driver retired on the same lap as the overtake. This indicates that the overtake occurred just before or during the overtaken driver's retirement, meaning they could no longer continue the race after that lap.\n\n## 2. P (Pit) - Overtake related to Pit Stops\nAn overtake is classified as **P (Pit)** under two scenarios:\n   - **Pit Entry**: If the overtake occurred while the overtaken driver was entering the pit lane, and the driver pitted on the same lap, it indicates that the overtaking happened due to the overtaken driver reducing speed to enter the pit lane.\n   - **Pit Exit**: If the overtake occurred as the overtaken driver was exiting the pit lane, especially if the driver pitted on the previous lap and the time gap between the drivers was less than a typical pit stop duration. This suggests that the overtake happened while the overtaken driver was potentially at a lower speed, rejoining the race track from the pit lane.\n\n## 3. S (Start) - Overtake at Race Start\nIf the overtake took place on the first lap of the race, and the two drivers were within two grid positions of each other at the start, the overtake is classified as **S (Start)**. This classification indicates that the overtake was part of the initial racing shuffle during the race's launch phase, where close position changes are common.\n\n## 4. T (Track) - Overtake under Normal Racing Conditions\nIf none of the above conditions apply, the overtake is categorized as **T (Track)**, meaning it occurred during normal racing conditions on the track, without any external factors like pit stops or retirements influencing the outcome. This is the default classification for overtakes that happen during regular competition.\n\n---\n\nThese classifications help to identify and record the context of each overtake with clarity, ensuring accurate representation of race dynamics.",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/f1.sqlite",
+    "db_id": "f1",
+    "engine": "sqlite",
+    "profile": "sp2_f1",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local344_a.csv",
+      "data/sp2_lite_sqlite/gold/local344_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local336",
+    "question": "In the first five laps of the race, how many overtakes occurred in each category—retirements, pit stops, start-related overtakes, and standard on-track passes?",
+    "evidence": "# Overtake Label Classification\n\nIn racing, overtakes are categorized into different states based on specific conditions, reflecting the circumstances in which the overtaking occurred. Below are the classifications and their detailed explanations:\n\n## 1. R (Retirement) - Overtake during Retirement\nAn overtake is labeled as **R (Retirement)** if the overtaken driver retired on the same lap as the overtake. This indicates that the overtake occurred just before or during the overtaken driver's retirement, meaning they could no longer continue the race after that lap.\n\n## 2. P (Pit) - Overtake related to Pit Stops\nAn overtake is classified as **P (Pit)** under two scenarios:\n   - **Pit Entry**: If the overtake occurred while the overtaken driver was entering the pit lane, and the driver pitted on the same lap, it indicates that the overtaking happened due to the overtaken driver reducing speed to enter the pit lane.\n   - **Pit Exit**: If the overtake occurred as the overtaken driver was exiting the pit lane, especially if the driver pitted on the previous lap and the time gap between the drivers was less than a typical pit stop duration. This suggests that the overtake happened while the overtaken driver was potentially at a lower speed, rejoining the race track from the pit lane.\n\n## 3. S (Start) - Overtake at Race Start\nIf the overtake took place on the first lap of the race, and the two drivers were within two grid positions of each other at the start, the overtake is classified as **S (Start)**. This classification indicates that the overtake was part of the initial racing shuffle during the race's launch phase, where close position changes are common.\n\n## 4. T (Track) - Overtake under Normal Racing Conditions\nIf none of the above conditions apply, the overtake is categorized as **T (Track)**, meaning it occurred during normal racing conditions on the track, without any external factors like pit stops or retirements influencing the outcome. This is the default classification for overtakes that happen during regular competition.\n\n---\n\nThese classifications help to identify and record the context of each overtake with clarity, ensuring accurate representation of race dynamics.",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/f1.sqlite",
+    "db_id": "f1",
+    "engine": "sqlite",
+    "profile": "sp2_f1",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local336_a.csv",
+      "data/sp2_lite_sqlite/gold/local336_b.csv",
+      "data/sp2_lite_sqlite/gold/local336_c.csv",
+      "data/sp2_lite_sqlite/gold/local336_d.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local335",
+    "question": "In Formula 1 seasons since 2001, considering only drivers who scored points in a season, which five constructors have had the most seasons where their drivers scored the fewest total points among all point-scoring drivers in that season?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/f1.sqlite",
+    "db_id": "f1",
+    "engine": "sqlite",
+    "profile": "sp2_f1",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local335_a.csv"
+    ],
+    "condition_cols": [
+      0
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local309",
+    "question": "For each year, which driver and which constructor scored the most points? I want the full name of each driver.",
+    "evidence": "",
+    "sql": "with year_points as (\n    select races.year,\n           drivers.forename || ' ' || drivers.surname as driver,\n           constructors.name as constructor,\n           sum(results.points) as points\n    from results\n    left join races on results.race_id = races.race_id  -- Ensure these columns exist in your schema\n    left join drivers on results.driver_id = drivers.driver_id  -- Ensure these columns exist in your schema\n    left join constructors on results.constructor_id = constructors.constructor_id  -- Ensure these columns exist in your schema\n    group by races.year, driver\n    union\n    select races.year,\n           null as driver,\n           constructors.name as constructor,\n           sum(results.points) as points\n    from results\n    left join races on results.race_id = races.race_id  -- Ensure these columns exist in your schema\n    left join drivers on results.driver_id = drivers.driver_id  -- Ensure these columns exist in your schema\n    left join constructors on results.constructor_id = constructors.constructor_id  -- Ensure these columns exist in your schema\n    group by races.year, constructor\n),\nmax_points as (\n    select year,\n           max(case when driver is not null then points else null end) as max_driver_points,\n           max(case when constructor is not null then points else null end) as max_constructor_points\n    from year_points\n    group by year\n)\nselect max_points.year,\n       drivers_year_points.driver,\n       constructors_year_points.constructor\nfrom max_points\nleft join year_points as drivers_year_points on\n    max_points.year = drivers_year_points.year and\n    max_points.max_driver_points = drivers_year_points.points and\n    drivers_year_points.driver is not null\nleft join year_points as constructors_year_points on\n    max_points.year = constructors_year_points.year and\n    max_points.max_constructor_points = constructors_year_points.points and\n    constructors_year_points.constructor is not null\norder by max_points.year;",
+    "db": "data/sp2_lite_sqlite/databases/f1.sqlite",
+    "db_id": "f1",
+    "engine": "sqlite",
+    "profile": "sp2_f1",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local309_a.csv",
+      "data/sp2_lite_sqlite/gold/local309_b.csv",
+      "data/sp2_lite_sqlite/gold/local309_c.csv"
+    ],
+    "condition_cols": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "ignore_order": true
+  },
+  {
+    "id": "local310",
+    "question": "Using only the data from the ‘results’ table, find the three years in which the sum of the highest total points earned by any driver and the highest total points earned by any constructor in that year (both calculated by summing up points from the ‘results’ table) is smallest, and list those three years in order of ascending total.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/f1.sqlite",
+    "db_id": "f1",
+    "engine": "sqlite",
+    "profile": "sp2_f1",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local310_a.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local311",
+    "question": "Which constructors had the top 3 combined points from their best driver and team, and in which years did they achieve them?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/f1.sqlite",
+    "db_id": "f1",
+    "engine": "sqlite",
+    "profile": "sp2_f1",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local311_a.csv",
+      "data/sp2_lite_sqlite/gold/local311_b.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local354",
+    "question": "Among Formula 1 drivers who raced during the 1950s, which drivers completed a season in that decade with the same constructor in both the first and the last race they participated in, while also taking part in at least two distinct race rounds during that season?",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/f1.sqlite",
+    "db_id": "f1",
+    "engine": "sqlite",
+    "profile": "sp2_f1",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local354_a.csv",
+      "data/sp2_lite_sqlite/gold/local354_b.csv",
+      "data/sp2_lite_sqlite/gold/local354_c.csv",
+      "data/sp2_lite_sqlite/gold/local354_d.csv",
+      "data/sp2_lite_sqlite/gold/local354_e.csv",
+      "data/sp2_lite_sqlite/gold/local354_f.csv",
+      "data/sp2_lite_sqlite/gold/local354_g.csv",
+      "data/sp2_lite_sqlite/gold/local354_h.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local355",
+    "question": "Calculate the overall average first round and average last round of races missed by Formula 1 drivers across all years. Include only drivers who missed fewer than three races in a given year and who switched teams between their appearances immediately before and after their hiatus (i.e., the constructor ID for the race right before their first missed race must be different from the constructor ID for the race right after their last missed race in that year). Do not group results by year; return just the overall averages across the entire dataset.",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/f1.sqlite",
+    "db_id": "f1",
+    "engine": "sqlite",
+    "profile": "sp2_f1",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local355_a.csv",
+      "data/sp2_lite_sqlite/gold/local355_b.csv",
+      "data/sp2_lite_sqlite/gold/local355_c.csv",
+      "data/sp2_lite_sqlite/gold/local355_d.csv",
+      "data/sp2_lite_sqlite/gold/local355_e.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  },
+  {
+    "id": "local356",
+    "question": "Provide the full names of drivers who have been overtaken on track more times than they have overtaken others on track during race laps, excluding position changes due to pit stops (both at pit entry and exit), retirements, or position changes that occurred during the first lap of a race (considered as start movements).",
+    "evidence": "",
+    "sql": null,
+    "db": "data/sp2_lite_sqlite/databases/f1.sqlite",
+    "db_id": "f1",
+    "engine": "sqlite",
+    "profile": "sp2_f1",
+    "gold_csvs": [
+      "data/sp2_lite_sqlite/gold/local356_a.csv",
+      "data/sp2_lite_sqlite/gold/local356_b.csv",
+      "data/sp2_lite_sqlite/gold/local356_c.csv",
+      "data/sp2_lite_sqlite/gold/local356_d.csv"
+    ],
+    "condition_cols": [],
+    "ignore_order": true
+  }
+]

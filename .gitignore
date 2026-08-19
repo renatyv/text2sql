@@ -19,3 +19,10 @@ __pycache__/
 runs/
 .zcode/
 *.tar.gz
+
+# benchmark payloads: normalized dev.json / gold CSVs are tracked, the
+# multi-GB original database files are not (rebuild with data/build_*.py)
+data/bird_mini_dev/databases/
+data/bird_mini_dev/mini_dev_sqlite.json
+data/minidev/
+data/sp2_lite_sqlite/databases/

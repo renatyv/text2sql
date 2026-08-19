@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
-"""Create supplemental database metadata in a one-off Docker agent sandbox."""
+"""Create supplemental database metadata in a one-off Docker agent sandbox.
+
+MySQL datasets document their single schema; SQLite benchmarks (BIRD /
+Spider 2.0) document each database separately — `--profile-key` selects one,
+otherwise every database referenced by the dataset's questions is processed."""
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import subprocess
 import tempfile
@@ -14,13 +19,17 @@ from . import config, network
 _PI_TOOLS = "bash,read,write,edit,grep,find,ls"
 
 
-def _prompt(database: str, max_turns: int) -> str:
-    return f"""You are documenting the MySQL database `{database}`, not answering benchmark questions.
+def _prompt(database: str, max_turns: int, engine: str = "mysql") -> str:
+    probe = ("You may use the read-only mysql CLI against `$BEAVER_DB` to clarify only "
+             "ambiguous table or column meanings." if engine == "mysql" else
+             "You may use `sqlite3 -readonly /inputs/db.sqlite` to clarify only ambiguous "
+             "table or column meanings.")
+    return f"""You are documenting the {engine} database `{database}`, not answering benchmark questions.
 
 Your only supplied reference files are `/inputs/profile.md` and `/inputs/schema-links.md`.
 Read both. The benchmark questions, answers, and all dataset JSON files are deliberately absent;
-do not try to find them. You may use the read-only mysql CLI against `$BEAVER_DB` to clarify only
-ambiguous table or column meanings. Never use SELECT * and every SELECT must have LIMIT 10 (LIMIT
+do not try to find them. {probe}
+Never use SELECT * and every SELECT must have LIMIT 10 (LIMIT
 100 is the absolute maximum). Do not copy raw rows, IDs, or value dumps into the result.
 
 Write exactly one concise Markdown file at `/output/{database}.md` with:
@@ -33,42 +42,96 @@ Use factual short bullets. Do not include SQL answers, benchmark content, or a r
 profile/schema-links. Use no more than {max_turns} agent turns. Finish only after the output file exists."""
 
 
-def _docker_argv(db_label: str, max_turns: int, output_dir: Path) -> list[str]:
-    database = config.mysql_db_for(db_label)
+def _base_argv(max_turns: int, output_dir: Path) -> list[str]:
     proxy = f"http://{config.EGRESS_PROXY_CONTAINER}:{config.EGRESS_PROXY_PORT}"
     return [
         "docker", "run", "--rm", "--name", f"beaver-metadata-{uuid.uuid4().hex}",
         "--network", config.AGENT_NET_SANDBOX, "--memory", config.CONTAINER_MEMORY,
         "--cpus", config.CONTAINER_CPUS, "--pids-limit", config.CONTAINER_PIDS_LIMIT,
         "--cap-drop", "ALL", "--security-opt", "no-new-privileges", "--workdir", "/workspace",
-        "-v", f"{config.profile_path(db_label)}:/inputs/profile.md:ro",
-        "-v", f"{config.schema_links_path(db_label)}:/inputs/schema-links.md:ro",
         "-v", f"{output_dir}:/output",
         "-v", f"{config.HARNESS_DIR / 'turn_guard.ts'}:/extensions/turn_guard.ts:ro",
         "-v", f"{config.HARNESS_DIR / 'openrouter_models.json'}:/home/node/.pi/agent/models.json:ro",
         "-e", f"HTTPS_PROXY={proxy}", "-e", f"HTTP_PROXY={proxy}",
-        "-e", f"NO_PROXY={config.MYSQL_HOST_CONTAINER},localhost,127.0.0.1",
-        "-e", f"OPENROUTER_API_KEY={os.environ.get('OPENROUTER_API_KEY', '')}",
-        "-e", f"MYSQL_HOST={config.MYSQL_HOST_CONTAINER}",
-        "-e", f"MYSQL_PORT={config.MYSQL_PORT_CONTAINER}",
-        "-e", f"MYSQL_USER={config.AGENT_MYSQL_USER}",
-        "-e", f"MYSQL_PASSWORD={config.AGENT_MYSQL_PWD}",
-        "-e", f"MYSQL_PWD={config.AGENT_MYSQL_PWD}", "-e", f"BEAVER_DB={database}",
+        "-e", "OPENROUTER_API_KEY=" + os.environ.get("OPENROUTER_API_KEY", ""),
         "-e", f"BEAVER_MAX_TURNS={max_turns}", "--entrypoint", "pi", config.CONTAINER_IMAGE,
         "-p", "--no-session", "--offline", "--no-extensions", "--no-skills",
         "--no-prompt-templates", "--no-context-files", "--no-themes", "-e", "/extensions/turn_guard.ts",
         "--tools", _PI_TOOLS, "--thinking", config.PI_THINKING,
         "--provider", config.DEFAULT_PROVIDER, "--model", config.DEFAULT_MODEL_ID,
-        _prompt(database, max_turns),
     ]
 
 
-def run(db_label: str, max_turns: int = 12) -> Path:
+def _docker_argv(db_label: str, max_turns: int, output_dir: Path,
+                 profile_key: str | None = None) -> list[str]:
+    if config.engine_for(db_label) == "sqlite":
+        key = profile_key or _sqlite_keys(db_label)[0]
+        db_path = _db_for_key(db_label, key)
+        argv = _base_argv(max_turns, output_dir) + [
+            "-v", f"{config.profile_path_for(key)}:/inputs/profile.md:ro",
+            "-v", f"{config.schema_links_path_for(key)}:/inputs/schema-links.md:ro",
+            "-v", f"{db_path}:/inputs/db.sqlite:ro",
+            "-e", "BEAVER_DB_PATH=/inputs/db.sqlite",
+            _prompt(db_path.stem, max_turns, engine="sqlite"),
+        ]
+        return argv
+    database = config.mysql_db_for(db_label)
+    return _base_argv(max_turns, output_dir) + [
+        "-v", f"{config.profile_path(db_label)}:/inputs/profile.md:ro",
+        "-v", f"{config.schema_links_path(db_label)}:/inputs/schema-links.md:ro",
+        "-e", f"NO_PROXY={config.MYSQL_HOST_CONTAINER},localhost,127.0.0.1",
+        "-e", f"MYSQL_HOST={config.MYSQL_HOST_CONTAINER}",
+        "-e", f"MYSQL_PORT={config.MYSQL_PORT_CONTAINER}",
+        "-e", f"MYSQL_USER={config.AGENT_MYSQL_USER}",
+        "-e", f"MYSQL_PASSWORD={config.AGENT_MYSQL_PWD}",
+        "-e", f"MYSQL_PWD={config.AGENT_MYSQL_PWD}", "-e", f"BEAVER_DB={database}",
+        _prompt(database, max_turns, engine="mysql"),
+    ]
+
+
+def _sqlite_keys(db_label: str) -> list[str]:
+    dev = config.DATA_DIR / db_label / "dev.json"
+    questions = json.loads(dev.read_text(encoding="utf-8"))
+    return sorted({q["profile"] for q in questions})
+
+
+def _db_for_key(db_label: str, profile_key: str) -> Path:
+    dev = config.DATA_DIR / db_label / "dev.json"
+    questions = json.loads(dev.read_text(encoding="utf-8"))
+    for q in questions:
+        if q["profile"] == profile_key:
+            return config.sqlite_db_path(q["db"])
+    raise KeyError(f"{db_label} has no question with profile '{profile_key}'")
+
+
+def run(db_label: str, max_turns: int = 12, profile_key: str | None = None) -> Path:
+    if config.engine_for(db_label) == "sqlite":
+        keys = [profile_key] if profile_key else _sqlite_keys(db_label)
+        config.GENERATED_METADATA_DIR.mkdir(exist_ok=True)
+        network.setup(set())
+        last = None
+        for key in keys:
+            if not config.profile_path_for(key).is_file() or not config.schema_links_path_for(key).is_file():
+                raise FileNotFoundError(f"generate the profile and schema links for '{key}' first")
+            with tempfile.TemporaryDirectory(dir=config.GENERATED_METADATA_DIR) as temp:
+                temporary_output = Path(temp) / f"{key}.md"
+                result = subprocess.run(_docker_argv(db_label, max_turns, Path(temp), key),
+                                        capture_output=True, text=True, timeout=config.PI_WALL_CLOCK)
+                if result.returncode:
+                    detail = (result.stderr or result.stdout)[-2000:].strip()
+                    raise RuntimeError(f"metadata agent failed with exit code {result.returncode}: {detail}")
+                if not temporary_output.is_file() or not temporary_output.read_text(encoding="utf-8").strip():
+                    raise RuntimeError("metadata agent finished without writing output")
+                temporary_output.replace(config.metadata_path_for(key))
+            last = config.metadata_path_for(key)
+            print(last)
+        assert last is not None
+        return last
     if not config.profile_path(db_label).is_file() or not config.schema_links_path(db_label).is_file():
         raise FileNotFoundError("generate the profile and schema links before metadata")
     config.GENERATED_METADATA_DIR.mkdir(exist_ok=True)
     network.setup({config.mysql_db_for(db_label)})
-    output = config.GENERATED_METADATA_DIR / f"{db_label}.md"
+    output = config.metadata_path(db_label)
     with tempfile.TemporaryDirectory(dir=config.GENERATED_METADATA_DIR) as temp:
         temporary_output = Path(temp) / f"{db_label}.md"
         result = subprocess.run(_docker_argv(db_label, max_turns, Path(temp)),
@@ -85,9 +148,12 @@ def run(db_label: str, max_turns: int = 12) -> Path:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--database", choices=list(config.DATASETS), default="neutron")
+    parser.add_argument("--profile-key",
+                        help="SQLite benchmarks: document only this database "
+                             "(e.g. bird_financial); default is every database")
     parser.add_argument("--max-turns", type=int, default=12)
     args = parser.parse_args(argv)
-    print(run(args.database, args.max_turns))
+    print(run(args.database, args.max_turns, args.profile_key))
     return 0
 
 
