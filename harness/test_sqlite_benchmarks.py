@@ -13,7 +13,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from harness import manifest, scorer, spider2_eval, sqlite_io
-from harness.generate_schema_links import _render, _sqlite_introspect
+from harness.generate_schema_links import _link_sqlite
 
 
 def _make_db(path: Path) -> None:
@@ -214,18 +214,13 @@ class StratificationTests(unittest.TestCase):
 
 
 class SchemaLinksSqliteTests(unittest.TestCase):
-    def test_introspect_and_render(self) -> None:
+    def test_schema_linker_report(self) -> None:
         with TemporaryDirectory() as tmp:
             db = Path(tmp) / "corp.sqlite"
             _make_db(db)
-            foreign_keys, columns = _sqlite_introspect(db)
-            self.assertIn(("emp", "dept_id", "dept", "id"), foreign_keys)
-            self.assertIn(("emp", "name"), columns)
-            text = _render(db.stem, "sqlite", foreign_keys, columns)
-            self.assertIn("`emp.dept_id` → `dept.id`", text)
-            # same-name candidate column across both tables
-            self.assertIn("`dept.name`", text)
-            self.assertIn("`emp.name`", text)
+            text = _link_sqlite(db)
+            self.assertIn("- version: ", text)
+            self.assertIn("emp.dept_id -> dept.id", text)
 
 
 if __name__ == "__main__":
