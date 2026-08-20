@@ -41,8 +41,9 @@ Workflow:
    only relevant tables. Batch independent DESCRIBE/SHOW calls in one turn. Use
    `SHOW TABLES` only when you cannot identify tables otherwise.
 2. Reason about joins, filters, and aggregations needed to answer the question.
-3. By turn {validation_turn}, run the complete candidate query, not merely pieces
-   of it. Use turn {repair_turn} only to repair and re-run that complete query.
+3. Before returing final answer (or by turn {validation_turn}) run the complete candidate query, not merely pieces of it.
+    - verify result against error checklist
+    - If this inspection makes you change the query, re-run the complete query. Use turn {repair_turn} only to repair.
 4. Output the last successfully executed complete query inside exactly one answer block.
 
 <ans>
@@ -59,6 +60,7 @@ Rules:
   reserved/odd-case identifiers).
 - Budget: you have at most {max_turns} agent turns. Turn {max_turns} is reserved
   for your FINAL SQL response, so finish all tool use by turn {penultimate_turn}.
+  Leave at least 1 (better 2) steps for final corrections before returning final answer.
 {checklist_block}\
 """
 
@@ -75,13 +77,14 @@ within {timeout}s.
 
 Workflow:
 1. Use any supplied database context first. Query the database only to resolve
-   missing schema details or validate candidate SQL; do not repeat lookups that
-   the context already answers. If context is absent or insufficient, inspect
-   only relevant tables. Batch independent lookups in one turn. List tables
-   only when you cannot identify them otherwise.
+missing schema details or validate candidate SQL; do not repeat lookups that
+the context already answers. If context is absent or insufficient, inspect
+only relevant tables. Batch independent lookups in one turn. List tables
+only when you cannot identify them otherwise.
 2. Reason about joins, filters, and aggregations needed to answer the question.
-3. By turn {validation_turn}, run the complete candidate query, not merely pieces
-   of it. Use turn {repair_turn} only to repair and re-run that complete query.
+3. Before returing final answer (at most by turn {validation_turn}) run the complete candidate query with LIMIT, not merely pieces of it.
+- verify result against error checklist
+- If this inspection makes you change the query, re-run the complete query. Use turn {repair_turn} only to repair.
 4. Output the last successfully executed complete query inside exactly one answer block.
 
 <ans>
@@ -90,15 +93,16 @@ Workflow:
 
 Rules:
 - Run ONLY read-only statements (SELECT / WITH / EXPLAIN / PRAGMA table_info) —
-  never INSERT/UPDATE/DELETE/DROP. The DB file is shared; do not mutate it.
+never INSERT/UPDATE/DELETE/DROP. The DB file is shared; do not mutate it.
 - Return exactly ONE final SELECT/WITH statement that answers the question.
 - Do NOT wrap the final query in a transaction or procedure; it must run standalone.
 - Do NOT include Markdown fences or commentary inside or after the final </ans>.
 - Prefer explicit table-qualified columns. Respect SQLite syntax (double quotes
-  for reserved/odd-case identifiers — never backticks; date()/strftime()/julianday()
-  for date math; integer division needs CAST).
+for reserved/odd-case identifiers — never backticks; date()/strftime()/julianday()
+for date math; integer division needs CAST).
 - Budget: you have at most {max_turns} agent turns. Turn {max_turns} is reserved
-  for your FINAL SQL response, so finish all tool use by turn {penultimate_turn}.
+for your FINAL SQL response, so finish all tool use by turn {penultimate_turn}.
+Leave at least 1 (better 2) steps for final corrections before returning final answer.
 {checklist_block}\
 """
 
@@ -119,7 +123,7 @@ def _agent_system(timeout: int, max_turns: int, checklist: bool, engine: str = "
         timeout=timeout,
         max_turns=max_turns,
         penultimate_turn=max(0, max_turns - 1),
-        validation_turn=max(1, max_turns - 2),
+        validation_turn=max(1, max_turns - 3),
         repair_turn=max(1, max_turns - 1),
         checklist_block=(_AGENT_CHECKLIST_BLOCK + _ERROR_CHECKLIST[engine] + "\n") if checklist else "",
     )
