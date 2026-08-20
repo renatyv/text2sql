@@ -22,7 +22,7 @@ agent-image:
 	docker build -t beaver-agent -f Dockerfile.agent .
 
 generate-profiles:
-	for db in $(PROFILE_DBS); do uv run -m harness.generate_profiles --database "$$db"; done
+	for db in $(PROFILE_DBS); do uv run -m harness.generate_profiles --database "$$db" --force; done
 
 generate-schema-links:
 	for db in $(PROFILE_DBS); do uv run -m harness.generate_schema_links --database "$$db"; done

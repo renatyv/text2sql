@@ -1217,7 +1217,7 @@ wheels = [
 
 [[package]]
 name = "schema-linker"
-version = "0.0.4"
+version = "0.0.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "datasketch" },
@@ -1227,9 +1227,9 @@ dependencies = [
     { name = "rich" },
     { name = "sqlalchemy" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c2/a4/274a1d357b98e5993c234ca155b9a4d38aaad910c0d932e054a1a4395b15/schema_linker-0.0.4.tar.gz", hash = "sha256:5d5c98ebb96297e42c9a5f66d09ade69b1b1e9b43bce553ea5adf7c4e0747340", size = 95473, upload-time = "2026-08-20T16:45:58.668Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/24/24/937f9a08914423f98e2db3f40834856df64078b49293e26f479b50348ae8/schema_linker-0.0.5.tar.gz", hash = "sha256:c43c60ddca5848184a44bc21d8a5be5894121e2a3c6ae1efec8623b03da7b001", size = 95650, upload-time = "2026-08-20T17:15:44.462Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/77/56/2ef1e0a3da8108bc8c0e09466c145c2e4fde7d9bcdfb60de5b8a9dd376e5/schema_linker-0.0.4-py3-none-any.whl", hash = "sha256:6e5d4a89549123fc87a2a02519d8ebd5ac7a04bd9e60ff9456588ed4912f6791", size = 30027, upload-time = "2026-08-20T16:45:57.365Z" },
+    { url = "https://files.pythonhosted.org/packages/f3/5e/0deeb1f43aa5bb1535863a00c2d7fa3deba96a63b3b69cf0bd4ed4b2245f/schema_linker-0.0.5-py3-none-any.whl", hash = "sha256:069ad6d848bded77c04e0ff83c5e4c2e5d98bda0c07724b4246a5f4028f82d68", size = 30280, upload-time = "2026-08-20T17:15:41.576Z" },
 ]
 
 [[package]]

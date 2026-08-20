@@ -11,7 +11,7 @@ The benchmark .sqlite files are never ANALYZEd or otherwise mutated: each
 one is copied to the temp dir and the copy is ANALYZEd before profiling, so
 sqlite_stat1 exists and db-snooper can classify large tables from catalog
 stats instead of running unbounded per-column scans over them (its query
-timeout does not bind SQLite). Tables at/above --large-table-threshold rows
+timeout does not bind SQLite). Tables at/above 200,000 rows
 are profiled from stats only; existing profiles are skipped unless --force."""
 from __future__ import annotations
 
@@ -22,6 +22,10 @@ import sqlite3
 import subprocess
 import tempfile
 from pathlib import Path
+
+from db_snooper import profile_database
+from db_snooper.contracts import ProfileOptions
+from sqlalchemy import create_engine
 
 from . import config
 
@@ -48,18 +52,15 @@ def run_sqlite(db_path: Path, profile_key: str, force: bool = False) -> Path | N
             conn.commit()
         finally:
             conn.close()
-        subprocess.run(
-            ["db-snooper", "profile", "--db-type", "sqlite",
-             "--database", str(analyzed),
-             "--large-table-threshold", str(LARGE_TABLE_THRESHOLD),
-             "--output", temp],
-            check=True,
-        )
-        produced = Path(temp) / "main.md"
-        if not produced.is_file():
-            raise RuntimeError(f"db-snooper produced no profile for {db_path}")
+        engine = create_engine(f"sqlite:///{analyzed}")
+        try:
+            profile = profile_database(
+                engine, ProfileOptions(large_table_threshold=LARGE_TABLE_THRESHOLD)
+            )
+        finally:
+            engine.dispose()
         target.parent.mkdir(exist_ok=True)
-        target.write_text(produced.read_text(encoding="utf-8"), encoding="utf-8")
+        target.write_text(profile, encoding="utf-8")
     return target
 
 

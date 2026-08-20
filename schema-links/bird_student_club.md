@@ -1,24 +1,22 @@
 # Schema Links
 
-- generator: local introspection
+- version: 0.0.5
 - dialect: sqlite
-- database: student_club
+- database: file:/Users/renatyuldashev/Documents/ai-sql/custom-bench/data/bird_mini_dev/databases/dev_databases/student_club/student_club.sqlite
+- schema: main
 
-## Declared Links
+## Declared PK/FK Links
 
-- `attendance.link_to_event` → `event.event_id`
-- `attendance.link_to_member` → `member.member_id`
-- `budget.link_to_event` → `event.event_id`
-- `expense.link_to_budget` → `budget.budget_id`
-- `expense.link_to_member` → `member.member_id`
-- `income.link_to_member` → `member.member_id`
-- `member.link_to_major` → `major.major_id`
-- `member.zip` → `zip_code.zip_code`
+attendance.link_to_event -> event.event_id
+attendance.link_to_member -> member.member_id
+budget.link_to_event -> event.event_id
+expense.link_to_budget -> budget.budget_id
+expense.link_to_member -> member.member_id
+income.link_to_member -> member.member_id
+member.link_to_major -> major.major_id
+member.zip -> zip_code.zip_code
 
-## Same-name Candidates
+## Inferred Links
 
-- `amount`: `budget.amount`, `income.amount`
-- `link_to_event`: `attendance.link_to_event`, `budget.link_to_event`
-- `link_to_member`: `attendance.link_to_member`, `expense.link_to_member`, `income.link_to_member`
-- `notes`: `event.notes`, `income.notes`
-- `type`: `event.type`, `zip_code.type`
+### status
+- inferred: budget.event_status, event.status

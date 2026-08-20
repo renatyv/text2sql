@@ -1,473 +1,251 @@
 ---
 generator: db-snooper
-version: 0.0.26
-generated_at_utc: 2026-08-16T08:07:49.824823Z
+version: 0.0.31
+generated_at_utc: 2026-08-20T17:27:02.053243Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-qizka7yw/Db-IMDB.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-6k_cxowt/Db-IMDB.sqlite
 schema: main
 ---
 
-# Country
+# "Country"  (rows=34)
 
-```sql
-CREATE TABLE "Country" (
-"index" INTEGER,
-  "Name" TEXT,
-  "CID" INTEGER
-);
-```
+columns:
+"index" int: all distinct, 0..33, avg=16.5, median=16.5
+"Name" text: all distinct
+"CID" int: unique identifier, 0..33, avg=16.5, median=16.5
 
-## Indexes
+indexes: "index"
+fk: none
 
-- CREATE INDEX "ix_Country_index"ON "Country" ("index")
-
-## Rows
-
-- total=34
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 33 | 6 | 15 |
-| Name | Georgia | Canada | France |
-| CID | 33 | 6 | 15 |
+| index | 33 | 2 | 16 |
+| Name | Georgia | India | Pakistan |
+| CID | 33 | 2 | 16 |
 
-## Columns
+# "Genre"  (rows=328)
 
-- index: all distinct, int 0..33
-  - stats: average=16.5, median=16.5
-- Name: all distinct
-- CID: unique identifier, int 0..33
-  - stats: average=16.5, median=16.5
+columns:
+"index" int: all distinct, 0..327, avg=163.5, median=163.5
+"Name" text: all distinct
+"GID" int: unique identifier, 0..327, avg=163.5, median=163.5
 
+indexes: "index"
+fk: none
 
-# Genre
-
-```sql
-CREATE TABLE "Genre" (
-"index" INTEGER,
-  "Name" TEXT,
-  "GID" INTEGER
-);
-```
-
-## Indexes
-
-- CREATE INDEX "ix_Genre_index"ON "Genre" ("index")
-
-## Rows
-
-- total=328
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 327 | 212 | 235 |
-| Name | Drama, Mystery, Sci-Fi             | Romance, Action, Crime             | Comedy, Romance, Drama             |
-| GID | 327 | 212 | 235 |
+| index | 327 | 203 | 249 |
+| Name | Drama, Mystery, Sci-Fi             | Action, Comedy, Mystery             | Comedy, Drama, Mystery             |
+| GID | 327 | 203 | 249 |
 
-## Columns
+# "Language"  (rows=32)
 
-- index: all distinct, int 0..327
-  - stats: average=163.5, median=163.5
-- Name: all distinct
-- GID: unique identifier, int 0..327
-  - stats: average=163.5, median=163.5
+columns:
+"index" int: all distinct, 0..31, avg=15.5, median=15.5
+"Name" text: all distinct
+"LAID" int: unique identifier, 0..31, avg=15.5, median=15.5
 
+indexes: "index"
+fk: none
 
-# Language
-
-```sql
-CREATE TABLE "Language" (
-"index" INTEGER,
-  "Name" TEXT,
-  "LAID" INTEGER
-);
-```
-
-## Indexes
-
-- CREATE INDEX "ix_Language_index"ON "Language" ("index")
-
-## Rows
-
-- total=32
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 31 | 1 | 21 |
-| Name | Georgian | Marathi | Russian |
-| LAID | 31 | 1 | 21 |
+| index | 31 | 15 | 31 |
+| Name | Georgian | Kannada | Georgian |
+| LAID | 31 | 15 | 31 |
 
-## Columns
+# "Location"  (rows=559)
 
-- index: all distinct, int 0..31
-  - stats: average=15.5, median=15.5
-- Name: all distinct
-- LAID: unique identifier, int 0..31
-  - stats: average=15.5, median=15.5
+columns:
+"index" int: all distinct, 0..558, avg=279, median=279
+"Name" text: all distinct
+"LID" int: unique identifier, 0..558, avg=279, median=279
 
+indexes: "index"
+fk: none
 
-# Location
-
-```sql
-CREATE TABLE "Location" (
-"index" INTEGER,
-  "Name" TEXT,
-  "LID" INTEGER
-);
-```
-
-## Indexes
-
-- CREATE INDEX "ix_Location_index"ON "Location" ("index")
-
-## Rows
-
-- total=559
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 558 | 472 | 178 |
-| Name | Aftab Studio, India | Hollywood, Los Angeles, California, USA | Bhopal, India |
-| LID | 558 | 472 | 178 |
+| index | 558 | 421 | 353 |
+| Name | Aftab Studio, India | Haryana, India | Coorg, Karnataka, India |
+| LID | 558 | 421 | 353 |
 
-## Columns
+# "M_Cast"  (rows=82837)
 
-- index: all distinct, int 0..558
-  - stats: average=279, median=279
-- Name: all distinct
-- LID: unique identifier, int 0..558
-  - stats: average=279, median=279
+columns:
+"index" int: all distinct, 0..82836, avg=41418, median=41418
+"MID" text: 3475 distinct
+"PID" text: 32127 distinct, nulls=2
+"ID" int: unique identifier, 0..82836, avg=41418, median=41418
 
+indexes: "index"
+fk: none
 
-# M_Cast
-
-```sql
-CREATE TABLE "M_Cast" (
-"index" INTEGER,
-  "MID" TEXT,
-  "PID" TEXT,
-  "ID" INTEGER
-);
-```
-
-## Indexes
-
-- CREATE INDEX "ix_M_Cast_index"ON "M_Cast" ("index")
-
-## Rows
-
-- total=82837
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 82836 | 37900 | 59918 |
-| MID | tt0375890 | tt1535467 | tt0071730 |
-| PID |  nm0438467 |  nm4547925 |  nm0802107 |
-| ID | 82836 | 37900 | 59918 |
+| index | 82836 | 34068 | 24136 |
+| MID | tt0375890 | tt0232079 | tt0118751 |
+| PID |  nm0438467 |  nm0044085 |  nm1623050 |
+| ID | 82836 | 34068 | 24136 |
 
-## Columns
+# "M_Country"  (rows=3475)
 
-- index: all distinct, int 0..82836
-  - stats: average=41418, median=41418
-- MID: 3475 distinct
-- PID: 32127 distinct, nulls=2
-- ID: unique identifier, int 0..82836
-  - stats: average=41418, median=41418
+columns:
+"index" int: all distinct, 0..3474, avg=1737, median=1737
+"MID" text: unique identifier
+"CID" float: 34 distinct, nulls=5, 0..33, avg=2.1781, median=2
+"ID" int: unique identifier, 0..3474, avg=1737, median=1737
 
+indexes: "index"
+fk: none
 
-# M_Country
-
-```sql
-CREATE TABLE "M_Country" (
-"index" INTEGER,
-  "MID" TEXT,
-  "CID" REAL,
-  "ID" INTEGER
-);
-```
-
-## Indexes
-
-- CREATE INDEX "ix_M_Country_index"ON "M_Country" ("index")
-
-## Rows
-
-- total=3475
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 3474 | 1862 | 1462 |
-| MID | tt0375890 | tt0087417 | tt0043306 |
+| index | 3474 | 1228 | 600 |
+| MID | tt0375890 | tt2319889 | tt0444767 |
 | CID | 2 | 2 | 2 |
-| ID | 3474 | 1862 | 1462 |
+| ID | 3474 | 1228 | 600 |
 
-## Columns
+# "M_Director"  (rows=3475)
 
-- index: all distinct, int 0..3474
-  - stats: average=1737, median=1737
-- MID: unique identifier
-- CID: 34 distinct, nulls=5, num 0..33
-  - stats: average=2.1781, median=2
-- ID: unique identifier, int 0..3474
-  - stats: average=1737, median=1737
+columns:
+"index" int: all distinct, 0..3474, avg=1737, median=1737
+"MID" text: unique identifier
+"PID" text: 1464 distinct
+"ID" int: unique identifier, 0..3474, avg=1737, median=1737
 
+indexes: "index"
+fk: none
 
-# M_Director
-
-```sql
-CREATE TABLE "M_Director" (
-"index" INTEGER,
-  "MID" TEXT,
-  "PID" TEXT,
-  "ID" INTEGER
-);
-```
-
-## Indexes
-
-- CREATE INDEX "ix_M_Director_index"ON "M_Director" ("index")
-
-## Rows
-
-- total=3475
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 3474 | 126 | 3064 |
-| MID | tt0375890 | tt0238936 | tt0271023 |
-| PID | nm1421793 | nm0080220 | nm0385758 |
-| ID | 3474 | 126 | 3064 |
+| index | 3474 | 2789 | 2522 |
+| MID | tt0375890 | tt1191118 | tt0100401 |
+| PID | nm1421793 | nm2124532 | nm0684314 |
+| ID | 3474 | 2789 | 2522 |
 
-## Columns
+# "M_Genre"  (rows=3475)
 
-- index: all distinct, int 0..3474
-  - stats: average=1737, median=1737
-- MID: unique identifier
-- PID: 1464 distinct
-- ID: unique identifier, int 0..3474
-  - stats: average=1737, median=1737
+columns:
+"index" int: all distinct, 0..3474, avg=1737, median=1737
+"MID" text: unique identifier
+"GID" int: 328 distinct, 0..327, avg=62.7606, median=46
+"ID" int: unique identifier, 0..3474, avg=1737, median=1737
 
+indexes: "index"
+fk: none
 
-# M_Genre
-
-```sql
-CREATE TABLE "M_Genre" (
-"index" INTEGER,
-  "MID" TEXT,
-  "GID" INTEGER,
-  "ID" INTEGER
-);
-```
-
-## Indexes
-
-- CREATE INDEX "ix_M_Genre_index"ON "M_Genre" ("index")
-
-## Rows
-
-- total=3475
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 3474 | 809 | 81 |
-| MID | tt0375890 | tt1288638 | tt6206564 |
-| GID | 46 | 16 | 39 |
-| ID | 3474 | 809 | 81 |
+| index | 3474 | 2033 | 1378 |
+| MID | tt0375890 | tt0118931 | tt0096827 |
+| GID | 46 | 36 | 23 |
+| ID | 3474 | 2033 | 1378 |
 
-## Columns
+# "M_Language"  (rows=3475)
 
-- index: all distinct, int 0..3474
-  - stats: average=1737, median=1737
-- MID: unique identifier
-- GID: 328 distinct, int 0..327
-  - stats: average=62.7606, median=46
-- ID: unique identifier, int 0..3474
-  - stats: average=1737, median=1737
+columns:
+"index" int: all distinct, 0..3474, avg=1737, median=1737
+"MID" text: unique identifier
+"LAID" int: 32 distinct, 0..31, avg=2.55367, median=2
+"ID" int: unique identifier, 0..3474, avg=1737, median=1737
 
+indexes: "index"
+fk: none
 
-# M_Language
-
-```sql
-CREATE TABLE "M_Language" (
-"index" INTEGER,
-  "MID" TEXT,
-  "LAID" INTEGER,
-  "ID" INTEGER
-);
-```
-
-## Indexes
-
-- CREATE INDEX "ix_M_Language_index"ON "M_Language" ("index")
-
-## Rows
-
-- total=3475
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 3474 | 2619 | 889 |
-| MID | tt0375890 | tt0246687 | tt3615160 |
-| LAID | 2 | 2 | 16 |
-| ID | 3474 | 2619 | 889 |
+| index | 3474 | 1742 | 565 |
+| MID | tt0375890 | tt0250483 | tt0072783 |
+| LAID | 2 | 2 | 2 |
+| ID | 3474 | 1742 | 565 |
 
-## Columns
+# "M_Location"  (rows=3475)
 
-- index: all distinct, int 0..3474
-  - stats: average=1737, median=1737
-- MID: unique identifier
-- LAID: 32 distinct, int 0..31
-  - stats: average=2.55367, median=2
-- ID: unique identifier, int 0..3474
-  - stats: average=1737, median=1737
+columns:
+"index" int: all distinct, 0..3474, avg=1737, median=1737
+"MID" text: unique identifier
+"LID" float: 559 distinct, nulls=1626, 0..558, avg=166.056, median=124
+"ID" int: unique identifier, 0..3474, avg=1737, median=1737
 
+indexes: "index"
+fk: none
 
-# M_Location
-
-```sql
-CREATE TABLE "M_Location" (
-"index" INTEGER,
-  "MID" TEXT,
-  "LID" REAL,
-  "ID" INTEGER
-);
-```
-
-## Indexes
-
-- CREATE INDEX "ix_M_Location_index"ON "M_Location" ("index")
-
-## Rows
-
-- total=3475
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 3474 | 1352 | 1545 |
-| MID | tt0375890 | tt2375567 | tt3338188 |
-| LID | 7 | 216 | 389 |
-| ID | 3474 | 1352 | 1545 |
+| index | 3474 | 360 | 2961 |
+| MID | tt0375890 | tt3802576 | tt2953786 |
+| LID | 7 | 16 | 528 |
+| ID | 3474 | 360 | 2961 |
 
-## Columns
+# "M_Producer"  (rows=11751)
 
-- index: all distinct, int 0..3474
-  - stats: average=1737, median=1737
-- MID: unique identifier
-- LID: 559 distinct, nulls=1626, num 0..558
-  - stats: average=166.056, median=124
-- ID: unique identifier, int 0..3474
-  - stats: average=1737, median=1737
+columns:
+"index" int: all distinct, 0..11750, avg=5875, median=5875
+"MID" text: 3475 distinct
+"PID" text: 5436 distinct, nulls=21
+"ID" int: unique identifier, 0..11750, avg=5875, median=5875
 
+indexes: "index"
+fk: none
 
-# M_Producer
-
-```sql
-CREATE TABLE "M_Producer" (
-"index" INTEGER,
-  "MID" TEXT,
-  "PID" TEXT,
-  "ID" INTEGER
-);
-```
-
-## Indexes
-
-- CREATE INDEX "ix_M_Producer_index"ON "M_Producer" ("index")
-
-## Rows
-
-- total=11751
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 11750 | 11535 | 2374 |
-| MID | tt0375890 | tt0142521 | tt5456546 |
-| PID |  nm1421793 |  nm0481568 |  nm3049612 |
-| ID | 11750 | 11535 | 2374 |
+| index | 11750 | 4031 | 1846 |
+| MID | tt0375890 | tt1992138 | tt6514010 |
+| PID |  nm1421793 |  nm3083004 |  nm5720462 |
+| ID | 11750 | 4031 | 1846 |
 
-## Columns
+# "Movie"  (rows=3475)
 
-- index: all distinct, int 0..11750
-  - stats: average=5875, median=5875
-- MID: 3475 distinct
-- PID: 5436 distinct, nulls=21
-- ID: unique identifier, int 0..11750
-  - stats: average=5875, median=5875
+columns:
+"index" int: all distinct, 0..3474, avg=1737, median=1737
+"MID" text: unique identifier
+"title" text: 3344 distinct
+"year" text: 125 distinct
+"rating" float: 82 distinct, 1.3..9.6, avg=6.03678, median=6.2
+"num_votes" int: 1763 distinct, 51..1137529, avg=4544.73, median=388
 
+indexes: "index"
+fk: none
 
-# Movie
-
-```sql
-CREATE TABLE "Movie" (
-"index" INTEGER,
-  "MID" TEXT,
-  "title" TEXT,
-  "year" TEXT,
-  "rating" REAL,
-  "num_votes" INTEGER
-);
-```
-
-## Indexes
-
-- CREATE INDEX "ix_Movie_index"ON "Movie" ("index")
-
-## Rows
-
-- total=3475
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 3474 | 3443 | 2332 |
-| MID | tt0375890 | tt0257416 | tt0215196 |
-| title | Kanoon | Ashwamedham | Split Wide Open |
-| year | 1994 | 1992 | 1999 |
-| rating | 3.2 | 7.2 | 6.4 |
-| num_votes | 103 | 52 | 212 |
+| index | 3474 | 2758 | 3149 |
+| MID | tt0375890 | tt1204913 | tt0267617 |
+| title | Kanoon | Karma: Crime. Passion. Reincarnation | Jigar |
+| year | 1994 | 2008 | 1992 |
+| rating | 3.2 | 5.9 | 4.8 |
+| num_votes | 103 | 99 | 670 |
 
-## Columns
+# "Person"  (rows=38285)
 
-- index: all distinct, int 0..3474
-  - stats: average=1737, median=1737
-- MID: unique identifier
-- title: 3344 distinct
-- year: 125 distinct
-- rating: 82 distinct, num 1.3..9.6
-  - stats: average=6.03678, median=6.2
-- num_votes: 1763 distinct, int 51..1137529
-  - stats: average=4544.73, median=388
+columns:
+"index" int: all distinct, 0..38284, avg=19142, median=19142
+"PID" text: 37565 distinct, nulls=1
+"Name" text: 36312 distinct, nulls=1
+"Gender" text: "Male"=20055, "Female"=9435, nulls=8795
 
+indexes: "index"
+fk: none
 
-# Person
-
-```sql
-CREATE TABLE "Person" (
-"index" INTEGER,
-  "PID" TEXT,
-  "Name" TEXT,
-  "Gender" TEXT
-);
-```
-
-## Indexes
-
-- CREATE INDEX "ix_Person_index"ON "Person" ("index")
-
-## Rows
-
-- total=38285
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 38284 | 18840 | 21710 |
-| PID | nm1421793 | nm0014135 | nm4444549 |
-| Name | Sushma Shiromani |  Ahmed Ahmed |  Prabir Kumar |
-| Gender | Female | Male | Male |
-
-## Columns
-
-- index: all distinct, int 0..38284
-  - stats: average=19142, median=19142
-- PID: 37565 distinct, nulls=1
-- Name: 36312 distinct, nulls=1
-- Gender: "Male"=20055, "Female"=9435, nulls=8795
+| index | 38284 | 33740 | 23026 |
+| PID | nm1421793 | nm0080299 | nm1560914 |
+| Name | Sushma Shiromani |  Vanraj Bhatia |  Aroop Kumar Ganguly |
+| Gender | Female | null | Male |

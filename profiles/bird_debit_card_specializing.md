@@ -1,190 +1,102 @@
 ---
 generator: db-snooper
-version: 0.0.26
-generated_at_utc: 2026-08-16T07:18:45.209296Z
+version: 0.0.31
+generated_at_utc: 2026-08-20T17:25:59.330773Z
 dialect: sqlite
-database: /Users/renatyuldashev/Documents/ai-sql/custom-bench/data/bird_mini_dev/databases/dev_databases/debit_card_specializing/debit_card_specializing.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-xw0r6bwg/debit_card_specializing.sqlite
 schema: main
 ---
 
 ## Relationships
 
-- customers.CustomerID ← yearmonth.CustomerID
+- "customers"."CustomerID" ← "yearmonth"."CustomerID"
 
-# customers
+# "customers"  (rows=32461)
 
-```sql
-CREATE TABLE customers
-(
-    CustomerID INTEGER UNIQUE     not null
-        primary key,
-    Segment    TEXT null,
-    Currency   TEXT null
-);
-```
+columns:
+"CustomerID" int PK UNIQ: unique identifier, 3..53314, avg=27888.2, median=28608
+"Segment" text: "SME"=26763, "LAM"=3658, "KAM"=2040
+"Currency" text: "CZK"=30459, "EUR"=2002
 
-## Rows
+indexes: none
+fk: none
 
-- total=32461
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| CustomerID | 53314 | 18686 | 43717 |
+| CustomerID | 53314 | 40640 | 22920 |
 | Segment | SME | SME | SME |
 | Currency | CZK | CZK | CZK |
 
-## Columns
+# "gasstations"  (rows=5716)
 
-- CustomerID: unique identifier, int 3..53314
-  - stats: average=27888.2, median=28608
-- Segment: "SME"=26763, "LAM"=3658, "KAM"=2040
-- Currency: "CZK"=30459, "EUR"=2002
+columns:
+"GasStationID" int PK UNIQ: unique identifier, 44..5772, avg=2905.28, median=2903.5
+"ChainID" int: 233 distinct, 1..290, avg=27.528, median=6
+"Country" text: "CZE"=4836, "SVK"=880
+"Segment" text: "Other"=2392, "Premium"=1428, "Noname"=1005, "Value for money"=597, "Discount"=294
 
+indexes: none
+fk: none
 
-# gasstations
-
-```sql
-CREATE TABLE gasstations
-(
-    GasStationID INTEGER    UNIQUE   not null
-        primary key,
-    ChainID      INTEGER          null,
-    Country      TEXT null,
-    Segment      TEXT null
-);
-```
-
-## Rows
-
-- total=5716
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| GasStationID | 5772 | 1949 | 5719 |
-| ChainID | 16 | 3 | 248 |
-| Country | CZE | CZE | SVK |
+| GasStationID | 5772 | 5671 | 5571 |
+| ChainID | 16 | 283 | 3 |
+| Country | CZE | SVK | CZE |
 | Segment | Other | Other | Other |
 
-## Columns
+# "products"  (rows=591)
 
-- GasStationID: unique identifier, int 44..5772
-  - stats: average=2905.28, median=2903.5
-- ChainID: 233 distinct, int 1..290
-  - stats: average=27.528, median=6
-- Country: "CZE"=4836, "SVK"=880
-- Segment: "Other"=2392, "Premium"=1428, "Noname"=1005, "Value for money"=597, "Discount"=294
+columns:
+"ProductID" int PK UNIQ: unique identifier, 1..630, avg=298.306, median=296
+"Description" text: 529 distinct
 
+indexes: none
+fk: none
 
-# products
-
-```sql
-CREATE TABLE products
-(
-    ProductID   INTEGER   UNIQUE      not null
-        primary key,
-    Description TEXT null
-);
-```
-
-## Rows
-
-- total=591
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ProductID | 630 | 323 | 551 |
-| Description | CCS Carnet Pronájem HW (Manual) | Eurosuper 96 | Garage commission |
+| ProductID | 630 | 294 | 221 |
+| Description | CCS Carnet Pronájem HW (Manual) | Towing,Breakdowns | UTA BOX-Blocking |
 
-## Columns
+# "transactions_1k"  (rows=1000)
 
-- ProductID: unique identifier, int 1..630
-  - stats: average=298.306, median=296
-- Description: 529 distinct
+columns:
+"TransactionID" int PK: unique identifier, 1..1000, avg=500.5, median=500.5
+"Date" date: "2012-08-24"=492, "2012-08-25"=425, "2012-08-26"=73, "2012-08-23"=10
+"Time" text: 599 distinct
+"CustomerID" int: 517 distinct, 96..49838, avg=21975.4, median=19182
+"CardID" int: 902 distinct, 26228..775970, avg=560900, median=597140
+"GasStationID" int: 437 distinct, 48..5481, avg=2290.53, median=2440
+"ProductID" int: 28 distinct, 2..352, avg=26.878, median=2
+"Amount" int: 83 distinct, 0..264, avg=19.678, median=19
+"Price" float: 930 distinct, 1.76..5762.49, avg=425.576, median=354.035
 
+indexes: none
+fk: none
 
-# transactions_1k
-
-```sql
-CREATE TABLE "transactions_1k"
-(
-    TransactionID INTEGER
-        primary key autoincrement,
-    Date          DATE,
-    Time          TEXT,
-    CustomerID    INTEGER,
-    CardID        INTEGER,
-    GasStationID  INTEGER,
-    ProductID     INTEGER,
-    Amount        INTEGER,
-    Price         REAL
-);
-```
-
-## Rows
-
-- total=1000
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| TransactionID | 1000 | 682 | 700 |
+| TransactionID | 1000 | 707 | 607 |
 | Date | 2012-08-25 | 2012-08-25 | 2012-08-25 |
-| Time | 12:45:00 | 15:31:00 | 04:10:00 |
-| CustomerID | 25986 | 24700 | 48793 |
-| CardID | 655214 | 607212 | 707950 |
-| GasStationID | 3899 | 3475 | 5368 |
-| ProductID | 2 | 5 | 2 |
-| Amount | 38 | 1 | 28 |
-| Price | 870.93 | 20.75 | 652.98 |
+| Time | 12:45:00 | 16:17:00 | 02:50:00 |
+| CustomerID | 25986 | 12702 | 7962 |
+| CardID | 655214 | 555891 | 101000 |
+| GasStationID | 3899 | 621 | 1172 |
+| ProductID | 2 | 2 | 2 |
+| Amount | 38 | 28 | 79 |
+| Price | 870.93 | 646.2 | 1794.39 |
 
-## Columns
+# "yearmonth"  (rows=≈383282)
 
-- TransactionID: unique identifier, int 1..1000
-  - stats: average=500.5, median=500.5
-- Date: 2012-08-24=492, 2012-08-25=425, 2012-08-26=73, 2012-08-23=10
-- Time: 599 distinct
-- CustomerID: 517 distinct, int 96..49838
-  - stats: average=21975.4, median=19182
-- CardID: 902 distinct, int 26228..775970
-  - stats: average=560900, median=597140
-- GasStationID: 437 distinct, int 48..5481
-  - stats: average=2290.53, median=2440
-- ProductID: 28 distinct, int 2..352
-  - stats: average=26.878, median=2
-- Amount: 83 distinct, int 0..264
-  - stats: average=19.678, median=19
-- Price: 930 distinct, num 1.76..5762.49
-  - stats: average=425.576, median=354.035
+columns:
+"CustomerID" int PK FK
+"Date" text PK
+"Consumption" float
 
-
-# yearmonth
-
-```sql
-CREATE TABLE "yearmonth"
-(
-    CustomerID  INTEGER not null
-        references customers
-            on update cascade on delete cascade
-        references customers,
-    Date        TEXT    not null,
-    Consumption REAL,
-    primary key (Date, CustomerID)
-);
-```
-
-## Rows
-
-- total=383282
-
-| column | latest | sample | sample |
-|---|---|---|---|
-| CustomerID | 52353 | 31762 | 27859 |
-| Date | 201311 | 201307 | 201309 |
-| Consumption | 1566.24 | 5909.61 | 116971 |
-
-## Columns
-
-- CustomerID: 30566 distinct, int 5..52353
-  - stats: average=25793
-- Date: 21 distinct
-- Consumption: num -582093..2.05219e+06
-  - stats: average=8911.14
+indexes: none
+fk: "CustomerID"→"customers"."CustomerID"

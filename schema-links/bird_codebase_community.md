@@ -1,31 +1,26 @@
 # Schema Links
 
-- generator: local introspection
+- version: 0.0.5
 - dialect: sqlite
-- database: codebase_community
+- database: file:/Users/renatyuldashev/Documents/ai-sql/custom-bench/data/bird_mini_dev/databases/dev_databases/codebase_community/codebase_community.sqlite
+- schema: main
 
-## Declared Links
+## Declared PK/FK Links
 
-- `badges.UserId` → `users.Id`
-- `comments.PostId` → `posts.Id`
-- `comments.UserId` → `users.Id`
-- `postHistory.PostId` → `posts.Id`
-- `postHistory.UserId` → `users.Id`
-- `postLinks.PostId` → `posts.Id`
-- `postLinks.RelatedPostId` → `posts.Id`
-- `posts.LastEditorUserId` → `users.Id`
-- `posts.OwnerUserId` → `users.Id`
-- `posts.ParentId` → `posts.Id`
-- `tags.ExcerptPostId` → `posts.Id`
-- `votes.PostId` → `posts.Id`
-- `votes.UserId` → `users.Id`
+badges.UserId -> users.Id
+comments.PostId -> posts.Id
+comments.UserId -> users.Id
+postHistory.PostId -> posts.Id
+postHistory.UserId -> users.Id
+postLinks.PostId -> posts.Id
+postLinks.RelatedPostId -> posts.Id
+posts.LastEditorUserId -> users.Id
+posts.OwnerUserId -> users.Id
+posts.ParentId -> posts.Id
+tags.ExcerptPostId -> posts.Id
+votes.PostId -> posts.Id
+votes.UserId -> users.Id
 
-## Same-name Candidates
+## Inferred Links
 
-- `CreationDate`: `comments.CreationDate`, `postHistory.CreationDate`, `postLinks.CreationDate`, `users.CreationDate`, `votes.CreationDate`
-- `Id`: `badges.Id`, `comments.Id`, `postHistory.Id`, `postLinks.Id`, `posts.Id`, `tags.Id`, `users.Id`, `votes.Id`
-- `PostId`: `comments.PostId`, `postHistory.PostId`, `postLinks.PostId`, `votes.PostId`
-- `Score`: `comments.Score`, `posts.Score`
-- `Text`: `comments.Text`, `postHistory.Text`
-- `UserDisplayName`: `comments.UserDisplayName`, `postHistory.UserDisplayName`
-- `UserId`: `badges.UserId`, `comments.UserId`, `postHistory.UserId`, `votes.UserId`
+All inferred links are implied by the declared PK/FK links above.

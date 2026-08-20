@@ -1,165 +1,116 @@
 ---
 generator: db-snooper
-version: 0.0.26
-generated_at_utc: 2026-08-16T08:09:25.807843Z
+version: 0.0.31
+generated_at_utc: 2026-08-20T17:29:07.656494Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-ss0i7ffo/music.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-drv64qxm/music.sqlite
 schema: main
 ---
 
 ## Relationships
 
-- Album.AlbumId ← Track.AlbumId
-- Artist.ArtistId ← Album.ArtistId
-- Customer.CustomerId ← Invoice.CustomerId
-- Employee.EmployeeId ← Customer.SupportRepId, Employee.ReportsTo
-- Genre.GenreId ← Track.GenreId
-- Invoice.InvoiceId ← InvoiceLine.InvoiceId
-- MediaType.MediaTypeId ← Track.MediaTypeId
-- Playlist.PlaylistId ← PlaylistTrack.PlaylistId
-- Track.TrackId ← InvoiceLine.TrackId, PlaylistTrack.TrackId
+- "Album"."AlbumId" ← "Track"."AlbumId"
+- "Artist"."ArtistId" ← "Album"."ArtistId"
+- "Customer"."CustomerId" ← "Invoice"."CustomerId"
+- "Employee"."EmployeeId" ← "Customer"."SupportRepId", "Employee"."ReportsTo"
+- "Genre"."GenreId" ← "Track"."GenreId"
+- "Invoice"."InvoiceId" ← "InvoiceLine"."InvoiceId"
+- "MediaType"."MediaTypeId" ← "Track"."MediaTypeId"
+- "Playlist"."PlaylistId" ← "PlaylistTrack"."PlaylistId"
+- "Track"."TrackId" ← "InvoiceLine"."TrackId", "PlaylistTrack"."TrackId"
 
-# Album
+# "Album"  (rows=347)
 
-```sql
-CREATE TABLE [Album]
-(
-    [AlbumId] INTEGER  NOT NULL,
-    [Title] NVARCHAR(160)  NOT NULL,
-    [ArtistId] INTEGER  NOT NULL,
-    CONSTRAINT [PK_Album] PRIMARY KEY  ([AlbumId]),
-    FOREIGN KEY ([ArtistId]) REFERENCES [Artist] ([ArtistId]) 
-		ON DELETE NO ACTION ON UPDATE NO ACTION
-);
-```
+columns:
+"AlbumId" int PK UNIQ: unique identifier, 1..347, avg=174, median=174
+"Title" nvarchar160 NOTNULL: all distinct
+"ArtistId" int NOTNULL FK: 204 distinct, 1..275, avg=121.942, median=112, 90=21, 22=14, 58=11, 50=10, 150=10, 114=6, 118=5, 21=4, 82=4, 84=4
 
-## Indexes
+indexes: "ArtistId"
+fk: "ArtistId"→"Artist"."ArtistId"
 
-- ([ArtistId])
-- UNIQUE ([AlbumId])
-
-## Rows
-
-- total=347
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| AlbumId | 347 | 115 | 53 |
-| Title | Koyaanisqatsi (Soundtrack from the Motion Picture) | Sex Machine | Vozes do MPB |
-| ArtistId | 275 | 91 | 21 |
+| AlbumId | 347 | 345 | 123 |
+| Title | Koyaanisqatsi (Soundtrack from the Motion Picture) | Monteverdi: L'Orfeo | Jota Quest-1995 |
+| ArtistId | 275 | 273 | 96 |
 
-## Columns
+# "Artist"  (rows=275)
 
-- AlbumId: unique identifier, int 1..347
-  - stats: average=174, median=174
-- Title: all distinct
-- ArtistId: 204 distinct, int 1..275
-  - stats: average=121.942, median=112
-  - top_values: 90=21, 22=14, 58=11, 50=10, 150=10, 114=6, 118=5, 21=4, 82=4, 84=4
+columns:
+"ArtistId" int PK UNIQ: unique identifier, 1..275, avg=138, median=138
+"Name" nvarchar120: all distinct
 
+indexes: none
+fk: none
 
-# Artist
-
-```sql
-CREATE TABLE [Artist]
-(
-    [ArtistId] INTEGER  NOT NULL,
-    [Name] NVARCHAR(120),
-    CONSTRAINT [PK_Artist] PRIMARY KEY  ([ArtistId])
-);
-```
-
-## Indexes
-
-- UNIQUE ([ArtistId])
-
-## Rows
-
-- total=275
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ArtistId | 275 | 131 | 163 |
-| Name | Philip Glass Ensemble | Smashing Pumpkins | Corinne Bailey Rae |
+| ArtistId | 275 | 270 | 117 |
+| Name | Philip Glass Ensemble | Gerald Moore | Paul D'Ianno |
 
-## Columns
+# "Customer"  (rows=59)
 
-- ArtistId: unique identifier, int 1..275
-  - stats: average=138, median=138
-- Name: all distinct
+columns:
+"CustomerId" int PK UNIQ: unique identifier, 1..59, avg=30, median=30
+"FirstName" nvarchar40 NOTNULL: 57 distinct
+"LastName" nvarchar20 NOTNULL: all distinct
+"Company" nvarchar80: "Apple Inc."=1, "Banco do Brasil S.A."=1, "Embraer - Empresa Brasileira de Aeronáutica S.A."=1, "Google Inc."=1, "JetBrains s.r.o."=1, "Microsoft Corporation"=1, "Riotur"=1, "Rogers Canada"=1, "Telus"=1, "Woodstock Discos"=1, nulls=49
+"Address" nvarchar70: all distinct
+"City" nvarchar40: 53 distinct
+"State" nvarchar40: 25 distinct, nulls=29
+"Country" nvarchar40: 24 distinct
+"PostalCode" nvarchar10: all distinct, nulls=4
+"Phone" nvarchar24: all distinct, nulls=1
+"Fax" nvarchar24: "+1 (212) 221-4679"=1, "+1 (408) 996-1011"=1, "+1 (425) 882-8081"=1, "+1 (604) 688-8756"=1, "+1 (650) 253-0000"=1, "+1 (780) 434-5565"=1, "+420 2 4172 5555"=1, "+55 (11) 3033-4564"=1, "+55 (11) 3055-8131"=1, "+55 (12) 3923-5566"=1, "+55 (21) 2271-7070"=1, "+55 (61) 3363-7855"=1, nulls=47
+"Email" nvarchar60 NOTNULL: all distinct
+"SupportRepId" int FK: 3=21, 4=20, 5=18, 3..5
 
+indexes: "SupportRepId"
+fk: "SupportRepId"→"Employee"."EmployeeId"
 
-# Customer
-
-```sql
-CREATE TABLE [Customer]
-(
-    [CustomerId] INTEGER  NOT NULL,
-    [FirstName] NVARCHAR(40)  NOT NULL,
-    [LastName] NVARCHAR(20)  NOT NULL,
-    [Company] NVARCHAR(80),
-    [Address] NVARCHAR(70),
-    [City] NVARCHAR(40),
-    [State] NVARCHAR(40),
-    [Country] NVARCHAR(40),
-    [PostalCode] NVARCHAR(10),
-    [Phone] NVARCHAR(24),
-    [Fax] NVARCHAR(24),
-    [Email] NVARCHAR(60)  NOT NULL,
-    [SupportRepId] INTEGER,
-    CONSTRAINT [PK_Customer] PRIMARY KEY  ([CustomerId]),
-    FOREIGN KEY ([SupportRepId]) REFERENCES [Employee] ([EmployeeId]) 
-		ON DELETE NO ACTION ON UPDATE NO ACTION
-);
-```
-
-## Indexes
-
-- ([SupportRepId])
-- UNIQUE ([CustomerId])
-
-## Rows
-
-- total=59
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| CustomerId | 59 | 57 | 7 |
-| FirstName | Puja | Luis | Astrid |
-| LastName | Srivastava | Rojas | Gruber |
+| CustomerId | 59 | 20 | 45 |
+| FirstName | Puja | Dan | Ladislav |
+| LastName | Srivastava | Miller | Kovács |
 | Company | null | null | null |
-| Address | 3,Raj Bhavan Road | Calle Lira, 198 | Rotenturmstraße 4, 1010 Innere Stadt |
-| City | Bangalore | Santiago | Vienne |
-| State | null | null | null |
-| Country | India | Chile | Austria |
-| PostalCode | 560001 | null | 1010 |
-| Phone | +91 080 22289999 | +56 (0)2 635 4444 | +43 01 5134505 |
+| Address | 3,Raj Bhavan Road | 541 Del Medio Avenue | Erzsébet krt. 58. |
+| City | Bangalore | Mountain View | Budapest |
+| State | null | CA | null |
+| Country | India | USA | Hungary |
+| PostalCode | 560001 | 94040-111 | H-1073 |
+| Phone | +91 080 22289999 | +1 (650) 644-3358 | null |
 | Fax | null | null | null |
-| Email | puja_srivastava@yahoo.in | luisrojas@yahoo.cl | astrid.gruber@apple.at |
-| SupportRepId | 3 | 5 | 5 |
+| Email | puja_srivastava@yahoo.in | dmiller@comcast.com | ladislav_kovacs@apple.hu |
+| SupportRepId | 3 | 4 | 3 |
 
-## Columns
+# "Employee"  (rows=8)
 
-- CustomerId: unique identifier, int 1..59
-  - stats: average=30, median=30
-- FirstName: 57 distinct
-- LastName: all distinct
-- Company: "Apple Inc."=1, "Banco do Brasil S.A."=1, "Embraer - Empresa Brasileira de Aeronáutica S.A."=1, "Google Inc."=1, "JetBrains s.r.o."=1, "Microsoft Corporation"=1, "Riotur"=1, "Rogers Canada"=1, "Telus"=1, "Woodstock Discos"=1, nulls=49
-- Address: all distinct
-- City: 53 distinct
-- State: 25 distinct, nulls=29
-- Country: 24 distinct
-- PostalCode: all distinct, nulls=4
-- Phone: all distinct, nulls=1
-- Fax: "+1 (212) 221-4679"=1, "+1 (408) 996-1011"=1, "+1 (425) 882-8081"=1, "+1 (604) 688-8756"=1, "+1 (650) 253-0000"=1, "+1 (780) 434-5565"=1, "+420 2 4172 5555"=1, "+55 (11) 3033-4564"=1, "+55 (11) 3055-8131"=1, "+55 (12) 3923-5566"=1, "+55 (21) 2271-7070"=1, "+55 (61) 3363-7855"=1, nulls=47
-- Email: all distinct
-- SupportRepId: 3=21, 4=20, 5=18, int 3..5
+columns:
+"EmployeeId" int PK UNIQ: unique identifier, 1..8, avg=4.5, median=4.5
+"LastName" nvarchar20 NOTNULL: "Adams"=1, "Callahan"=1, "Edwards"=1, "Johnson"=1, "King"=1, "Mitchell"=1, "Park"=1, "Peacock"=1
+"FirstName" nvarchar20 NOTNULL: "Andrew"=1, "Jane"=1, "Laura"=1, "Margaret"=1, "Michael"=1, "Nancy"=1, "Robert"=1, "Steve"=1
+"Title" nvarchar30: "Sales Support Agent"=3, "IT Staff"=2, "General Manager"=1, "IT Manager"=1, "Sales Manager"=1
+"ReportsTo" int FK: 2=3, 1=2, 6=2, nulls=1, 1..6
+"BirthDate" datetime: "1947-09-19 00:00:00"=1, "1958-12-08 00:00:00"=1, "1962-02-18 00:00:00"=1, "1965-03-03 00:00:00"=1, "1968-01-09 00:00:00"=1, "1970-05-29 00:00:00"=1, "1973-07-01 00:00:00"=1, "1973-08-29 00:00:00"=1
+"HireDate" datetime: "2003-10-17 00:00:00"=2, "2002-04-01 00:00:00"=1, "2002-05-01 00:00:00"=1, "2002-08-14 00:00:00"=1, "2003-05-03 00:00:00"=1, "2004-01-02 00:00:00"=1, "2004-03-04 00:00:00"=1
+"Address" nvarchar70: "1111 6 Ave SW"=1, "11120 Jasper Ave NW"=1, "5827 Bowness Road NW"=1, "590 Columbia Boulevard West"=1, "683 10 Street SW"=1, "7727B 41 Ave"=1, "825 8 Ave SW"=1, "923 7 ST NW"=1
+"City" nvarchar40: "Calgary"=5, "Lethbridge"=2, "Edmonton"=1
+"State" nvarchar40: "AB"=8
+"Country" nvarchar40: "Canada"=8
+"PostalCode" nvarchar10: "T1H 1Y8"=1, "T1K 5N8"=1, "T2P 2T3"=1, "T2P 5G3"=1, "T2P 5M5"=1, "T3B 0C5"=1, "T3B 1Y7"=1, "T5K 2N1"=1
+"Phone" nvarchar24: "+1 (403) 262-3443"=2, "+1 (403) 246-9887"=1, "+1 (403) 263-4423"=1, "+1 (403) 456-9986"=1, "+1 (403) 467-3351"=1, "+1 (780) 428-9482"=1, "1 (780) 836-9987"=1
+"Fax" nvarchar24: "+1 (403) 246-9899"=1, "+1 (403) 262-3322"=1, "+1 (403) 262-6712"=1, "+1 (403) 263-4289"=1, "+1 (403) 456-8485"=1, "+1 (403) 467-8772"=1, "+1 (780) 428-3457"=1, "1 (780) 836-9543"=1
+"Email" nvarchar60: "andrew@chinookcorp.com"=1, "jane@chinookcorp.com"=1, "laura@chinookcorp.com"=1, "margaret@chinookcorp.com"=1, "michael@chinookcorp.com"=1, "nancy@chinookcorp.com"=1, "robert@chinookcorp.com"=1, "steve@chinookcorp.com"=1
 
+indexes: "ReportsTo"
+fk: "ReportsTo"→"Employee"."EmployeeId"
 
-# Employee
-
-## All rows
-
+all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 |
 |---|---|---|---|---|---|---|---|---|
 | EmployeeId | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
@@ -178,286 +129,141 @@ CREATE TABLE [Customer]
 | Fax | +1 (780) 428-3457 | +1 (403) 262-3322 | +1 (403) 262-6712 | +1 (403) 263-4289 | 1 (780) 836-9543 | +1 (403) 246-9899 | +1 (403) 456-8485 | +1 (403) 467-8772 |
 | Email | andrew@chinookcorp.com | nancy@chinookcorp.com | jane@chinookcorp.com | margaret@chinookcorp.com | steve@chinookcorp.com | michael@chinookcorp.com | robert@chinookcorp.com | laura@chinookcorp.com |
 
+# "Genre"  (rows=25)
 
-# Genre
+columns:
+"GenreId" int PK UNIQ: unique identifier, 1..25, avg=13, median=13
+"Name" nvarchar120: all distinct
 
-```sql
-CREATE TABLE [Genre]
-(
-    [GenreId] INTEGER  NOT NULL,
-    [Name] NVARCHAR(120),
-    CONSTRAINT [PK_Genre] PRIMARY KEY  ([GenreId])
-);
-```
+indexes: none
+fk: none
 
-## Indexes
-
-- UNIQUE ([GenreId])
-
-## Rows
-
-- total=25
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| GenreId | 25 | 23 | 10 |
-| Name | Opera | Alternative | Soundtrack |
+| GenreId | 25 | 13 | 12 |
+| Name | Opera | Heavy Metal | Easy Listening |
 
-## Columns
+# "Invoice"  (rows=412)
 
-- GenreId: unique identifier, int 1..25
-  - stats: average=13, median=13
-- Name: all distinct
+columns:
+"InvoiceId" int PK UNIQ: unique identifier, 1..412, avg=206.5, median=206.5
+"CustomerId" int NOTNULL FK: 59 distinct, 1..59, avg=29.9296, median=30, 1=7, 2=7, 3=7, 4=7, 5=7, 6=7, 7=7, 8=7, 9=7, 10=7
+"InvoiceDate" datetime NOTNULL: 354 distinct
+"BillingAddress" nvarchar70: 59 distinct
+"BillingCity" nvarchar40: 53 distinct
+"BillingState" nvarchar40: 25 distinct, nulls=202
+"BillingCountry" nvarchar40: 24 distinct
+"BillingPostalCode" nvarchar10: 55 distinct, nulls=28
+"Total" numeric NOTNULL: 23 distinct, 0.99..25.86, avg=5.65194, median=3.96
 
+indexes: "CustomerId"
+fk: "CustomerId"→"Customer"."CustomerId"
 
-# Invoice
-
-```sql
-CREATE TABLE [Invoice]
-(
-    [InvoiceId] INTEGER  NOT NULL,
-    [CustomerId] INTEGER  NOT NULL,
-    [InvoiceDate] DATETIME  NOT NULL,
-    [BillingAddress] NVARCHAR(70),
-    [BillingCity] NVARCHAR(40),
-    [BillingState] NVARCHAR(40),
-    [BillingCountry] NVARCHAR(40),
-    [BillingPostalCode] NVARCHAR(10),
-    [Total] NUMERIC(10,2)  NOT NULL,
-    CONSTRAINT [PK_Invoice] PRIMARY KEY  ([InvoiceId]),
-    FOREIGN KEY ([CustomerId]) REFERENCES [Customer] ([CustomerId]) 
-		ON DELETE NO ACTION ON UPDATE NO ACTION
-);
-```
-
-## Indexes
-
-- ([CustomerId])
-- UNIQUE ([InvoiceId])
-
-## Rows
-
-- total=412
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| InvoiceId | 412 | 119 | 44 |
-| CustomerId | 58 | 56 | 55 |
-| InvoiceDate | 2013-12-22T00:00:00 | 2010-06-12T00:00:00 | 2009-07-07T00:00:00 |
-| BillingAddress | 12,Community Centre | 307 Macacha Güemes | 421 Bourke Street |
-| BillingCity | Delhi | Buenos Aires | Sidney |
-| BillingState | null | null | NSW |
-| BillingCountry | India | Argentina | Australia |
-| BillingPostalCode | 110017 | 1106 | 2010 |
-| Total | 1.99 | 1.98 | 3.96 |
+| InvoiceId | 412 | 75 | 263 |
+| CustomerId | 58 | 49 | 4 |
+| InvoiceDate | 2013-12-22T00:00:00 | 2009-11-17T00:00:00 | 2012-02-27T00:00:00 |
+| BillingAddress | 12,Community Centre | Ordynacka 10 | Ullevålsveien 14 |
+| BillingCity | Delhi | Warsaw | Oslo |
+| BillingState | null | null | null |
+| BillingCountry | India | Poland | Norway |
+| BillingPostalCode | 110017 | 00-358 | 0171 |
+| Total | 1.99 | 13.86 | 8.91 |
 
-## Columns
+# "InvoiceLine"  (rows=2240)
 
-- InvoiceId: unique identifier, int 1..412
-  - stats: average=206.5, median=206.5
-- CustomerId: 59 distinct, int 1..59
-  - stats: average=29.9296, median=30
-  - top_values: 1=7, 2=7, 3=7, 4=7, 5=7, 6=7, 7=7, 8=7, 9=7, 10=7
-- InvoiceDate: 354 distinct
-- BillingAddress: 59 distinct
-- BillingCity: 53 distinct
-- BillingState: 25 distinct, nulls=202
-- BillingCountry: 24 distinct
-- BillingPostalCode: 55 distinct, nulls=28
-- Total: 23 distinct, num 0.99..25.86
-  - stats: average=5.65194, median=3.96
+columns:
+"InvoiceLineId" int PK UNIQ: unique identifier, 1..2240, avg=1120.5, median=1120.5
+"InvoiceId" int NOTNULL FK: 412 distinct, 1..412, avg=206.869, median=207, 5=14, 12=14, 19=14, 26=14, 33=14, 40=14, 47=14, 54=14, 61=14, 68=14
+"TrackId" int NOTNULL FK: 1984 distinct, 1..3500, avg=1717.73, median=1708, 2=2, 8=2, 9=2, 20=2, 32=2, 48=2, 66=2, 84=2, 161=2, 162=2
+"UnitPrice" numeric NOTNULL: 0.99=2129, 1.99=111
+"Quantity" int NOTNULL: 1=2240
 
+indexes: "InvoiceId", "TrackId"
+fk: "InvoiceId"→"Invoice"."InvoiceId", "TrackId"→"Track"."TrackId"
 
-# InvoiceLine
-
-```sql
-CREATE TABLE [InvoiceLine]
-(
-    [InvoiceLineId] INTEGER  NOT NULL,
-    [InvoiceId] INTEGER  NOT NULL,
-    [TrackId] INTEGER  NOT NULL,
-    [UnitPrice] NUMERIC(10,2)  NOT NULL,
-    [Quantity] INTEGER  NOT NULL,
-    CONSTRAINT [PK_InvoiceLine] PRIMARY KEY  ([InvoiceLineId]),
-    FOREIGN KEY ([InvoiceId]) REFERENCES [Invoice] ([InvoiceId]) 
-		ON DELETE NO ACTION ON UPDATE NO ACTION,
-    FOREIGN KEY ([TrackId]) REFERENCES [Track] ([TrackId]) 
-		ON DELETE NO ACTION ON UPDATE NO ACTION
-);
-```
-
-## Indexes
-
-- ([InvoiceId])
-- ([TrackId])
-- UNIQUE ([InvoiceLineId])
-
-## Rows
-
-- total=2240
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| InvoiceLineId | 2240 | 1689 | 565 |
-| InvoiceId | 412 | 312 | 103 |
-| TrackId | 3177 | 3268 | 3446 |
+| InvoiceLineId | 2240 | 1093 | 1579 |
+| InvoiceId | 412 | 201 | 291 |
+| TrackId | 3177 | 3155 | 2596 |
 | UnitPrice | 1.99 | 0.99 | 0.99 |
 | Quantity | 1 | 1 | 1 |
 
-## Columns
+# "MediaType"  (rows=5)
 
-- InvoiceLineId: unique identifier, int 1..2240
-  - stats: average=1120.5, median=1120.5
-- InvoiceId: 412 distinct, int 1..412
-  - stats: average=206.869, median=207
-  - top_values: 5=14, 12=14, 19=14, 26=14, 33=14, 40=14, 47=14, 54=14, 61=14, 68=14
-- TrackId: 1984 distinct, int 1..3500
-  - stats: average=1717.73, median=1708
-  - top_values: 2=2, 8=2, 9=2, 20=2, 32=2, 48=2, 66=2, 84=2, 161=2, 162=2
-- UnitPrice: 0.99=2129, 1.99=111
-- Quantity: 1=2240
+columns:
+"MediaTypeId" int PK UNIQ: unique identifier, 1..5, avg=3, median=3
+"Name" nvarchar120: "AAC audio file"=1, "MPEG audio file"=1, "Protected AAC audio file"=1, "Protected MPEG-4 video file"=1, "Purchased AAC audio file"=1
 
+indexes: none
+fk: none
 
-# MediaType
-
-## All rows
-
+all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 |
 |---|---|---|---|---|---|
 | MediaTypeId | 1 | 2 | 3 | 4 | 5 |
 | Name | MPEG audio file | Protected AAC audio file | Protected MPEG-4 video file | Purchased AAC audio file | AAC audio file |
 
+# "Playlist"  (rows=18)
 
-# Playlist
+columns:
+"PlaylistId" int PK UNIQ: unique identifier, 1..18, avg=9.5, median=9.5
+"Name" nvarchar120: "Audiobooks"=2, "Movies"=2, "Music"=2, "TV Shows"=2, "90’s Music"=1, "Brazilian Music"=1, "Classical"=1, "Classical 101 - Deep Cuts"=1, "Classical 101 - Next Steps"=1, "Classical 101 - The Basics"=1, "Grunge"=1, "Heavy Metal Classic"=1, "Music Videos"=1, "On-The-Go 1"=1
 
-```sql
-CREATE TABLE [Playlist]
-(
-    [PlaylistId] INTEGER  NOT NULL,
-    [Name] NVARCHAR(120),
-    CONSTRAINT [PK_Playlist] PRIMARY KEY  ([PlaylistId])
-);
-```
+indexes: none
+fk: none
 
-## Indexes
-
-- UNIQUE ([PlaylistId])
-
-## Rows
-
-- total=18
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| PlaylistId | 18 | 12 | 14 |
-| Name | On-The-Go 1 | Classical | Classical 101 - Next Steps |
+| PlaylistId | 18 | 3 | 5 |
+| Name | On-The-Go 1 | TV Shows | 90’s Music |
 
-## Columns
+# "PlaylistTrack"  (rows=8715)
 
-- PlaylistId: unique identifier, int 1..18
-  - stats: average=9.5, median=9.5
-- Name: "Audiobooks"=2, "Movies"=2, "Music"=2, "TV Shows"=2, "90’s Music"=1, "Brazilian Music"=1, "Classical"=1, "Classical 101 - Deep Cuts"=1, "Classical 101 - Next Steps"=1, "Classical 101 - The Basics"=1, "Grunge"=1, "Heavy Metal Classic"=1, "Music Videos"=1, "On-The-Go 1"=1
+columns:
+"PlaylistId" int PK FK: 1=3290, 8=3290, 5=1477, 3=213, 10=213, 12=75, 11=39, 17=26, 13=25, 14=25, 15=25, 16=15, 9=1, 18=1, 1..18
+"TrackId" int PK FK: 3503 distinct, 1..3503, avg=1767.08, median=1773, 3403=5, 3404=5, 3408=5, 3409=5, 3410=5, 3411=5, 3415=5, 3416=5, 3417=5, 3418=5
 
+indexes: "TrackId"
+fk: "TrackId"→"Track"."TrackId", "PlaylistId"→"Playlist"."PlaylistId"
 
-# PlaylistTrack
-
-```sql
-CREATE TABLE [PlaylistTrack]
-(
-    [PlaylistId] INTEGER  NOT NULL,
-    [TrackId] INTEGER  NOT NULL,
-    CONSTRAINT [PK_PlaylistTrack] PRIMARY KEY  ([PlaylistId], [TrackId]),
-    FOREIGN KEY ([PlaylistId]) REFERENCES [Playlist] ([PlaylistId]) 
-		ON DELETE NO ACTION ON UPDATE NO ACTION,
-    FOREIGN KEY ([TrackId]) REFERENCES [Track] ([TrackId]) 
-		ON DELETE NO ACTION ON UPDATE NO ACTION
-);
-```
-
-## Indexes
-
-- ([TrackId])
-- UNIQUE ([PlaylistId], [TrackId])
-
-## Rows
-
-- total=8715
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| PlaylistId | 18 | 5 | 5 |
-| TrackId | 597 | 1801 | 2792 |
+| PlaylistId | 18 | 8 | 8 |
+| TrackId | 597 | 3261 | 1723 |
 
-## Columns
+# "Track"  (rows=3503)
 
-- PlaylistId: 1=3290, 8=3290, 5=1477, 3=213, 10=213, 12=75, 11=39, 17=26, 13=25, 14=25, 15=25, 16=15, 9=1, 18=1, int 1..18
-- TrackId: 3503 distinct, int 1..3503
-  - stats: average=1767.08, median=1773
-  - top_values: 3403=5, 3404=5, 3408=5, 3409=5, 3410=5, 3411=5, 3415=5, 3416=5, 3417=5, 3418=5
+columns:
+"TrackId" int PK UNIQ: unique identifier, 1..3503, avg=1752, median=1752
+"Name" nvarchar200 NOTNULL: 3257 distinct
+"AlbumId" int FK: 347 distinct, 1..347, avg=140.929, median=141, 141=57, 23=34, 73=30, 229=26, 230=25, 251=25, 83=24, 231=24, 253=24, 24=23
+"MediaTypeId" int NOTNULL FK: 1=3034, 2=237, 3=214, 5=11, 4=7, 1..5
+"GenreId" int FK: 25 distinct, 1..25, avg=5.72538, median=3, 1=1297, 7=579, 3=374, 4=332, 2=130, 19=93, 6=81, 24=74, 21=64, 14=61
+"Composer" nvarchar220: 852 distinct, nulls=978
+"Milliseconds" int NOTNULL: 3080 distinct, 1071..5286953, avg=393599, median=255634
+"Bytes" int: 3501 distinct, 38747..1059546140, avg=3.35102e+07, median=8.1079e+06
+"UnitPrice" numeric NOTNULL: 0.99=3290, 1.99=213
 
+indexes: "AlbumId", "GenreId", "MediaTypeId"
+fk: "AlbumId"→"Album"."AlbumId", "GenreId"→"Genre"."GenreId", "MediaTypeId"→"MediaType"."MediaTypeId"
 
-# Track
-
-```sql
-CREATE TABLE [Track]
-(
-    [TrackId] INTEGER  NOT NULL,
-    [Name] NVARCHAR(200)  NOT NULL,
-    [AlbumId] INTEGER,
-    [MediaTypeId] INTEGER  NOT NULL,
-    [GenreId] INTEGER,
-    [Composer] NVARCHAR(220),
-    [Milliseconds] INTEGER  NOT NULL,
-    [Bytes] INTEGER,
-    [UnitPrice] NUMERIC(10,2)  NOT NULL,
-    CONSTRAINT [PK_Track] PRIMARY KEY  ([TrackId]),
-    FOREIGN KEY ([AlbumId]) REFERENCES [Album] ([AlbumId]) 
-		ON DELETE NO ACTION ON UPDATE NO ACTION,
-    FOREIGN KEY ([GenreId]) REFERENCES [Genre] ([GenreId]) 
-		ON DELETE NO ACTION ON UPDATE NO ACTION,
-    FOREIGN KEY ([MediaTypeId]) REFERENCES [MediaType] ([MediaTypeId]) 
-		ON DELETE NO ACTION ON UPDATE NO ACTION
-);
-```
-
-## Indexes
-
-- ([AlbumId])
-- ([GenreId])
-- ([MediaTypeId])
-- UNIQUE ([TrackId])
-
-## Rows
-
-- total=3503
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| TrackId | 3503 | 393 | 3138 |
-| Name | Koyaanisqatsi | Tarde Em Itapoã | Slide It In |
-| AlbumId | 347 | 34 | 141 |
-| MediaTypeId | 2 | 1 | 1 |
-| GenreId | 10 | 7 | 3 |
-| Composer | Philip Glass | Vários | Coverdale |
-| Milliseconds | 206005 | 313704 | 202475 |
-| Bytes | 3305164 | 10344491 | 6615152 |
+| TrackId | 3503 | 3386 | 1788 |
+| Name | Koyaanisqatsi | Silence the Voices | Ego Tripping Out |
+| AlbumId | 347 | 270 | 146 |
+| MediaTypeId | 2 | 2 | 1 |
+| GenreId | 10 | 23 | 14 |
+| Composer | Philip Glass | Chris Cornell | Marvin Gaye |
+| Milliseconds | 206005 | 267376 | 314514 |
+| Bytes | 3305164 | 4379597 | 10383887 |
 | UnitPrice | 0.99 | 0.99 | 0.99 |
-
-## Columns
-
-- TrackId: unique identifier, int 1..3503
-  - stats: average=1752, median=1752
-- Name: 3257 distinct
-- AlbumId: 347 distinct, int 1..347
-  - stats: average=140.929, median=141
-  - top_values: 141=57, 23=34, 73=30, 229=26, 230=25, 251=25, 83=24, 231=24, 253=24, 24=23
-- MediaTypeId: 1=3034, 2=237, 3=214, 5=11, 4=7, int 1..5
-- GenreId: 25 distinct, int 1..25
-  - stats: average=5.72538, median=3
-  - top_values: 1=1297, 7=579, 3=374, 4=332, 2=130, 19=93, 6=81, 24=74, 21=64, 14=61
-- Composer: 852 distinct, nulls=978
-- Milliseconds: 3080 distinct, int 1071..5286953
-  - stats: average=393599, median=255634
-- Bytes: 3501 distinct, int 38747..1059546140
-  - stats: average=3.35102e+07, median=8.1079e+06
-- UnitPrice: 0.99=3290, 1.99=213

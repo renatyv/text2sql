@@ -1,18 +1,18 @@
 # Schema Links
 
-- generator: local introspection
+- version: 0.0.5
 - dialect: sqlite
-- database: debit_card_specializing
+- database: file:/Users/renatyuldashev/Documents/ai-sql/custom-bench/data/bird_mini_dev/databases/dev_databases/debit_card_specializing/debit_card_specializing.sqlite
+- schema: main
 
-## Declared Links
+## Declared PK/FK Links
 
-- `yearmonth.CustomerID` → `customers.rowid`
-- `yearmonth.CustomerID` → `customers.rowid`
+yearmonth.CustomerID -> customers.CustomerID
 
-## Same-name Candidates
+## Inferred Links
 
-- `CustomerID`: `customers.CustomerID`, `transactions_1k.CustomerID`, `yearmonth.CustomerID`
-- `Date`: `transactions_1k.Date`, `yearmonth.Date`
-- `GasStationID`: `gasstations.GasStationID`, `transactions_1k.GasStationID`
-- `ProductID`: `products.ProductID`, `transactions_1k.ProductID`
-- `Segment`: `customers.Segment`, `gasstations.Segment`
+### gasstationid
+- inferred: gasstations.GasStationID, transactions_1k.GasStationID
+
+### productid
+- inferred: products.ProductID, transactions_1k.ProductID

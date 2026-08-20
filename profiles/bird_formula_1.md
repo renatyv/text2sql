@@ -1,640 +1,339 @@
 ---
 generator: db-snooper
-version: 0.0.26
-generated_at_utc: 2026-08-16T07:19:18.149763Z
+version: 0.0.31
+generated_at_utc: 2026-08-20T17:26:38.295665Z
 dialect: sqlite
-database: /Users/renatyuldashev/Documents/ai-sql/custom-bench/data/bird_mini_dev/databases/dev_databases/formula_1/formula_1.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-w08da0gy/formula_1.sqlite
 schema: main
 ---
 
 ## Relationships
 
-- circuits.circuitId ← races.circuitId
-- constructors.constructorId ← constructorResults.constructorId, constructorStandings.constructorId, qualifying.constructorId, results.constructorId
-- drivers.driverId ← driverStandings.driverId, lapTimes.driverId, pitStops.driverId, qualifying.driverId, results.driverId
-- races.raceId ← constructorResults.raceId, constructorStandings.raceId, driverStandings.raceId, lapTimes.raceId, pitStops.raceId, qualifying.raceId, results.raceId
-- seasons.year ← races.year
-- status.statusId ← results.statusId
+- "circuits"."circuitId" ← "races"."circuitId"
+- "constructors"."constructorId" ← "constructorResults"."constructorId", "constructorStandings"."constructorId", "qualifying"."constructorId", "results"."constructorId"
+- "drivers"."driverId" ← "driverStandings"."driverId", "lapTimes"."driverId", "pitStops"."driverId", "qualifying"."driverId", "results"."driverId"
+- "races"."raceId" ← "constructorResults"."raceId", "constructorStandings"."raceId", "driverStandings"."raceId", "lapTimes"."raceId", "pitStops"."raceId", "qualifying"."raceId", "results"."raceId"
+- "seasons"."year" ← "races"."year"
+- "status"."statusId" ← "results"."statusId"
 
-# circuits
+# "circuits"  (rows=72)
 
-```sql
-CREATE TABLE circuits
-(
-    circuitId  INTEGER
-        primary key autoincrement,
-    circuitRef TEXT default '' not null,
-    name       TEXT default '' not null,
-    location   TEXT,
-    country    TEXT,
-    lat        REAL,
-    lng        REAL,
-    alt        INTEGER,
-    url        TEXT default '' not null
-        unique
-);
-```
+columns:
+"circuitId" int PK: unique identifier, 2..73, avg=37.5, median=37.5
+"circuitRef" text NOTNULL: all distinct
+"name" text NOTNULL: all distinct
+"location" text: 69 distinct
+"country" text: 32 distinct
+"lat" float: 71 distinct, -34.9272..57.2653, avg=34.8685, median=41.3783
+"lng" float: 71 distinct, -118.189..138.927, avg=-0.26669, median=3.54722
+"alt" int: all NULL
+"url" text NOTNULL: all distinct
 
-## Rows
+indexes: none
+fk: none
 
-- total=72
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| circuitId | 73 | 17 | 22 |
-| circuitRef | BAK | shanghai | suzuka |
-| name | Baku City Circuit | Shanghai International Circuit | Suzuka Circuit |
-| location | Baku | Shanghai | Suzuka |
-| country | Azerbaijan | China | Japan |
-| lat | 40.3725 | 31.3389 | 34.8431 |
-| lng | 49.8533 | 121.22 | 136.541 |
+| circuitId | 73 | 40 | 9 |
+| circuitRef | BAK | zolder | silverstone |
+| name | Baku City Circuit | Zolder | Silverstone Circuit |
+| location | Baku | Heusden-Zolder | Silverstone |
+| country | Azerbaijan | Belgium | UK |
+| lat | 40.3725 | 50.9894 | 52.0786 |
+| lng | 49.8533 | 5.25694 | -1.01694 |
 | alt | null | null | null |
-| url | http://en.wikipedia.org/wiki/Baku_City_Circuit | http://en.wikipedia.org/wiki/Shanghai_International_Circuit | http://en.wikipedia.org/wiki/Suzuka_Circuit |
+| url | http://en.wikipedia.org/wiki/Baku_City_Circuit | http://en.wikipedia.org/wiki/Zolder | http://en.wikipedia.org/wiki/Silverstone_Circuit |
 
-## Columns
+# "constructorResults"  (rows=11082)
 
-- circuitId: unique identifier, int 2..73
-  - stats: average=37.5, median=37.5
-- circuitRef: all distinct
-- name: all distinct
-- location: 69 distinct
-- country: 32 distinct
-- lat: 71 distinct, num -34.9272..57.2653
-  - stats: average=34.8685, median=41.3783
-- lng: 71 distinct, num -118.189..138.927
-  - stats: average=-0.26669, median=3.54722
-- alt: all NULL
-- url: all distinct
+columns:
+"constructorResultsId" int PK: unique identifier, 1..15579, avg=7319.37, median=5541.5
+"raceId" int NOTNULL FK: 907 distinct, 1..982, avg=453.535, median=438
+"constructorId" int NOTNULL FK: 172 distinct, 1..210, avg=41.2624, median=24
+"points" float: 45 distinct, 0..66, avg=3.15525, median=0
+"status" text: "D"=17, nulls=11065
 
+indexes: none
+fk: "constructorId"→"constructors"."constructorId", "raceId"→"races"."raceId"
 
-# constructorResults
-
-```sql
-CREATE TABLE constructorResults
-(
-    constructorResultsId INTEGER
-        primary key autoincrement,
-    raceId               INTEGER default 0 not null,
-    constructorId        INTEGER default 0 not null,
-    points               REAL,
-    status               TEXT,
-    foreign key (raceId) references races(raceId),
-    foreign key (constructorId) references constructors(constructorId)
-
-);
-```
-
-## Rows
-
-- total=11082
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| constructorResultsId | 15579 | 2732 | 1083 |
-| raceId | 982 | 268 | 122 |
-| constructorId | 6 | 33 | 17 |
-| points | 0 | 0 | 2 |
+| constructorResultsId | 15579 | 14267 | 14077 |
+| raceId | 982 | 852 | 351 |
+| constructorId | 6 | 15 | 205 |
+| points | 0 | 0 | 0 |
 | status | null | null | null |
 
-## Columns
+# "constructorStandings"  (rows=11836)
 
-- constructorResultsId: unique identifier, int 1..15579
-  - stats: average=7319.37, median=5541.5
-- raceId: 907 distinct, int 1..982
-  - stats: average=453.535, median=438
-- constructorId: 172 distinct, int 1..210
-  - stats: average=41.2624, median=24
-- points: 45 distinct, num 0..66
-  - stats: average=3.15525, median=0
-- status: "D"=17, nulls=11065
+columns:
+"constructorStandingsId" int PK: unique identifier, 1..26872, avg=15141.5, median=11496.5
+"raceId" int NOTNULL FK: 906 distinct, 1..982, avg=466.488, median=461
+"constructorId" int NOTNULL FK: 156 distinct, 1..210, avg=45.6973, median=25
+"points" float NOTNULL: 436 distinct, 0..765, avg=26.3847, median=6
+"position" int: 22 distinct, 1..22, avg=7.45091, median=7
+"positionText" text: digits, 23 distinct
+"wins" int NOTNULL: 20 distinct, 0..19, avg=0.638729, median=0
 
+indexes: none
+fk: "raceId"→"races"."raceId", "constructorId"→"constructors"."constructorId"
 
-# constructorStandings
-
-```sql
-CREATE TABLE constructorStandings
-(
-    constructorStandingsId INTEGER
-        primary key autoincrement,
-    raceId                 INTEGER default 0 not null,
-    constructorId          INTEGER default 0 not null,
-    points                 REAL   default 0 not null,
-    position               INTEGER,
-    positionText           TEXT,
-    wins                   INTEGER default 0 not null,
-    foreign key (raceId) references races(raceId),
-    foreign key (constructorId) references constructors(constructorId)
-);
-```
-
-## Rows
-
-- total=11836
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| constructorStandingsId | 26872 | 7664 | 24305 |
-| raceId | 982 | 323 | 342 |
-| constructorId | 210 | 3 | 1 |
-| points | 37 | 15 | 129 |
-| position | 8 | 2 | 3 |
-| positionText | 8 | 2 | 3 |
-| wins | 0 | 1 | 2 |
+| constructorStandingsId | 26872 | 20852 | 21643 |
+| raceId | 982 | 686 | 653 |
+| constructorId | 210 | 90 | 187 |
+| points | 37 | 0 | 31 |
+| position | 8 | 18 | 5 |
+| positionText | 8 | 18 | 5 |
+| wins | 0 | 0 | 0 |
 
-## Columns
+# "constructors"  (rows=208)
 
-- constructorStandingsId: unique identifier, int 1..26872
-  - stats: average=15141.5, median=11496.5
-- raceId: 906 distinct, int 1..982
-  - stats: average=466.488, median=461
-- constructorId: 156 distinct, int 1..210
-  - stats: average=45.6973, median=25
-- points: 436 distinct, num 0..765
-  - stats: average=26.3847, median=6
-- position: 22 distinct, int 1..22
-  - stats: average=7.45091, median=7
-- positionText: 23 distinct
-- wins: 20 distinct, int 0..19
-  - stats: average=0.638729, median=0
+columns:
+"constructorId" int PK: unique identifier, 1..210, avg=105.514, median=105.5
+"constructorRef" text NOTNULL: all distinct
+"name" text NOTNULL: all distinct
+"nationality" text: 24 distinct
+"url" text NOTNULL: 171 distinct
 
+indexes: none
+fk: none
 
-# constructors
-
-```sql
-CREATE TABLE constructors
-(
-    constructorId  INTEGER
-        primary key autoincrement,
-    constructorRef TEXT default '' not null,
-    name           TEXT default '' not null
-        unique,
-    nationality    TEXT,
-    url            TEXT default '' not null
-);
-```
-
-## Rows
-
-- total=208
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| constructorId | 210 | 57 | 178 |
-| constructorRef | haas | ensign | cooper-alfa_romeo |
-| name | Haas F1 Team | Ensign | Cooper-Alfa Romeo |
-| nationality | American | British | British |
-| url | http://en.wikipedia.org/wiki/Haas_F1_Team | http://en.wikipedia.org/wiki/Ensign_%28racing_team%29 | http://en.wikipedia.org/wiki/Cooper_Car_Company |
+| constructorId | 210 | 71 | 44 |
+| constructorRef | haas | apollon | eurobrun |
+| name | Haas F1 Team | Apollon | Euro Brun |
+| nationality | American | Swiss | Italian |
+| url | http://en.wikipedia.org/wiki/Haas_F1_Team | http://en.wikipedia.org/wiki/Apollon_(Formula_One) | http://en.wikipedia.org/wiki/Euro_Brun |
 
-## Columns
+# "driverStandings"  (rows=31578)
 
-- constructorId: unique identifier, int 1..210
-  - stats: average=105.514, median=105.5
-- constructorRef: all distinct
-- name: all distinct
-- nationality: 24 distinct
-- url: 171 distinct
+columns:
+"driverStandingsId" int PK: unique identifier, 1..68460, avg=39409.4, median=47373.5
+"raceId" int NOTNULL FK: 970 distinct, 1..982, avg=535.826, median=564
+"driverId" int NOTNULL FK: 833 distinct, 1..841, avg=278.727, median=204
+"points" float NOTNULL: 337 distinct, 0..397, avg=10.3378, median=0
+"position" int: 108 distinct, 1..108, avg=20.6076, median=17
+"positionText" text: digits, 109 distinct
+"wins" int NOTNULL: 0=27946, 1=1898, 2=744, 3=382, 4=223, 5=145, 6=116, 7=50, 8=25, 9=21, 10=13, 11=7, 12=5, 13=3, 0..13
 
+indexes: none
+fk: "driverId"→"drivers"."driverId", "raceId"→"races"."raceId"
 
-# driverStandings
-
-```sql
-CREATE TABLE driverStandings
-(
-    driverStandingsId INTEGER
-        primary key autoincrement,
-    raceId            INTEGER default 0 not null,
-    driverId          INTEGER default 0 not null,
-    points            REAL   default 0 not null,
-    position          INTEGER,
-    positionText      TEXT,
-    wins              INTEGER default 0 not null,
-    foreign key (raceId) references races(raceId),
-    foreign key (driverId) references drivers(driverId)
-);
-```
-
-## Rows
-
-- total=31578
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| driverStandingsId | 68460 | 58273 | 20317 |
-| raceId | 982 | 556 | 416 |
-| driverId | 814 | 259 | 117 |
-| points | 0 | 0 | 53 |
-| position | 23 | 36 | 3 |
-| positionText | 23 | 36 | 3 |
-| wins | 0 | 0 | 3 |
+| driverStandingsId | 68460 | 9605 | 18910 |
+| raceId | 982 | 284 | 370 |
+| driverId | 814 | 112 | 114 |
+| points | 0 | 2 | 0 |
+| position | 23 | 15 | 40 |
+| positionText | 23 | 15 | 40 |
+| wins | 0 | 0 | 0 |
 
-## Columns
+# "drivers"  (rows=840)
 
-- driverStandingsId: unique identifier, int 1..68460
-  - stats: average=39409.4, median=47373.5
-- raceId: 970 distinct, int 1..982
-  - stats: average=535.826, median=564
-- driverId: 833 distinct, int 1..841
-  - stats: average=278.727, median=204
-- points: 337 distinct, num 0..397
-  - stats: average=10.3378, median=0
-- position: 108 distinct, int 1..108
-  - stats: average=20.6076, median=17
-- positionText: 109 distinct
-- wins: 0=27946, 1=1898, 2=744, 3=382, 4=223, 5=145, 6=116, 7=50, 8=25, 9=21, 10=13, 11=7, 12=5, 13=3, int 0..13
+columns:
+"driverId" int PK: unique identifier, 1..841, avg=420.538, median=420.5
+"driverRef" text NOTNULL: all distinct
+"number" int: all distinct, nulls=804, 2..99, avg=30.8333, median=21.5
+"code" text: 80 distinct, nulls=757
+"forename" text NOTNULL: 465 distinct
+"surname" text NOTNULL: 784 distinct
+"dob" date: 821 distinct, nulls=1
+"nationality" text: 41 distinct
+"url" text NOTNULL: all distinct
 
+indexes: none
+fk: none
 
-# drivers
-
-```sql
-CREATE TABLE drivers
-(
-    driverId    INTEGER
-        primary key autoincrement,
-    driverRef   TEXT default '' not null,
-    number      INTEGER,
-    code        TEXT,
-    forename    TEXT default '' not null,
-    surname     TEXT default '' not null,
-    dob         DATE,
-    nationality TEXT,
-    url         TEXT default '' not null
-        unique
-);
-```
-
-## Rows
-
-- total=840
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| driverId | 841 | 147 | 134 |
-| driverRef | giovinazzi | barilla | bertaggia |
+| driverId | 841 | 740 | 275 |
+| driverRef | giovinazzi | comotti | lombardi |
 | number | 36 | null | null |
 | code | GIO | null | null |
-| forename | Antonio | Paolo | Enrico |
-| surname | Giovinazzi | Barilla | Bertaggia |
-| dob | 1993-12-14 | 1961-04-20 | 1964-09-19 |
+| forename | Antonio | Franco | Lella |
+| surname | Giovinazzi | Comotti | Lombardi |
+| dob | 1993-12-14 | 1906-07-24 | 1941-03-26 |
 | nationality | Italian | Italian | Italian |
-| url | http://en.wikipedia.org/wiki/Antonio_Giovinazzi | http://en.wikipedia.org/wiki/Paolo_Barilla | http://en.wikipedia.org/wiki/Enrico_Bertaggia |
+| url | http://en.wikipedia.org/wiki/Antonio_Giovinazzi | http://en.wikipedia.org/wiki/Franco_Comotti | http://en.wikipedia.org/wiki/Lella_Lombardi |
 
-## Columns
+# "lapTimes"  (rows=≈400524)
 
-- driverId: unique identifier, int 1..841
-  - stats: average=420.538, median=420.5
-- driverRef: all distinct
-- number: all distinct, nulls=804, int 2..99
-  - stats: average=30.8333, median=21.5
-- code: 80 distinct, nulls=757
-- forename: 465 distinct
-- surname: 784 distinct
-- dob: 821 distinct, nulls=1
-- nationality: 41 distinct
-- url: all distinct
+columns:
+"raceId" int PK FK
+"driverId" int PK FK
+"lap" int PK
+"position" int
+"time" text
+"milliseconds" int
+
+indexes: none
+fk: "raceId"→"races"."raceId", "driverId"→"drivers"."driverId"
 
 
-# lapTimes
+# "pitStops"  (rows=5815)
 
-```sql
-CREATE TABLE lapTimes
-(
-    raceId       INTEGER not null,
-    driverId     INTEGER not null,
-    lap          INTEGER not null,
-    position     INTEGER,
-    time         TEXT,
-    milliseconds INTEGER,
-    primary key (raceId, driverId, lap),
-    foreign key (raceId) references races(raceId),
-    foreign key (driverId) references drivers(driverId)
-);
-```
+columns:
+"raceId" int PK FK: 124 distinct, 842..982, avg=906.012, median=901, 936=96, 851=88, 844=82, 970=82, 982=82, 884=79, 914=79, 845=77, 861=76, 956=76
+"driverId" int PK FK: 54 distinct, 1..841, avg=424.956, median=155, 13=293, 1=273, 20=268, 4=260, 817=257, 815=252, 18=245, 3=240, 807=215, 8=209
+"stop" int PK: 1=2552, 2=2005, 3=932, 4=250, 5=63, 6=13, 1..6
+"lap" int NOTNULL: 73 distinct, 1..74, avg=25.1001, median=25
+"time" text NOTNULL: 4650 distinct
+"duration" text: 4580 distinct
+"milliseconds" int: 4580 distinct, 12897..2011266, avg=46307.8, median=23356
 
-## Rows
+indexes: none
+fk: "driverId"→"drivers"."driverId", "raceId"→"races"."raceId"
 
-- total=400524
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| raceId | 982 | 9 | 933 |
-| driverId | 840 | 16 | 154 |
-| lap | 58 | 16 | 20 |
-| position | 8 | 6 | 11 |
-| time | 1:48.699 | 1:37.506 | 1:13.645 |
-| milliseconds | 108699 | 97506 | 73645 |
+| raceId | 982 | 843 | 862 |
+| driverId | 840 | 153 | 818 |
+| stop | 4 | 1 | 2 |
+| lap | 26 | 9 | 28 |
+| time | 21:05:07 | 15:19:36 | 15:53:07 |
+| duration | 29.412 | 22.419 | 23.623 |
+| milliseconds | 29412 | 22419 | 23623 |
 
-## Columns
+# "qualifying"  (rows=6967)
 
-- raceId: 367 distinct, int 2..982
-  - stats: average=415.835
-- driverId: 121 distinct, int 1..841
-  - stats: average=181.131
-- lap: 78 distinct, int 1..78
-  - stats: average=29.9691
-- position: int 1..24
-  - stats: average=9.69788
-- time: profile metrics skipped
-- milliseconds: int 67411..7507547
-  - stats: average=95708.6
+columns:
+"qualifyId" int PK: unique identifier, 23..7419, avg=3719.18, median=3703
+"raceId" int NOTNULL FK: 319 distinct, 2..982, avg=443.562, median=258
+"driverId" int NOTNULL FK: 151 distinct, 1..841, avg=198.587, median=30
+"constructorId" int NOTNULL FK: 41 distinct, 1..210, avg=34.8665, median=9
+"number" int NOTNULL: 48 distinct, 0..99, avg=15.1672, median=12
+"position" int: 28 distinct, 1..28, avg=11.5019, median=11
+"q1" text: 6283 distinct, nulls=109
+"q2" text: 3222 distinct, nulls=3577
+"q3" text: 1959 distinct, nulls=4935
 
+indexes: none
+fk: "driverId"→"drivers"."driverId", "raceId"→"races"."raceId", "constructorId"→"constructors"."constructorId"
 
-# pitStops
-
-```sql
-CREATE TABLE pitStops
-(
-    raceId       INTEGER not null,
-    driverId     INTEGER not null,
-    stop         INTEGER not null,
-    lap          INTEGER not null,
-    time         TEXT    not null,
-    duration     TEXT,
-    milliseconds INTEGER,
-    primary key (raceId, driverId, stop),
-    foreign key (raceId) references races(raceId),
-    foreign key (driverId) references drivers(driverId)
-);
-```
-
-## Rows
-
-- total=5815
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| raceId | 982 | 943 | 848 |
-| driverId | 840 | 20 | 30 |
-| stop | 4 | 1 | 1 |
-| lap | 26 | 1 | 14 |
-| time | 21:05:07 | 13:04:58 | 14:28:40 |
-| duration | 29.412 | 28.070 | 21.201 |
-| milliseconds | 29412 | 28070 | 21201 |
-
-## Columns
-
-- raceId: 124 distinct, int 842..982
-  - stats: average=906.012, median=901
-  - top_values: 936=96, 851=88, 844=82, 970=82, 982=82, 884=79, 914=79, 845=77, 861=76, 956=76
-- driverId: 54 distinct, int 1..841
-  - stats: average=424.956, median=155
-  - top_values: 13=293, 1=273, 20=268, 4=260, 817=257, 815=252, 18=245, 3=240, 807=215, 8=209
-- stop: 1=2552, 2=2005, 3=932, 4=250, 5=63, 6=13, int 1..6
-- lap: 73 distinct, int 1..74
-  - stats: average=25.1001, median=25
-- time: 4650 distinct
-- duration: 4580 distinct
-- milliseconds: 4580 distinct, int 12897..2011266
-  - stats: average=46307.8, median=23356
-
-
-# qualifying
-
-```sql
-CREATE TABLE qualifying
-(
-    qualifyId     INTEGER
-        primary key autoincrement,
-    raceId        INTEGER default 0 not null,
-    driverId      INTEGER default 0 not null,
-    constructorId INTEGER default 0 not null,
-    number        INTEGER default 0 not null,
-    position      INTEGER,
-    q1            TEXT,
-    q2            TEXT,
-    q3            TEXT,
-    foreign key (raceId) references races(raceId),
-    foreign key (driverId) references drivers(driverId),
-    foreign key (constructorId) references constructors(constructorId)
-);
-```
-
-## Rows
-
-- total=6967
-
-| column | latest | sample | sample |
-|---|---|---|---|
-| qualifyId | 7419 | 2610 | 1972 |
-| raceId | 982 | 257 | 214 |
-| driverId | 828 | 77 | 57 |
-| constructorId | 15 | 6 | 1 |
-| number | 9 | 28 | 9 |
-| position | 20 | 17 | 10 |
-| q1 | 1:45.570 | 1:18.855 | 1:15.339 |
+| qualifyId | 7419 | 4000 | 2055 |
+| raceId | 982 | 119 | 225 |
+| driverId | 828 | 53 | 57 |
+| constructorId | 15 | 18 | 1 |
+| number | 9 | 18 | 7 |
+| position | 20 | 20 | 7 |
+| q1 | 1:45.570 | 1:19.174 | 1:19.607 |
 | q2 | null | null | null |
 | q3 | null | null | null |
 
-## Columns
+# "races"  (rows=954)
 
-- qualifyId: unique identifier, int 23..7419
-  - stats: average=3719.18, median=3703
-- raceId: 319 distinct, int 2..982
-  - stats: average=443.562, median=258
-- driverId: 151 distinct, int 1..841
-  - stats: average=198.587, median=30
-- constructorId: 41 distinct, int 1..210
-  - stats: average=34.8665, median=9
-- number: 48 distinct, int 0..99
-  - stats: average=15.1672, median=12
-- position: 28 distinct, int 1..28
-  - stats: average=11.5019, median=11
-- q1: 6283 distinct, nulls=109
-- q2: 3222 distinct, nulls=3577
-- q3: 1959 distinct, nulls=4935
+columns:
+"raceId" int PK: unique identifier, 2..988, avg=491.922, median=492.5
+"year" int NOTNULL FK: 68 distinct, 1950..2017, avg=1987.95, median=1989
+"round" int NOTNULL: 21 distinct, 1..21, avg=8.33648, median=8
+"circuitId" int NOTNULL FK: 71 distinct, 2..73, avg=22.1719, median=18
+"name" text NOTNULL: 42 distinct
+"date" date NOTNULL: all distinct
+"time" text: "12:00:00"=107, "14:00:00"=26, "06:00:00"=13, "07:00:00"=11, "13:00:00"=11, "16:00:00"=11, "15:00:00"=8, "19:00:00"=8, "17:00:00"=6, "18:00:00"=6, "05:00:00"=5, "08:00:00"=5, "11:00:00"=4, "09:30:00"=3, "04:30:00"=2, "11:30:00"=2, "14:30:00"=2, "09:00:00"=1, "20:00:00"=1, nulls=722
+"url" text UNIQ: unique identifier
 
+indexes: none
+fk: "circuitId"→"circuits"."circuitId", "year"→"seasons"."year"
 
-# races
-
-```sql
-CREATE TABLE races
-(
-    raceId    INTEGER
-        primary key autoincrement,
-    year      INTEGER default 0            not null,
-    round     INTEGER default 0            not null,
-    circuitId INTEGER default 0            not null,
-    name      TEXT    default ''           not null,
-    date      DATE    default '0000-00-00' not null,
-    time      TEXT,
-    url       TEXT unique,
-    foreign key (year) references seasons(year),
-    foreign key (circuitId) references circuits(circuitId)
-);
-```
-
-## Rows
-
-- total=954
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| raceId | 988 | 445 | 536 |
-| year | 2017 | 1984 | 1978 |
-| round | 20 | 10 | 10 |
-| circuitId | 24 | 38 | 38 |
-| name | Abu Dhabi Grand Prix | British Grand Prix | British Grand Prix |
-| date | 2017-11-26 | 1984-07-22 | 1978-07-16 |
+| raceId | 988 | 664 | 721 |
+| year | 2017 | 1969 | 1963 |
+| round | 20 | 9 | 3 |
+| circuitId | 24 | 48 | 39 |
+| name | Abu Dhabi Grand Prix | Canadian Grand Prix | Dutch Grand Prix |
+| date | 2017-11-26 | 1969-09-20 | 1963-06-23 |
 | time | 17:00:00 | null | null |
-| url | https://en.wikipedia.org/wiki/2017_Abu_Dhabi_Grand_Prix | http://en.wikipedia.org/wiki/1984_British_Grand_Prix | http://en.wikipedia.org/wiki/1978_British_Grand_Prix |
+| url | https://en.wikipedia.org/wiki/2017_Abu_Dhabi_Grand_Prix | http://en.wikipedia.org/wiki/1969_Canadian_Grand_Prix | http://en.wikipedia.org/wiki/1963_Dutch_Grand_Prix |
 
-## Columns
+# "results"  (rows=23179)
 
-- raceId: unique identifier, int 2..988
-  - stats: average=491.922, median=492.5
-- year: 68 distinct, int 1950..2017
-  - stats: average=1987.95, median=1989
-- round: 21 distinct, int 1..21
-  - stats: average=8.33648, median=8
-- circuitId: 71 distinct, int 2..73
-  - stats: average=22.1719, median=18
-- name: 42 distinct
-- date: all distinct
-- time: "12:00:00"=107, "14:00:00"=26, "06:00:00"=13, "07:00:00"=11, "13:00:00"=11, "16:00:00"=11, "15:00:00"=8, "19:00:00"=8, "17:00:00"=6, "18:00:00"=6, "05:00:00"=5, "08:00:00"=5, "11:00:00"=4, "09:30:00"=3, "04:30:00"=2, "11:30:00"=2, "14:30:00"=2, "09:00:00"=1, "20:00:00"=1, nulls=722
-- url: unique identifier
+columns:
+"resultId" int PK: unique identifier, 23..23661, avg=11873.6, median=11892
+"raceId" int NOTNULL FK: 948 distinct, 2..982, avg=486.903, median=479
+"driverId" int NOTNULL FK: 839 distinct, 1..841, avg=225.852, median=156
+"constructorId" int NOTNULL FK: 207 distinct, 1..210, avg=46.6559, median=25
+"number" int: 128 distinct, nulls=6, 0..208, avg=16.977, median=15
+"grid" int NOTNULL: 35 distinct, 0..34, avg=11.2768, median=11
+"position" int: 33 distinct, nulls=10326, 1..33, avg=7.78869, median=7
+"positionText" text NOTNULL: 39 distinct
+"positionOrder" int NOTNULL: 39 distinct, 1..39, avg=13.1293, median=13
+"points" float NOTNULL: 33 distinct, 0..50, avg=1.56208, median=0
+"laps" int NOTNULL: 172 distinct, 0..200, avg=45.312, median=52
+"time" text: 5588 distinct, nulls=17390
+"milliseconds" int: 5751 distinct, nulls=17391, 1474899..15090540, avg=6.32918e+06, median=5.89006e+06
+"fastestLap" int: 77 distinct, nulls=18185, 2..78, avg=41.1584, median=44
+"rank" int: 25 distinct, nulls=18057, 0..24, avg=10.6613, median=11
+"fastestLapTime" text: 4709 distinct, nulls=18185
+"fastestLapSpeed" text: numeric, 4794 distinct, nulls=18185
+"statusId" int NOTNULL FK: 131 distinct, 1..136, avg=18.4415, median=11
 
+indexes: none
+fk: "driverId"→"drivers"."driverId", "constructorId"→"constructors"."constructorId", "raceId"→"races"."raceId", "statusId"→"status"."statusId"
 
-# results
-
-```sql
-CREATE TABLE results
-(
-    resultId        INTEGER
-        primary key autoincrement,
-    raceId          INTEGER default 0  not null,
-    driverId        INTEGER default 0  not null,
-    constructorId   INTEGER default 0  not null,
-    number          INTEGER,
-    grid            INTEGER default 0  not null,
-    position        INTEGER,
-    positionText    TEXT    default '' not null,
-    positionOrder   INTEGER default 0  not null,
-    points          REAL   default 0  not null,
-    laps            INTEGER default 0  not null,
-    time            TEXT,
-    milliseconds    INTEGER,
-    fastestLap      INTEGER,
-    rank            INTEGER default 0,
-    fastestLapTime  TEXT,
-    fastestLapSpeed TEXT,
-    statusId        INTEGER default 0  not null,
-    foreign key (raceId) references races(raceId),
-    foreign key (driverId) references drivers(driverId),
-    foreign key (constructorId) references constructors(constructorId),
-    foreign key (statusId) references status(statusId)
-);
-```
-
-## Rows
-
-- total=23179
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| resultId | 23661 | 12577 | 3366 |
-| raceId | 982 | 519 | 177 |
-| driverId | 8 | 152 | 37 |
-| constructorId | 6 | 51 | 21 |
-| number | 7 | 35 | 14 |
-| grid | 4 | 17 | 18 |
-| position | null | 17 | null |
-| positionText | R | 17 | R |
-| positionOrder | 20 | 17 | 19 |
-| points | 0 | 0 | 0 |
-| laps | 0 | 75 | 5 |
+| resultId | 23661 | 3126 | 18867 |
+| raceId | 982 | 166 | 783 |
+| driverId | 8 | 65 | 476 |
+| constructorId | 6 | 19 | 6 |
+| number | 7 | 8 | 36 |
+| grid | 4 | 11 | 8 |
+| position | null | null | 3 |
+| positionText | R | R | 3 |
+| positionOrder | 20 | 21 | 3 |
+| points | 0 | 0 | 4 |
+| laps | 0 | 20 | 85 |
 | time | null | null | null |
 | milliseconds | null | null | null |
 | fastestLap | null | null | null |
 | rank | 0 | null | null |
 | fastestLapTime | null | null | null |
 | fastestLapSpeed | null | null | null |
-| statusId | 3 | 15 | 20 |
+| statusId | 3 | 6 | 12 |
 
-## Columns
+# "seasons"  (rows=68)
 
-- resultId: unique identifier, int 23..23661
-  - stats: average=11873.6, median=11892
-- raceId: 948 distinct, int 2..982
-  - stats: average=486.903, median=479
-- driverId: 839 distinct, int 1..841
-  - stats: average=225.852, median=156
-- constructorId: 207 distinct, int 1..210
-  - stats: average=46.6559, median=25
-- number: 128 distinct, nulls=6, int 0..208
-  - stats: average=16.977, median=15
-- grid: 35 distinct, int 0..34
-  - stats: average=11.2768, median=11
-- position: 33 distinct, nulls=10326, int 1..33
-  - stats: average=7.78869, median=7
-- positionText: 39 distinct
-- positionOrder: 39 distinct, int 1..39
-  - stats: average=13.1293, median=13
-- points: 33 distinct, num 0..50
-  - stats: average=1.56208, median=0
-- laps: 172 distinct, int 0..200
-  - stats: average=45.312, median=52
-- time: 5588 distinct, nulls=17390
-- milliseconds: 5751 distinct, nulls=17391, int 1474899..15090540
-  - stats: average=6.32918e+06, median=5.89006e+06
-- fastestLap: 77 distinct, nulls=18185, int 2..78
-  - stats: average=41.1584, median=44
-- rank: 25 distinct, nulls=18057, int 0..24
-  - stats: average=10.6613, median=11
-- fastestLapTime: 4709 distinct, nulls=18185
-- fastestLapSpeed: 4794 distinct, nulls=18185
-- statusId: 131 distinct, int 1..136
-  - stats: average=18.4415, median=11
+columns:
+"year" int PK: unique identifier, 1950..2017, avg=1983.5, median=1983.5
+"url" text NOTNULL: all distinct
 
+indexes: none
+fk: none
 
-# seasons
-
-```sql
-CREATE TABLE seasons
-(
-    year INTEGER default 0  not null
-        primary key,
-    url  TEXT    default '' not null
-        unique
-);
-```
-
-## Rows
-
-- total=68
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| year | 2017 | 1987 | 2009 |
-| url | https://en.wikipedia.org/wiki/2017_Formula_One_season | http://en.wikipedia.org/wiki/1987_Formula_One_season | http://en.wikipedia.org/wiki/2009_Formula_One_season |
+| year | 2017 | 1950 | 2001 |
+| url | https://en.wikipedia.org/wiki/2017_Formula_One_season | http://en.wikipedia.org/wiki/1950_Formula_One_season | http://en.wikipedia.org/wiki/2001_Formula_One_season |
 
-## Columns
+# "status"  (rows=134)
 
-- year: unique identifier, int 1950..2017
-  - stats: average=1983.5, median=1983.5
-- url: all distinct
+columns:
+"statusId" int PK: unique identifier, 1..136, avg=68.709, median=69.5
+"status" text NOTNULL: all distinct
 
+indexes: none
+fk: none
 
-# status
-
-```sql
-CREATE TABLE status
-(
-    statusId INTEGER
-        primary key autoincrement,
-    status   TEXT default '' not null
-);
-```
-
-## Rows
-
-- total=134
-
+samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| statusId | 136 | 45 | 51 |
-| status | Seat | +11 Laps | Oil pressure |
-
-## Columns
-
-- statusId: unique identifier, int 1..136
-  - stats: average=68.709, median=69.5
-- status: all distinct
+| statusId | 136 | 79 | 93 |
+| status | Seat | Drivetrain | Safety belt |
