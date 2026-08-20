@@ -2,7 +2,8 @@ ERROR-AVOIDANCE CHECKLIST — common text-to-SQL failure modes to watch for:
 
 1. Column selection:
     a. select all requested columns;
-    b. do not select any extra columns which were not explicitely requested;
+    b. do not select any extra columns which were not explicitly requested —
+       an answer with extra columns is WRONG even when the values are right;
     c. verify names and meaning against the request
 
 2. Table selection: confirm the correct table(s) and their granularity;
@@ -31,6 +32,6 @@ ERROR-AVOIDANCE CHECKLIST — common text-to-SQL failure modes to watch for:
    use the correct construct (ROLLUP / CUBE / GROUPING SETS) instead of
    omitting it.
 
-6. Row cardinality: add DISTINCT when unique rows are implied and LIMIT/TOP
+8. Row cardinality: add DISTINCT when unique rows are implied and LIMIT/TOP
    when a bounded number of rows is requested — re-read the question for
    "top N", "distinct", "how many".

@@ -1,8 +1,9 @@
 """Prompt construction for the profile × metadata experiment arms.
 
 Engine-aware: BEAVER runs on MySQL, BIRD / Spider 2.0 on their original
-SQLite files. The MySQL prompts are byte-identical to the pre-engine era so
-cached BEAVER records (keyed by a prompt hash) stay valid.
+SQLite files. Both engine templates carry the same workflow; only dialect
+details differ. Cached records are keyed by a prompt hash, so any change
+here invalidates prior runs automatically.
 """
 from __future__ import annotations
 
@@ -35,15 +36,26 @@ The MySQL server is at $MYSQL_HOST:$MYSQL_PORT (user $MYSQL_USER, password in
 $MYSQL_PWD). Each query should finish within {timeout}s.
 
 Workflow:
-1. Use any supplied database context first. Query the database only to resolve
-   missing schema details or validate candidate SQL; do not repeat lookups that
-   the context already answers. If context is absent or insufficient, inspect
-   only relevant tables. Batch independent DESCRIBE/SHOW calls in one turn. Use
-   `SHOW TABLES` only when you cannot identify tables otherwise.
+1. Use any supplied database context to choose tables and columns. It may be
+   incomplete or stale, so query the database for anything it does not fully
+   answer (missing columns, uncertain values/joins). If context is absent or
+   insufficient, inspect only relevant tables. Batch independent DESCRIBE/SHOW
+   calls in one turn. Use `SHOW TABLES` only when you cannot identify tables
+   otherwise.
 2. Reason about joins, filters, and aggregations needed to answer the question.
-3. Before returing final answer (or by turn {validation_turn}) run the complete candidate query, not merely pieces of it.
-    - verify result against error checklist
-    - If this inspection makes you change the query, re-run the complete query. Use turn {repair_turn} only to repair.
+3. VALIDATION IS MANDATORY and supplied context never replaces it: by turn
+   {validation_turn} execute the COMPLETE candidate query with a LIMIT against
+   the database — even when the supplied context already describes the schema.
+   Before answering, check the returned rows against the question:
+    - Projection: the SELECT list returns exactly the columns the question
+      asks for — remove any extra id, name, or aggregate columns.
+    - Cardinality: DISTINCT where unique rows are implied; LIMIT/top-N where
+      a bounded number of rows is requested.
+    - Values: rows are non-empty; literal values (strings, dates, IDs) match
+      the question or database exactly.
+   Then verify the query against the error checklist. If any check changes
+   the query, execute the complete corrected query again (turn {repair_turn}
+   is reserved for this repair). Never submit a query you have not executed.
 4. Output the last successfully executed complete query inside exactly one answer block.
 
 <ans>
@@ -76,15 +88,25 @@ The database is the read-only file at $BEAVER_DB_PATH. Each query should finish
 within {timeout}s.
 
 Workflow:
-1. Use any supplied database context first. Query the database only to resolve
-missing schema details or validate candidate SQL; do not repeat lookups that
-the context already answers. If context is absent or insufficient, inspect
-only relevant tables. Batch independent lookups in one turn. List tables
-only when you cannot identify them otherwise.
+1. Use any supplied database context to choose tables and columns. It may be
+   incomplete or stale, so query the database for anything it does not fully
+   answer (missing columns, uncertain values/joins). If context is absent or
+   insufficient, inspect only relevant tables. Batch independent lookups in
+   one turn. List tables only when you cannot identify them otherwise.
 2. Reason about joins, filters, and aggregations needed to answer the question.
-3. Before returing final answer (at most by turn {validation_turn}) run the complete candidate query with LIMIT, not merely pieces of it.
-- verify result against error checklist
-- If this inspection makes you change the query, re-run the complete query. Use turn {repair_turn} only to repair.
+3. VALIDATION IS MANDATORY and supplied context never replaces it: by turn
+   {validation_turn} execute the COMPLETE candidate query with a LIMIT against
+   the database — even when the supplied context already describes the schema.
+   Before answering, check the returned rows against the question:
+    - Projection: the SELECT list returns exactly the columns the question
+      asks for — remove any extra id, name, or aggregate columns.
+    - Cardinality: DISTINCT where unique rows are implied; LIMIT/top-N where
+      a bounded number of rows is requested.
+    - Values: rows are non-empty; literal values (strings, dates, IDs) match
+      the question or database exactly.
+   Then verify the query against the error checklist. If any check changes
+   the query, execute the complete corrected query again (turn {repair_turn}
+   is reserved for this repair). Never submit a query you have not executed.
 4. Output the last successfully executed complete query inside exactly one answer block.
 
 <ans>
