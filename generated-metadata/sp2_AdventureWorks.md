@@ -1,0 +1,27 @@
+# Additional Metadata
+
+## Clarified Semantics
+
+- **salesorderdetail.specialofferid**: references a promotional special offer (values 1..16). No `specialoffer` table is present in this snapshot, so it can only be an opaque grouping key. `unitprice` is the list price for one unit and `unitpricediscount` (0..0.4) is applied per detail row; many rows carry a discount of 0.
+- **salesorderheader.salespersonid**: NULL/empty exactly for `onlineorderflag = 't'` (~27,659 online orders have no salesperson); only in-store orders carry a salesperson and a shipmethod of 5. Column is NULL first then links to `salesperson.businessentityid`.
+- **product.size/sizeunitmeasurecode vs weightunitmeasurecode**: size is a dimensional label (`""`, numeric sizes 38..70, or S/M/L/XL); size is mostly blank and its unit measure uses code `CM` while weight distinguishes `LB`/`G`. Many products have neither size nor weight populated (blank values).
+- **product flag columns**: `makeflag` (f/t) means "manufactured in-house", `finishedgoodsflag` (f/t) marks sellable finished goods; 295 products are finished goods, 239 made in-house.
+- **product hierarchy**: `product.productsubcategoryid → productsubcategory → productcategory` forms a fixed two-level taxonomy (4 categories, 37 subcategories). Category-level names confirmed, e.g. Components/Road Frames, Accessories/Helmets, Clothing/Socks.
+- **productdescription / culture**: `productmodelproductdescriptionculture` is a junction mapping each model (127) to a description (762) per culture (ar, en, fr, he, th, zh-cht — 6 per model); join filters on `cultureid` (e.g. 'en') to get one English description per model.
+- **productreview**: extremely sparse (only 4 rows), referencing only 3 products (ids 709, 798, 937).
+- **currencyrate.fromcurrencycode**: always `USD`; `averagerate`/`endofdayrate` are "per 1 USD". `tocurrencycode` includes now-defunct currencies (DEM, FRF) not present in `countryregioncurrency`.
+- **SalesPersonQuotaHistory.BusinessEntityID**: links to `salesperson.businessentityid`; quota history covers business entity ids 274..290 (i.e. the same set as salespeople), recorded quarterly (multiple QuotaDate rows per person).
+- **salesperson vs productsubcategory sales quotas**: `salesperson.salesquota` (250k/300k) is the current/target quota, while `SalesPersonQuotaHistory.SalesQuota` is the per-quarter historical quota assignments.
+- **SalesTerritory.countryregioncode**: uses ISO country codes coexisting with the `countryregioncurrency` table's `countryregioncode`; all `costytd`/`costlastyear` are 0 for every territory.
+
+## Potential Join Strategies
+
+- **Currency conversion for orders**: `salesorderheader.currencyrateid → currencyrate.currencyrateid`; filter `currencyrate.fromcurrencycode = 'USD'` then use `averagerate` for that rate's date to express `subtotal/totaldue` in USD. `currencyrateid` appears in ~2515 distinct header orders; match on both `currencyrateid` and the matching currency-rate date to avoid mixing periods.
+- **Country of sale via territory**: `salesorderheader.territoryid → salesterritory.territoryid`, then `salesterritory.countryregioncode → countryregioncurrency.countryregioncode`. Warning: a territory spans one country (10 territories, 5 US, plus EU-Pacific), so this maps an order to a country, not to a currency.
+- **Country ↔ currency**: join `salesterritory.countryregioncode → countryregioncurrency.countryregioncode` to get the legal currency per country (97 distinct currency codes), then to `currencyrate.tocurrencycode` on that currency code to pick the correct USD rate (fromcurrencycode is always USD). Chain: country → currencycode → tocurrencycode + currencyratedate.
+- **Product sales drilldown**: `salesorderdetail.productid → product.productid`, `product.productsubcategoryid → productsubcategory`, `productsubcategory.productcategoryid → productcategory`. Start from the big `salesorderdetail` (121,317 rows) and join up to the small taxonomy (37/4 rows) for category-level aggregation — the small-to-large direction avoids row fanout.
+- **Product descriptions**: `product.productmodelid → productmodelproductdescriptionculture.productmodelid`, filtered `cultureid = 'en'`, then `.productdescriptionid → productdescription.productdescriptionid` to attach localized product text to a product/model. Product-to-model is many-to-one (120 models across 504 products).
+- **Salesperson quotas vs orders**: `salesperson.businessentityid` joins to both `SalesPersonQuotaHistory.BusinessentityID` (quarterly quota) and `salesorderheader.salespersonid` (in-person orders). Since online orders have NULL `salespersonid`, sum returns will only reflect store/in-person sales for a salesperson.
+- **Quota history per person**: `SalesPersonQuotaHistory.BusinessEntityID → salesperson.businessentityid`. Every person in quota history has a salesperson row, but 3 salespeople have NULL `territoryid`, so joining salesperson → territory (or on through to order header territory) drops those people.
+
+Caveat: no declared PK/FK links and no indexes exist, so all the above joins are inferred and rely on the key columns listed here; large outer tables (`salesorderdetail` 121300+, `currencyrate` 13,532) should filter (status/date) before joining to avoid full scans.

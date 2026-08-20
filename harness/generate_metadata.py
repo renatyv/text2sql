@@ -19,7 +19,9 @@ from . import config, network
 _PI_TOOLS = "bash,read,write,edit,grep,find,ls"
 
 
-def _prompt(database: str, max_turns: int, engine: str = "mysql") -> str:
+def _prompt(database: str, max_turns: int, engine: str = "mysql",
+            filename: str | None = None) -> str:
+    filename = filename or database
     probe = ("You may use the read-only mysql CLI against `$BEAVER_DB` to clarify only "
              "ambiguous table or column meanings." if engine == "mysql" else
              "You may use `sqlite3 -readonly /inputs/db.sqlite` to clarify only ambiguous "
@@ -32,7 +34,7 @@ do not try to find them. {probe}
 Never use SELECT * and every SELECT must have LIMIT 10 (LIMIT
 100 is the absolute maximum). Do not copy raw rows, IDs, or value dumps into the result.
 
-Write exactly one concise Markdown file at `/output/{database}.md` with:
+Write exactly one concise Markdown file at `/output/{filename}.md` with:
 1. `# Additional Metadata`
 2. `## Clarified Semantics`: only table/column meanings that are not already clear in the profile.
 3. `## Potential Join Strategies`: non-obvious, useful joins derived from schema-links, including
@@ -42,7 +44,9 @@ Use factual short bullets. Do not include SQL answers, benchmark content, or a r
 profile/schema-links. Use no more than {max_turns} agent turns. Finish only after the output file exists."""
 
 
-def _base_argv(max_turns: int, output_dir: Path) -> list[str]:
+def _base_argv(max_turns: int, output_dir: Path, extra_docker: list[str]) -> list[str]:
+    """Docker prefix + pi argv. Per-engine mounts/env must stay in the docker
+    part: after the image they would reach pi, whose `-v` means --version."""
     proxy = f"http://{config.EGRESS_PROXY_CONTAINER}:{config.EGRESS_PROXY_PORT}"
     return [
         "docker", "run", "--rm", "--name", f"beaver-metadata-{uuid.uuid4().hex}",
@@ -54,7 +58,9 @@ def _base_argv(max_turns: int, output_dir: Path) -> list[str]:
         "-v", f"{config.HARNESS_DIR / 'openrouter_models.json'}:/home/node/.pi/agent/models.json:ro",
         "-e", f"HTTPS_PROXY={proxy}", "-e", f"HTTP_PROXY={proxy}",
         "-e", "OPENROUTER_API_KEY=" + os.environ.get("OPENROUTER_API_KEY", ""),
-        "-e", f"BEAVER_MAX_TURNS={max_turns}", "--entrypoint", "pi", config.CONTAINER_IMAGE,
+        "-e", f"BEAVER_MAX_TURNS={max_turns}",
+        *extra_docker,
+        "--entrypoint", "pi", config.CONTAINER_IMAGE,
         "-p", "--no-session", "--offline", "--no-extensions", "--no-skills",
         "--no-prompt-templates", "--no-context-files", "--no-themes", "-e", "/extensions/turn_guard.ts",
         "--tools", _PI_TOOLS, "--thinking", config.PI_THINKING,
@@ -67,16 +73,16 @@ def _docker_argv(db_label: str, max_turns: int, output_dir: Path,
     if config.engine_for(db_label) == "sqlite":
         key = profile_key or _sqlite_keys(db_label)[0]
         db_path = _db_for_key(db_label, key)
-        argv = _base_argv(max_turns, output_dir) + [
+        extra = [
             "-v", f"{config.profile_path_for(key)}:/inputs/profile.md:ro",
             "-v", f"{config.schema_links_path_for(key)}:/inputs/schema-links.md:ro",
             "-v", f"{db_path}:/inputs/db.sqlite:ro",
             "-e", "BEAVER_DB_PATH=/inputs/db.sqlite",
-            _prompt(db_path.stem, max_turns, engine="sqlite"),
         ]
-        return argv
+        return _base_argv(max_turns, output_dir, extra) + [
+            _prompt(db_path.stem, max_turns, engine="sqlite", filename=key)]
     database = config.mysql_db_for(db_label)
-    return _base_argv(max_turns, output_dir) + [
+    extra = [
         "-v", f"{config.profile_path(db_label)}:/inputs/profile.md:ro",
         "-v", f"{config.schema_links_path(db_label)}:/inputs/schema-links.md:ro",
         "-e", f"NO_PROXY={config.MYSQL_HOST_CONTAINER},localhost,127.0.0.1",
@@ -85,8 +91,8 @@ def _docker_argv(db_label: str, max_turns: int, output_dir: Path,
         "-e", f"MYSQL_USER={config.AGENT_MYSQL_USER}",
         "-e", f"MYSQL_PASSWORD={config.AGENT_MYSQL_PWD}",
         "-e", f"MYSQL_PWD={config.AGENT_MYSQL_PWD}", "-e", f"BEAVER_DB={database}",
-        _prompt(database, max_turns, engine="mysql"),
     ]
+    return _base_argv(max_turns, output_dir, extra) + [_prompt(database, max_turns, engine="mysql")]
 
 
 def _sqlite_keys(db_label: str) -> list[str]:
@@ -104,27 +110,50 @@ def _db_for_key(db_label: str, profile_key: str) -> Path:
     raise KeyError(f"{db_label} has no question with profile '{profile_key}'")
 
 
+def _run_agent(argv: list[str]) -> subprocess.CompletedProcess:
+    """Run one metadata container. Killing the docker CLI on a timeout leaves
+    the container running, so tear it down explicitly; retry once because a
+    hung model turn is usually transient."""
+    for _ in range(2):
+        try:
+            return subprocess.run(argv, capture_output=True, text=True,
+                                  timeout=config.PI_WALL_CLOCK)
+        except subprocess.TimeoutExpired:
+            subprocess.run(["docker", "rm", "-f", argv[argv.index("--name") + 1]],
+                           capture_output=True, timeout=30)
+    raise subprocess.TimeoutExpired(argv, config.PI_WALL_CLOCK)
+
+
 def run(db_label: str, max_turns: int = 12, profile_key: str | None = None) -> Path:
     if config.engine_for(db_label) == "sqlite":
         keys = [profile_key] if profile_key else _sqlite_keys(db_label)
         config.GENERATED_METADATA_DIR.mkdir(exist_ok=True)
         network.setup(set())
         last = None
+        failures = []
         for key in keys:
             if not config.profile_path_for(key).is_file() or not config.schema_links_path_for(key).is_file():
                 raise FileNotFoundError(f"generate the profile and schema links for '{key}' first")
             with tempfile.TemporaryDirectory(dir=config.GENERATED_METADATA_DIR) as temp:
                 temporary_output = Path(temp) / f"{key}.md"
-                result = subprocess.run(_docker_argv(db_label, max_turns, Path(temp), key),
-                                        capture_output=True, text=True, timeout=config.PI_WALL_CLOCK)
-                if result.returncode:
-                    detail = (result.stderr or result.stdout)[-2000:].strip()
-                    raise RuntimeError(f"metadata agent failed with exit code {result.returncode}: {detail}")
-                if not temporary_output.is_file() or not temporary_output.read_text(encoding="utf-8").strip():
-                    raise RuntimeError("metadata agent finished without writing output")
+                try:
+                    result = _run_agent(_docker_argv(db_label, max_turns, Path(temp), key))
+                    if result.returncode:
+                        detail = (result.stderr or result.stdout)[-2000:].strip()
+                        raise RuntimeError(f"exit code {result.returncode}: {detail}")
+                    if not temporary_output.is_file() or not temporary_output.read_text(encoding="utf-8").strip():
+                        raise RuntimeError("finished without writing output")
+                except subprocess.TimeoutExpired:
+                    failures.append(f"{key}: wall-clock timeout ({config.PI_WALL_CLOCK}s)")
+                    continue
+                except RuntimeError as exc:
+                    failures.append(f"{key}: {exc}")
+                    continue
                 temporary_output.replace(config.metadata_path_for(key))
             last = config.metadata_path_for(key)
             print(last)
+        if failures:
+            raise RuntimeError("metadata generation failed for:\n" + "\n".join(failures))
         assert last is not None
         return last
     if not config.profile_path(db_label).is_file() or not config.schema_links_path(db_label).is_file():
@@ -134,8 +163,7 @@ def run(db_label: str, max_turns: int = 12, profile_key: str | None = None) -> P
     output = config.metadata_path(db_label)
     with tempfile.TemporaryDirectory(dir=config.GENERATED_METADATA_DIR) as temp:
         temporary_output = Path(temp) / f"{db_label}.md"
-        result = subprocess.run(_docker_argv(db_label, max_turns, Path(temp)),
-                                capture_output=True, text=True, timeout=config.PI_WALL_CLOCK)
+        result = _run_agent(_docker_argv(db_label, max_turns, Path(temp)))
         if result.returncode:
             detail = (result.stderr or result.stdout)[-2000:].strip()
             raise RuntimeError(f"metadata agent failed with exit code {result.returncode}: {detail}")

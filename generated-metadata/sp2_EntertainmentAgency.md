@@ -1,0 +1,21 @@
+# Additional Metadata
+
+## Clarified Semantics
+
+- **Entertainer_Members.Status**: smallint flag (values 1 or 2) denoting a member's role/state within an entertainer group; the majority of memberships carry status 1. A member can belong to multiple groups (MemberID repeats across rows), and groups are not mutually exclusive.
+- **Entertainer_Styles.StyleStrength**: smallint rating (1..3) of how strongly an entertainer performs a given musical style, where lower values indicate stronger affinity. An entertainer can be associated with multiple styles at different strengths.
+- **Musical_Preferences.PreferenceSeq**: smallint (1..3) ordering of a customer's ranked musical-style preferences (1 = most preferred). Each customer ranks a small subset of styles; total preference rows exceed customers, confirming multi-row per customer.
+- **Musical_Styles.StyleName**: human-readable label keyed by StyleID; StyleIDs reference decades/genres (e.g., "40's/50's/60's Music", "Contemporary").
+- **Engagements date/time fields**: StartDate/EndDate (contract window), StartTime/StopTime (performance clock times; StopTime can cross midnight, e.g. 01:00). ContractPrice is the booking fee for the engagement, independent of entertainer count.
+- **Agents.Salary/CommissionRate**: commission rate (0.01..0.06) is the agent's cut of bookings; one agent's Salary is an outlier near 0 (stub/incomplete record).
+- **ztbl* tables are standalone calendar/sequence helper tables** with no declared or inferred FK links: ztblDays (one row per calendar date), ztblMonths (one row per month with MonthStart/MonthEnd plus 0/1 month-name flag columns), ztblWeeks (WeekStart/WeekEnd pairs), ztblSkipLabels (LabelCount 1..60 used for building sorted result labels). They are intentionally non-normalized to support date-series and labeling queries.
+- **Entertainers.EntWebPage / EntEMailAddress**: optional; several entertainers have NULL in both. EntSSN is a masked identifier (not a real SSN).
+- **Gender in Members**: values 'F'/'M' with some NULLs.
+
+## Potential Join Strategies
+
+- **Engagements → Entertainers → Entertainer_Styles → Musical_Styles**: to find which entertainers booked under engagements can perform a given style; join Engagements.EntertainerID = Entertainers.EntertainerID, then Entertainer_Styles.EntertainerID = Entertainers.EntertainerID and Entertainer_Styles.StyleID = Musical_Styles.StyleID. Cardinality caveat: one engagement maps to a single entertainer ID, but each entertainer has multiple styles, so a join can multiply engagement rows per style.
+- **Customers → Musical_Preferences → Musical_Styles vs. Customers → Engagements → Entertainers → Entertainer_Styles → Musical_Styles**: to compare a customer's stated style preferences (Musical_Preferences) with the style of entertainers they actually booked. Caveat: no direct customer↔entertainer link except through Engagements; a customer may have preferences for styles no booked entertainer performs (and vice versa), yielding no-match rows.
+- **Entertainers → Entertainer_Members → Members**: to relate group stage names to individual members; an entertainer can have 1..6 members (via MemberID), so the join multiplies rows per member and must be aggregated to get per-entertainer membership counts.
+- **Agent-level booking analysis**: Engagements.AgentID = Agents.AgentID, then correlate counts/sums with Agents.CommissionRate/Salary. Caveat: only agents 1..8 appear in engagements (Agent 9, the near-zero-salary stub, has no bookings), so AgentID 9 will not appear in inner joins.
+- **Date/calendar joins (non-obvious, no FK)**: Engagements.StartDate between ztblMonths.MonthStart and MonthEnd (or between ztblWeeks.WeekStart and WeekEnd) to bucket engagements into months/weeks; joining ztblDays.DateField in [StartDate, EndDate] expands each engagement into one row per day for duration/date-range calculations. No equality linkage exists — these are range-based cartesian joins, so filter strictly on the date bounds and use the appropriate ztblM* grouping table to avoid spurious multiplicity.

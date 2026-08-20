@@ -1,0 +1,34 @@
+# Additional Metadata
+
+## Clarified Semantics
+
+- `stint` (batting, fielding, pitching, fielding_outfield) counts the number of team/league assignments for that player in a single season; a player may appear in multiple rows per year (one per stint), so a full-season stat requires grouping by `player_id`+`year`. ~7434 batting rows are beyond stint=1.
+- `stint` is not a statistic; it is a row disambiguator. Aggregating stats without accounting for stints double-counts players who switched teams mid-season.
+- `all_star.starting_pos`: only values 0..9 present; value 0 (10 rows) represents a selection with no defined starting position (e.g., extra/bench), distinct from the absent/blank entries which mean "not a starter". Positions 1-9 map to P, C, 1B, 2B, 3B, SS, LF, CF, RF respectively.
+- `all_star.game_num`: 0 = the main/only All-Star game (4615 rows); 2 = second All-Star game of a season (later years had two). Some years record two games.
+- `hall_of_fame.votedby`: includes non-BBWAA selectors (Veterans, Old Timers, Negro League, Centennial, etc.); `inducted` Y/N indicates actual enshrinement, not just ballot appearance. `category` includes players, managers, executives, umpires, so player_key joins should be filtered to category='Player' when comparing player rosters.
+- `team.league_id` / many league fields contain blanks (""): these are pre-/non-major-league or short-lived league entries (AA, FL, UA, PL) plus empty values. Joins on `league_id` must treat '' (empty) as a distinct value, not a missing one.
+- `manager_award_vote.award_id` has two spellings ("Mgr of the year" / "Mgr of the Year"); treat text case as significant — group by normalized value.
+- `team.div_id`: E/W/C are 'East'/'West'/'Central'; blank/empty geographies (1517 rows) predate divisional play or use no division.
+- `salary.league_id` and `team.league_id` are team-level, not player-level; do not filter player league from these.
+- `team` rows are composite per (year, team_id); `team_id` is reused across seasons by different franchises/homes (e.g., WAS appears in multiple eras), so team-level joins should pair `year`+`team_id`.
+- `fielding_outfield` covers LF/CF/RF splits only for pre-1955 seasons; modern outfield fielding is the single OF row in `fielding` with pos='OF'. `fielding` does not split OF (glf/gcf/grf are only in `fielding_outfield`).
+- `player.bbref_id` mirrors `player_id` (same unique values); `retro_id` is a separate Retrosheet identifier, distinct from `player_id`.
+- `batting`/`pitching` blank numeric fields (e.g., sf, sh, ibb, g_idp, hbp) mean "not recorded/0" for that era, not necessarily zero—careful when summing.
+- `player_college.year` (1864..2014) is the year of college attendance/graduation year, not the player's on-field season; it can exceed or precede their `debut` year.
+- `park.country`: mostly 'US' but includes CA (Canada), AU, JP, MX, PR; location filtering must include `country`.
+- `team_half`/`manager_half` are split-season tables specific to 1981 (and 1892 manager records); ranks/games there are per-half, not season totals.
+
+## Potential Join Strategies
+
+- **Player career ↔ team context**: `batting`/`pitching`/`fielding`/`appearances` join to `team` on `year` + `team_id` to get team wins/rank/league/name. Caveat: `team_id` alone is ambiguous across years/leagues (e.g., same code reused), so always include `year` (and `league_id` where relevant); 149 team_ids over 145 years.
+- **Regular ↔ postseason**: each `*_postseason` table joins to regular-season counterpart on `player_id` + `year` (e.g., batting↔batting_postseason) to compare playoff vs season performance. Caveat: `round` per series plus divisions mean multiple postseason rows per player/year; use `round` if filtering, or sum `g`/`ab` per (player,year) to get full-playoff totals.
+- **Postseason series vs player detail**: `postseason` (series-level, team_id_winner/loser) joins to `batting_postseason`/`pitching_postseason`/`fielding_postseason` on `year` + `round`, comparing player stats to the actual series outcome. Caveat: `postseason.round` includes the same round labels (WS, ALCS, ALDS1/2, WC) and series win/loss counts (wins up to 10 for longer-format/historic series); not every postseason table row has a matching series row (early-era rounds absent).
+- **Franchise continuity**: `team.franchise_id` ↔ `team_franchise.franchise_id` (`team.team_id_br` also maps to the franchise); `team_franchise.franchise_name` matches `team.name`. Lets you track a franchise across team_id/league changes. `franchise_id` may be blank/na_assoc for historic National Association-era clubs.
+- **Park/home geography**: `home_game` joins `park` on `park_id` (park→city/state), and `team.park`/`team.attendance` give team home park/attendance; combine `home_game` (per-park games/openings/attendance) with `team` on (year, team_id). Caveat: `home_game` has 249 park_ids but a team may use multiple parks in one year (rows per park), so sums need distinct parks.
+- **Player ↔ biography**: all performance tables join `player` on `player_id` for name, birth/death, bats/throws, debut/final_game — useful for debut-window, age, and handedness filters.
+- **Player ↔ college**: `player.player_id` ↔ `player_college.player_id`, then `player_college.college_id` ↔ `college.college_id` for college origin/city/state; join on `player_college.year` for enrollment-year filtering.
+- **Managers**: `manager.player_id` (player also managing) ↔ `manager_half.player_id` on same key for 1981 split-season manager records; both join `player` and `team` on (year, team_id); `manager.player_id` is the manager's player key (plyr_mgr indicates playing manager). `manager_award`/`manager_award_vote` link to `manager` via `player_id`+`year` only, not team.
+- **Awards → performance**: `player_award_vote`/`player_award` join `batting`/`pitching` on `player_id` + `year` to contextualize award votes with actual performance; caveat `league_id` in these is 'ML' for Major-League-wide awards and 'AL'/'NL' otherwise.
+- **Shared stat columns**: batting/pitching counters join "thematically" (same metric names like h, hr, rbi, so in `batting` vs `batting_postseason`; w/l/g/gs in `pitching` vs `pitching_postseason`) rather than via any declared FK — derive comparisons by matching on player_id+year+round, not on the numeric columns themselves.
+- **Salary ↔ playing time**: `salary` (player_id+year+team_id, only 1985..2015) joins `appearances`/`batting`/`pitching` on (player_id, year, team_id) to relate pay to playing time; caveat salary has 35 distinct team_ids (fewer than full history) and only spans 31 years.
