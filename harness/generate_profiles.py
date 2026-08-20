@@ -84,8 +84,8 @@ def main(argv: list[str] | None = None) -> int:
     if config.engine_for(args.database) == "sqlite":
         for db_path, profile_key in _sqlite_profile_pairs(args.database):
             target = run_sqlite(db_path, profile_key, force=args.force)
-            print(f"[profiles] {db_path.name} -> "
-                  f"{target if target else config.profile_path_for(profile_key) + ' (exists, skipped)'}")
+            dest = target if target else f"{config.profile_path_for(profile_key)} (exists, skipped)"
+            print(f"[profiles] {db_path.name} -> {dest}")
         return 0
     print(f"[profiles] {config.mysql_db_for(args.database)} -> {run_mysql(args.database)}")
     return 0

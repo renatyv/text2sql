@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 
 from schema_linker import SchemaLinkOptions, link_schema
+from schema_linker.progress import ProgressBar
 from sqlalchemy import URL, create_engine
 from sqlalchemy.engine import Engine
 
@@ -19,8 +20,26 @@ from . import config
 
 
 def _link(engine: Engine) -> str:
+    progress_bar = ProgressBar("Linking", 0)
+
+    def show_progress(current: int, total: int, item: str) -> None:
+        nonlocal progress_bar
+        if progress_bar.total != total:
+            progress_bar.finish()
+            progress_bar = ProgressBar("Linking", total)
+            progress_bar.start(item)
+            return
+        progress_bar.update(current, item)
+
     try:
-        return link_schema(engine, SchemaLinkOptions(show_declared_links=True))
+        report = link_schema(
+            engine, SchemaLinkOptions(show_declared_links=True), progress=show_progress
+        )
+        progress_bar.finish("Schema linking complete")
+        return report
+    except Exception:
+        progress_bar.finish()
+        raise
     finally:
         engine.dispose()
 
