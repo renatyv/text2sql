@@ -76,6 +76,9 @@ One-time setup (downloads ~2 GB, cached in `~/.cache/custom-bench`):
 make load-bird         # minidev.zip -> data/bird_mini_dev (500 questions, 11 DBs)
 make load-spider2      # sparse clone of xlang-ai/Spider2 + localdb zip -> data/sp2_lite_sqlite (135 tasks, 30 DBs)
 make agent-image       # rebuild beaver-agent (now ships sqlite3)
+make generate-profiles                 # all BEAVER, BIRD, and Spider2 profiles
+make generate-schema-links             # all corresponding link hints
+make generate-metadata                 # all metadata (after profiles and link hints)
 make generate-profiles DB=bird_mini_dev     # profiles/bird_<db>.md via db-snooper --db-type sqlite
 make generate-profiles DB=sp2_lite_sqlite   # profiles/sp2_<db>.md
 make generate-schema-links DB=bird_mini_dev # schema-links/bird_<db>.md (SQLite PRAGMA introspection)

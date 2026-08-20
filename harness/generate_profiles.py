@@ -53,7 +53,7 @@ def run_sqlite(db_path: Path, profile_key: str, force: bool = False) -> Path | N
              "--database", str(analyzed),
              "--large-table-threshold", str(LARGE_TABLE_THRESHOLD),
              "--output", temp],
-            check=True, capture_output=True, text=True,
+            check=True,
         )
         produced = Path(temp) / "main.md"
         if not produced.is_file():
@@ -64,15 +64,14 @@ def run_sqlite(db_path: Path, profile_key: str, force: bool = False) -> Path | N
 
 
 def run_mysql(db_label: str) -> Path:
-    result = subprocess.run(
+    subprocess.run(
         ["db-snooper", "profile", "--db-type", "mysql",
          "--database", config.mysql_db_for(db_label),
          "--host", config.MYSQL_HOST, "--port", str(config.MYSQL_PORT),
          "--user", config.MYSQL_USER, "--password", config.MYSQL_PWD,
          "--output", str(config.PROFILES_DIR)],
-        check=True, capture_output=True, text=True,
+        check=True,
     )
-    print(result.stdout)
     return config.profile_path(db_label)
 
 

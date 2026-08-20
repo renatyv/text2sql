@@ -1,5 +1,11 @@
 .DEFAULT_GOAL := help
 DB ?= neutron
+GENERATE_DBS := neutron nova dw bird_mini_dev sp2_lite_sqlite
+ifeq ($(origin DB), file)
+PROFILE_DBS := $(GENERATE_DBS)
+else
+PROFILE_DBS := $(DB)
+endif
 BENCH_ARGS ?= --dataset $(DB) --phase phase0
 METADATA_ARGS ?=
 SPIDER2_REPO ?= $(HOME)/.cache/custom-bench/Spider2
@@ -10,23 +16,19 @@ MODEL_ARGS ?= --model openai/gpt-5.6-luna-pro --effort medium
 .PHONY: help agent-image generate-profiles generate-schema-links generate-metadata benchmark benchmark-1 benchmark-10 benchmark-100 benchmark-300 load-bird load-spider2 benchmark-bird benchmark-spider2
 
 help:
-	@printf '%s\n' 'make generate-profiles DB=neutron        # regenerate db-snooper profile' 'make generate-schema-links DB=neutron    # regenerate local link hints' 'make generate-metadata DB=neutron        # isolated Pi metadata agent' 'make benchmark BENCH_ARGS="--dataset neutron --phase pilot"' 'Useful args: DB=neutron|nova|dw|bird_mini_dev|sp2_lite_sqlite, METADATA_ARGS="--max-turns 16"; benchmark accepts run_experiment.py args.' 'SQLite benchmarks: make load-bird / load-spider2 first (see README), then benchmark-bird / benchmark-spider2.' benchmark-1 benchmark-20 benchmark-100 benchmark-300
+	@printf '%s\n' 'make generate-profiles                   # all BEAVER, BIRD, and Spider2 profiles' 'make generate-schema-links               # all local link hints' 'make generate-metadata                   # all metadata (after profiles and links)' 'Add DB=neutron to run one dataset; METADATA_ARGS="--max-turns 16". SQLite setup: make load-bird / load-spider2 first.' 'make benchmark BENCH_ARGS="--dataset neutron --phase pilot"' benchmark-1 benchmark-20 benchmark-100 benchmark-300
 
 agent-image:
 	docker build -t beaver-agent -f Dockerfile.agent .
 
 generate-profiles:
-ifeq ($(filter $(DB),bird_mini_dev sp2_lite_sqlite),)
-	@set -a; . ./.env; set +a; uv run db-snooper profile --db-type mysql --database "$(DB)" --host "$$MYSQL_HOST" --port "$$MYSQL_PORT" --user "$$MYSQL_USER" --password "$$MYSQL_PASSWORD" --output profiles
-else
-	@uv run -m harness.generate_profiles --database "$(DB)"
-endif
+	for db in $(PROFILE_DBS); do uv run -m harness.generate_profiles --database "$$db"; done
 
 generate-schema-links:
-	@uv run -m harness.generate_schema_links --database "$(DB)"
+	for db in $(PROFILE_DBS); do uv run -m harness.generate_schema_links --database "$$db"; done
 
 generate-metadata:
-	@uv run -m harness.generate_metadata --database "$(DB)" $(METADATA_ARGS)
+	for db in $(PROFILE_DBS); do uv run -m harness.generate_metadata --database "$$db" $(METADATA_ARGS); done
 
 benchmark:
 	@uv run run_experiment.py $(BENCH_ARGS)
