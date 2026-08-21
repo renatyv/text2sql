@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:28:05.682982Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:33:17.446501Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-uoig43s4/E_commerce.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-wgq9dsl7/E_commerce.sqlite
 schema: main
 ---
 
@@ -17,16 +17,15 @@ columns:
 "customer_state" text: 27 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customer_id | ffffe8b65bbe3087b653a978c870db99 | 51d9009f107df3256dcb608b5cb40a7c | 5582a1c42a6723f0fdbb6dccb54693ae |
-| customer_unique_id | 736e6bfa0510aa5b878881a226a5fd89 | 0922f37485310929b1b94e8f0c984ca5 | 38b70b993e11d6fb460d550ec9891153 |
-| customer_zip_code_prefix | 6172 | 86037 | 21230 |
-| customer_city | osasco | londrina | rio de janeiro |
-| customer_state | SP | PR | RJ |
+| customer_id | ffffe8b65bbe3087b653a978c870db99 | 066e5acdd1a429b05b4bcb0c8f8273d3 | b77ee5671feb9b6efce84cc804842024 |
+| customer_unique_id | 736e6bfa0510aa5b878881a226a5fd89 | 36cb06fed5371d8e5ae0074141da1ae2 | 5c64fc047d4115cc4be24c9c0c9503c2 |
+| customer_zip_code_prefix | 6172 | 71215 | 73088 |
+| customer_city | osasco | brasilia | brasilia |
+| customer_state | SP | DF | DF |
 
 # "geolocation"  (rows=≈1000163)
 
@@ -38,7 +37,6 @@ columns:
 "geolocation_state" text
 
 indexes: none
-fk: none
 
 
 # "leads_closed"  (rows=842)
@@ -60,19 +58,18 @@ columns:
 "declared_monthly_revenue" float: 27 distinct, 0..5e+07, avg=73377.7, median=0
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| mql_id | fff8db9478d2fd72df65a67ee6b62f67 | ac68bc93ecc07d7daec8ce924ca09b0c | 2852475bf1d02022e4eb5269c452259a |
-| seller_id | bdae679a9b282249bc23b9b69dae9a99 | 6025c79c035c3d772133b8b8238463b2 | 1a47a5831effd926ad6bee7ab8beb86c |
-| sdr_id | 4b339f9567d060bcea4f5136b9f5949e | b90f87164b5f8c2cfa5c8572834dbe3f | 370c9f455f93a9a96cbe9bea48e70033 |
-| sr_id | 6565aa9ce3178a5caf6171827af3a9ba | 56bf83c4bb35763a51c2baab501b4c67 | 495d4e95a8cf8bbf8b432b612a2aa328 |
-| won_date | 2018-01-24 15:19:49 | 2018-05-10 19:07:39 | 2018-06-29 17:54:16 |
-| business_segment | construction_tools_house_garden | car_accessories | home_decor |
-| lead_type | online_medium | online_medium | online_medium |
-| lead_behaviour_profile | null | wolf | wolf |
+| mql_id | fff8db9478d2fd72df65a67ee6b62f67 | 5985e72b3752e4749926885db1b45be4 | ba7fb7aa93b1203a1f5e19b0857870e3 |
+| seller_id | bdae679a9b282249bc23b9b69dae9a99 | 044668ccd5316b12a7cf0d54a156e3e9 | bec568278124768c474ee90971ca94d1 |
+| sdr_id | 4b339f9567d060bcea4f5136b9f5949e | 56bf83c4bb35763a51c2baab501b4c67 | 4b339f9567d060bcea4f5136b9f5949e |
+| sr_id | 6565aa9ce3178a5caf6171827af3a9ba | 4ef15afb4b2723d8f3d81e51ec7afefe | 2695de1affa7750089c0455f8ce27021 |
+| won_date | 2018-01-24 15:19:49 | 2018-01-31 21:00:13 | 2018-06-05 13:34:52 |
+| business_segment | construction_tools_house_garden | food_drink | home_decor |
+| lead_type | online_medium | offline | online_beginner |
+| lead_behaviour_profile | null | null | cat |
 | has_company | null | null | null |
 | has_gtin | null | null | null |
 | average_stock | null | null | null |
@@ -89,15 +86,14 @@ columns:
 "origin" text: "organic_search"=2296, "paid_search"=1586, "social"=1350, "unknown"=1099, "direct_traffic"=499, "email"=493, "referral"=284, "other"=150, "display"=118, "other_publicities"=65, nulls=60
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| mql_id | fffffe98d0963d27015c198262d97221 | 387ba2ba73ce1e4c81fb09175bf2a1f3 | 923b4926a703db2f6355a326bf10656e |
-| first_contact_date | 2018-01-25 | 2018-02-01 | 2018-01-27 |
-| landing_page_id | 88740e65d5d6b056e0cda098e1ea6313 | 83bfeb1d106df88a2cde0965999161f0 | f017be4dbf86243af5c1ebed0cff36a2 |
-| origin | social | organic_search | direct_traffic |
+| mql_id | fffffe98d0963d27015c198262d97221 | debcfcbcdbc48a17e199bca9d040a4d2 | 3e864b47b8a2d0bbc43aca4c5da5ddbe |
+| first_contact_date | 2018-01-25 | 2018-05-12 | 2018-03-20 |
+| landing_page_id | 88740e65d5d6b056e0cda098e1ea6313 | 40dec9f3d5259a3d2dbcdab2114fae47 | b76ef37428e6799c421989521c0e5077 |
+| origin | social | paid_search | unknown |
 
 # "order_items"  (rows=112650)
 
@@ -111,18 +107,17 @@ columns:
 "freight_value" float: 0..409.68, avg=19.9903
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| order_id | fffe41c64501cc87c801fd61db3f6244 | 58346246ea802a21cb34124ed2326770 | 80501e8921c07f421d238fdf268c5ce4 |
-| order_item_id | 1 | 4 | 1 |
-| product_id | 350688d9dc1e75ff97be326363655e01 | ee0c1cf2fbeae95205b4aa506f1469f0 | 913580fde3e72c3b3e4ce0b79963bee6 |
-| seller_id | f7ccf836d21b2fb1de37564105216cc1 | cc419e0650a3c5ba77189a1882b7556a | b76dba6c951ab00dc4edf0a1aa88037e |
-| shipping_limit_date | 2018-06-12 17:10:13 | 2018-07-13 17:25:53 | 2017-02-19 22:30:52 |
-| price | 43 | 44.99 | 10.99 |
-| freight_value | 12.79 | 7.58 | 16.05 |
+| order_id | fffe41c64501cc87c801fd61db3f6244 | 73ab3121732a6b5bd3e8ad44c1d81c57 | ef2ecde1a76f9bcc15c632e7970aca8d |
+| order_item_id | 1 | 1 | 1 |
+| product_id | 350688d9dc1e75ff97be326363655e01 | fd1abebad3478dd37080b399656dbb7d | d48bacc1dcd9c86bf1ed4ed2a303336c |
+| seller_id | f7ccf836d21b2fb1de37564105216cc1 | e4f121bf6ef8b9a1d4d3e65dd0473fab | 406822777a0b9eb5c50e442dd4cd3ec5 |
+| shipping_limit_date | 2018-06-12 17:10:13 | 2018-04-05 21:30:21 | 2018-07-11 18:45:13 |
+| price | 43 | 30 | 49 |
+| freight_value | 12.79 | 18.23 | 14.65 |
 
 # "order_payments"  (rows=103886)
 
@@ -134,16 +129,15 @@ columns:
 "payment_value" float: 0..13664.1, avg=154.1
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| order_id | fffe41c64501cc87c801fd61db3f6244 | 90bd52654dd4d9b5601a908e69f98659 | df31c03f22f15e6460a9eeb4de4968ac |
+| order_id | fffe41c64501cc87c801fd61db3f6244 | f3144b968537c3068bdd820f07160523 | 1f440e230578d73badf5afd8bb78c632 |
 | payment_sequential | 1 | 1 | 1 |
 | payment_type | credit_card | credit_card | credit_card |
-| payment_installments | 1 | 10 | 4 |
-| payment_value | 55.79 | 182.96 | 134.58 |
+| payment_installments | 1 | 1 | 8 |
+| payment_value | 55.79 | 74.16 | 327.58 |
 
 # "order_reviews"  (rows=99224)
 
@@ -157,18 +151,17 @@ columns:
 "review_answer_timestamp" text: iso-date, 98248 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| review_id | fffefe7a48d22f7b32046421062219d1 | ede62474f1618961be12678f362dca4a | 5b27644eb6a7c79082b61b97d6488cca |
-| order_id | 1061bc32577c6b8beb107bf1b5a65175 | b0f4af5c1b06e24fef510703bfe9f0a6 | cb71bd92e29c501f67b650fa19bee739 |
-| review_score | 5 | 5 | 5 |
+| review_id | fffefe7a48d22f7b32046421062219d1 | 503f504e7d0ab093fdb903838c4b5e98 | 75538694db1f1734454b7c3a86da3d22 |
+| order_id | 1061bc32577c6b8beb107bf1b5a65175 | f6ed6898419c893a57cd88e7dbbdb2c7 | 4892ff734d87bb926bd317ebafca95d1 |
+| review_score | 5 | 1 | 5 |
 | review_comment_title | null | null | null |
-| review_comment_message | null | Otimo comprar por este site as mercadorias chegam antes do prazo determinado. | null |
-| review_creation_date | 2017-10-28 00:00:00 | 2017-11-11 00:00:00 | 2018-04-28 00:00:00 |
-| review_answer_timestamp | 2017-10-30 21:43:56 | 2017-11-15 09:54:14 | 2018-04-29 04:29:49 |
+| review_comment_message | null | Não recebi o produto favor me informe quando chegará  | Produto ótimo e entregue beem antes do prazo . |
+| review_creation_date | 2017-10-28 00:00:00 | 2018-03-22 00:00:00 | 2017-06-07 00:00:00 |
+| review_answer_timestamp | 2017-10-30 21:43:56 | 2018-04-04 13:23:59 | 2017-06-08 17:02:10 |
 
 # "orders"  (rows=99441)
 
@@ -183,19 +176,18 @@ columns:
 "order_estimated_delivery_date" text: iso-date, 459 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| order_id | fffe41c64501cc87c801fd61db3f6244 | 312bfb221da51864b9fc4b361542ee5b | 475e0dfe76ac445fc716ef9eca7a00bd |
-| customer_id | 96d649da0cc4ff33bb408b199d4c7dcf | 4ad01985d5063053b72dbd0191762f81 | f8de827b79379e8ba3b7f0c8c363b085 |
+| order_id | fffe41c64501cc87c801fd61db3f6244 | f24bbebc2c8ba687b65f1be751dd8982 | dca954560c94725cbb8402714b1dc7bd |
+| customer_id | 96d649da0cc4ff33bb408b199d4c7dcf | 541884ec125bd7f617b86a0f92b8e3b7 | af189c7154bf7cd83ae87e7c7c43a6b9 |
 | order_status | delivered | delivered | delivered |
-| order_purchase_timestamp | 2018-06-09 17:00:18 | 2018-06-04 19:33:54 | 2017-11-30 22:04:12 |
-| order_approved_at | 2018-06-09 17:10:13 | 2018-06-04 19:53:21 | 2017-12-01 10:31:15 |
-| order_delivered_carrier_date | 2018-06-11 14:11:00 | 2018-06-06 14:47:00 | 2017-12-04 12:59:36 |
-| order_delivered_customer_date | 2018-06-14 17:56:26 | 2018-06-08 22:46:49 | 2017-12-06 18:30:10 |
-| order_estimated_delivery_date | 2018-06-28 00:00:00 | 2018-06-28 00:00:00 | 2017-12-18 00:00:00 |
+| order_purchase_timestamp | 2018-06-09 17:00:18 | 2018-02-20 18:27:39 | 2018-01-09 21:59:13 |
+| order_approved_at | 2018-06-09 17:10:13 | 2018-02-21 18:31:57 | 2018-01-10 10:32:14 |
+| order_delivered_carrier_date | 2018-06-11 14:11:00 | 2018-02-24 00:51:34 | 2018-01-11 22:56:00 |
+| order_delivered_customer_date | 2018-06-14 17:56:26 | 2018-04-19 16:49:31 | 2018-01-22 18:58:25 |
+| order_estimated_delivery_date | 2018-06-28 00:00:00 | 2018-03-14 00:00:00 | 2018-01-26 00:00:00 |
 
 # "product_category_name_translation"  (rows=71)
 
@@ -204,13 +196,12 @@ columns:
 "product_category_name_english" text: all distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_category_name | utilidades_domesticas | flores | livros_importados |
-| product_category_name_english | housewares | flowers | books_imported |
+| product_category_name | utilidades_domesticas | cds_dvds_musicais | utilidades_domesticas |
+| product_category_name_english | housewares | cds_dvds_musicals | housewares |
 
 # "products"  (rows=32951)
 
@@ -226,20 +217,19 @@ columns:
 "product_width_cm" float: 95 distinct, nulls=2, 6..118, avg=23.1967, median=20
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_id | fffe9eeff12fcbd74a2f2b007dde0c58 | 90f83991bae254d0fd02bdddaa20b340 | 267a48e9a306231f94d36b274782ca5d |
-| product_category_name | brinquedos | moveis_decoracao | automotivo |
-| product_name_lenght | 57 | 59 | 52 |
-| product_description_lenght | 1536 | 241 | 381 |
-| product_photos_qty | 3 | 1 | 2 |
-| product_weight_g | 3900 | 1400 | 4259 |
-| product_length_cm | 43 | 40 | 24 |
-| product_height_cm | 16 | 10 | 22 |
-| product_width_cm | 11 | 34 | 32 |
+| product_id | fffe9eeff12fcbd74a2f2b007dde0c58 | 43a24e051b37c8e88accdfdeecddb71b | eb551aa4ed7eb5e2839d5b7d2896bece |
+| product_category_name | brinquedos | informatica_acessorios | telefonia |
+| product_name_lenght | 57 | 33 | 51 |
+| product_description_lenght | 1536 | 253 | 350 |
+| product_photos_qty | 3 | 1 | 1 |
+| product_weight_g | 3900 | 1000 | 100 |
+| product_length_cm | 43 | 37 | 19 |
+| product_height_cm | 16 | 19 | 3 |
+| product_width_cm | 11 | 19 | 11 |
 
 # "sellers"  (rows=3095)
 
@@ -250,12 +240,11 @@ columns:
 "seller_state" text: 23 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| seller_id | ffff564a4f9085cd26170f4732393726 | 73a63f72308aa20a46f4b1632018f196 | 21c62b998a043ebe31161d38f84929fc |
-| seller_zip_code_prefix | 13070 | 82510 | 60110 |
-| seller_city | campinas | curitiba | fortaleza |
-| seller_state | SP | PR | CE |
+| seller_id | ffff564a4f9085cd26170f4732393726 | 99cd94252748d2bdde08e17858233602 | 749e7cdabbaf72f16677859e27874ba5 |
+| seller_zip_code_prefix | 13070 | 12401 | 7122 |
+| seller_city | campinas | sao paulo | guarulhos |
+| seller_state | SP | SP | SP |

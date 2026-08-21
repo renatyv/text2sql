@@ -128,26 +128,53 @@ def _compare(pred_cols: list[list], gold_cols: list[list],
     return 1
 
 
+def _conditions_by_gold(count: int, condition_cols) -> list:
+    if count == 1:
+        return [condition_cols]
+    if condition_cols in (None, [], [[]], [None]):
+        return [[] for _ in range(count)]
+    if (not isinstance(condition_cols, (list, tuple))
+            or not all(isinstance(c, list) for c in condition_cols)):
+        return [condition_cols for _ in range(count)]
+    return list(condition_cols)
+
+
+def _unmatched(pred_cols: list[list], gold_cols: list[list], condition_cols,
+               ignore_order: bool) -> list[list]:
+    if condition_cols:
+        if not isinstance(condition_cols, (list, tuple)):
+            condition_cols = [condition_cols]
+        try:
+            gold_cols = [gold_cols[i] for i in condition_cols]
+        except (IndexError, TypeError):
+            return gold_cols
+    return [gold for gold in gold_cols
+            if not any(_vectors_match(gold, pred, ignore_order) for pred in pred_cols)]
+
+
+def score_pred_details(pred_rows: list[tuple], gold_csv_paths: list[str | Path],
+                       condition_cols=None, ignore_order: bool = False) -> dict:
+    """Score plus diagnostics for the matching (or closest) gold variant."""
+    paths = [str(p) for p in gold_csv_paths]
+    if not paths:
+        return {"correct": 0, "selected_index": None, "condition_cols": condition_cols,
+                "unmatched_gold_columns": []}
+    pred_cols = pred_columns(pred_rows)
+    variants = []
+    for index, (path, cols) in enumerate(zip(paths, _conditions_by_gold(len(paths), condition_cols))):
+        gold_cols = load_gold_csv(path)
+        variants.append({
+            "correct": _compare(pred_cols, gold_cols, cols, ignore_order),
+            "selected_index": index,
+            "condition_cols": cols,
+            "unmatched_gold_columns": _unmatched(pred_cols, gold_cols, cols, ignore_order),
+        })
+    return next((v for v in variants if v["correct"]),
+                min(variants, key=lambda v: len(v["unmatched_gold_columns"])))
+
+
 def score_pred(pred_rows: list[tuple], gold_csv_paths: list[str | Path],
                condition_cols=None, ignore_order: bool = False) -> int:
     """Score predicted rows against one-or-more gold CSVs (any-of)."""
-    gold_csv_paths = [str(p) for p in gold_csv_paths]
-    if not gold_csv_paths:
-        return 0
-    multi_cc = condition_cols
-    if multi_cc in (None, [], [[]], [None]):
-        multi_cc = [[] for _ in gold_csv_paths]
-    elif len(gold_csv_paths) > 1 and not all(isinstance(c, list) for c in multi_cc):
-        multi_cc = [multi_cc for _ in gold_csv_paths]
-    pred_cols = pred_columns(pred_rows)
-    # single gold: condition_cols is used as-is (official compare_pandas_table
-    # receives the raw list; unzipping [0] to a scalar would lose the "column 0"
-    # restriction because 0 is falsy, and normalizing [] to [[]] would wrongly
-    # restrict to nothing instead of comparing all columns)
-    if len(gold_csv_paths) == 1:
-        return _compare(pred_cols, load_gold_csv(gold_csv_paths[0]),
-                        condition_cols, ignore_order)
-    for gold_path, cc in zip(gold_csv_paths, multi_cc):
-        if _compare(pred_cols, load_gold_csv(gold_path), cc, ignore_order):
-            return 1
-    return 0
+    return score_pred_details(pred_rows, gold_csv_paths, condition_cols,
+                              ignore_order)["correct"]

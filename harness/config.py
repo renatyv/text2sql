@@ -137,6 +137,10 @@ ARMS: dict[str, dict] = {
         "tools": True, "profile": True, "metadata": False, "checklist": True,
         "description": "raw database access + db-snooper profile",
     },
+    "profile_links": {
+        "tools": True, "profile": True, "links": True, "metadata": False, "checklist": True,
+        "description": "raw database access + db-snooper profile + schema links",
+    },
     "metadata": {
         "tools": True, "profile": False, "metadata": True, "checklist": True,
         "description": "raw database access + aggregated metadata",
@@ -163,7 +167,9 @@ def arm_spec(name: str) -> dict:
 # Pairwise comparisons reported when both selected arms are present.
 PAIRWISE = [
     ("raw", "profile"),
+    ("raw", "profile_links"),
     ("raw", "metadata"),
+    ("profile", "profile_links"),
     ("profile", "profile_metadata"),
     ("metadata", "profile_metadata"),
 ]

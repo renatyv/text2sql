@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:29:07.946575Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:34:20.563802Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-rm9x2o3m/oracle_sql.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-s_nirli0/oracle_sql.sqlite
 schema: main
 ---
 
@@ -28,11 +28,10 @@ schema: main
 # "breweries"  (rows=3)
 
 columns:
-"id" int PK: unique identifier, 518..536
-"name" text NOTNULL: "Balthazar Brauerei"=1, "Brewing Barbarian"=1, "Happy Hoppy Hippo"=1
+"id" int PK
+"name" text NOTNULL
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 |
@@ -60,10 +59,10 @@ WHERE EXISTS (
 ```
 
 columns:
-"brewery_id" int: 536=4, 518=3, 523=3, 518..536
-"brewery_name" text: "Brewing Barbarian"=4, "Balthazar Brauerei"=3, "Happy Hoppy Hippo"=3
-"product_id" int: unique identifier, 4040..7950
-"product_name" text: "Coalminers Sweat"=1, "Der Helle Kumpel"=1, "Ghost of Hops"=1, "Hazy Pink Cloud"=1, "Hercule Trippel"=1, "Hoppy Crude Oil"=1, "Monks and Nuns"=1, "Pale Rider Rides"=1, "Reindeer Fuel"=1, "Summer in India"=1
+"brewery_id" int
+"brewery_name" text
+"product_id" int
+"product_name" text
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 | row 9 | row 10 |
@@ -76,12 +75,11 @@ all rows:
 # "channels_dim"  (rows=2)
 
 columns:
-"id" int PK: unique identifier, 42..44
-"name" text NOTNULL: "Facebook"=1, "Twitter"=1
-"shortcut" text NOTNULL: "fb"=1, "tw"=1
+"id" int PK
+"name" text NOTNULL
+"shortcut" text NOTNULL
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 |
@@ -93,11 +91,10 @@ all rows:
 # "customer_favorites"  (rows=4)
 
 columns:
-"customer_id" int PK FK: unique identifier, 50042..51069
-"favorite_list" text: "4040,5310"=1, "5430,7790,7870"=1, "6520"=1, nulls=1
+"customer_id" int PK FK
+"favorite_list" text
 
 indexes: none
-fk: "customer_id"→"customers"."id"
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 |
@@ -133,12 +130,12 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customer_id | 51069 | 50741 | 50741 |
-| customer_name | Der Wichtelmann | Hygge og Humle | Hygge og Humle |
-| ordered | 2019-02-17 | 2019-03-29 | 2019-01-18 |
-| product_id | 6600 | 7950 | 6520 |
-| product_name | Hazy Pink Cloud | Pale Rider Rides | Der Helle Kumpel |
-| qty | 24 | 50 | 40 |
+| customer_id | 51069 | 50042 | 50741 |
+| customer_name | Der Wichtelmann | The White Hart | Hygge og Humle |
+| ordered | 2019-02-17 | 2019-03-02 | 2019-03-29 |
+| product_id | 6600 | 4280 | 7950 |
+| product_name | Hazy Pink Cloud | Hoppy Crude Oil | Pale Rider Rides |
+| qty | 24 | 60 | 50 |
 
 # "customer_order_products_obj"  (rows=3)
 
@@ -155,25 +152,24 @@ GROUP BY customer_id;
 ```
 
 columns:
-"customer_id" int: unique identifier, 50042..51069
-"customer_name" text: "Der Wichtelmann"=1, "Hygge og Humle"=1, "The White Hart"=1
-"product_coll" text: "[{ "product_id": 4280, "product_name": "Hoppy Crude Oil" },{ "product_id": 6520, "product_name": "Der Helle Kumpel" },{ "product_id": 4280, "product_name": "Hoppy Crude Oil" },{ "product_id": 4280, "product_name": "Hoppy Crude Oil" },{ "product_id": 5430, "product_name": "Hercule Trippel" }]"=1, "[{ "product_id": 4280, "product_name": "Hoppy Crude Oil" },{ "product_id": 6520, "product_name": "Der Helle Kumpel" },{ "product_id": 6520, "product_name": "Der Helle Kumpel" },{ "product_id": 6600, "product_name": "Hazy Pink Cloud" },{ "product_id": 4280, "product_name": "Hoppy Crude Oil" },{ "product_id": 7950, "product_name": "Pale Rider Rides" },{ "product_id": 7950, "product_name": "Pale Rider Rides" }]"=1, "[{ "product_id": 4280, "product_name": "Hoppy Crude Oil" },{ "product_id": 6520, "product_name": "Der Helle Kumpel" },{ "product_id": 6600, "product_name": "Hazy Pink Cloud" },{ "product_id": 5310, "product_name": "Monks and Nuns" },{ "product_id": 5430, "product_name": "Hercule Trippel" },{ "product_id": 6600, "product_name": "Hazy Pink Cloud" }]"=1
+"customer_id" int
+"customer_name" text
+"product_coll" text
 
 all rows:
 | column | row 1 | row 2 | row 3 |
 |---|---|---|---|
 | customer_id | 50042 | 50741 | 51069 |
 | customer_name | The White Hart | Hygge og Humle | Der Wichtelmann |
-| product_coll | [{ "product_id": 4280, "product_name": "Hoppy Crude Oil" },{ "product_id": 6520, "product_name": "Der Helle Kumpel" },{ "product_id": 4280, "product_name": "Hoppy Crude Oil" },{ "product_id": 4280, "product_name": "Hoppy Crude Oil" },{ "product_id": 5430, "product_name": "Hercule Trippel" }] | [{ "product_id": 4280, "product_name": "Hoppy Crude Oil" },{ "product_id": 6520, "product_name": "Der Helle Kumpel" },{ "product_id": 6520, "product_name": "Der Helle Kumpel" },{ "product_id": 6600, "product_name": "Hazy Pink Cloud" },{ "product_id": 4280, "product_name": "Hoppy Crude Oil" },{ "product_id": 7950, "product_name": "Pale Rider Rides" },{ "product_id": 7950, "product_name": "Pale Rider Rides" }] | [{ "product_id": 4280, "product_name": "Hoppy Crude Oil" },{ "product_id": 6520, "product_name": "Der Helle Kumpel" },{ "product_id": 6600, "product_name": "Hazy Pink Cloud" },{ "product_id": 5310, "product_name": "Monks and Nuns" },{ "product_id": 5430, "product_name": "Hercule Trippel" },{ "product_id": 6600, "product_name": "Hazy Pink Cloud" }] |
+| product_coll | [{ "product_id": 4280, "product_name": "Hoppy Crude Oil" },{ "product_id": 6520, "product_name": "Der Helle Kumpel" },{ "product_id": 4280, "product_name": "Hoppy Crude Oil" },{ "product_id": 4280, "… | [{ "product_id": 4280, "product_name": "Hoppy Crude Oil" },{ "product_id": 6520, "product_name": "Der Helle Kumpel" },{ "product_id": 6520, "product_name": "Der Helle Kumpel" },{ "product_id": 6600,… | [{ "product_id": 4280, "product_name": "Hoppy Crude Oil" },{ "product_id": 6520, "product_name": "Der Helle Kumpel" },{ "product_id": 6600, "product_name": "Hazy Pink Cloud" },{ "product_id": 5310, "… |
 
 # "customer_reviews"  (rows=4)
 
 columns:
-"customer_id" int PK FK: unique identifier, 50042..51069
-"review_list" text: "4040:A,6600:C,7950:B"=1, "4160:A"=1, "4280:B,7790:B"=1, nulls=1
+"customer_id" int PK FK
+"review_list" text
 
 indexes: none
-fk: "customer_id"→"customers"."id"
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 |
@@ -184,11 +180,10 @@ all rows:
 # "customers"  (rows=4)
 
 columns:
-"id" int PK: unique identifier, 50042..51069
-"name" text NOTNULL: "Boom Beer Bar"=1, "Der Wichtelmann"=1, "Hygge og Humle"=1, "The White Hart"=1
+"id" int PK
+"name" text NOTNULL
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 |
@@ -205,15 +200,14 @@ columns:
 "title" text NOTNULL: "Product Director"=2, "Warehouse Manager"=2, "Code Tester"=1, "Delivery Manager"=1, "Forklift Operator"=1, "IT Developer"=1, "IT Manager"=1, "IT Technician"=1, "Managing Director"=1, "Operations Chief"=1, "Sales Manager"=1, "Scrum Master"=1, "Sys Admin"=1
 
 indexes: none
-fk: "emp_id"→"employees"."id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| emp_id | 147 | 142 | 143 |
-| start_ | 2016-11-01 | 2012-04-01 | 2014-04-01 |
-| end_ | null | null | 2015-10-01 |
-| title | Operations Chief | Managing Director | Code Tester |
+| emp_id | 147 | 145 | 143 |
+| start_ | 2016-11-01 | 2019-02-01 | 2010-07-01 |
+| end_ | null | null | 2014-01-01 |
+| title | Operations Chief | Scrum Master | IT Technician |
 
 # "employees"  (rows=14)
 
@@ -224,24 +218,22 @@ columns:
 "supervisor_id" int FK: 146=3, 142=2, 143=2, 144=2, 147=2, 151=2, nulls=1, 142..151
 
 indexes: "supervisor_id"
-fk: "supervisor_id"→"employees"."id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 155 | 147 | 143 |
-| name | Susanne Hoff | Ursula Mwbesi | Mogens Juel |
-| title | Janitor | Operations Chief | IT Manager |
-| supervisor_id | 146 | 142 | 147 |
+| id | 155 | 145 | 149 |
+| name | Susanne Hoff | Zoe Thorston | Kurt Zollman |
+| title | Janitor | IT Developer | Forklift Operator |
+| supervisor_id | 146 | 143 | 146 |
 
 # "gender_dim"  (rows=2)
 
 columns:
-"letter" text PK: unique identifier
-"name" text: "Female"=1, "Male"=1
+"letter" text PK
+"name" text
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 |
@@ -259,16 +251,15 @@ columns:
 "qty" float NOTNULL: 31 distinct, 3..72, avg=36.2389, median=42
 
 indexes: "location_id", "product_id", "purchase_id"
-fk: "product_id"→"products"."id", "purchase_id"→"purchases"."id", "location_id"→"locations"."id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 1484 | 1340 | 1463 |
-| location_id | 245 | 40 | 224 |
-| product_id | 7870 | 6600 | 4160 |
-| purchase_id | 780 | 753 | 776 |
-| qty | 48 | 16 | 30 |
+| id | 1484 | 1232 | 1439 |
+| location_id | 245 | 219 | 87 |
+| product_id | 7870 | 7790 | 7870 |
+| purchase_id | 780 | 734 | 770 |
+| qty | 48 | 48 | 48 |
 
 # "inventory_totals"  (rows=10)
 
@@ -282,8 +273,8 @@ GROUP BY i.product_id;
 ```
 
 columns:
-"product_id" int: unique identifier, 4040..7950
-"qty" float: 300=2, 500=2, 100=1, 200=1, 400=1, 536=1, 559=1, 700=1
+"product_id" int
+"qty" float
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 | row 9 | row 10 |
@@ -327,16 +318,16 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 1484 | 1457 | 1151 |
-| product_id | 7870 | 7950 | 7870 |
-| product_name | Ghost of Hops | Pale Rider Rides | Ghost of Hops |
-| purchase_id | 780 | 775 | 719 |
-| purchased | 2018-12-29 | 2018-11-30 | 2017-12-19 |
-| location_id | 245 | 63 | 23 |
-| warehouse | 2 | 1 | 1 |
-| aisle | D | B | A |
-| position | 21 | 31 | 23 |
-| qty | 48 | 6 | 48 |
+| id | 1484 | 1370 | 1214 |
+| product_id | 7870 | 5430 | 4040 |
+| product_name | Ghost of Hops | Hercule Trippel | Coalminers Sweat |
+| purchase_id | 780 | 758 | 731 |
+| purchased | 2018-12-29 | 2018-08-25 | 2018-03-21 |
+| location_id | 245 | 193 | 232 |
+| warehouse | 2 | 2 | 2 |
+| aisle | D | C | D |
+| position | 21 | 1 | 8 |
+| qty | 48 | 48 | 8 |
 
 # "locations"  (rows=256)
 
@@ -344,35 +335,33 @@ columns:
 "id" int PK: unique identifier, 1..256
 "warehouse" int NOTNULL: 1=128, 2=128
 "aisle" text NOTNULL: "A"=64, "B"=64, "C"=64, "D"=64
-"position" int NOTNULL: 32 distinct, 1..32, avg=16.5, median=16.5, 1=8, 2=8, 3=8, 4=8, 5=8, 6=8, 7=8, 8=8, 9=8, 10=8
+"position" int NOTNULL: 32 distinct, 1..32, avg=16.5, median=16.5
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 256 | 109 | 17 |
-| warehouse | 2 | 1 | 1 |
-| aisle | D | D | A |
-| position | 32 | 13 | 17 |
+| id | 256 | 113 | 208 |
+| warehouse | 2 | 1 | 2 |
+| aisle | D | D | C |
+| position | 32 | 17 | 16 |
 
 # "monthly_budget"  (rows=48)
 
 columns:
 "product_id" int PK FK: 6520=24, 6600=24
-"mth" text PK: iso-date, 24 distinct, "2018-01-01"=2, "2018-02-01"=2, "2018-03-01"=2, "2018-04-01"=2, "2018-05-01"=2, "2018-06-01"=2, "2018-07-01"=2, "2018-08-01"=2, "2018-09-01"=2, "2018-10-01"=2
+"mth" text PK: iso-date, 24 distinct
 "qty" float NOTNULL: 6=12, 20=12, 30=8, 50=6, 40=4, 45=2, 55=2, 60=2, 6..60
 
 indexes: none
-fk: "product_id"→"products"."id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
 | product_id | 6600 | 6600 | 6520 |
-| mth | 2019-12-01 | 2019-12-01 | 2018-11-01 |
-| qty | 20 | 20 | 30 |
+| mth | 2019-12-01 | 2019-08-01 | 2019-06-01 |
+| qty | 20 | 20 | 55 |
 
 # "monthly_orders"  (rows=10)
 
@@ -388,9 +377,9 @@ GROUP BY ol.product_id, strftime('%Y-%m-01', o.ordered);
 ```
 
 columns:
-"product_id" int: 4280=2, 5430=2, 6520=2, 6600=2, 5310=1, 7950=1, 4280..7950
-"mth" text: "2019-02-01"=4, "2019-01-01"=3, "2019-03-01"=3
-"qty" float: 40=4, 16=1, 60=1, 150=1, 230=1, 250=1, 260=1
+"product_id" int
+"mth" text
+"qty" float
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 | row 9 | row 10 |
@@ -403,18 +392,17 @@ all rows:
 
 columns:
 "product_id" int PK FK: 4040=36, 4160=36, 4280=36, 5310=36, 5430=36, 6520=36, 6600=36, 7790=36, 7870=36, 7950=36, 4040..7950
-"mth" text PK: iso-date, 36 distinct, "2016-01-01"=10, "2016-02-01"=10, "2016-03-01"=10, "2016-04-01"=10, "2016-05-01"=10, "2016-06-01"=10, "2016-07-01"=10, "2016-08-01"=10, "2016-09-01"=10, "2016-10-01"=10
+"mth" text PK: iso-date, 36 distinct
 "qty" int NOTNULL: 80 distinct, 0..247, avg=28.1778, median=21
 
 indexes: none
-fk: "product_id"→"products"."id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_id | 7950 | 5430 | 6520 |
-| mth | 2018-12-01 | 2017-07-01 | 2018-04-01 |
-| qty | 50 | 27 | 18 |
+| product_id | 7950 | 5310 | 7790 |
+| mth | 2018-12-01 | 2016-06-01 | 2018-07-01 |
+| qty | 50 | 48 | 73 |
 
 # "orderlines"  (rows=18)
 
@@ -426,27 +414,25 @@ columns:
 "amount" float NOTNULL: 320=2, 480=2, 1750=2, 650=1, 680=1, 750=1, 875=1, 960=1, 1150=1, 1275=1, 1300=1, 1480=1, 1925=1, 2250=1, 2400=1, 320..2400
 
 indexes: "order_id"
-fk: "order_id"→"orders"."id", "product_id"→"products"."id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 9299 | 9287 | 9298 |
-| order_id | 430 | 426 | 429 |
-| product_id | 7950 | 6600 | 5430 |
-| qty | 50 | 16 | 40 |
-| amount | 480 | 320 | 875 |
+| id | 9299 | 9122 | 9298 |
+| order_id | 430 | 421 | 429 |
+| product_id | 7950 | 6520 | 5430 |
+| qty | 50 | 140 | 40 |
+| amount | 480 | 2250 | 875 |
 
 # "orders"  (rows=10)
 
 columns:
-"id" int PK: unique identifier, 421..430
-"customer_id" int NOTNULL FK: 50741=4, 50042=3, 51069=3, 50042..51069
-"ordered" text: "2019-01-15"=1, "2019-01-17"=1, "2019-01-18"=1, "2019-01-28"=1, "2019-02-17"=1, "2019-02-26"=1, "2019-03-02"=1, "2019-03-12"=1, "2019-03-22"=1, "2019-03-29"=1
-"delivery" text: all NULL
+"id" int PK
+"customer_id" int NOTNULL FK
+"ordered" text
+"delivery" text
 
 indexes: "customer_id"
-fk: "customer_id"→"customers"."id"
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 | row 9 | row 10 |
@@ -463,13 +449,12 @@ columns:
 "name" text NOTNULL: "Bottle 330cl"=1, "Bottle 500cl"=1, "Box Large"=1, "Box Medium"=1, "Box Small"=1, "Gift Box"=1, "Gift Carton"=1, "Pallet Mix MS"=1, "Pallet Mix SG"=1, "Pallet of L"=1, "Pallet of M"=1
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 534 | 502 | 523 |
-| name | Pallet Mix SG | Bottle 500cl | Box Small |
+| id | 534 | 522 | 532 |
+| name | Pallet Mix SG | Box Medium | Pallet of M |
 
 # "packaging_relations"  (rows=12)
 
@@ -479,14 +464,13 @@ columns:
 "qty" int NOTNULL: 20=3, 2=1, 3=1, 8=1, 10=1, 12=1, 16=1, 30=1, 36=1, 72=1, 2..72
 
 indexes: "contains_id"
-fk: "packaging_id"→"packaging"."id", "contains_id"→"packaging"."id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| packaging_id | 534 | 534 | 524 |
-| contains_id | 524 | 523 | 511 |
-| qty | 16 | 20 | 8 |
+| packaging_id | 534 | 531 | 532 |
+| contains_id | 524 | 521 | 522 |
+| qty | 16 | 12 | 20 |
 
 # "picking_line"  (rows=21)
 
@@ -499,27 +483,25 @@ columns:
 "qty" float NOTNULL: 14=4, 20=2, 24=2, 30=2, 36=2, 39=2, 5=1, 8=1, 18=1, 22=1, 26=1, 35=1, 42=1, 5..42
 
 indexes: "location_id", "order_id", "product_id"
-fk: "location_id"→"locations"."id", "picklist_id"→"picking_list"."id", "product_id"→"products"."id", "order_id"→"orders"."id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| picklist_id | 842 | 841 | 842 |
-| line_no | 12 | 6 | 1 |
-| location_id | 233 | 186 | 16 |
-| order_id | 423 | 421 | 423 |
-| product_id | 6520 | 6520 | 6520 |
-| qty | 18 | 24 | 22 |
+| picklist_id | 842 | 842 | 842 |
+| line_no | 12 | 9 | 12 |
+| location_id | 233 | 163 | 233 |
+| order_id | 423 | 423 | 423 |
+| product_id | 6520 | 4280 | 6520 |
+| qty | 18 | 30 | 18 |
 
 # "picking_list"  (rows=2)
 
 columns:
-"id" int PK: unique identifier, 841..842
-"created" text NOTNULL: "2019-01-16 14:03:41"=1, "2019-01-19 15:57:42"=1
-"picker_emp_id" int FK: unique identifier, 149..152
+"id" int PK
+"created" text NOTNULL
+"picker_emp_id" int FK
 
 indexes: "picker_emp_id"
-fk: "picker_emp_id"→"employees"."id"
 
 all rows:
 | column | row 1 | row 2 |
@@ -538,26 +520,24 @@ columns:
 "pickline_no" int: 1=2, 2=2, 3=2, 4=2, 5=2, 6=2, 7=2, 8=2, 9=2, 10=1, 11=1, 12=1, nulls=42, 1..12
 
 indexes: "location_id", ("picklist_id","pickline_no")
-fk: "location_id"→"locations"."id", "picklist_id"→"picking_list"."id", ("picklist_id","pickline_no")→"picking_line".("picklist_id","line_no")
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| picklist_id | 842 | 842 | 841 |
-| log_time | 2019-01-19 16:11:42 | 2019-01-19 16:01:53 | 2019-01-16 14:07:50 |
-| activity | A | P | P |
-| location_id | null | 16 | 65 |
-| pickline_no | null | 1 | 4 |
+| picklist_id | 842 | 842 | 842 |
+| log_time | 2019-01-19 16:11:42 | 2019-01-19 16:09:53 | 2019-01-19 16:04:00 |
+| activity | A | D | D |
+| location_id | null | 233 | 65 |
+| pickline_no | null | null | null |
 
 # "product_alcohol"  (rows=10)
 
 columns:
-"product_id" int PK FK: unique identifier, 4040..7950
-"sales_volume" float NOTNULL: 330=6, 500=4
-"abv" float NOTNULL: 4.5=2, 5=2, 4=1, 5.5=1, 6=1, 6.5=1, 7=1, 8.5=1, 4..8.5
+"product_id" int PK FK
+"sales_volume" float NOTNULL
+"abv" float NOTNULL
 
 indexes: none
-fk: "product_id"→"products"."id"
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 | row 9 | row 10 |
@@ -569,11 +549,10 @@ all rows:
 # "product_groups"  (rows=4)
 
 columns:
-"id" int PK: unique identifier, 142..232
-"name" text NOTNULL: "Belgian"=1, "IPA"=1, "Stout"=1, "Wheat"=1
+"id" int PK
+"name" text NOTNULL
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 |
@@ -584,12 +563,11 @@ all rows:
 # "product_minimums"  (rows=2)
 
 columns:
-"product_id" int PK FK: unique identifier, 6520..6600
-"qty_minimum" float NOTNULL: 30=1, 100=1
-"qty_purchase" float NOTNULL: 100=1, 400=1
+"product_id" int PK FK
+"qty_minimum" float NOTNULL
+"qty_purchase" float NOTNULL
 
 indexes: none
-fk: "product_id"→"products"."id"
 
 all rows:
 | column | row 1 | row 2 |
@@ -601,12 +579,11 @@ all rows:
 # "products"  (rows=10)
 
 columns:
-"id" int PK: unique identifier, 4040..7950
-"name" text NOTNULL: "Coalminers Sweat"=1, "Der Helle Kumpel"=1, "Ghost of Hops"=1, "Hazy Pink Cloud"=1, "Hercule Trippel"=1, "Hoppy Crude Oil"=1, "Monks and Nuns"=1, "Pale Rider Rides"=1, "Reindeer Fuel"=1, "Summer in India"=1
-"group_id" int NOTNULL FK: 142=3, 232=3, 152=2, 202=2, 142..232
+"id" int PK
+"name" text NOTNULL
+"group_id" int NOTNULL FK
 
 indexes: "group_id"
-fk: "group_id"→"product_groups"."id"
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 | row 9 | row 10 |
@@ -626,17 +603,16 @@ columns:
 "cost" float NOTNULL: 142 distinct, 60..1001, avg=446.222, median=441.5
 
 indexes: "brewery_id", "product_id"
-fk: "product_id"→"products"."id", "brewery_id"→"breweries"."id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 780 | 755 | 708 |
-| purchased | 2018-12-29 | 2018-07-31 | 2017-10-15 |
-| brewery_id | 523 | 536 | 518 |
-| product_id | 7870 | 7950 | 5430 |
-| qty | 54 | 87 | 71 |
-| cost | 391 | 682 | 482 |
+| id | 780 | 777 | 695 |
+| purchased | 2018-12-29 | 2018-12-23 | 2017-07-18 |
+| brewery_id | 523 | 536 | 523 |
+| product_id | 7870 | 4280 | 7790 |
+| qty | 54 | 19 | 68 |
+| cost | 391 | 101 | 435 |
 
 # "purchases_with_dims"  (rows=180)
 
@@ -674,16 +650,16 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 780 | 616 | 695 |
-| purchased | 2018-12-29 | 2016-04-02 | 2017-07-18 |
-| brewery_id | 523 | 536 | 523 |
-| brewery_name | Happy Hoppy Hippo | Brewing Barbarian | Happy Hoppy Hippo |
-| product_id | 7870 | 4160 | 7790 |
-| product_name | Ghost of Hops | Reindeer Fuel | Summer in India |
-| group_id | 232 | 142 | 232 |
-| group_name | IPA | Stout | IPA |
-| qty | 54 | 72 | 68 |
-| cost | 391 | 475 | 435 |
+| id | 780 | 743 | 774 |
+| purchased | 2018-12-29 | 2018-05-27 | 2018-11-28 |
+| brewery_id | 523 | 523 | 523 |
+| brewery_name | Happy Hoppy Hippo | Happy Hoppy Hippo | Happy Hoppy Hippo |
+| product_id | 7870 | 6600 | 7790 |
+| product_name | Ghost of Hops | Hazy Pink Cloud | Summer in India |
+| group_id | 232 | 202 | 232 |
+| group_name | IPA | Wheat | IPA |
+| qty | 54 | 17 | 31 |
+| cost | 391 | 122 | 217 |
 
 # "server_heartbeat"  (rows=14)
 
@@ -692,22 +668,20 @@ columns:
 "beat_time" text NOTNULL: "2019-04-10 13:00"=2, "2019-04-10 13:20"=2, "2019-04-10 13:55"=2, "2019-04-10 13:05"=1, "2019-04-10 13:10"=1, "2019-04-10 13:15"=1, "2019-04-10 13:25"=1, "2019-04-10 13:35"=1, "2019-04-10 13:40"=1, "2019-04-10 13:45"=1, "2019-04-10 13:50"=1
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| server | 10.0.0.142 | 10.0.0.100 | 10.0.0.100 |
-| beat_time | 2019-04-10 13:55 | 2019-04-10 13:55 | 2019-04-10 13:10 |
+| server | 10.0.0.142 | 10.0.0.142 | 10.0.0.142 |
+| beat_time | 2019-04-10 13:55 | 2019-04-10 13:55 | 2019-04-10 13:20 |
 
 # "stock"  (rows=1)
 
 columns:
-"symbol" text PK: unique identifier
-"company" text NOTNULL: "Good Beer Trading Co"=1
+"symbol" text PK
+"company" text NOTNULL
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 |
@@ -723,14 +697,13 @@ columns:
 "price" float NOTNULL: 14.2=2, 14.3=2, 14.8=2, 13.7=1, 14=1, 14.4=1, 14.9=1, 15=1, 15.2=1, 15.5=1, 15.6=1, 15.7=1, 13.7..15.7
 
 indexes: none
-fk: "symbol"→"stock"."symbol"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
 | symbol | BEER | BEER | BEER |
-| day | 2019-04-19 | 2019-04-09 | 2019-04-16 |
-| price | 15.5 | 14.8 | 13.7 |
+| day | 2019-04-19 | 2019-04-08 | 2019-04-15 |
+| price | 15.5 | 14.8 | 15 |
 
 # "total_sales"  (rows=10)
 
@@ -746,9 +719,9 @@ GROUP BY ms.product_id;
 ```
 
 columns:
-"product_id" int: unique identifier, 4040..7950
-"product_name" text: "Coalminers Sweat"=1, "Der Helle Kumpel"=1, "Ghost of Hops"=1, "Hazy Pink Cloud"=1, "Hercule Trippel"=1, "Hoppy Crude Oil"=1, "Monks and Nuns"=1, "Pale Rider Rides"=1, "Reindeer Fuel"=1, "Summer in India"=1
-"total_qty" int: 1485=2, 303=1, 324=1, 813=1, 883=1, 961=1, 1056=1, 1230=1, 1604=1
+"product_id" int
+"product_name" text
+"total_qty" int
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 | row 9 | row 10 |
@@ -760,11 +733,10 @@ all rows:
 # "web_apps"  (rows=1)
 
 columns:
-"id" int PK: unique identifier, 542..542
-"name" text NOTNULL: "Webshop"=1
+"id" int PK
+"name" text NOTNULL
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 |
@@ -777,35 +749,33 @@ all rows:
 columns:
 "app_id" int PK: 542=120
 "page_no" int PK: 1=30, 2=30, 3=30, 4=30, 1..4
-"day" text PK: iso-date, 30 distinct, "2019-04-01"=4, "2019-04-02"=4, "2019-04-03"=4, "2019-04-04"=4, "2019-04-05"=4, "2019-04-06"=4, "2019-04-07"=4, "2019-04-08"=4, "2019-04-09"=4, "2019-04-10"=4
+"day" text PK: iso-date, 30 distinct
 "counter" int NOTNULL: 112 distinct, 455..7833, avg=3395.19, median=3256
 
 indexes: none
-fk: ("app_id","page_no")→"web_pages".("app_id","page_no")
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
 | app_id | 542 | 542 | 542 |
 | page_no | 4 | 4 | 3 |
-| day | 2019-04-30 | 2019-04-26 | 2019-04-25 |
-| counter | 586 | 555 | 2929 |
+| day | 2019-04-30 | 2019-04-29 | 2019-04-02 |
+| counter | 586 | 581 | 1887 |
 
 # "web_demographics"  (rows=2)
 
 columns:
-"day" text PK: iso-date, unique identifier
-"m_tw_cnt" int: 1232=1, 1438=1
-"m_tw_qty" int: 86=1, 142=1
-"m_fb_cnt" int: 1017=1, 1198=1
-"m_fb_qty" int: 64=1, 70=1
-"f_tw_cnt" int: 651=1, 840=1
-"f_tw_qty" int: 76=1, 92=1
-"f_fb_cnt" int: 564=1, 752=1
-"f_fb_qty" int: 68=1, 78=1
+"day" text PK
+"m_tw_cnt" int
+"m_tw_qty" int
+"m_fb_cnt" int
+"m_fb_qty" int
+"f_tw_cnt" int
+"f_tw_qty" int
+"f_fb_cnt" int
+"f_fb_qty" int
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 |
@@ -823,13 +793,12 @@ all rows:
 # "web_devices"  (rows=2)
 
 columns:
-"day" text PK: iso-date, unique identifier
-"pc" int: 967=1, 1042=1
-"tablet" int: 812=1, 1102=1
-"phone" int: 1610=1, 2159=1
+"day" text PK
+"pc" int
+"tablet" int
+"phone" int
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 |
@@ -868,10 +837,10 @@ samples:
 |---|---|---|---|
 | app_id | 542 | 542 | 542 |
 | app_name | Webshop | Webshop | Webshop |
-| page_no | 4 | 4 | 4 |
-| friendly_url | /About | /About | /About |
-| day | 2019-04-30 | 2019-04-06 | 2019-04-22 |
-| counter | 586 | 491 | 527 |
+| page_no | 4 | 4 | 2 |
+| friendly_url | /About | /About | /Categories |
+| day | 2019-04-30 | 2019-04-09 | 2019-04-24 |
+| counter | 586 | 501 | 4442 |
 
 # "web_page_visits"  (rows=23)
 
@@ -882,25 +851,23 @@ columns:
 "page_no" int NOTNULL: 2=12, 3=6, 1=3, 4=2, 1..4
 
 indexes: ("app_id","page_no")
-fk: ("app_id","page_no")→"web_pages".("app_id","page_no")
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
 | client_ip | 85.237.86.200 | 85.237.86.200 | 104.130.89.12 |
-| visit_time | 2019-04-20 12:02:02 | 2019-04-20 11:58:09 | 2019-04-20 08:55:02 |
+| visit_time | 2019-04-20 12:02:02 | 2019-04-20 11:57:26 | 2019-04-20 09:43:46 |
 | app_id | 542 | 542 | 542 |
-| page_no | 3 | 2 | 4 |
+| page_no | 3 | 1 | 2 |
 
 # "web_pages"  (rows=4)
 
 columns:
-"app_id" int PK FK: 542=4
-"page_no" int PK: 1=1, 2=1, 3=1, 4=1, 1..4
-"friendly_url" text NOTNULL: "/About"=1, "/Breweries"=1, "/Categories"=1, "/Shop"=1
+"app_id" int PK FK
+"page_no" int PK
+"friendly_url" text NOTNULL
 
 indexes: none
-fk: "app_id"→"web_apps"."id"
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 |
@@ -932,10 +899,10 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| yr | 2018 | 2016 | 2017 |
-| product_id | 7950 | 5310 | 4160 |
-| product_name | Pale Rider Rides | Monks and Nuns | Reindeer Fuel |
-| yr_qty | 491 | 478 | 582 |
+| yr | 2018 | 2018 | 2016 |
+| product_id | 7950 | 7790 | 6600 |
+| product_name | Pale Rider Rides | Summer in India | Hazy Pink Cloud |
+| yr_qty | 491 | 263 | 121 |
 
 - Skipped 1 table(s) due to DDL generation errors: "emp_hire_periods_with_name"
 

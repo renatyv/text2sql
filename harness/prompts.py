@@ -36,15 +36,14 @@ The MySQL server is at $MYSQL_HOST:$MYSQL_PORT (user $MYSQL_USER, password in
 $MYSQL_PWD). Each query should finish within {timeout}s.
 
 Workflow:
-1. Use any supplied database context to choose tables and columns. It may be
+1. Use any supplied database context first to choose tables and columns. It may be
    incomplete or stale, so query the database for anything it does not fully
    answer (missing columns, uncertain values/joins). If context is absent or
    insufficient, inspect only relevant tables. Batch independent DESCRIBE/SHOW
    calls in one turn. Use `SHOW TABLES` only when you cannot identify tables
    otherwise.
 2. Reason about joins, filters, and aggregations needed to answer the question.
-3. VALIDATION IS MANDATORY and supplied context never replaces it: by turn
-   {validation_turn} execute the COMPLETE candidate query with a LIMIT against
+3. VALIDATION IS MANDATORY and supplied context never replaces it. By turn {validation_turn}, run the complete candidate query with a LIMIT against
    the database — even when the supplied context already describes the schema.
    Before answering, check the returned rows against the question:
     - Projection: the SELECT list returns exactly the columns the question
@@ -54,8 +53,8 @@ Workflow:
     - Values: rows are non-empty; literal values (strings, dates, IDs) match
       the question or database exactly.
    Then verify the query against the error checklist. If any check changes
-   the query, execute the complete corrected query again (turn {repair_turn}
-   is reserved for this repair). Never submit a query you have not executed.
+   the query. Use turn {repair_turn} only to repair and execute the complete
+   corrected query again. Never submit a query you have not executed.
 4. Output the last successfully executed complete query inside exactly one answer block.
 
 <ans>
@@ -88,14 +87,13 @@ The database is the read-only file at $BEAVER_DB_PATH. Each query should finish
 within {timeout}s.
 
 Workflow:
-1. Use any supplied database context to choose tables and columns. It may be
+1. Use any supplied database context first to choose tables and columns. It may be
    incomplete or stale, so query the database for anything it does not fully
    answer (missing columns, uncertain values/joins). If context is absent or
    insufficient, inspect only relevant tables. Batch independent lookups in
    one turn. List tables only when you cannot identify them otherwise.
 2. Reason about joins, filters, and aggregations needed to answer the question.
-3. VALIDATION IS MANDATORY and supplied context never replaces it: by turn
-   {validation_turn} execute the COMPLETE candidate query with a LIMIT against
+3. VALIDATION IS MANDATORY and supplied context never replaces it. By turn {validation_turn}, run the complete candidate query with a LIMIT against
    the database — even when the supplied context already describes the schema.
    Before answering, check the returned rows against the question:
     - Projection: the SELECT list returns exactly the columns the question
@@ -105,8 +103,8 @@ Workflow:
     - Values: rows are non-empty; literal values (strings, dates, IDs) match
       the question or database exactly.
    Then verify the query against the error checklist. If any check changes
-   the query, execute the complete corrected query again (turn {repair_turn}
-   is reserved for this repair). Never submit a query you have not executed.
+   the query. Use turn {repair_turn} only to repair and execute the complete
+   corrected query again. Never submit a query you have not executed.
 4. Output the last successfully executed complete query inside exactly one answer block.
 
 <ans>
@@ -145,7 +143,7 @@ def _agent_system(timeout: int, max_turns: int, checklist: bool, engine: str = "
         timeout=timeout,
         max_turns=max_turns,
         penultimate_turn=max(0, max_turns - 1),
-        validation_turn=max(1, max_turns - 3),
+        validation_turn=max(1, max_turns - 2),
         repair_turn=max(1, max_turns - 1),
         checklist_block=(_AGENT_CHECKLIST_BLOCK + _ERROR_CHECKLIST[engine] + "\n") if checklist else "",
     )
@@ -171,6 +169,10 @@ def _zero_system(checklist: bool, engine: str = "mysql") -> str:
 
 def _profile_for(profile_key: str) -> str:
     return config.profile_path_for(profile_key).read_text(encoding="utf-8")
+
+
+def _schema_links_for(profile_key: str) -> str:
+    return config.schema_links_path_for(profile_key).read_text(encoding="utf-8")
 
 
 def _metadata_for(profile_key: str) -> str:
@@ -221,6 +223,11 @@ def agent_prompts(db_label: str, question: str, arm: str, max_turns: int,
         context.append(
             f"===== BEGIN DB PROFILE ({key}) =====\n{_profile_for(key)}\n"
             "===== END DB PROFILE ====="
+        )
+    if spec.get("links"):
+        context.append(
+            f"===== BEGIN SCHEMA LINKS ({key}) =====\n{_schema_links_for(key)}\n"
+            "===== END SCHEMA LINKS ====="
         )
     if spec["metadata"]:
         context.append(

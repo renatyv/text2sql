@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:26:48.372079Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:31:57.614331Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-k6rvkti8/BowlingLeague.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-bfztb5hu/BowlingLeague.sqlite
 schema: main
 ---
 
@@ -19,25 +19,24 @@ schema: main
 # "Bowler_Scores"  (rows=1344)
 
 columns:
-"MatchID" int PK: 56 distinct, 1..56, avg=28.5, median=28.5, 1=24, 2=24, 3=24, 4=24, 5=24, 6=24, 7=24, 8=24, 9=24, 10=24
+"MatchID" int PK: 56 distinct, 1..56, avg=28.5, median=28.5
 "GameNumber" smallint PK: 1=448, 2=448, 3=448, 1..3
-"BowlerID" int PK FK: 32 distinct, 1..32, avg=16.5, median=16.5, 1=42, 2=42, 3=42, 4=42, 5=42, 6=42, 7=42, 8=42, 9=42, 10=42
+"BowlerID" int PK FK: 32 distinct, 1..32, avg=16.5, median=16.5
 "RawScore" smallint: 61 distinct, 135..195, avg=154.507, median=150
 "HandiCapScore" smallint: 70 distinct, 161..231, avg=195.332, median=195
 "WonGame" bool NOTNULL: 1=695, 0=649
 
 indexes: "BowlerID", ("MatchID","GameNumber")
-fk: ("MatchID","GameNumber")→"Match_Games".("MatchID","GameNumber"), "BowlerID"→"Bowlers"."BowlerID"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| MatchID | 56 | 33 | 11 |
-| GameNumber | 3 | 2 | 1 |
-| BowlerID | 32 | 7 | 24 |
-| RawScore | 148 | 160 | 169 |
-| HandiCapScore | 200 | 188 | 196 |
-| WonGame | true | false | true |
+| MatchID | 56 | 32 | 26 |
+| GameNumber | 3 | 1 | 1 |
+| BowlerID | 32 | 29 | 7 |
+| RawScore | 148 | 151 | 190 |
+| HandiCapScore | 200 | 198 | 220 |
+| WonGame | true | true | true |
 
 # "Bowlers"  (rows=34)
 
@@ -58,52 +57,49 @@ columns:
 "BowlerCurrentHcp" smallint: 39=4, 51=4, 28=3, 32=3, 38=3, 45=3, 52=3, 0=2, 47=2, 30=1, 33=1, 34=1, 37=1, 43=1, 44=1, 46=1, 0..52
 
 indexes: "BowlerLastName", "TeamID"
-fk: "TeamID"→"Teams"."TeamID"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| BowlerID | 34 | 4 | 6 |
-| BowlerLastName | Patterson | Sheskey | Patterson |
-| BowlerFirstName | Maria | Sara | Neil |
-| BowlerMiddleInit | null | J | null |
-| BowlerAddress | 16 Maple Lane | 17950 N 59th | 16 Maple Lane |
-| BowlerCity | Auburn | Seattle | Auburn |
+| BowlerID | 34 | 9 | 13 |
+| BowlerLastName | Patterson | Black | Hallmark |
+| BowlerFirstName | Maria | Alastair | Elizabeth |
+| BowlerMiddleInit | null | null | null |
+| BowlerAddress | 16 Maple Lane | 4726 - 11th Ave. N.E. | Route 2, Box 203B |
+| BowlerCity | Auburn | Seattle | Woodinville |
 | BowlerState | WA | WA | WA |
-| BowlerZip | 98002 | 98011 | 98002 |
-| BowlerPhoneNumber | (206) 555-3487 | (206) 555-9893 | (206) 555-3487 |
-| TeamID | 7 | 1 | 2 |
-| BowlerTotalPins | 0 | 5534 | 6150 |
+| BowlerZip | 98002 | 98105 | 98072 |
+| BowlerPhoneNumber | (206) 555-3487 | (206) 555-1189 | (206) 555-8990 |
+| TeamID | 7 | 3 | 4 |
+| BowlerTotalPins | 0 | 5874 | 5928 |
 | BowlerGamesBowled | 0 | 39 | 39 |
-| BowlerCurrentAverage | 0 | 142 | 158 |
-| BowlerCurrentHcp | 0 | 52 | 38 |
+| BowlerCurrentAverage | 0 | 151 | 152 |
+| BowlerCurrentHcp | 0 | 44 | 43 |
 
 # "Match_Games"  (rows=168)
 
 columns:
-"MatchID" int PK: 56 distinct, 1..56, avg=28.5, median=28.5, 1=3, 2=3, 3=3, 4=3, 5=3, 6=3, 7=3, 8=3, 9=3, 10=3
+"MatchID" int PK: 56 distinct, 1..56, avg=28.5, median=28.5
 "GameNumber" smallint PK: 1=56, 2=56, 3=56, 1..3
 "WinningTeamID" int: 1=21, 2=21, 3=21, 4=21, 5=21, 6=21, 7=21, 8=21, 1..8
 
 indexes: "WinningTeamID", "MatchID"
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| MatchID | 56 | 22 | 46 |
-| GameNumber | 3 | 2 | 1 |
-| WinningTeamID | 8 | 5 | 5 |
+| MatchID | 56 | 6 | 16 |
+| GameNumber | 3 | 3 | 3 |
+| WinningTeamID | 8 | 4 | 4 |
 
 # "Teams"  (rows=10)
 
 columns:
-"TeamID" int PK: unique identifier, 1..10, avg=5.5, median=5.5
-"TeamName" text NOTNULL: "Barracudas"=1, "Dolphins"=1, "Huckleberrys"=1, "Manatees"=1, "Marlins"=1, "Never Show Ups"=1, "Orcas"=1, "Sharks"=1, "Swordfish"=1, "Terrapins"=1
-"CaptainID" int: unique identifier, 2..32, avg=16.8, median=18
+"TeamID" int PK
+"TeamName" text NOTNULL
+"CaptainID" int
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 | row 9 | row 10 |
@@ -120,14 +116,13 @@ columns:
 "TourneyLocation" text: "Bolero Lanes"=3, "Imperial Lanes"=3, "Red Rooster Lanes"=3, "Sports World Lanes"=3, "Thunderbird Lanes"=3, "Totem Lanes"=3, "Acapulco Lanes"=2
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| TourneyID | 20 | 20 | 6 |
-| TourneyDate | 2018-08-16 | 2018-08-16 | 2017-10-09 |
-| TourneyLocation | Totem Lanes | Totem Lanes | Totem Lanes |
+| TourneyID | 20 | 1 | 2 |
+| TourneyDate | 2018-08-16 | 2017-09-04 | 2017-09-11 |
+| TourneyLocation | Totem Lanes | Red Rooster Lanes | Thunderbird Lanes |
 
 # "Tourney_Matches"  (rows=57)
 
@@ -139,16 +134,15 @@ columns:
 "EvenLaneTeamID" int FK: 1=7, 2=7, 3=7, 4=7, 5=7, 6=7, 7=7, 8=7, 9=1, 1..9
 
 indexes: "OddLaneTeamID", "EvenLaneTeamID", "TourneyID"
-fk: "EvenLaneTeamID"→"Teams"."TeamID", "OddLaneTeamID"→"Teams"."TeamID", "TourneyID"→"Tournaments"."TourneyID"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| MatchID | 57 | 12 | 5 |
-| TourneyID | 11 | 3 | 2 |
-| Lanes | 19-20 | 21-22 | 21-22 |
-| OddLaneTeamID | 10 | 5 | 3 |
-| EvenLaneTeamID | 9 | 8 | 1 |
+| MatchID | 57 | 2 | 31 |
+| TourneyID | 11 | 1 | 8 |
+| Lanes | 19-20 | 03-04 | 25-26 |
+| OddLaneTeamID | 10 | 3 | 7 |
+| EvenLaneTeamID | 9 | 4 | 5 |
 
 # "WAZips"  (rows=523)
 
@@ -158,13 +152,12 @@ columns:
 "State" text: "WA"=523
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ZIP | 99403 | 98354 | 98118 |
-| City | Clarkston | Milton | Seattle |
+| ZIP | 99403 | 98662 | 98845 |
+| City | Clarkston | Vancouver | Palisades |
 | State | WA | WA | WA |
 
 - Skipped 4 empty table(s): "Bowler_Scores_Archive", "Match_Games_Archive", "Tournaments_Archive", "Tourney_Matches_Archive"

@@ -14,7 +14,6 @@ Spider 2.0, original .sqlite files). Comparison mode is per benchmark:
 from __future__ import annotations
 
 import re
-from collections import Counter
 from decimal import Decimal
 from datetime import date, datetime
 
@@ -81,6 +80,7 @@ def score_prediction(pred_sql: str | None, gold_sql: str | None, database: str,
             return rec
         gold_rows = gold.rows or []
         rec["gold_rows"] = len(gold_rows)
+        rec["gold_columns"] = gold.columns
 
     if not pred_sql:
         rec["pred_error"] = "no SQL extracted"
@@ -108,20 +108,35 @@ def score_prediction(pred_sql: str | None, gold_sql: str | None, database: str,
         return rec
     rec["valid_sql"] = True
     rec["pred_rows"] = len(pred.rows or [])
+    rec["pred_columns"] = pred.columns
 
     if mode == "bird":
         rec["correct"] = _compare_bird(gold_rows, pred.rows or [])
+        if not rec["correct"]:
+            rec["missing_rows"] = _json_rows(set(gold_rows or []) - set(pred.rows or []))
+            rec["extra_rows"] = _json_rows(set(pred.rows or []) - set(gold_rows or []))
     elif mode == "spider2":
         first_gold = spider2_eval.load_gold_csv(gold_csvs[0])
         rec["gold_rows"] = len(first_gold[0]) if first_gold else 0
-        rec["correct"] = bool(spider2_eval.score_pred(
+        details = spider2_eval.score_pred_details(
             pred.rows or [], gold_csvs,
             meta.get("condition_cols"), bool(meta.get("ignore_order")),
-        ))
+        )
+        rec["correct"] = bool(details["correct"])
+        selected = details["selected_index"]
+        rec["selected_gold_variant"] = ((meta.get("gold_csvs") or [])[selected]
+                                        if selected is not None else None)
+        rec["condition_cols"] = details["condition_cols"]
+        if not rec["correct"]:
+            rec["unmatched_gold_columns"] = details["unmatched_gold_columns"]
     else:
         ordered = _has_top_level_order_by(gold_sql or "")
         rec["ordered"] = ordered
         rec["correct"] = _compare(gold_rows, pred.rows or [], ordered)
+        if not rec["correct"]:
+            missing, extra = _row_diff(gold_rows, pred.rows or [])
+            rec["missing_row_sample"] = _json_row(missing[0]) if missing else None
+            rec["extra_row_sample"] = _json_row(extra[0]) if extra else None
     _add_cardinality_diagnostics(rec)
     rec["error_class"] = "correct" if rec["correct"] else _classify_error(rec, pred_sql, gold_sql or "")
     return rec
@@ -294,6 +309,28 @@ def _compare_bird(gold: list[tuple] | None, pred: list[tuple] | None) -> bool:
     values compare with NO tolerance (1.0 != 1), column order within a row
     matters. Kept deliberately faithful to the official evaluator."""
     return set(gold or []) == set(pred or [])
+
+
+def _row_diff(gold: list[tuple], pred: list[tuple]) -> tuple[list[tuple], list[tuple]]:
+    """Tolerance-aware multiset subtraction used by BEAVER diagnostics."""
+    extra = list(pred)
+    missing = []
+    for row in gold:
+        match = next((i for i, candidate in enumerate(extra)
+                      if _rows_equal(row, candidate)), None)
+        if match is None:
+            missing.append(row)
+        else:
+            extra.pop(match)
+    return missing, extra
+
+
+def _json_row(row: tuple) -> list:
+    return [_normalize_cell(value) for value in row]
+
+
+def _json_rows(rows) -> list[list]:
+    return [_json_row(row) for row in sorted(rows, key=repr)]
 
 
 # quick self-test: python -m harness.scorer

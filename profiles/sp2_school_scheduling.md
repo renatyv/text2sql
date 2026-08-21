@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:29:08.272777Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:34:20.895203Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-glin9yia/school_scheduling.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-jo9zsd3l/school_scheduling.sqlite
 schema: main
 ---
 
@@ -24,14 +24,13 @@ schema: main
 # "Buildings"  (rows=6)
 
 columns:
-"BuildingCode" text PK: unique identifier
-"BuildingName" text: "Arts and Sciences"=1, "College Center"=1, "Instructional Building"=1, "Library"=1, "PE and Wellness"=1, "Technology Building"=1
-"NumberOfFloors" int: 3=3, 2=2, 1=1, 1..3
-"ElevatorAccess" bool NOTNULL: 1=5, 0=1
-"SiteParkingAvailable" bool NOTNULL: 1=5, 0=1
+"BuildingCode" text PK
+"BuildingName" text
+"NumberOfFloors" int
+"ElevatorAccess" bool NOTNULL
+"SiteParkingAvailable" bool NOTNULL
 
 indexes: "NumberOfFloors"
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 |
@@ -50,14 +49,13 @@ columns:
 "DepartmentID" int: 3=5, 4=5, 2=4, 1=3, 5=2, 1..5
 
 indexes: "DepartmentID"
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| CategoryID | PSY | PHY | BUS |
-| CategoryDescription | Psychology | Physics | Business |
-| DepartmentID | 4 | 2 | 1 |
+| CategoryID | PSY | ART | CSC |
+| CategoryDescription | Psychology | Art | Computer Science |
+| DepartmentID | 4 | 3 | 5 |
 
 # "Class_Rooms"  (rows=47)
 
@@ -67,14 +65,13 @@ columns:
 "PhoneAvailable" bool NOTNULL: 0=27, 1=20
 
 indexes: "BuildingCode"
-fk: "BuildingCode"→"Buildings"."BuildingCode"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ClassRoomID | 3455 | 3319 | 3406 |
-| BuildingCode | CC | IB | IB |
-| PhoneAvailable | true | false | true |
+| ClassRoomID | 3455 | 1231 | 3345 |
+| BuildingCode | CC | LB | CC |
+| PhoneAvailable | true | true | false |
 
 # "Classes"  (rows=147)
 
@@ -94,34 +91,32 @@ columns:
 "SaturdaySchedule" bool NOTNULL: 0=127, 1=20
 
 indexes: "ClassRoomID", "SubjectID"
-fk: "ClassRoomID"→"Class_Rooms"."ClassRoomID", "SubjectID"→"Subjects"."SubjectID"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ClassID | 6600 | 2075 | 4000 |
-| SubjectID | 41 | 51 | 11 |
-| ClassRoomID | 3420 | 1624 | 1231 |
+| ClassID | 6600 | 4184 | 5911 |
+| SubjectID | 41 | 38 | 46 |
+| ClassRoomID | 3420 | 3415 | 3445 |
 | Credits | 5 | 5 | 5 |
-| StartDate | 2018-01-15 | 2017-09-11 | 2018-01-16 |
-| StartTime | 13:00:00 | 07:00:00 | 10:00:00 |
-| Duration | 140 | 140 | 50 |
-| MondaySchedule | true | true | false |
-| TuesdaySchedule | false | false | true |
-| WednesdaySchedule | true | false | true |
-| ThursdaySchedule | false | false | true |
+| StartDate | 2018-01-15 | 2018-01-15 | 2018-01-15 |
+| StartTime | 13:00:00 | 14:00:00 | 12:00:00 |
+| Duration | 140 | 50 | 50 |
+| MondaySchedule | true | true | true |
+| TuesdaySchedule | false | true | true |
+| WednesdaySchedule | true | true | true |
+| ThursdaySchedule | false | true | true |
 | FridaySchedule | false | true | true |
-| SaturdaySchedule | false | false | true |
+| SaturdaySchedule | false | false | false |
 
 # "Departments"  (rows=5)
 
 columns:
-"DepartmentID" int PK: unique identifier, 1..5, avg=3, median=3
-"DeptName" text: "Business Administration"=1, "Humanities"=1, "Information Technology"=1, "Sciences"=1, "Social Sciences"=1
-"DeptChair" int FK: 98005=1, 98007=1, 98010=1, 98012=1, 98059=1, 98005..98059
+"DepartmentID" int PK
+"DeptName" text
+"DeptChair" int FK
 
 indexes: "DeptChair"
-fk: "DeptChair"→"Staff"."StaffID"
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 |
@@ -139,71 +134,66 @@ columns:
 "Tenured" bool NOTNULL: 1=22, 0=2
 
 indexes: none
-fk: "StaffID"→"Staff"."StaffID"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StaffID | 98064 | 98040 | 98059 |
-| Title | Professor | Associate Professor | Professor |
+| StaffID | 98064 | 98045 | 98055 |
+| Title | Professor | Professor | Professor |
 | Status | Full Time | Full Time | Full Time |
 | Tenured | true | true | true |
 
 # "Faculty_Categories"  (rows=76)
 
 columns:
-"StaffID" int PK FK: 24 distinct, 98005..98064, avg=98034, median=98033, 98007=4, 98030=4, 98052=4, 98055=4, 98005=3, 98010=3, 98011=3, 98012=3, 98013=3, 98014=3
+"StaffID" int PK FK: 24 distinct, 98005..98064, avg=98034, median=98033
 "CategoryID" text PK FK: "MAT"=12, "ART"=8, "ENG"=7, "ACC"=6, "CIS"=6, "ECO"=6, "BUS"=4, "CHE"=4, "HIS"=4, "MUS"=4, "PHY"=4, "BIO"=3, "POL"=3, "CSC"=2, "GEG"=2, "JRN"=1
 
 indexes: "CategoryID", "StaffID"
-fk: "StaffID"→"Faculty"."StaffID", "CategoryID"→"Categories"."CategoryID"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StaffID | 98064 | 98059 | 98055 |
-| CategoryID | JRN | ECO | ENG |
+| StaffID | 98064 | 98005 | 98055 |
+| CategoryID | JRN | MUS | BUS |
 
 # "Faculty_Classes"  (rows=145)
 
 columns:
 "ClassID" int PK FK: unique identifier, 1000..6600, avg=3834.59, median=4030
-"StaffID" int PK FK: 23 distinct, 98005..98064, avg=98032.3, median=98030, 98012=11, 98013=10, 98030=10, 98055=9, 98007=8, 98011=8, 98036=8, 98053=8, 98059=8, 98020=7
+"StaffID" int PK FK: 23 distinct, 98005..98064, avg=98032.3, median=98030
 
 indexes: "ClassID", "StaffID"
-fk: "StaffID"→"Staff"."StaffID", "ClassID"→"Classes"."ClassID"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ClassID | 6600 | 4030 | 5223 |
-| StaffID | 98042 | 98036 | 98053 |
+| ClassID | 6600 | 2410 | 1168 |
+| StaffID | 98042 | 98013 | 98055 |
 
 # "Faculty_Subjects"  (rows=110)
 
 columns:
-"StaffID" int PK FK: 24 distinct, 98005..98064, avg=98034.7, median=98036, 98062=6, 98063=6, 98005=5, 98007=5, 98013=5, 98014=5, 98020=5, 98028=5, 98030=5, 98042=5
-"SubjectID" int PK FK: 55 distinct, 1..56, avg=28.4909, median=28, 1=2, 2=2, 3=2, 4=2, 5=2, 6=2, 7=2, 8=2, 9=2, 10=2
+"StaffID" int PK FK: 24 distinct, 98005..98064, avg=98034.7, median=98036
+"SubjectID" int PK FK: 55 distinct, 1..56, avg=28.4909, median=28
 "ProficiencyRating" float: 9=40, 8=37, 10=33, 8..10
 
 indexes: "StaffID", "SubjectID"
-fk: "StaffID"→"Faculty"."StaffID", "SubjectID"→"Subjects"."SubjectID"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StaffID | 98064 | 98052 | 98045 |
-| SubjectID | 41 | 17 | 23 |
-| ProficiencyRating | 8 | 8 | 8 |
+| StaffID | 98064 | 98014 | 98014 |
+| SubjectID | 41 | 15 | 39 |
+| ProficiencyRating | 8 | 9 | 9 |
 
 # "Majors"  (rows=7)
 
 columns:
-"MajorID" int PK: unique identifier, 1..7, avg=4, median=4
-"Major" text: "Accounting"=1, "Art"=1, "English"=1, "General Studies"=1, "Information Sciences"=1, "Mathematics"=1, "Music"=1
+"MajorID" int PK
+"Major" text
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 |
@@ -228,32 +218,30 @@ columns:
 "Position" text: "Faculty"=24, "Graduate Advisor"=1, "Registrar"=1, "Secretary"=1
 
 indexes: "StfZipCode"
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StaffID | 98064 | 98057 | 98007 |
-| StfFirstName | Luke | Joe | Gary |
-| StfLastname | Patterson | Rosales III | Hallmark |
-| StfStreetAddress | 877 145th Ave SE | 7288 Barrister Ave N | Route 2, Box 203B |
-| StfCity | Portland | Tacoma | Auburn |
+| StaffID | 98064 | 98014 | 98005 |
+| StfFirstName | Luke | Peter | Suzanne |
+| StfLastname | Patterson | Brehm | Viescas |
+| StfStreetAddress | 877 145th Ave SE | 722 Moss Bay Blvd. | 15127 NE 24th, #383 |
+| StfCity | Portland | Kirkland | Redmond |
 | StfState | OR | WA | WA |
-| StfZipCode | 97208 | 98413 | 98002 |
-| StfAreaCode | 503 | 253 | 253 |
-| StfPhoneNumber | 555-2316 | 555-2281 | 555-2676 |
-| Salary | 56000 | 35000 | 53000 |
-| DateHired | 1989-08-20 | 1988-11-25 | 1985-01-21 |
-| Position | Faculty | Graduate Advisor | Faculty |
+| StfZipCode | 97208 | 98033 | 98052 |
+| StfAreaCode | 503 | 425 | 425 |
+| StfPhoneNumber | 555-2316 | 555-2501 | 555-2686 |
+| Salary | 56000 | 60000 | 44000 |
+| DateHired | 1989-08-20 | 1986-07-16 | 1986-05-31 |
+| Position | Faculty | Faculty | Faculty |
 
 # "Student_Class_Status"  (rows=3)
 
 columns:
-"ClassStatus" int PK: unique identifier, 1..3, avg=2, median=2
-"ClassStatusDescription" text: "Completed"=1, "Enrolled"=1, "Withdrew"=1
+"ClassStatus" int PK
+"ClassStatusDescription" text
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 |
@@ -270,15 +258,14 @@ columns:
 "Grade" float: 68 distinct, 0..99.83, avg=46.359, median=68.78
 
 indexes: none
-fk: "ClassStatus"→"Student_Class_Status"."ClassStatus", "ClassID"→"Classes"."ClassID", "StudentID"→"Students"."StudentID"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StudentID | 1018 | 1014 | 1017 |
-| ClassID | 5933 | 1180 | 4002 |
-| ClassStatus | 1 | 2 | 1 |
-| Grade | 0 | 88.91 | 0 |
+| StudentID | 1018 | 1005 | 1013 |
+| ClassID | 5933 | 2500 | 2895 |
+| ClassStatus | 1 | 2 | 2 |
+| Grade | 0 | 80.51 | 93.19 |
 
 # "Students"  (rows=19)
 
@@ -296,22 +283,21 @@ columns:
 "StudMajor" int FK: 2=3, 4=3, 6=3, 7=3, 1=2, 3=2, 5=2, nulls=1, 1..7
 
 indexes: "StudAreaCode", "StudMajor", "StudZipCode"
-fk: "StudMajor"→"Majors"."MajorID"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StudentID | 1019 | 1001 | 1016 |
-| StudFirstName | Daffy | Kerry | Steve |
-| StudLastName | Dumbwit | Patterson | Pundt |
-| StudStreetAddress | 4567 NE 32nd Ct | 9877 Hacienda Drive | 2500 Rosales Lane |
-| StudCity | Bellevue | San Antonio | Dallas |
-| StudState | WA | TX | TX |
-| StudZipCode | 98002 | 78284 | 75204 |
-| StudAreaCode | 425 | 210 | 972 |
-| StudPhoneNumber | 555-9872 | 555-2706 | 555-9938 |
-| StudGPA | 0 | 74.465 | 77.125 |
-| StudMajor | null | 1 | 4 |
+| StudentID | 1019 | 1001 | 1007 |
+| StudFirstName | Daffy | Kerry | Elizabeth |
+| StudLastName | Dumbwit | Patterson | Hallmark |
+| StudStreetAddress | 4567 NE 32nd Ct | 9877 Hacienda Drive | Route 2, Box 203B |
+| StudCity | Bellevue | San Antonio | Marysville |
+| StudState | WA | TX | WA |
+| StudZipCode | 98002 | 78284 | 98271 |
+| StudAreaCode | 425 | 210 | 253 |
+| StudPhoneNumber | 555-9872 | 555-2706 | 555-2521 |
+| StudGPA | 0 | 74.465 | 87.65 |
+| StudMajor | null | 1 | 7 |
 
 # "Subjects"  (rows=56)
 
@@ -324,14 +310,13 @@ columns:
 "SubjectDescription" text: all distinct
 
 indexes: "CategoryID", "SubjectPreReq"
-fk: "CategoryID"→"Categories"."CategoryID", "SubjectPreReq"→"Subjects"."SubjectCode"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| SubjectID | 56 | 19 | 47 |
-| CategoryID | POL | BIO | MAT |
-| SubjectCode | POL 213 | BIO 280 | MAT 098 |
-| SubjectName | Women and Politics | Microbiology | Intermediate Algebra |
+| SubjectID | 56 | 16 | 55 |
+| CategoryID | POL | ART | POL |
+| SubjectCode | POL 213 | ART 251 | POL 102 |
+| SubjectName | Women and Politics | Art History | American Government |
 | SubjectPreReq | null | null | null |
-| SubjectDescription | Introduction to concepts of power and policy issues as they relate to women. Theoretical, historical and empirical studies of women's participation in social and political movements nationally and internationally. Study of women's diverse roles in relations to family, economics, labor, government, and law. | Introduction to micro-organisms including microbial cell structure and function; metabolism; microbial genetics; and the role of micro-organisms in disease, immunity, and other selected applied areas. | Sets and the real number system, polynomial and rational expressions, exponents and radicals, first and second degree equations, linear systems of equations, and graphs. |
+| SubjectDescription | Introduction to concepts of power and policy issues as they relate to women. Theoretical, historical and empirical studies of women's participation in social and political movements nationally and in… | Surveys major forms of visual expression from the Paleolithic, Egyptian, Mesopotamian, Greek, Roman, and Early Christian periods. Includes painting, sculpture, architecture, lectures, slides, and rea… | Origin and development of the U.S. government. Covers the stucture and function of Congress, the Presidency and courts as well as civil liberties, political behavior and political parties. |

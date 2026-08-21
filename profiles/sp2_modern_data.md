@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:29:07.551293Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:34:20.149330Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-rs7tq3ij/modern_data.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-kd01pl8l/modern_data.sqlite
 schema: main
 ---
 
@@ -15,33 +15,31 @@ columns:
 "year_founded" int: 35 distinct, 1919..2021, avg=2012.88, median=2014
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| company_id | 1073 | 421 | 144 |
-| date_joined | 2020-09-16T00:00:00.000 | 2020-11-16T00:00:00.000 | 2021-02-25T00:00:00.000 |
-| year_founded | 2014 | 2009 | 2013 |
+| company_id | 1073 | 28 | 994 |
+| date_joined | 2020-09-16T00:00:00.000 | 2019-10-10T00:00:00.000 | 2021-03-16T00:00:00.000 |
+| year_founded | 2014 | 2009 | 2007 |
 
 # "companies_funding"  (rows=1085)
 
 columns:
 "company_id" int: 1074 distinct, 0..1073
-"valuation" int: 30 distinct, 1000000000..180000000000, avg=3.44332e+09, median=2e+09
-"funding" int: 538 distinct, 0..14000000000, avg=5.50842e+08, median=3.65e+08
+"valuation" int: 30 distinct, 1000000000..180000000000, avg=3.4e+09, median=2e+09
+"funding" int: 538 distinct, 0..14000000000, avg=5.5e+08, median=3.6e+08
 "select_investors" text: 1058 distinct, nulls=1
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| company_id | 1073 | 361 | 262 |
-| valuation | 1000000000 | 2000000000 | 3000000000 |
-| funding | 620000000 | 19000000 | 75000000 |
-| select_investors | "Novator Partners, True, Causeway Media Partners" | "The Carlyle Group, CVC Capital Partners" | "Tiger Global Management, The Raine Group, Malabar Investments" |
+| company_id | 1073 | 94 | 39 |
+| valuation | 1000000000 | 7000000000 | 11000000000 |
+| funding | 620000000 | 603000000 | 376000000 |
+| select_investors | "Novator Partners, True, Causeway Media Partners" | "Accel, Y Combinator, Index Ventures" | "LTW Capital, Legend Capital, Qualcomm Ventures" |
 
 # "companies_industries"  (rows=1085)
 
@@ -50,13 +48,12 @@ columns:
 "industry" text: "Fintech"=230, "Internet software & services"=208, "E-commerce & direct-to-consumer"=113, "Artificial intelligence"=84, "Health"=74, "Other"=58, ""Supply chain, logistics, & delivery""=57, "Cybersecurity"=50, "Data management & analytics"=41, "Mobile & telecommunications"=38, "Hardware"=34, "Auto & transportation"=31, "Edtech"=28, "Consumer & retail"=25, "Travel"=14
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| company_id | 1073 | 212 | 305 |
-| industry | E-commerce & direct-to-consumer | Other | Internet software & services |
+| company_id | 1073 | 1012 | 439 |
+| industry | E-commerce & direct-to-consumer | Other | Auto & transportation |
 
 # "income_trees"  (rows=220)
 
@@ -70,18 +67,17 @@ columns:
 "Margin_of_Error_Mean_income" int: 182 distinct, 0..56347, avg=5755.62, median=3569
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| zipcode | 11697 | 10065 | 10467 |
-| Estimate_Total | 1520 | 16742 | 35178 |
-| Margin_of_Error_Total | 139 | 650 | 486 |
-| Estimate_Median_income | 93333 | 112869 | 35117 |
-| Margin_of_Error_Median_income | 21346 | 11047 | 1361 |
-| Estimate_Mean_income | 109500 | 205447 | 46518 |
-| Margin_of_Error_Mean_income | 11505 | 19510 | 1666 |
+| zipcode | 11697 | 10199 | 10463 |
+| Estimate_Total | 1520 | 0 | 27458 |
+| Margin_of_Error_Total | 139 | 11 | 478 |
+| Estimate_Median_income | 93333 | 0 | 56482 |
+| Margin_of_Error_Median_income | 21346 | 0 | 2218 |
+| Estimate_Mean_income | 109500 | 0 | 80384 |
+| Margin_of_Error_Mean_income | 11505 | 0 | 4046 |
 
 # "pizza_clean_customer_orders"  (rows=14)
 
@@ -94,30 +90,28 @@ columns:
 "order_time" text: "2021-01-04 13:23:46"=3, "2021-01-02 23:51:23"=2, "2021-01-11 18:34:49"=2, "2021-01-01 18:05:02"=1, "2021-01-01 19:00:52"=1, "2021-01-08 21:00:29"=1, "2021-01-08 21:03:13"=1, "2021-01-08 21:20:29"=1, "2021-01-09 23:54:33"=1, "2021-01-10 11:22:59"=1
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| order_id | 10 | 10 | 4 |
-| customer_id | 104 | 104 | 103 |
+| order_id | 10 | 10 | 1 |
+| customer_id | 104 | 104 | 101 |
 | pizza_id | 1 | 1 | 1 |
-| exclusions | 2,6 | 2,6 | 4 |
-| extras | 1,4 | 1,4 | null |
-| order_time | 2021-01-11 18:34:49 | 2021-01-11 18:34:49 | 2021-01-04 13:23:46 |
+| exclusions | 2,6 | null | null |
+| extras | 1,4 | null | null |
+| order_time | 2021-01-11 18:34:49 | 2021-01-11 18:34:49 | 2021-01-01 18:05:02 |
 
 # "pizza_clean_runner_orders"  (rows=10)
 
 columns:
-"order_id" int: unique identifier, 1..10
-"runner_id" int: 1=4, 2=4, 3=2, 1..3
-"pickup_time" text: "2021-01-01 18:15:34"=1, "2021-01-01 19:10:54"=1, "2021-01-03 00:12:37"=1, "2021-01-04 13:53:03"=1, "2021-01-08 21:10:57"=1, "2021-01-08 21:30:45"=1, "2021-01-10 00:15:02"=1, "2021-01-11 18:50:20"=1, nulls=2
-"distance" float: 0=2, 10=2, 20=2, 23.4=2, 13.4=1, 25=1, 0..25
-"duration" float: 0=2, 15=2, 10=1, 20=1, 25=1, 27=1, 32=1, 40=1, 0..40
-"cancellation" text: "Customer Cancellation"=1, "Restaurant Cancellation"=1, nulls=8
+"order_id" int
+"runner_id" int
+"pickup_time" text
+"distance" float
+"duration" float
+"cancellation" text
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 | row 9 | row 10 |
@@ -140,28 +134,26 @@ columns:
 "order_time" text: "2021-01-04 13:23:46"=3, "2021-01-02 23:51:23"=2, "2021-01-11 18:34:49"=2, "2021-01-01 18:05:02"=1, "2021-01-01 19:00:52"=1, "2021-01-08 21:00:29"=1, "2021-01-08 21:03:13"=1, "2021-01-08 21:20:29"=1, "2021-01-09 23:54:33"=1, "2021-01-10 11:22:59"=1
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| order_id | 10 | 8 | 1 |
-| customer_id | 104 | 102 | 101 |
-| pizza_id | 1 | 1 | 1 |
+| order_id | 10 | 7 | 6 |
+| customer_id | 104 | 105 | 101 |
+| pizza_id | 1 | 2 | 2 |
 | exclusions | 2,6 | null | null |
-| extras | 1,4 | null | null |
-| order_time | 2021-01-11 18:34:49 | 2021-01-09 23:54:33 | 2021-01-01 18:05:02 |
+| extras | 1,4 | 1 | null |
+| order_time | 2021-01-11 18:34:49 | 2021-01-08 21:20:29 | 2021-01-08 21:03:13 |
 
 # "pizza_get_exclusions"  (rows=4)
 
 columns:
-"row_id" int: 1=3, 2=1
-"order_id" int: 10=2, 4=1, 9=1, 4..10
-"exclusions" int: 4=2, 2=1, 6=1, 2..6
-"total_exclusions" int: 2=2, 1=1, 3=1, 1..3
+"row_id" int
+"order_id" int
+"exclusions" int
+"total_exclusions" int
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 |
@@ -174,13 +166,12 @@ all rows:
 # "pizza_get_extras"  (rows=6)
 
 columns:
-"row_id" int: 1=4, 2=2
-"order_id" int: 9=2, 10=2, 5=1, 7=1, 5..10
-"extras" int: 1=4, 4=1, 5=1, 1..5
-"extras_count" int: 2=4, 1=2
+"row_id" int
+"order_id" int
+"extras" int
+"extras_count" int
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 |
@@ -193,11 +184,10 @@ all rows:
 # "pizza_names"  (rows=2)
 
 columns:
-"pizza_id" int: unique identifier, 1..2
-"pizza_name" text: "Meatlovers"=1, "Vegetarian"=1
+"pizza_id" int
+"pizza_name" text
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 |
@@ -208,11 +198,10 @@ all rows:
 # "pizza_recipes"  (rows=2)
 
 columns:
-"pizza_id" int: unique identifier, 1..2
-"toppings" text: "1, 2, 3, 4, 5, 6, 8, 10"=1, "4, 6, 7, 9, 11, 12"=1
+"pizza_id" int
+"toppings" text
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 |
@@ -223,15 +212,14 @@ all rows:
 # "pizza_runner_orders"  (rows=10)
 
 columns:
-"order_id" int: unique identifier, 1..10
-"runner_id" int: 1=4, 2=4, 3=2, 1..3
-"pickup_time" text: "2021-01-01 18:15:34"=1, "2021-01-01 19:10:54"=1, "2021-01-03 00:12:37"=1, "2021-01-04 13:53:03"=1, "2021-01-08 21:10:57"=1, "2021-01-08 21:30:45"=1, "2021-01-10 00:15:02"=1, "2021-01-11 18:50:20"=1, nulls=2
-"distance" text: "20km"=2, "10"=1, "10km"=1, "13.4km"=1, "23.4"=1, "23.4 km"=1, "25km"=1, nulls=2
-"duration" text: "10minutes"=1, "15"=1, "15 minute"=1, "20 mins"=1, "25mins"=1, "27 minutes"=1, "32 minutes"=1, "40"=1, nulls=2
-"cancellation" text: "Customer Cancellation"=1, "Restaurant Cancellation"=1, nulls=8
+"order_id" int
+"runner_id" int
+"pickup_time" text
+"distance" text
+"duration" text
+"cancellation" text
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 | row 9 | row 10 |
@@ -246,11 +234,10 @@ all rows:
 # "pizza_runners"  (rows=4)
 
 columns:
-"runner_id" int: unique identifier, 1..4
-"registration_date" text: "2021-01-01"=1, "2021-01-03"=1, "2021-01-08"=1, "2021-01-15"=1
+"runner_id" int
+"registration_date" text
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 |
@@ -265,13 +252,12 @@ columns:
 "topping_name" text: "BBQ Sauce"=1, "Bacon"=1, "Beef"=1, "Cheese"=1, "Chicken"=1, "Mushrooms"=1, "Onions"=1, "Pepperoni"=1, "Peppers"=1, "Salami"=1, "Tomato Sauce"=1, "Tomatoes"=1
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| topping_id | 12 | 11 | 3 |
-| topping_name | Tomato Sauce | Tomatoes | Beef |
+| topping_id | 12 | 10 | 5 |
+| topping_name | Tomato Sauce | Salami | Chicken |
 
 # "statistics"  (rows=1010)
 
@@ -282,15 +268,14 @@ columns:
 "total_deaths" int: 835 distinct, 0..17179, avg=3939, median=1975
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| date | 2020-11-11 00:00:00 | 2020-03-25 00:00:00 | 2020-03-07 00:00:00 |
-| state | MA | NC | MA |
-| total_cases | 182367 | 636 | 9 |
-| total_deaths | 10202 | 1 | 0 |
+| date | 2020-11-11 00:00:00 | 2020-03-21 00:00:00 | 2020-07-05 00:00:00 |
+| state | MA | FL | NC |
+| total_cases | 182367 | 706 | 72983 |
+| total_deaths | 10202 | 12 | 1396 |
 
 # "trees"  (rows=≈690626)
 
@@ -313,7 +298,6 @@ columns:
 "longitude" float
 
 indexes: none
-fk: none
 
 
 # "word_list"  (rows=≈373804)
@@ -322,4 +306,3 @@ columns:
 "words" text
 
 indexes: none
-fk: none

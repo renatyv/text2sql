@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:29:02.235918Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:34:14.844141Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-ewjjn5br/electronic_sales.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-_cmh6jjy/electronic_sales.sqlite
 schema: main
 ---
 
@@ -18,17 +18,16 @@ columns:
 "customer_state" text: 27 distinct
 
 indexes: "index"
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 99440 | 96535 | 46170 |
-| customer_id | 274fa6071e5e17fe303b9748641082c8 | eb33bee09a3f5351b344d6c73cd74c52 | c2e1d65c47178eac5bd515e6653959e8 |
-| customer_unique_id | 84732c5050c01db9b23e19ba39899398 | 39e441e925537ef195f789be824ffc07 | d1dae3a5d39b1261850728549a01667a |
-| customer_zip_code_prefix | 6703 | 4052 | 9370 |
-| customer_city | cotia | sao paulo | maua |
-| customer_state | SP | SP | SP |
+| index | 99440 | 91198 | 3586 |
+| customer_id | 274fa6071e5e17fe303b9748641082c8 | 1de54ffbfb658eec45cfc9bd9bfb2917 | 143fdaaf1a8b9e8905183ee2714d3647 |
+| customer_unique_id | 84732c5050c01db9b23e19ba39899398 | e5500e25b05cdc41ad05df9cb17ac25d | 66cf8110aa095f9456d89b7ca697d3a5 |
+| customer_zip_code_prefix | 6703 | 79604 | 82410 |
+| customer_city | cotia | tres lagoas | curitiba |
+| customer_state | SP | MS | PR |
 
 # "geolocation"  (rows=≈1000163)
 
@@ -41,7 +40,6 @@ columns:
 "geolocation_state" text
 
 indexes: "index"
-fk: none
 
 
 # "order_items"  (rows=112650)
@@ -57,19 +55,18 @@ columns:
 "freight_value" float: 0..409.68, avg=19.9903
 
 indexes: "index"
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 112649 | 84364 | 109056 |
-| order_id | fffe41c64501cc87c801fd61db3f6244 | bfb074fa3d43b5b13e7a67203ebdedf5 | f7dca277a6bb273200598f0e36319d94 |
+| index | 112649 | 14901 | 20488 |
+| order_id | fffe41c64501cc87c801fd61db3f6244 | 21f09bf30ca7f813ec079b4774e485ea | 2ef78d4b9e33e5bb08a6ccff0771df05 |
 | order_item_id | 1 | 1 | 1 |
-| product_id | 350688d9dc1e75ff97be326363655e01 | 50692766f5927d896a4b516389e92b4a | ad30079acfcea22be08f603414dbc0fe |
-| seller_id | f7ccf836d21b2fb1de37564105216cc1 | f80edd2c5aaa505cc4b0a3b219abf4b8 | 2078fe5066350e7d220c0ad3a3bbc6c1 |
-| shipping_limit_date | 2018-06-12 17:10:13 | 2017-05-18 10:25:08 | 2018-04-04 03:15:23 |
-| price | 43 | 129.9 | 29.9 |
-| freight_value | 12.79 | 43.32 | 38.14 |
+| product_id | 350688d9dc1e75ff97be326363655e01 | f62cbf4416c9ef8e1b4e8d5279891f24 | 5237739bb5fee495dbd337755a138660 |
+| seller_id | f7ccf836d21b2fb1de37564105216cc1 | 8b321bb669392f5163d04c59e235e066 | 966cb4760537b1404caedd472cc610a5 |
+| shipping_limit_date | 2018-06-12 17:10:13 | 2018-01-15 07:24:04 | 2018-06-11 12:55:33 |
+| price | 43 | 13.65 | 809 |
+| freight_value | 12.79 | 7.78 | 22.37 |
 
 # "order_payments"  (rows=103886)
 
@@ -82,17 +79,16 @@ columns:
 "payment_value" float: 0..13664.1, avg=154.1
 
 indexes: "index"
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 103885 | 34139 | 47042 |
-| order_id | 28bbae6599b09d39ca406b747b6632b1 | 045b9114be21f880246ba6d749f577af | 520e9b73b66dd639c67ced184953ca2d |
+| index | 103885 | 102477 | 9593 |
+| order_id | 28bbae6599b09d39ca406b747b6632b1 | 4c6e24a5fceacbcf444cdb5141ec1688 | 897fab0704eda65c69520010b02a3fee |
 | payment_sequential | 1 | 1 | 1 |
-| payment_type | boleto | credit_card | boleto |
-| payment_installments | 1 | 6 | 1 |
-| payment_value | 191.58 | 61.29 | 358.89 |
+| payment_type | boleto | boleto | credit_card |
+| payment_installments | 1 | 1 | 1 |
+| payment_value | 191.58 | 75.5 | 52.05 |
 
 # "order_reviews"  (rows=99224)
 
@@ -107,19 +103,18 @@ columns:
 "review_answer_timestamp" text: iso-date, 98248 distinct
 
 indexes: "index"
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 99223 | 68454 | 13653 |
-| review_id | efe49f1d6f951dd88b51e6ccd4cc548f | 1502d84801ecd79eabe6b83db96ec218 | 3e100e137e189c05d6ef08f3750ad229 |
-| order_id | 90531360ecb1eec2a1fbb265a0db0508 | 4790bc3402a232e073d643e12035d859 | f88efcb15bb4da564e09c5ef905ae3cb |
+| index | 99223 | 18681 | 17615 |
+| review_id | efe49f1d6f951dd88b51e6ccd4cc548f | 4e6978c0a53b3b1e5be5ecc79e39e544 | d6de7b5b09aec7945e550724ca520b37 |
+| order_id | 90531360ecb1eec2a1fbb265a0db0508 | c770a2c821be1649e3bff529f0e97b7d | 3e555879d29880ec5bc189b44a6d77fa |
 | review_score | 1 | 5 | 5 |
 | review_comment_title | null | null | null |
 | review_comment_message | meu produto chegou e ja tenho que devolver, pois está com defeito , não segurar carga | null | null |
-| review_creation_date | 2017-07-03 00:00:00 | 2017-04-04 00:00:00 | 2017-11-02 00:00:00 |
-| review_answer_timestamp | 2017-07-03 21:01:49 | 2017-04-05 11:06:09 | 2017-11-04 18:14:23 |
+| review_creation_date | 2017-07-03 00:00:00 | 2017-08-02 00:00:00 | 2017-03-14 00:00:00 |
+| review_answer_timestamp | 2017-07-03 21:01:49 | 2017-08-03 00:09:47 | 2017-03-15 07:26:45 |
 
 # "orders"  (rows=99441)
 
@@ -135,20 +130,19 @@ columns:
 "order_estimated_delivery_date" text: iso-date, 459 distinct
 
 indexes: "index"
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 99440 | 16726 | 68010 |
-| order_id | 66dea50a8b16d9b4dee7af250b4be1a5 | e7b01e38e214dfdeaa5c9c98f911a7e4 | e55a581d6b3fcf41394ef2afb9a4205e |
-| customer_id | edb027a75a1449115f6b43211ae02a24 | 03959f8a4aa2ffd6c471d797b3e95055 | 4962e73408e74b80e37b78b3a7a5126c |
+| index | 99440 | 77876 | 92837 |
+| order_id | 66dea50a8b16d9b4dee7af250b4be1a5 | 30a8343ec44216954bf765295fc0c65f | 387d785f482aa3f1844fa843a72d97de |
+| customer_id | edb027a75a1449115f6b43211ae02a24 | 87d61d8c11c89fe50ae234f4acec63c7 | 5f5b81ce642e4f5b3dc6685cf9478a39 |
 | order_status | delivered | delivered | delivered |
-| order_purchase_timestamp | 2018-03-08 20:57:30 | 2018-02-07 07:24:08 | 2017-12-03 18:39:00 |
-| order_approved_at | 2018-03-09 11:20:28 | 2018-02-07 07:35:29 | 2017-12-03 18:53:39 |
-| order_delivered_carrier_date | 2018-03-09 22:11:59 | 2018-02-07 19:56:01 | 2017-12-04 18:13:41 |
-| order_delivered_customer_date | 2018-03-16 13:08:30 | 2018-02-20 00:33:39 | 2017-12-19 00:28:24 |
-| order_estimated_delivery_date | 2018-04-03 00:00:00 | 2018-03-13 00:00:00 | 2018-01-02 00:00:00 |
+| order_purchase_timestamp | 2018-03-08 20:57:30 | 2017-10-24 09:18:20 | 2017-06-08 20:28:21 |
+| order_approved_at | 2018-03-09 11:20:28 | 2017-10-24 09:28:16 | 2017-06-10 03:03:46 |
+| order_delivered_carrier_date | 2018-03-09 22:11:59 | 2017-10-26 16:59:01 | 2017-06-16 18:26:28 |
+| order_delivered_customer_date | 2018-03-16 13:08:30 | 2017-11-03 19:53:50 | 2017-06-19 20:55:49 |
+| order_estimated_delivery_date | 2018-04-03 00:00:00 | 2017-11-17 00:00:00 | 2017-06-30 00:00:00 |
 
 # "product_category_name_translation"  (rows=71)
 
@@ -158,14 +152,13 @@ columns:
 "product_category_name_english" text: all distinct
 
 indexes: "index"
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 70 | 52 | 35 |
-| product_category_name | seguros_e_servicos | sinalizacao_e_seguranca | casa_conforto |
-| product_category_name_english | security_and_services | signaling_and_security | home_confort |
+| index | 70 | 4 | 27 |
+| product_category_name | seguros_e_servicos | moveis_decoracao | construcao_ferramentas_jardim |
+| product_category_name_english | security_and_services | furniture_decor | costruction_tools_garden |
 
 # "products"  (rows=32951)
 
@@ -182,21 +175,20 @@ columns:
 "product_width_cm" float: 95 distinct, nulls=2, 6..118, avg=23.1967, median=20
 
 indexes: "index"
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 32950 | 2541 | 10294 |
-| product_id | 106392145fca363410d287a815be6de4 | 9d8a0e115e802d845b4ce1eb794d1260 | 3b53b6b3ce85cb52f521117e354480db |
-| product_category_name | cama_mesa_banho | esporte_lazer | relogios_presentes |
-| product_name_lenght | 58 | 30 | 42 |
-| product_description_lenght | 309 | 2299 | 712 |
+| index | 32950 | 10563 | 18370 |
+| product_id | 106392145fca363410d287a815be6de4 | 6814dd9a0fcc3213534377d08d8a24fa | ba9801d3385d4a4f778fb1cbd1318ad5 |
+| product_category_name | cama_mesa_banho | cama_mesa_banho | esporte_lazer |
+| product_name_lenght | 58 | 47 | 28 |
+| product_description_lenght | 309 | 372 | 227 |
 | product_photos_qty | 1 | 1 | 1 |
-| product_weight_g | 2083 | 150 | 350 |
-| product_length_cm | 12 | 20 | 16 |
-| product_height_cm | 2 | 10 | 12 |
-| product_width_cm | 7 | 15 | 11 |
+| product_weight_g | 2083 | 1450 | 300 |
+| product_length_cm | 12 | 34 | 32 |
+| product_height_cm | 2 | 12 | 11 |
+| product_width_cm | 7 | 40 | 17 |
 
 # "sellers"  (rows=3095)
 
@@ -208,13 +200,12 @@ columns:
 "seller_state" text: 23 distinct
 
 indexes: "index"
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 3094 | 1947 | 16 |
-| seller_id | 9e25199f6ef7e7c347120ff175652c3b | 1f7fd2a6fcd5a6fa5d8a4dabc72aaae0 | 166e8f1381e09651983c38b1f6f91c11 |
-| seller_zip_code_prefix | 12051 | 95800 | 88780 |
-| seller_city | taubate | venancio aires | imbituba |
-| seller_state | SP | RS | SC |
+| index | 3094 | 1859 | 336 |
+| seller_id | 9e25199f6ef7e7c347120ff175652c3b | f08a5b9dd6767129688d001acafc21e5 | ec80e49e69745ab6c14f984bf2149423 |
+| seller_zip_code_prefix | 12051 | 90230 | 13480 |
+| seller_city | taubate | porto alegre | limeira |
+| seller_state | SP | RS | SP |

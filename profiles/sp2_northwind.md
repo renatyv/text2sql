@@ -1,22 +1,21 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:29:07.806903Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:34:20.431299Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-nugaizwo/northwind.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-sz0inzcx/northwind.sqlite
 schema: main
 ---
 
 # "categories"  (rows=8)
 
 columns:
-"categoryid" int NOTNULL: unique identifier, 1..8, avg=4.5, median=4.5
-"categoryname" text NOTNULL: "Beverages"=1, "Condiments"=1, "Confections"=1, "Dairy Products"=1, "Grains/Cereals"=1, "Meat/Poultry"=1, "Produce"=1, "Seafood"=1
-"description" text: "Breads, crackers, pasta, and cereal"=1, "Cheeses"=1, "Desserts, candies, and sweet breads"=1, "Dried fruit and bean curd"=1, "Prepared meats"=1, "Seaweed and fish"=1, "Soft drinks, coffees, teas, beers, and ales"=1, "Sweet and savory sauces, relishes, spreads, and seasonings"=1
-"picture" bytes→text: profile metrics skipped
+"categoryid" int NOTNULL
+"categoryname" text NOTNULL
+"description" text
+"picture" bytes→text
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 |
@@ -28,19 +27,18 @@ all rows:
 # "customergroupthreshold"  (rows=4)
 
 columns:
-"groupname" text NOTNULL: "High"=1, "Low"=1, "Medium"=1, "Very High"=1
-"rangebottom" numeric NOTNULL: 0=1, 1000=1, 5000=1, 10000=1, 0..10000
-"rangetop" numeric NOTNULL: 1000=1, 5000=1, 10000=1, 9.22337e+14=1, 999.9999..9.22337203685e+14
+"groupname" text NOTNULL
+"rangebottom" numeric NOTNULL
+"rangetop" numeric NOTNULL
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 |
 |---|---|---|---|---|
 | groupname | High | Low | Medium | Very High |
 | rangebottom | 5000 | 0 | 1000 | 10000 |
-| rangetop | 10000 | 1000 | 5000 | 9.22337e+14 |
+| rangetop | 10000 | 1000 | 5000 | 9.2e+14 |
 
 # "customers"  (rows=91)
 
@@ -58,47 +56,45 @@ columns:
 "fax" text: all distinct, nulls=22
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customerid | WOLZA | OTTIK | MAGAA |
-| companyname | Wolski  Zajazd | Ottilies Käseladen | Magazzini Alimentari Riuniti |
-| contactname | Zbyszek Piestrzeniewicz | Henriette Pfalzheim | Giovanni Rovelli |
-| contacttitle | Owner | Owner | Marketing Manager |
-| address | ul. Filtrowa 68 | Mehrheimerstr. 369 | Via Ludovico il Moro 22 |
-| city | Warszawa | Köln | Bergamo |
-| region | null | null | null |
-| postalcode | 01-012 | 50739 | 24100 |
-| country | Poland | Germany | Italy |
-| phone | (26) 642-7012 | 0221-0644327 | 035-640230 |
-| fax | (26) 642-7012 | 0221-0765721 | 035-640231 |
+| customerid | WOLZA | LONEP | WARTH |
+| companyname | Wolski  Zajazd | Lonesome Pine Restaurant | Wartian Herkku |
+| contactname | Zbyszek Piestrzeniewicz | Fran Wilson | Pirkko Koskitalo |
+| contacttitle | Owner | Sales Manager | Accounting Manager |
+| address | ul. Filtrowa 68 | 89 Chiaroscuro Rd. | Torikatu 38 |
+| city | Warszawa | Portland | Oulu |
+| region | null | OR | null |
+| postalcode | 01-012 | 97219 | 90110 |
+| country | Poland | USA | Finland |
+| phone | (26) 642-7012 | (503) 555-9573 | 981-443655 |
+| fax | (26) 642-7012 | (503) 555-9646 | 981-443655 |
 
 # "employees"  (rows=9)
 
 columns:
-"employeeid" int NOTNULL: unique identifier, 1..9, avg=5, median=5
-"lastname" text NOTNULL: "Buchanan"=1, "Callahan"=1, "Davolio"=1, "Dodsworth"=1, "Fuller"=1, "King"=1, "Leverling"=1, "Peacock"=1, "Suyama"=1
-"firstname" text NOTNULL: "Andrew"=1, "Anne"=1, "Janet"=1, "Laura"=1, "Margaret"=1, "Michael"=1, "Nancy"=1, "Robert"=1, "Steven"=1
-"title" text: "Sales Representative"=6, "Inside Sales Coordinator"=1, "Sales Manager"=1, "Vice President, Sales"=1
-"titleofcourtesy" text: "Ms."=4, "Mr."=3, "Dr."=1, "Mrs."=1
-"birthdate" date: "1937-09-19"=1, "1948-12-08"=1, "1952-02-19"=1, "1955-03-04"=1, "1958-01-09"=1, "1960-05-29"=1, "1963-07-02"=1, "1963-08-30"=1, "1966-01-27"=1
-"hiredate" date: "1993-10-17"=2, "1992-04-01"=1, "1992-05-01"=1, "1992-08-14"=1, "1993-05-03"=1, "1994-01-02"=1, "1994-03-05"=1, "1994-11-15"=1
-"address" text: "14 Garrett Hill"=1, "4110 Old Redmond Rd."=1, "4726 - 11th Ave. N.E."=1, "507 - 20th Ave. E.\nApt. 2A"=1, "7 Houndstooth Rd."=1, "722 Moss Bay Blvd."=1, "908 W. Capital Way"=1, "Coventry House\nMiner Rd."=1, "Edgeham Hollow\nWinchester Way"=1
-"city" text: "London"=4, "Seattle"=2, "Kirkland"=1, "Redmond"=1, "Tacoma"=1
-"region" text: "WA"=5, nulls=4
-"postalcode" text: "98033"=1, "98052"=1, "98105"=1, "98122"=1, "98401"=1, "EC2 7JR"=1, "RG1 9SP"=1, "SW1 8JR"=1, "WG2 7LT"=1
-"country" text: "USA"=5, "UK"=4
-"homephone" text: "(206) 555-1189"=1, "(206) 555-3412"=1, "(206) 555-8122"=1, "(206) 555-9482"=1, "(206) 555-9857"=1, "(71) 555-4444"=1, "(71) 555-4848"=1, "(71) 555-5598"=1, "(71) 555-7773"=1
-"extension" text: "2344"=1, "3355"=1, "3453"=1, "3457"=1, "428"=1, "452"=1, "465"=1, "5176"=1, "5467"=1
-"photo" bytes→text: profile metrics skipped
-"notes" text: "Andrew received his BTS commercial in 1974 and a Ph.D. in international marketing from the University of Dallas in 1981.  He is fluent in French and Italian and reads German.  He joined the company as a sales representative, was promoted to sales manager in January 1992 and to vice president of sales in March 1993.  Andrew is a member of the Sales Management Roundtable, the Seattle Chamber of Commerce, and the Pacific Rim Importers Association."=1, "Anne has a BA degree in English from St. Lawrence College.  She is fluent in French and German."=1, "Education includes a BA in psychology from Colorado State University in 1970.  She also completed The Art of the Cold Call.  Nancy is a member of Toastmasters International."=1, "Janet has a BS degree in chemistry from Boston College (1984).  She has also completed a certificate program in food retailing management.  Janet was hired as a sales associate in 1991 and promoted to sales representative in February 1992."=1, "Laura received a BA in psychology from the University of Washington.  She has also completed a course in business French.  She reads and writes French."=1, "Margaret holds a BA in English literature from Concordia College (1958) and an MA from the American Institute of Culinary Arts (1966).  She was assigned to the London office temporarily from July through November 1992."=1, "Michael is a graduate of Sussex University (MA, economics, 1983) and the University of California at Los Angeles (MBA, marketing, 1986).  He has also taken the courses Multi-Cultural Selling and Time Management for the Sales Professional.  He is fluent in Japanese and can read and write French, Portuguese, and Spanish."=1, "Robert King served in the Peace Corps and traveled extensively before completing his degree in English at the University of Michigan in 1992, the year he joined the company.  After completing a course entitled Selling in Europe, he was transferred to the London office in March 1993."=1, "Steven Buchanan graduated from St. Andrews University, Scotland, with a BSC degree in 1976.  Upon joining the company as a sales representative in 1992, he spent 6 months in an orientation program at the Seattle office and then returned to his permanent post in London.  He was promoted to sales manager in March 1993.  Mr. Buchanan has completed the courses Successful Telemarketing and International Sales Management.  He is fluent in French."=1
-"reportsto" int: 2=5, 5=3, nulls=1
-"photopath" text: "http://accweb/emmployees/davolio.bmp"=5, "http://accweb/emmployees/buchanan.bmp"=1, "http://accweb/emmployees/fuller.bmp"=1, "http://accweb/emmployees/leverling.bmp"=1, "http://accweb/emmployees/peacock.bmp"=1
+"employeeid" int NOTNULL
+"lastname" text NOTNULL
+"firstname" text NOTNULL
+"title" text
+"titleofcourtesy" text
+"birthdate" date
+"hiredate" date
+"address" text
+"city" text
+"region" text
+"postalcode" text
+"country" text
+"homephone" text
+"extension" text
+"photo" bytes→text
+"notes" text
+"reportsto" int
+"photopath" text
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 | row 9 |
@@ -117,7 +113,7 @@ all rows:
 | country | USA | USA | USA | USA | UK | UK | UK | USA | UK |
 | homephone | (206) 555-9857 | (206) 555-9482 | (206) 555-3412 | (206) 555-8122 | (71) 555-4848 | (71) 555-7773 | (71) 555-5598 | (206) 555-1189 | (71) 555-4444 |
 | extension | 5467 | 3457 | 3355 | 5176 | 3453 | 428 | 465 | 2344 | 452 |
-| notes | Education includes a BA in psychology from Colorado State University in 1970.  She also completed The Art of the Cold Call.  Nancy is a member of Toastmasters International. | Andrew received his BTS commercial in 1974 and a Ph.D. in international marketing from the University of Dallas in 1981.  He is fluent in French and Italian and reads German.  He joined the company as a sales representative, was promoted to sales manager in January 1992 and to vice president of sales in March 1993.  Andrew is a member of the Sales Management Roundtable, the Seattle Chamber of Commerce, and the Pacific Rim Importers Association. | Janet has a BS degree in chemistry from Boston College (1984).  She has also completed a certificate program in food retailing management.  Janet was hired as a sales associate in 1991 and promoted to sales representative in February 1992. | Margaret holds a BA in English literature from Concordia College (1958) and an MA from the American Institute of Culinary Arts (1966).  She was assigned to the London office temporarily from July through November 1992. | Steven Buchanan graduated from St. Andrews University, Scotland, with a BSC degree in 1976.  Upon joining the company as a sales representative in 1992, he spent 6 months in an orientation program at the Seattle office and then returned to his permanent post in London.  He was promoted to sales manager in March 1993.  Mr. Buchanan has completed the courses Successful Telemarketing and International Sales Management.  He is fluent in French. | Michael is a graduate of Sussex University (MA, economics, 1983) and the University of California at Los Angeles (MBA, marketing, 1986).  He has also taken the courses Multi-Cultural Selling and Time Management for the Sales Professional.  He is fluent in Japanese and can read and write French, Portuguese, and Spanish. | Robert King served in the Peace Corps and traveled extensively before completing his degree in English at the University of Michigan in 1992, the year he joined the company.  After completing a course entitled Selling in Europe, he was transferred to the London office in March 1993. | Laura received a BA in psychology from the University of Washington.  She has also completed a course in business French.  She reads and writes French. | Anne has a BA degree in English from St. Lawrence College.  She is fluent in French and German. |
+| notes | Education includes a BA in psychology from Colorado State University in 1970.  She also completed The Art of the Cold Call.  Nancy is a member of Toastmasters International. | Andrew received his BTS commercial in 1974 and a Ph.D. in international marketing from the University of Dallas in 1981.  He is fluent in French and Italian and reads German.  He joined the company a… | Janet has a BS degree in chemistry from Boston College (1984).  She has also completed a certificate program in food retailing management.  Janet was hired as a sales associate in 1991 and promoted t… | Margaret holds a BA in English literature from Concordia College (1958) and an MA from the American Institute of Culinary Arts (1966).  She was assigned to the London office temporarily from July thr… | Steven Buchanan graduated from St. Andrews University, Scotland, with a BSC degree in 1976.  Upon joining the company as a sales representative in 1992, he spent 6 months in an orientation program at… | Michael is a graduate of Sussex University (MA, economics, 1983) and the University of California at Los Angeles (MBA, marketing, 1986).  He has also taken the courses Multi-Cultural Selling and Time… | Robert King served in the Peace Corps and traveled extensively before completing his degree in English at the University of Michigan in 1992, the year he joined the company.  After completing a cours… | Laura received a BA in psychology from the University of Washington.  She has also completed a course in business French.  She reads and writes French. | Anne has a BA degree in English from St. Lawrence College.  She is fluent in French and German. |
 | reportsto | 2 | null | 2 | 2 | 2 | 5 | 5 | 2 | 5 |
 | photopath | http://accweb/emmployees/davolio.bmp | http://accweb/emmployees/fuller.bmp | http://accweb/emmployees/leverling.bmp | http://accweb/emmployees/peacock.bmp | http://accweb/emmployees/buchanan.bmp | http://accweb/emmployees/davolio.bmp | http://accweb/emmployees/davolio.bmp | http://accweb/emmployees/davolio.bmp | http://accweb/emmployees/davolio.bmp |
 
@@ -128,13 +124,12 @@ columns:
 "territoryid" text NOTNULL: digits, unique identifier
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| employeeid | 9 | 4 | 7 |
-| territoryid | 55439 | 27511 | 60179 |
+| employeeid | 9 | 3 | 9 |
+| territoryid | 55439 | 30346 | 55113 |
 
 # "order_details"  (rows=2155)
 
@@ -146,16 +141,15 @@ columns:
 "discount" float NOTNULL: 0=1317, 0.05=185, 0.1=173, 0.2=161, 0.15=157, 0.25=154, 0.03=3, 0.02=2, 0.01=1, 0.04=1, 0.06=1, 0..0.25
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| orderid | 11077 | 10433 | 10719 |
-| productid | 77 | 56 | 30 |
-| unitprice | 13 | 30.4 | 25.89 |
-| quantity | 2 | 28 | 3 |
-| discount | 0 | 0 | 0.25 |
+| orderid | 11077 | 10748 | 10875 |
+| productid | 77 | 40 | 47 |
+| unitprice | 13 | 18.4 | 9.5 |
+| quantity | 2 | 40 | 21 |
+| discount | 0 | 0 | 0.1 |
 
 # "orders"  (rows=830)
 
@@ -176,25 +170,24 @@ columns:
 "shipcountry" text: 21 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| orderid | 11077 | 10447 | 10826 |
-| customerid | RATTC | RICAR | BLONP |
-| employeeid | 1 | 4 | 6 |
-| orderdate | 1998-05-06 | 1997-02-14 | 1998-01-12 |
-| requireddate | 1998-06-03 | 1997-03-14 | 1998-02-09 |
-| shippeddate | null | 1997-03-07 | 1998-02-06 |
-| shipvia | 2 | 2 | 1 |
-| freight | 8.53 | 68.66 | 7.09 |
-| shipname | Rattlesnake Canyon Grocery | Ricardo Adocicados | Blondel père et fils |
-| shipaddress | 2817 Milton Dr. | Av. Copacabana, 267 | 24, place Kléber |
-| shipcity | Albuquerque | Rio de Janeiro | Strasbourg |
-| shipregion | NM | RJ | null |
-| shippostalcode | 87110 | 02389-890 | 67000 |
-| shipcountry | USA | Brazil | France |
+| orderid | 11077 | 10704 | 10861 |
+| customerid | RATTC | QUEEN | WHITC |
+| employeeid | 1 | 6 | 4 |
+| orderdate | 1998-05-06 | 1997-10-14 | 1998-01-30 |
+| requireddate | 1998-06-03 | 1997-11-11 | 1998-02-27 |
+| shippeddate | null | 1997-11-07 | 1998-02-17 |
+| shipvia | 2 | 1 | 2 |
+| freight | 8.53 | 4.78 | 14.93 |
+| shipname | Rattlesnake Canyon Grocery | Queen Cozinha | White Clover Markets |
+| shipaddress | 2817 Milton Dr. | Alameda dos Canàrios, 891 | 1029 - 12th Ave. S. |
+| shipcity | Albuquerque | Sao Paulo | Seattle |
+| shipregion | NM | SP | WA |
+| shippostalcode | 87110 | 05487-020 | 98124 |
+| shipcountry | USA | Brazil | USA |
 
 # "products"  (rows=77)
 
@@ -211,30 +204,28 @@ columns:
 "discontinued" int NOTNULL: 0=67, 1=10
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| productid | 77 | 43 | 40 |
-| productname | Original Frankfurter grüne Soße | Ipoh Coffee | Boston Crab Meat |
-| supplierid | 12 | 20 | 19 |
-| categoryid | 2 | 1 | 8 |
-| quantityperunit | 12 boxes | 16 - 500 g tins | 24 - 4 oz tins |
-| unitprice | 13 | 46 | 18.4 |
-| unitsinstock | 32 | 17 | 123 |
-| unitsonorder | 0 | 10 | 0 |
-| reorderlevel | 15 | 25 | 30 |
+| productid | 77 | 61 | 59 |
+| productname | Original Frankfurter grüne Soße | Sirop d'érable | Raclette Courdavault |
+| supplierid | 12 | 29 | 28 |
+| categoryid | 2 | 2 | 4 |
+| quantityperunit | 12 boxes | 24 - 500 ml bottles | 5 kg pkg. |
+| unitprice | 13 | 28.5 | 55 |
+| unitsinstock | 32 | 113 | 79 |
+| unitsonorder | 0 | 0 | 0 |
+| reorderlevel | 15 | 25 | 0 |
 | discontinued | 0 | 0 | 0 |
 
 # "region"  (rows=4)
 
 columns:
-"regionid" int NOTNULL: unique identifier, 1..4, avg=2.5, median=2.5
-"regiondescription" text NOTNULL: "Eastern"=1, "Northern"=1, "Southern"=1, "Western"=1
+"regionid" int NOTNULL
+"regiondescription" text NOTNULL
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 |
@@ -245,12 +236,11 @@ all rows:
 # "shippers"  (rows=6)
 
 columns:
-"shipperid" int NOTNULL: unique identifier, 1..6, avg=3.5, median=3.5
-"companyname" text NOTNULL: "Alliance Shippers"=1, "DHL"=1, "Federal Shipping"=1, "Speedy Express"=1, "UPS"=1, "United Package"=1
-"phone" text: "(503) 555-3199"=1, "(503) 555-9831"=1, "(503) 555-9931"=1, "1-800-222-0451"=1, "1-800-225-5345"=1, "1-800-782-7892"=1
+"shipperid" int NOTNULL
+"companyname" text NOTNULL
+"phone" text
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 |
@@ -276,23 +266,22 @@ columns:
 "homepage" text: "#CAJUN.HTM#"=1, "#FORMAGGI.HTM#"=1, "G'day Mate (on the World Wide Web)#http://www.microsoft.com/accessdev/sampleapps/gdaymate.htm#"=1, "Mayumi's (on the World Wide Web)#http://www.microsoft.com/accessdev/sampleapps/mayumi.htm#"=1, "Plutzer (on the World Wide Web)#http://www.microsoft.com/accessdev/sampleapps/plutzer.htm#"=1, nulls=24
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| supplierid | 29 | 20 | 19 |
-| companyname | Forêts d'érables | Leka Trading | New England Seafood Cannery |
-| contactname | Chantal Goulet | Chandra Leka | Robb Merchant |
-| contacttitle | Accounting Manager | Owner | Wholesale Account Agent |
-| address | 148 rue Chasseur | 471 Serangoon Loop, Suite #402 | Order Processing Dept. 2100 Paul Revere Blvd. |
-| city | Ste-Hyacinthe | Singapore | Boston |
-| region | Québec | null | MA |
-| postalcode | J2S 7S8 | 0512 | 02134 |
-| country | Canada | Singapore | USA |
-| phone | (514) 555-2955 | 555-8787 | (617) 555-3267 |
-| fax | (514) 555-2921 | null | (617) 555-3389 |
-| homepage | null | null | null |
+| supplierid | 29 | 12 | 10 |
+| companyname | Forêts d'érables | Plutzer Lebensmittelgroßmärkte AG | Refrescos Americanas LTDA |
+| contactname | Chantal Goulet | Martin Bein | Carlos Diaz |
+| contacttitle | Accounting Manager | International Marketing Mgr. | Marketing Manager |
+| address | 148 rue Chasseur | Bogenallee 51 | Av. das Americanas 12.890 |
+| city | Ste-Hyacinthe | Frankfurt | Sao Paulo |
+| region | Québec | null | null |
+| postalcode | J2S 7S8 | 60439 | 5442 |
+| country | Canada | Germany | Brazil |
+| phone | (514) 555-2955 | (069) 992755 | (11) 555 4640 |
+| fax | (514) 555-2921 | null | null |
+| homepage | null | Plutzer (on the World Wide Web)#http://www.microsoft.com/accessdev/sampleapps/plutzer.htm# | null |
 
 # "territories"  (rows=53)
 
@@ -302,14 +291,13 @@ columns:
 "regionid" int NOTNULL: 1=19, 2=15, 3=11, 4=8, 1..4
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| territoryid | 98104 | 48075 | 01581 |
-| territorydescription | Seattle | Southfield | Westboro |
-| regionid | 2 | 3 | 1 |
+| territoryid | 98104 | 90405 | 95054 |
+| territorydescription | Seattle | Santa Monica | Santa Clara |
+| regionid | 2 | 2 | 2 |
 
 # "usstates"  (rows=51)
 
@@ -320,14 +308,13 @@ columns:
 "stateregion" text: "east"=13, "midwest"=12, "west"=12, "south"=9, "north"=5
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| stateid | 51 | 30 | 17 |
-| statename | Wyoming | New Hampshire | Kansas |
-| stateabbr | WY | NH | KS |
-| stateregion | west | east | midwest |
+| stateid | 51 | 44 | 16 |
+| statename | Wyoming | Texas | Iowa |
+| stateabbr | WY | TX | IO |
+| stateregion | west | west | midwest |
 
 - Skipped 2 empty table(s): "customercustomerdemo", "customerdemographics"

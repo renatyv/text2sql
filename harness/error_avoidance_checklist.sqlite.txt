@@ -14,10 +14,12 @@ ERROR-AVOIDANCE CHECKLIST — common text-to-SQL failure modes to watch for:
    compose them explicitly (e.g. UNION ALL of the detail aggregates and the
    grand total) instead of omitting them — SQLite has no ROLLUP/CUBE.
 
-4. Row cardinality: add DISTINCT only when the question says distinct/unique;
-   when computing AVG/COUNT/SUM over a join, aggregate over the raw join rows
-   and do not deduplicate entities unless explicitly asked. Add LIMIT/TOP only
-   when a bounded number of rows is requested.
+4. Measure grain: match the grain requested for each AVG/COUNT/SUM. Deduplicate
+   or pre-aggregate only when a one-to-many join would otherwise multiply that
+   measure; do not apply either as generic hygiene. Add DISTINCT for requested
+   unique result rows and LIMIT only for a requested bound. Follow any
+   dataset-specific aggregate-of-aggregates convention only when supplied as
+   evidence or metadata, never as a global SQL rule.
 
 5. Column selection: select exactly the columns the question asks for — no
    extra identifier, name, or aggregate columns. An answer with extra columns
@@ -30,11 +32,12 @@ ERROR-AVOIDANCE CHECKLIST — common text-to-SQL failure modes to watch for:
 6. Table selection: confirm the correct table(s) and their granularity;
    don't pick a table just because a column name matches.
 
-7. Joins: choose the join type that preserves required rows (LEFT JOIN keeps
-   unmatched records; INNER JOIN silently drops them). Verify join conditions
-   against the actual foreign-key relationships.
+7. Joins: choose INNER vs LEFT JOIN from whether unmatched rows belong in the
+   answer (LEFT keeps them; INNER drops them), not from wording or parentheses.
+   Verify join conditions against the actual foreign-key relationships.
 
 8. Filters: translate every condition from the question into a predicate and
    do not silently drop any. Copy literal values (strings, dates, IDs,
-   categories) exactly from the question or database — never paraphrase or
-   guess.
+   categories) exactly from the question or database. Do not invent business
+   filters such as soft-delete or latest-row predicates unless the question or
+   supplied evidence requires them.

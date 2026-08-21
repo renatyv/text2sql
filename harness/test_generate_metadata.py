@@ -8,6 +8,12 @@ from harness import generate_metadata
 
 
 class MetadataSandboxTests(unittest.TestCase):
+    def test_prompt_contrasts_only_ambiguous_sibling_tables(self) -> None:
+        prompt = generate_metadata._prompt("dw", 12)
+        self.assertIn("contrast their purpose, row grain", prompt)
+        self.assertIn("do not enumerate", prompt)
+        self.assertIn("instead of blanket default join types", prompt)
+
     @patch("harness.generate_metadata.uuid.uuid4", return_value=type("U", (), {"hex": "test"})())
     def test_only_markdown_inputs_are_mounted(self, _uuid) -> None:
         argv = generate_metadata._docker_argv("neutron", 12, Path("generated-metada"))

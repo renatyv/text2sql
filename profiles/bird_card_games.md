@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:25:45.738563Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:30:55.101404Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-if253x_v/card_games.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-xt2xa7d0/card_games.sqlite
 schema: main
 ---
 
@@ -91,82 +91,81 @@ columns:
 "watermark" text: 161 distinct, nulls=52373
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 56832 | 51666 | 45258 |
-| artist | Colin Boyer | Rob Alexander | Raymond Swanland |
+| id | 56832 | 18348 | 2244 |
+| artist | Colin Boyer | John Avon | Jesper Myrfors |
 | asciiName | null | null | null |
 | availability | mtgo,paper | mtgo,paper | paper |
-| borderColor | black | black | black |
-| cardKingdomFoilId | 238370 | 121558 | 214600 |
-| cardKingdomId | 237883 | 121268 | null |
-| colorIdentity | R,W | R | G |
+| borderColor | black | black | white |
+| cardKingdomFoilId | 238370 | 207142 | null |
+| cardKingdomId | 237883 | 206832 | 192880 |
+| colorIdentity | R,W | R | W |
 | colorIndicator | null | null | null |
-| colors | R,W | R | G |
-| convertedManaCost | 3 | 10 | 2 |
+| colors | R,W | R | null |
+| convertedManaCost | 3 | 3 | 0 |
 | duelDeck | null | null | null |
-| edhrecRank | 10632 | 6388 | 7803 |
+| edhrecRank | 10632 | 4122 | null |
 | faceConvertedManaCost | null | null | null |
 | faceName | null | null | null |
 | flavorName | null | null | null |
-| flavorText | From rebellion against the Akoum Skyclave to fighting the Eldrazi titans, the dragon-riding Kargan tribes have never missed an opportunity to defy the odds. | null | "No good will come from what you seek. Turn back now or suffer an ignoble death far from your home." |
+| flavorText | From rebellion against the Akoum Skyclave to fighting the Eldrazi titans, the dragon-riding Kargan tribes have never missed an opportunity to defy the odds. | To the sorrow of all, its rage became focused on those who once stoked it. | null |
 | frameEffects | inverted | null | null |
-| frameVersion | 2015 | 2003 | 2015 |
+| frameVersion | 2015 | 2015 | 1993 |
 | hand | null | null | null |
 | hasContentWarning | 0 | 0 | 0 |
-| hasFoil | 1 | 1 | 1 |
-| hasNonFoil | 1 | 1 | 0 |
+| hasFoil | 1 | 1 | 0 |
+| hasNonFoil | 1 | 1 | 1 |
 | isFullArt | 0 | 0 | 0 |
 | isOnlineOnly | 0 | 0 | 0 |
 | isOversized | 0 | 0 | 0 |
-| isPromo | 1 | 0 | 1 |
-| isReprint | 0 | 0 | 1 |
+| isPromo | 1 | 0 | 0 |
+| isReprint | 0 | 1 | 1 |
 | isReserved | 0 | 0 | 0 |
-| isStarter | 1 | 0 | 1 |
+| isStarter | 1 | 0 | 0 |
 | isStorySpotlight | 0 | 0 | 0 |
 | isTextless | 0 | 0 | 0 |
 | isTimeshifted | 0 | 0 | 0 |
-| keywords | null | Suspend | null |
+| keywords | null | null | null |
 | layout | normal | normal | normal |
 | leadershipSkills | null | null | null |
 | life | null | null | null |
 | loyalty | null | null | null |
-| manaCost | {1}{R}{W} | {9}{R} | {1}{G} |
-| mcmId | 501980 | 13861 | 302027 |
-| mcmMetaId | 317195 | 8404 | null |
+| manaCost | {1}{R}{W} | {2}{R} | null |
+| mcmId | 501980 | 290416 | 6021 |
+| mcmMetaId | 317195 | 7015 | 4251 |
 | mtgArenaId | null | null | null |
-| mtgjsonV4Id | 28565911-47f4-53d3-9f0b-1b7360bd444c | 869aa858-e82b-5fa6-92cd-6239515334a2 | b7b0ce46-18cd-53aa-b8f6-bfe5c5f1b9fb |
-| mtgoFoilId | null | 25582 | null |
-| mtgoId | null | 25581 | null |
-| multiverseId | null | 111048 | null |
-| name | Kargan Warleader | Greater Gargadon | Deeproot Champion |
-| number | 391 | 161 | 185s |
+| mtgjsonV4Id | 28565911-47f4-53d3-9f0b-1b7360bd444c | 683441b2-a51e-51a8-b058-37a11ac74a6a | 26040712-1c74-5e6b-bbea-524b9e62c700 |
+| mtgoFoilId | null | 60988 | null |
+| mtgoId | null | 60987 | null |
+| multiverseId | null | 413676 | 2384 |
+| name | Kargan Warleader | Honden of Infinite Rage | Plains |
+| number | 391 | 134 | 365 |
 | originalReleaseDate | null | null | null |
-| originalText | null | Suspend 10—{R} Sacrifice an artifact, creature, or land: Remove a time counter from Greater Gargadon. Play this ability only if Greater Gargadon is suspended. | null |
-| originalType | null | Creature - Beast | null |
+| originalText | null | At the beginning of your upkeep, Honden of Infinite Rage deals damage to target creature or player equal to the number of Shrines you control. | ocT: Add oW to your mana pool. |
+| originalType | null | Legendary Enchantment — Shrine | Land |
 | otherFaceIds | null | null | null |
-| power | 3 | 9 | 1 |
-| printings | ZNR | MB1,MMA,TSP | PXLN,XLN |
-| promoTypes | promopack | null | setpromo,prerelease,datestamped |
-| purchaseUrls | {'cardKingdom': 'https://mtgjson.com/links/5e41d001e708490c', 'cardKingdomFoil': 'https://mtgjson.com/links/daf4f53f54b28b9e', 'cardmarket': 'https://mtgjson.com/links/5bf73e54801f56c0', 'tcgplayer': 'https://mtgjson.com/links/61bbe73992398cd8'} | {'cardKingdom': 'https://mtgjson.com/links/acf47e60161eb039', 'cardKingdomFoil': 'https://mtgjson.com/links/d8d56420a373287f', 'cardmarket': 'https://mtgjson.com/links/8b1be5a44878e32d', 'tcgplayer': 'https://mtgjson.com/links/5725d2f83b1a9078'} | {'cardKingdomFoil': 'https://mtgjson.com/links/e89a1e13f523705d', 'tcgplayer': 'https://mtgjson.com/links/19b961095042dc43'} |
-| rarity | uncommon | rare | rare |
-| scryfallId | cbef1409-4e7c-445e-ae6b-b3133faf1f73 | 653ddfa0-2088-4503-a3ab-b0f1d55d8351 | a3370921-9d06-429f-9553-0931416f0fc7 |
-| scryfallIllustrationId | f7a16dfb-c794-4391-82ca-2e37ddf30ef2 | 54a888c0-e6ec-4c0a-8ec7-c50357d368b6 | f67e3fd3-c685-477a-9dd6-40ce1c5d1d68 |
-| scryfallOracleId | 63324e72-e580-456a-91be-766c9f07b7b3 | 406b4b1d-756b-4062-897d-3693832086a0 | 507c2921-7070-482d-8754-dc667e3315bd |
-| setCode | ZNR | TSP | PXLN |
+| power | 3 | null | null |
+| printings | ZNR | CHK,EMA,HA3 | 10E,2ED,2XM,3ED,4BB,4ED,5ED,6ED,7ED,8ED,9ED,AKH,AKR,ALA,ANA,ANB,ARC,ATH,AVR,BBD,BFZ,BRB,C13,C14,C15,C16,C17,C18,C19,CED,CEI,CHK,CM2,CMA,CMD,CMR,CST,DDC,DDE,DDF,DDG,DDH,DDI,DDK,DDL,DDN,DDO,DDP,DDQ,DOM… |
+| promoTypes | promopack | null | null |
+| purchaseUrls | {'cardKingdom': 'https://mtgjson.com/links/5e41d001e708490c', 'cardKingdomFoil': 'https://mtgjson.com/links/daf4f53f54b28b9e', 'cardmarket': 'https://mtgjson.com/links/5bf73e54801f56c0', 'tcgplayer':… | {'cardKingdom': 'https://mtgjson.com/links/d38b79c56a696a78', 'cardKingdomFoil': 'https://mtgjson.com/links/266accd947b90cb1', 'cardmarket': 'https://mtgjson.com/links/ec196993766ee6df', 'tcgplayer':… | {'cardKingdom': 'https://mtgjson.com/links/c677f7bc4f1af31c', 'cardmarket': 'https://mtgjson.com/links/e5fabd81d92f94c5', 'tcgplayer': 'https://mtgjson.com/links/c35717e0414048b4'} |
+| rarity | uncommon | uncommon | common |
+| scryfallId | cbef1409-4e7c-445e-ae6b-b3133faf1f73 | 174bcea4-4e9c-4de5-b001-6a9df2242e37 | d17f8abd-c087-4039-8dfd-c6168f7db0a6 |
+| scryfallIllustrationId | f7a16dfb-c794-4391-82ca-2e37ddf30ef2 | b60820c0-f44c-417d-9965-4d5c5656d82c | 0dfc3c48-191c-4dec-ae58-78b7be3b35f8 |
+| scryfallOracleId | 63324e72-e580-456a-91be-766c9f07b7b3 | 0cb76b04-d9c3-46fc-a3f2-5f0cb0d91761 | bc71ebf6-2056-41f7-be35-b2e5c34afa99 |
+| setCode | ZNR | EMA | 4ED |
 | side | null | null | null |
-| subtypes | Human,Warrior | Beast | Merfolk,Shaman |
-| supertypes | null | null | null |
-| tcgplayerProductId | 222853 | 14251 | 146068 |
-| text | Other Warriors you control get +1/+1. | Suspend 10—{R} Sacrifice an artifact, creature, or land: Remove a time counter from Greater Gargadon. Activate this ability only if Greater Gargadon is suspended. | Whenever you cast a noncreature spell, put a +1/+1 counter on Deeproot Champion. |
-| toughness | 3 | 7 | 1 |
-| type | Creature — Human Warrior | Creature — Beast | Creature — Merfolk Shaman |
-| types | Creature | Creature | Creature |
-| uuid | 46407d93-df48-5161-95fe-f24086746663 | 545dcd44-2511-5e0a-b499-87bed1688545 | 6889685e-1f11-5fb4-8584-eab3ff541c5d |
-| variations | f3434acf-7796-572c-a889-487c84cf7948 | null | 106f4ebb-0f46-56ef-905d-0ba3346d3183,d25e957f-bc27-5054-963b-7caf8a6fe991 |
+| subtypes | Human,Warrior | Shrine | Plains |
+| supertypes | null | Legendary | Basic |
+| tcgplayerProductId | 222853 | 118705 | 18110 |
+| text | Other Warriors you control get +1/+1. | At the beginning of your upkeep, Honden of Infinite Rage deals damage to any target equal to the number of Shrines you control. | ({T}: Add {W}.) |
+| toughness | 3 | null | null |
+| type | Creature — Human Warrior | Legendary Enchantment — Shrine | Basic Land — Plains |
+| types | Creature | Enchantment | Land |
+| uuid | 46407d93-df48-5161-95fe-f24086746663 | 19ec5d47-a2bf-564d-a86e-da0d65232a1e | 8e19b83d-6a97-5a6e-baad-f9bf8f3ac80d |
+| variations | f3434acf-7796-572c-a889-487c84cf7948 | null | fdc50021-e80d-5470-9915-080a682d9905,331c2b62-41fc-5d5b-bd89-90e24a3f94b6 |
 | watermark | planeswalker | null | null |
 
 # "foreign_data"  (rows=≈229186)
@@ -182,7 +181,6 @@ columns:
 "uuid" text FK
 
 indexes: none
-fk: "uuid"→"cards"."uuid"
 
 
 # "legalities"  (rows=≈427907)
@@ -194,7 +192,6 @@ columns:
 "uuid" text FK
 
 indexes: none
-fk: "uuid"→"cards"."uuid"
 
 
 # "rulings"  (rows=87769)
@@ -206,15 +203,14 @@ columns:
 "uuid" text FK: uuid, 26141 distinct
 
 indexes: none
-fk: "uuid"→"cards"."uuid"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 87769 | 54188 | 55814 |
-| date | 2013-09-15 | 2017-02-09 | 2009-10-01 |
-| text | Mana symbols in the text boxes of permanents you control don’t count toward your devotion to any color. | Energy counters aren’t mana. They don’t go away as steps, phases, and turns end, and effects that add mana “of any type” to your mana pool can’t give you energy counters. | All Hallow’s Eve’s triggered ability functions from the exile zone. This ability has an “intervening ‘if’ clause.” It won’t trigger at all unless All Hallow’s Eve is exiled and has a scream counter on it (which can happen only if it resolves as a spell). |
-| uuid | 43a82ca6-338d-5ef9-ae82-1ed44ebb6c0a | ecff3dec-1ea5-511d-9fb3-d5cc5c81ae46 | 70caad59-1395-50e6-93b9-c5d629518ae3 |
+| id | 87769 | 55107 | 81350 |
+| date | 2013-09-15 | 2011-06-01 | 2014-02-01 |
+| text | Mana symbols in the text boxes of permanents you control don’t count toward your devotion to any color. | Damage from a source with infect has no effect on Melira’s Keepers. No -1/-1 counters are placed on it, and no damage is marked on it. The damage is still dealt for purposes of effects that care abou… | Unless some effect explicitly says otherwise, a creature that can’t attack you can still attack a planeswalker you control. |
+| uuid | 43a82ca6-338d-5ef9-ae82-1ed44ebb6c0a | e46fc639-21f8-5e58-807e-3b1c21ab3786 | d708a716-6b8b-5771-9b5e-b493ec687383 |
 
 # "set_translations"  (rows=1210)
 
@@ -225,15 +221,14 @@ columns:
 "translation" text: 504 distinct, nulls=231
 
 indexes: none
-fk: "setCode"→"sets"."code"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 1210 | 589 | 858 |
-| language | Spanish | Russian | Portuguese (Brazil) |
-| setCode | WTH | EVE | OGW |
-| translation | null | Сумерки | Juramento das Sentinelas |
+| id | 1210 | 519 | 247 |
+| language | Spanish | Russian | Korean |
+| setCode | WTH | DKM | CHK |
+| translation | null | Deckmasters 2001 | 카미가와의 투사 |
 
 # "sets"  (rows=551)
 
@@ -261,29 +256,28 @@ columns:
 "type" text: 20 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 551 | 71 | 120 |
-| baseSetSize | 285 | 80 | 12 |
-| block | null | null | Friday Night Magic |
-| booster | {'arena': {'boosters': [{'contents': {'common': 10, 'rareMythic': 1, 'uncommon': 3}, 'weight': 1}], 'boostersTotalWeight': 1, 'name': 'Zendikar Rising Arena Booster', 'sheets': {'common': {'balanceColors': True, 'cards': {'01d1ef65-cbcd-5b28-85c8-0edeca7e | null | null |
-| code | ZNR | DDH | F16 |
-| isFoilOnly | 0 | 0 | 1 |
+| id | 551 | 58 | 318 |
+| baseSetSize | 285 | 145 | 1 |
+| block | null | Alara | null |
+| booster | {'arena': {'boosters': [{'contents': {'common': 10, 'rareMythic': 1, 'uncommon': 3}, 'weight': 1}], 'boostersTotalWeight': 1, 'name': 'Zendikar Rising Arena Booster', 'sheets': {'common': {'balanceCo… | {'default': {'boosters': [{'contents': {'common': 11, 'rareMythic': 1, 'uncommon': 3}, 'weight': 31}, {'contents': {'common': 10, 'foil': 1, 'rareMythic': 1, 'uncommon': 3}, 'weight': 9}], 'boostersT… | null |
+| code | ZNR | CON | PDRC |
+| isFoilOnly | 0 | 0 | 0 |
 | isForeignOnly | 0 | 0 | 0 |
-| isNonFoilOnly | 0 | 0 | 0 |
+| isNonFoilOnly | 0 | 0 | 1 |
 | isOnlineOnly | 0 | 0 | 0 |
 | isPartialPreview | 0 | 0 | 0 |
-| keyruneCode | ZNR | DDH | PMEI |
-| mcmId | 3404 | 1288 | null |
+| keyruneCode | ZNR | CON | PDRC |
+| mcmId | 3404 | 106 | null |
 | mcmIdExtras | 3474 | null | null |
-| mcmName | Zendikar Rising | Duel Decks: Ajani vs. Nicol Bolas | null |
-| mtgoCode | ZNR | DDH | null |
-| name | Zendikar Rising | Duel Decks: Ajani vs. Nicol Bolas | Friday Night Magic 2016 |
+| mcmName | Zendikar Rising | Conflux | null |
+| mtgoCode | ZNR | CON | null |
+| name | Zendikar Rising | Conflux | Dragon Con |
 | parentCode | null | null | null |
-| releaseDate | 2020-09-25 | 2011-09-02 | 2016-01-01 |
-| tcgplayerGroupId | 2648 | 30 | null |
-| totalSetSize | 392 | 80 | 12 |
-| type | expansion | duel_deck | promo |
+| releaseDate | 2020-09-25 | 2009-02-06 | 1994-07-15 |
+| tcgplayerGroupId | 2648 | 26 | null |
+| totalSetSize | 392 | 145 | 1 |
+| type | expansion | expansion | promo |

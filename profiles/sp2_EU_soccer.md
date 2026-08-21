@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:27:02.860709Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:32:12.524066Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-54jdwhum/EU_soccer.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-tr884dtj/EU_soccer.sqlite
 schema: main
 ---
 
@@ -23,13 +23,12 @@ columns:
 "name" text UNIQ: unique identifier
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 24558 | 13274 | 4769 |
-| name | Switzerland | Netherlands | France |
+| id | 24558 | 4769 | 17642 |
+| name | Switzerland | France | Portugal |
 
 # "League"  (rows=11)
 
@@ -39,14 +38,13 @@ columns:
 "name" text UNIQ: unique identifier
 
 indexes: none
-fk: "country_id"→"country"."id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 24558 | 21518 | 17642 |
-| country_id | 24558 | 21518 | 17642 |
-| name | Switzerland Super League | Spain LIGA BBVA | Portugal Liga ZON Sagres |
+| id | 24558 | 10257 | 21518 |
+| country_id | 24558 | 10257 | 21518 |
+| name | Switzerland Super League | Italy Serie A | Spain LIGA BBVA |
 
 # "Match"  (rows=25979)
 
@@ -168,44 +166,43 @@ columns:
 "BSA" numeric: 96 distinct, nulls=11818, 1.12..34, avg=4.40566, median=3.4
 
 indexes: none
-fk: "away_player_8"→"Player"."player_api_id", "home_player_11"→"Player"."player_api_id", "home_player_3"→"Player"."player_api_id", "away_player_7"→"Player"."player_api_id", "home_player_10"→"Player"."player_api_id", "home_player_2"→"Player"."player_api_id", "away_player_6"→"Player"."player_api_id", "home_player_9"→"Player"."player_api_id", "home_player_1"→"Player"."player_api_id", "away_player_5"→"Player"."player_api_id", "home_player_8"→"Player"."player_api_id", "away_player_10"→"Player"."player_api_id", "away_player_4"→"Player"."player_api_id", "home_player_7"→"Player"."player_api_id", "away_team_api_id"→"Team"."team_api_id", "away_player_3"→"Player"."player_api_id", "home_player_6"→"Player"."player_api_id", "home_team_api_id"→"Team"."team_api_id", "away_player_11"→"Player"."player_api_id", "away_player_2"→"Player"."player_api_id", "home_player_5"→"Player"."player_api_id", "league_id"→"League"."id", "away_player_9"→"Player"."player_api_id", "away_player_1"→"Player"."player_api_id", "home_player_4"→"Player"."player_api_id", "country_id"→"country"."id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 25979 | 10641 | 25127 |
-| country_id | 24558 | 10257 | 24558 |
-| league_id | 24558 | 10257 | 24558 |
-| season | 2015/2016 | 2009/2010 | 2011/2012 |
-| stage | 9 | 1 | 14 |
-| date | 2015-09-23 00:00:00 | 2009-08-23 00:00:00 | 2011-10-30 00:00:00 |
-| match_api_id | 1992095 | 704357 | 1026998 |
-| home_team_api_id | 10192 | 9885 | 10243 |
-| away_team_api_id | 9931 | 8533 | 10199 |
+| id | 25979 | 5880 | 10869 |
+| country_id | 24558 | 4769 | 10257 |
+| league_id | 24558 | 4769 | 10257 |
+| season | 2015/2016 | 2010/2011 | 2009/2010 |
+| stage | 9 | 7 | 30 |
+| date | 2015-09-23 00:00:00 | 2010-09-26 00:00:00 | 2010-03-24 00:00:00 |
+| match_api_id | 1992095 | 829934 | 705382 |
+| home_team_api_id | 10192 | 8521 | 8530 |
+| away_team_api_id | 9931 | 9873 | 8535 |
 | home_team_goal | 4 | 1 | 1 |
-| away_team_goal | 3 | 0 | 1 |
+| away_team_goal | 3 | 0 | 0 |
 | home_player_X1 | 1 | 1 | 1 |
 | home_player_X2 | 2 | 2 | 2 |
 | home_player_X3 | 4 | 4 | 4 |
 | home_player_X4 | 6 | 6 | 6 |
 | home_player_X5 | 8 | 8 | 8 |
-| home_player_X6 | 2 | 3 | 2 |
-| home_player_X7 | 4 | 5 | 4 |
-| home_player_X8 | 6 | 7 | 6 |
-| home_player_X9 | 8 | 5 | 8 |
-| home_player_X10 | 4 | 4 | 4 |
-| home_player_X11 | 6 | 6 | 6 |
+| home_player_X6 | 2 | 4 | 3 |
+| home_player_X7 | 4 | 6 | 5 |
+| home_player_X8 | 6 | 2 | 7 |
+| home_player_X9 | 8 | 8 | 3 |
+| home_player_X10 | 4 | 4 | 5 |
+| home_player_X11 | 6 | 6 | 7 |
 | away_player_X1 | 1 | 1 | 1 |
-| away_player_X2 | 2 | 2 | 3 |
-| away_player_X3 | 4 | 4 | 5 |
-| away_player_X4 | 6 | 6 | 7 |
-| away_player_X5 | 8 | 8 | 2 |
-| away_player_X6 | 4 | 3 | 4 |
-| away_player_X7 | 6 | 5 | 6 |
-| away_player_X8 | 3 | 7 | 8 |
-| away_player_X9 | 5 | 5 | 3 |
-| away_player_X10 | 7 | 4 | 4 |
-| away_player_X11 | 5 | 6 | 7 |
+| away_player_X2 | 2 | 2 | 2 |
+| away_player_X3 | 4 | 4 | 4 |
+| away_player_X4 | 6 | 6 | 6 |
+| away_player_X5 | 8 | 8 | 8 |
+| away_player_X6 | 4 | 5 | 2 |
+| away_player_X7 | 6 | 4 | 4 |
+| away_player_X8 | 3 | 6 | 6 |
+| away_player_X9 | 5 | 4 | 8 |
+| away_player_X10 | 7 | 6 | 5 |
+| away_player_X11 | 5 | 6 | 5 |
 | home_player_Y1 | 1 | 1 | 1 |
 | home_player_Y2 | 3 | 3 | 3 |
 | home_player_Y3 | 3 | 3 | 3 |
@@ -213,81 +210,81 @@ samples:
 | home_player_Y5 | 3 | 3 | 3 |
 | home_player_Y6 | 7 | 5 | 7 |
 | home_player_Y7 | 7 | 5 | 7 |
-| home_player_Y8 | 7 | 5 | 7 |
-| home_player_Y9 | 7 | 8 | 7 |
+| home_player_Y8 | 7 | 7 | 7 |
+| home_player_Y9 | 7 | 7 | 10 |
 | home_player_Y10 | 10 | 10 | 10 |
 | home_player_Y11 | 10 | 10 | 10 |
 | away_player_Y1 | 1 | 1 | 1 |
 | away_player_Y2 | 3 | 3 | 3 |
 | away_player_Y3 | 3 | 3 | 3 |
 | away_player_Y4 | 3 | 3 | 3 |
-| away_player_Y5 | 3 | 3 | 7 |
+| away_player_Y5 | 3 | 3 | 3 |
 | away_player_Y6 | 6 | 5 | 7 |
-| away_player_Y7 | 6 | 5 | 7 |
-| away_player_Y8 | 8 | 5 | 7 |
-| away_player_Y9 | 8 | 8 | 10 |
-| away_player_Y10 | 8 | 10 | 10 |
-| away_player_Y11 | 11 | 10 | 10 |
-| home_player_1 | 274787 | 30717 | 25811 |
-| home_player_2 | 492132 | 30861 | 115591 |
-| home_player_3 | 108451 | 34520 | 171338 |
-| home_player_4 | 25815 | 41884 | 25257 |
-| home_player_5 | 94553 | 27287 | 181275 |
-| home_player_6 | 384376 | 30871 | 39136 |
-| home_player_7 | 598355 | 41890 | 198082 |
-| home_player_8 | 36785 | 32937 | 25806 |
-| home_player_9 | 45174 | 31235 | 132844 |
-| home_player_10 | 302079 | 38827 | 31100 |
-| home_player_11 | 71764 | 30712 | 25824 |
-| away_player_1 | 156175 | 39477 | 42276 |
-| away_player_2 | 95216 | 42008 | 25839 |
-| away_player_3 | 172768 | 113762 | 178119 |
-| away_player_4 | 22834 | 26315 | 166889 |
-| away_player_5 | 458806 | 24443 | 42294 |
-| away_player_6 | 207234 | 24436 | 113235 |
-| away_player_7 | 25772 | 42651 | 42263 |
-| away_player_8 | 40274 | 39286 | 25813 |
-| away_player_9 | 34035 | 27731 | 114790 |
-| away_player_10 | 41726 | 39638 | 36382 |
-| away_player_11 | 527103 | 24448 | 25809 |
-| goal | null | <goal><value><comment>n</comment><stats><goals>1</goals><shoton>1</shoton></stats><event_incident_typefk>406</event_incident_typefk><elapsed>11</elapsed><player2>31235</player2><subtype>header</subtype><player1>30712</player1><sortorder>3</sortorder><team>9885</team><id>735774</id><n>248</n><type>goal</type><goal_type>n</goal_type></value></goal> | null |
-| shoton | null | <shoton><value><stats><shoton>1</shoton></stats><event_incident_typefk>148</event_incident_typefk><elapsed>26</elapsed><subtype>header</subtype><player1>30712</player1><sortorder>1</sortorder><team>9885</team><n>252</n><type>shoton</type><id>735845</id></value><value><stats><shoton>1</shoton></stats><event_incident_typefk>311</event_incident_typefk><elapsed>27</elapsed><subtype>deflected</subtype><player1>32937</player1><sortorder>0</sortorder><team>9885</team><n>236</n><type>shoton</type><id>735848</id></value><value><stats><blocked>1</blocked></stats><event_incident_typefk>62</event_incident_typefk><elapsed>40</elapsed><subtype>blocked_shot</subtype><sortorder>2</sortorder><team>9885</team><n>261</n><type>shoton</type><id>735943</id></value><value><stats><blocked>1</blocked></stats><event_incident_typefk>61</event_incident_typefk><elapsed>42</elapsed><subtype>blocked_shot</subtype><player1>41884</player1><sortorder>2</sortorder><team>9885</team><n>257</n><type>shoton</type><id>735953</id></value><value><stats><blocked>1</blocked></stats><elapsed_plus>1</elapsed_plus><event_incident_typefk>61</event_incident_typefk><elapsed>45</elapsed><subtype>blocked_shot</subtype><player1>42651</player1><sortorder>2</sortorder><team>8533</team><n>284</n><type>shoton</type><id>735995</id></value><value><stats><blocked>1</blocked></stats><event_incident_typefk>61</event_incident_typefk><elapsed>63</elapsed><subtype>blocked_shot</subtype><player1>27731</player1><sortorder>0</sortorder><team>8533</team><n>285</n><type>shoton</type><id>736175</id></value><value><event_incident_typefk>126</event_incident_typefk><elapsed>77</elapsed><subtype>direct_freekick</subtype><sortorder>0</sortorder><team>8533</team><n>185</n><type>shoton</type><id>736278</id></value></shoton> | null |
-| shotoff | null | <shotoff><value><stats><shotoff>1</shotoff></stats><event_incident_typefk>46</event_incident_typefk><elapsed>8</elapsed><subtype>shot</subtype><player1>41884</player1><sortorder>1</sortorder><team>9885</team><n>227</n><type>shotoff</type><id>735757</id></value><value><stats><shotoff>1</shotoff></stats><event_incident_typefk>47</event_incident_typefk><elapsed>16</elapsed><subtype>header</subtype><player1>27731</player1><sortorder>0</sortorder><team>8533</team><n>237</n><type>shotoff</type><id>735790</id></value><value><stats><shotoff>1</shotoff></stats><event_incident_typefk>47</event_incident_typefk><elapsed>33</elapsed><subtype>header</subtype><player1>41884</player1><sortorder>2</sortorder><team>9885</team><n>283</n><type>shotoff</type><id>735901</id></value><value><stats><shotoff>1</shotoff></stats><event_incident_typefk>46</event_incident_typefk><elapsed>40</elapsed><subtype>shot</subtype><player1>31235</player1><sortorder>0</sortorder><team>9885</team><n>241</n><type>shotoff</type><id>735935</id></value><value><stats><shotoff>1</shotoff></stats><event_incident_typefk>47</event_incident_typefk><elapsed>43</elapsed><subtype>header</subtype><player1>41890</player1><sortorder>4</sortorder><team>9885</team><n>291</n><type>shotoff</type><id>735972</id></value><value><stats><shotoff>1</shotoff></stats><event_incident_typefk>113</event_incident_typefk><elapsed>58</elapsed><subtype>post</subtype><player1>38827</player1><sortorder>0</sortorder><team>9885</team><n>307</n><type>shotoff</type><id>736144</id></value><value><stats><shotoff>1</shotoff></stats><event_incident_typefk>9</event_incident_typefk><elapsed>67</elapsed><subtype>distance</subtype><player1>31235</player1><sortorder>3</sortorder><team>9885</team><n>322</n><type>shotoff</type><id>736208</id></value><value><stats><shotoff>1</shotoff></stats><event_incident_typefk>85</event_incident_typefk><elapsed>80</elapsed><subtype>distance</subtype><sortorder>0</sortorder><team>8533</team><n>300</n><type>shotoff</type><id>736305</id></value></shotoff> | null |
-| foulcommit | null | <foulcommit><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>42</event_incident_typefk><elapsed>5</elapsed><sortorder>0</sortorder><team>8533</team><n>217</n><type>foulcommit</type><id>735741</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>43</event_incident_typefk><elapsed>5</elapsed><player1>27731</player1><sortorder>1</sortorder><team>8533</team><n>224</n><type>foulcommit</type><id>735747</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>43</event_incident_typefk><elapsed>7</elapsed><player1>26315</player1><sortorder>0</sortorder><team>8533</team><n>218</n><type>foulcommit</type><id>735752</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>42</event_incident_typefk><elapsed>9</elapsed><sortorder>0</sortorder><team>9885</team><n>230</n><type>foulcommit</type><id>735760</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>5</event_incident_typefk><elapsed>11</elapsed><player2>31235</player2><subtype>serious_foul</subtype><player1>42651</player1><sortorder>1</sortorder><team>8533</team><n>223</n><type>foulcommit</type><id>735770</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>42</event_incident_typefk><elapsed>18</elapsed><sortorder>0</sortorder><team>9885</team><n>247</n><type>foulcommit</type><id>735801</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>43</event_incident_typefk><elapsed>19</elapsed><player1>30871</player1><sortorder>0</sortorder><team>9885</team><n>234</n><type>foulcommit</type><id>735806</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>42</event_incident_typefk><elapsed>21</elapsed><sortorder>0</sortorder><team>8533</team><n>242</n><type>foulcommit</type><id>735815</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>43</event_incident_typefk><elapsed>21</elapsed><player1>38827</player1><sortorder>1</sortorder><team>9885</team><n>228</n><type>foulcommit</type><id>735821</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>37</event_incident_typefk><elapsed>22</elapsed><player2>27731</player2><player1>31235</player1><sortorder>0</sortorder><team>9885</team><n>263</n><type>foulcommit</type><id>735825</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>43</event_incident_typefk><elapsed>24</elapsed><player1>24436</player1><sortorder>1</sortorder><team>8533</team><n>226</n><type>foulcommit</type><id>735835</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>42</event_incident_typefk><elapsed>30</elapsed><sortorder>0</sortorder><team>9885</team><n>238</n><type>foulcommit</type><id>735875</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>42</event_incident_typefk><elapsed>30</elapsed><sortorder>1</sortorder><team>8533</team><n>271</n><type>foulcommit</type><id>735878</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>37</event_incident_typefk><elapsed>31</elapsed><player2>38827</player2><player1>42008</player1><sortorder>0</sortorder><team>8533</team><n>250</n><type>foulcommit</type><id>735886</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>43</event_incident_typefk><elapsed>36</elapsed><player1>30712</player1><sortorder>0</sortorder><team>9885</team><n>235</n><type>foulcommit</type><id>735915</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>37</event_incident_typefk><elapsed>48</elapsed><player2>41892</player2><player1>27731</player1><sortorder>2</sortorder><team>8533</team><n>286</n><type>foulcommit</type><id>736078</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>37</event_incident_typefk><elapsed>54</elapsed><player2>31235</player2><player1>24436</player1><sortorder>0</sortorder><team>8533</team><n>276</n><type>foulcommit</type><id>736114</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>3</event_incident_typefk><elapsed>54</elapsed><subtype>hands</subtype><player1>38827</player1><sortorder>2</sortorder><team>9885</team><n>282</n><type>foulcommit</type><id>736117</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>43</event_incident_typefk><elapsed>55</elapsed><player1>32937</player1><sortorder>2</sortorder><team>9885</team><n>281</n><type>foulcommit</type><id>736128</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>42</event_incident_typefk><elapsed>59</elapsed><sortorder>0</sortorder><team>9885</team><n>295</n><type>foulcommit</type><id>736149</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>43</event_incident_typefk><elapsed>60</elapsed><player1>41890</player1><sortorder>0</sortorder><team>9885</team><n>317</n><type>foulcommit</type><id>736154</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>43</event_incident_typefk><elapsed>61</elapsed><player1>41890</player1><sortorder>2</sortorder><team>9885</team><n>288</n><type>foulcommit</type><id>736164</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>43</event_incident_typefk><elapsed>63</elapsed><player1>38827</player1><sortorder>1</sortorder><team>9885</team><n>268</n><type>foulcommit</type><id>736177</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>42</event_incident_typefk><elapsed>64</elapsed><sortorder>0</sortorder><team>8533</team><n>318</n><type>foulcommit</type><id>736187</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>43</event_incident_typefk><elapsed>64</elapsed><player1>34520</player1><sortorder>1</sortorder><team>9885</team><n>262</n><type>foulcommit</type><id>736188</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>5</event_incident_typefk><elapsed>69</elapsed><player2>27731</player2><subtype>serious_foul</subtype><player1>34520</player1><sortorder>5</sortorder><team>9885</team><n>314</n><type>foulcommit</type><id>736231</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>5</event_incident_typefk><elapsed>76</elapsed><player2>26315</player2><subtype>serious_foul</subtype><player1>182606</player1><sortorder>0</sortorder><team>9885</team><n>323</n><type>foulcommit</type><id>736270</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>37</event_incident_typefk><elapsed>78</elapsed><player2>24436</player2><player1>41890</player1><sortorder>1</sortorder><team>9885</team><n>313</n><type>foulcommit</type><id>736290</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>43</event_incident_typefk><elapsed>81</elapsed><player1>26315</player1><sortorder>2</sortorder><team>8533</team><n>336</n><type>foulcommit</type><id>736314</id></value><value><stats><foulscommitted>1</foulscommitted></stats><event_incident_typefk>43</event_incident_typefk><elapsed>88</elapsed><player1>113762</player1><sortorder>0</sortorder><team>8533</team><n>328</n><type>foulcommit</type><id>736358</id></value></foulcommit> | null |
-| card | null | <card><value><comment>y</comment><stats><ycards>1</ycards></stats><event_incident_typefk>73</event_incident_typefk><elapsed>11</elapsed><card_type>y</card_type><subtype>serious_fouls</subtype><player1>42651</player1><sortorder>2</sortorder><team>8533</team><n>239</n><type>card</type><id>735771</id></value><value><comment>y</comment><stats><ycards>1</ycards></stats><event_incident_typefk>505</event_incident_typefk><elapsed>14</elapsed><card_type>y</card_type><subtype>Unsportsmanlike Cond</subtype><player1>27731</player1><sortorder>0</sortorder><team>8533</team><n>240</n><type>card</type><id>735785</id></value><value><comment>y</comment><stats><ycards>1</ycards></stats><event_incident_typefk>505</event_incident_typefk><elapsed>14</elapsed><card_type>y</card_type><subtype>Unsportsmanlike Cond</subtype><player1>32937</player1><sortorder>1</sortorder><team>9885</team><n>222</n><type>card</type><id>735786</id></value><value><comment>y</comment><stats><ycards>1</ycards></stats><event_incident_typefk>73</event_incident_typefk><elapsed>69</elapsed><card_type>y</card_type><subtype>serious_fouls</subtype><player1>34520</player1><sortorder>6</sortorder><team>9885</team><n>320</n><type>card</type><id>736232</id></value><value><comment>y</comment><stats><ycards>1</ycards></stats><event_incident_typefk>73</event_incident_typefk><elapsed>76</elapsed><card_type>y</card_type><subtype>serious_fouls</subtype><player1>182606</player1><sortorder>1</sortorder><team>9885</team><n>333</n><type>card</type><id>736272</id></value></card> | null |
-| cross | null | <cross><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>6</elapsed><subtype>cross</subtype><player1>38827</player1><sortorder>0</sortorder><team>9885</team><n>229</n><type>cross</type><id>735750</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>8</elapsed><subtype>cross</subtype><player1>30861</player1><sortorder>0</sortorder><team>9885</team><n>219</n><type>cross</type><id>735756</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>35</event_incident_typefk><elapsed>10</elapsed><subtype>cross</subtype><sortorder>0</sortorder><team>9885</team><n>220</n><type>cross</type><id>735766</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>35</event_incident_typefk><elapsed>13</elapsed><subtype>cross</subtype><sortorder>0</sortorder><team>8533</team><n>225</n><type>cross</type><id>735781</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>17</elapsed><subtype>cross</subtype><player1>24443</player1><sortorder>0</sortorder><team>8533</team><n>221</n><type>cross</type><id>735796</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>35</event_incident_typefk><elapsed>25</elapsed><subtype>cross</subtype><sortorder>1</sortorder><team>8533</team><n>243</n><type>cross</type><id>735841</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>26</elapsed><subtype>cross</subtype><player1>38827</player1><sortorder>0</sortorder><team>9885</team><n>270</n><type>cross</type><id>735844</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>329</event_incident_typefk><elapsed>26</elapsed><subtype>cross</subtype><player1>30871</player1><sortorder>2</sortorder><team>9885</team><n>265</n><type>corner</type><id>735847</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>329</event_incident_typefk><elapsed>27</elapsed><subtype>cross</subtype><player1>30871</player1><sortorder>1</sortorder><team>9885</team><n>232</n><type>corner</type><id>735853</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>27</elapsed><subtype>cross</subtype><player1>39286</player1><sortorder>3</sortorder><team>8533</team><n>245</n><type>cross</type><id>735856</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>329</event_incident_typefk><elapsed>28</elapsed><subtype>cross</subtype><player1>39286</player1><sortorder>1</sortorder><team>8533</team><n>231</n><type>corner</type><id>735862</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>329</event_incident_typefk><elapsed>29</elapsed><subtype>cross</subtype><player1>41890</player1><sortorder>1</sortorder><team>9885</team><n>277</n><type>corner</type><id>735872</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>32</elapsed><subtype>cross</subtype><player1>31235</player1><sortorder>3</sortorder><team>9885</team><n>255</n><type>cross</type><id>735894</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>327</event_incident_typefk><elapsed>33</elapsed><subtype>cross</subtype><sortorder>1</sortorder><team>9885</team><n>253</n><type>corner</type><id>735899</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>41</elapsed><subtype>cross</subtype><player1>38827</player1><sortorder>1</sortorder><team>9885</team><n>266</n><type>cross</type><id>735947</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>329</event_incident_typefk><elapsed>42</elapsed><subtype>cross</subtype><player1>31235</player1><sortorder>0</sortorder><team>9885</team><n>246</n><type>corner</type><id>735951</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>42</elapsed><subtype>cross</subtype><player1>30871</player1><sortorder>4</sortorder><team>9885</team><n>274</n><type>cross</type><id>735956</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>329</event_incident_typefk><elapsed>43</elapsed><subtype>cross</subtype><player1>31235</player1><sortorder>1</sortorder><team>9885</team><n>260</n><type>corner</type><id>735964</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>329</event_incident_typefk><elapsed>43</elapsed><subtype>cross</subtype><player1>31235</player1><sortorder>3</sortorder><team>9885</team><n>269</n><type>corner</type><id>735969</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>44</elapsed><subtype>cross</subtype><player1>31235</player1><sortorder>0</sortorder><team>9885</team><n>272</n><type>cross</type><id>735976</id></value><value><stats><crosses>1</crosses></stats><elapsed_plus>1</elapsed_plus><event_incident_typefk>7</event_incident_typefk><elapsed>45</elapsed><subtype>cross</subtype><player1>113762</player1><sortorder>0</sortorder><team>8533</team><n>273</n><type>cross</type><id>735992</id></value><value><stats><crosses>1</crosses></stats><elapsed_plus>1</elapsed_plus><event_incident_typefk>7</event_incident_typefk><elapsed>45</elapsed><subtype>cross</subtype><player1>39286</player1><sortorder>1</sortorder><team>8533</team><n>251</n><type>cross</type><id>735994</id></value><value><stats><crosses>1</crosses></stats><elapsed_plus>1</elapsed_plus><event_incident_typefk>7</event_incident_typefk><elapsed>45</elapsed><subtype>cross</subtype><player1>42008</player1><sortorder>3</sortorder><team>8533</team><n>267</n><type>cross</type><id>735996</id></value><value><stats><crosses>1</crosses></stats><elapsed_plus>1</elapsed_plus><event_incident_typefk>7</event_incident_typefk><elapsed>45</elapsed><subtype>cross</subtype><player1>113762</player1><sortorder>4</sortorder><team>8533</team><n>275</n><type>cross</type><id>735997</id></value><value><stats><crosses>1</crosses></stats><elapsed_plus>2</elapsed_plus><event_incident_typefk>7</event_incident_typefk><elapsed>45</elapsed><subtype>cross</subtype><player1>38827</player1><sortorder>3</sortorder><team>9885</team><n>254</n><type>cross</type><id>736004</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>35</event_incident_typefk><elapsed>48</elapsed><subtype>cross</subtype><sortorder>3</sortorder><team>9885</team><n>293</n><type>cross</type><id>736079</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>50</elapsed><subtype>cross</subtype><player1>24436</player1><sortorder>0</sortorder><team>8533</team><n>278</n><type>cross</type><id>736088</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>35</event_incident_typefk><elapsed>50</elapsed><subtype>cross</subtype><sortorder>2</sortorder><team>8533</team><n>309</n><type>cross</type><id>736096</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>51</elapsed><subtype>cross</subtype><player1>24436</player1><sortorder>2</sortorder><team>8533</team><n>297</n><type>cross</type><id>736099</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>51</elapsed><subtype>cross</subtype><player1>27731</player1><sortorder>3</sortorder><team>8533</team><n>296</n><type>cross</type><id>736100</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>51</elapsed><subtype>cross</subtype><player1>24443</player1><sortorder>5</sortorder><team>8533</team><n>249</n><type>cross</type><id>736105</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>52</elapsed><subtype>cross</subtype><player1>26315</player1><sortorder>0</sortorder><team>8533</team><n>259</n><type>cross</type><id>736107</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>35</event_incident_typefk><elapsed>54</elapsed><subtype>cross</subtype><sortorder>1</sortorder><team>9885</team><n>290</n><type>cross</type><id>736115</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>55</elapsed><subtype>cross</subtype><player1>41892</player1><sortorder>0</sortorder><team>9885</team><n>298</n><type>cross</type><id>736124</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>56</elapsed><subtype>cross</subtype><player1>24448</player1><sortorder>0</sortorder><team>8533</team><n>302</n><type>cross</type><id>736129</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>57</elapsed><subtype>cross</subtype><player1>39286</player1><sortorder>1</sortorder><team>8533</team><n>292</n><type>cross</type><id>736138</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>60</elapsed><subtype>cross</subtype><player1>24448</player1><sortorder>1</sortorder><team>8533</team><n>305</n><type>cross</type><id>736155</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>61</elapsed><subtype>cross</subtype><player1>41892</player1><sortorder>0</sortorder><team>9885</team><n>301</n><type>cross</type><id>736159</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>62</elapsed><subtype>cross</subtype><player1>24436</player1><sortorder>1</sortorder><team>8533</team><n>303</n><type>cross</type><id>736172</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>63</elapsed><subtype>cross</subtype><player1>24443</player1><sortorder>2</sortorder><team>8533</team><n>315</n><type>cross</type><id>736180</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>65</elapsed><subtype>cross</subtype><player1>30712</player1><sortorder>0</sortorder><team>9885</team><n>310</n><type>cross</type><id>736192</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>329</event_incident_typefk><elapsed>66</elapsed><subtype>cross</subtype><player1>31235</player1><sortorder>1</sortorder><team>9885</team><n>326</n><type>corner</type><id>736197</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>66</elapsed><subtype>cross</subtype><player1>30861</player1><sortorder>2</sortorder><team>9885</team><n>280</n><type>cross</type><id>736198</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>67</elapsed><subtype>cross</subtype><player1>32937</player1><sortorder>1</sortorder><team>9885</team><n>306</n><type>cross</type><id>736205</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>69</elapsed><subtype>cross</subtype><player1>41892</player1><sortorder>0</sortorder><team>9885</team><n>312</n><type>cross</type><id>736222</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>69</elapsed><subtype>cross</subtype><player1>30871</player1><sortorder>2</sortorder><team>9885</team><n>332</n><type>cross</type><id>736224</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>72</elapsed><subtype>cross</subtype><player1>24443</player1><sortorder>1</sortorder><team>8533</team><n>308</n><type>cross</type><id>736241</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>73</elapsed><subtype>cross</subtype><player1>26315</player1><sortorder>0</sortorder><team>8533</team><n>316</n><type>cross</type><id>736246</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>73</elapsed><subtype>cross</subtype><player1>30871</player1><sortorder>2</sortorder><team>9885</team><n>331</n><type>cross</type><id>736250</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>73</elapsed><subtype>cross</subtype><player1>38827</player1><sortorder>3</sortorder><team>9885</team><n>304</n><type>cross</type><id>736252</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>74</elapsed><subtype>cross</subtype><player1>24436</player1><sortorder>1</sortorder><team>8533</team><n>311</n><type>cross</type><id>736260</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>75</elapsed><subtype>cross</subtype><player1>31235</player1><sortorder>0</sortorder><team>9885</team><n>319</n><type>cross</type><id>736266</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>78</elapsed><subtype>cross</subtype><player1>31235</player1><sortorder>0</sortorder><team>9885</team><n>321</n><type>cross</type><id>736288</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>89</elapsed><subtype>cross</subtype><player1>42008</player1><sortorder>0</sortorder><team>8533</team><n>289</n><type>cross</type><id>736362</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>90</elapsed><subtype>cross</subtype><player1>24443</player1><sortorder>0</sortorder><team>8533</team><n>329</n><type>cross</type><id>736370</id></value><value><stats><crosses>1</crosses></stats><event_incident_typefk>7</event_incident_typefk><elapsed>90</elapsed><subtype>cross</subtype><player1>24436</player1><sortorder>2</sortorder><team>8533</team><n>330</n><type>cross</type><id>736373</id></value><value><stats><crosses>1</crosses></stats><elapsed_plus>1</elapsed_plus><event_incident_typefk>7</event_incident_typefk><elapsed>90</elapsed><subtype>cross</subtype><player1>24436</player1><sortorder>1</sortorder><team>8533</team><n>327</n><type>cross</type><id>736375</id></value><value><stats><crosses>1</crosses></stats><elapsed_plus>2</elapsed_plus><event_incident_typefk>7</event_incident_typefk><elapsed>90</elapsed><subtype>cross</subtype><player1>42008</player1><sortorder>1</sortorder><team>8533</team><n>334</n><type>cross</type><id>736389</id></value><value><stats><crosses>1</crosses></stats><elapsed_plus>3</elapsed_plus><event_incident_typefk>7</event_incident_typefk><elapsed>90</elapsed><subtype>cross</subtype><player1>41890</player1><sortorder>0</sortorder><team>9885</team><n>337</n><type>cross</type><id>736395</id></value></cross> | null |
-| corner | null | <corner><value><stats><corners>1</corners></stats><event_incident_typefk>329</event_incident_typefk><elapsed>26</elapsed><subtype>cross</subtype><player1>30871</player1><sortorder>2</sortorder><team>9885</team><n>265</n><type>corner</type><id>735847</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>329</event_incident_typefk><elapsed>27</elapsed><subtype>cross</subtype><player1>30871</player1><sortorder>1</sortorder><team>9885</team><n>232</n><type>corner</type><id>735853</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>329</event_incident_typefk><elapsed>28</elapsed><subtype>cross</subtype><player1>39286</player1><sortorder>1</sortorder><team>8533</team><n>231</n><type>corner</type><id>735862</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>329</event_incident_typefk><elapsed>29</elapsed><subtype>cross</subtype><player1>41890</player1><sortorder>1</sortorder><team>9885</team><n>277</n><type>corner</type><id>735872</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>327</event_incident_typefk><elapsed>33</elapsed><subtype>cross</subtype><sortorder>1</sortorder><team>9885</team><n>253</n><type>corner</type><id>735899</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>329</event_incident_typefk><elapsed>42</elapsed><subtype>cross</subtype><player1>31235</player1><sortorder>0</sortorder><team>9885</team><n>246</n><type>corner</type><id>735951</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>329</event_incident_typefk><elapsed>43</elapsed><subtype>cross</subtype><player1>31235</player1><sortorder>1</sortorder><team>9885</team><n>260</n><type>corner</type><id>735964</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>329</event_incident_typefk><elapsed>43</elapsed><subtype>cross</subtype><player1>31235</player1><sortorder>3</sortorder><team>9885</team><n>269</n><type>corner</type><id>735969</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>330</event_incident_typefk><elapsed>57</elapsed><subtype>short</subtype><player1>39286</player1><sortorder>0</sortorder><team>8533</team><n>299</n><type>corner</type><id>736137</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>329</event_incident_typefk><elapsed>66</elapsed><subtype>cross</subtype><player1>31235</player1><sortorder>1</sortorder><team>9885</team><n>326</n><type>corner</type><id>736197</id></value><value><stats><corners>1</corners></stats><event_incident_typefk>330</event_incident_typefk><elapsed>67</elapsed><subtype>short</subtype><player1>30871</player1><sortorder>0</sortorder><team>9885</team><n>287</n><type>corner</type><id>736203</id></value></corner> | null |
-| possession | null | <possession /> | null |
-| B365H | null | 1.29 | null |
-| B365D | null | 5.25 | null |
-| B365A | null | 11 | null |
-| BWH | null | 1.3 | null |
-| BWD | null | 4.55 | null |
-| BWA | null | 8.75 | null |
-| IWH | null | 1.25 | null |
-| IWD | null | 5 | null |
-| IWA | null | 12 | null |
-| LBH | null | 1.3 | null |
-| LBD | null | 4.2 | null |
-| LBA | null | 9 | null |
+| away_player_Y7 | 6 | 7 | 7 |
+| away_player_Y8 | 8 | 7 | 7 |
+| away_player_Y9 | 8 | 9 | 7 |
+| away_player_Y10 | 8 | 9 | 9 |
+| away_player_Y11 | 11 | 11 | 11 |
+| home_player_1 | 274787 | 11320 | 39415 |
+| home_player_2 | 492132 | 25522 | 47553 |
+| home_player_3 | 108451 | 157806 | 18823 |
+| home_player_4 | 25815 | 41182 | 39541 |
+| home_player_5 | 94553 | 39965 | 37768 |
+| home_player_6 | 384376 | 35444 | 39267 |
+| home_player_7 | 598355 | 40728 | 56992 |
+| home_player_8 | 36785 | 39971 | 42431 |
+| home_player_9 | 45174 | 37560 | 96534 |
+| home_player_10 | 302079 | 69835 | 33640 |
+| home_player_11 | 71764 | 134232 | 39706 |
+| away_player_1 | 156175 | 41301 | 24503 |
+| away_player_2 | 95216 | 41315 | 25587 |
+| away_player_3 | 172768 | 25664 | 24013 |
+| away_player_4 | 22834 | 26222 | 27721 |
+| away_player_5 | 458806 | 210185 | 27719 |
+| away_player_6 | 207234 | 40758 | 31725 |
+| away_player_7 | 25772 | 41216 | 24502 |
+| away_player_8 | 40274 | 26051 | 24507 |
+| away_player_9 | 34035 | 111787 | 33816 |
+| away_player_10 | 41726 | 37254 | 92666 |
+| away_player_11 | 527103 | 41240 | 30881 |
+| goal | null | null | <goal><value><comment>n</comment><stats><goals>1</goals><shoton>1</shoton></stats><event_incident_typefk>71</event_incident_typefk><elapsed>2</elapsed><player1>39706</player1><sortorder>0</sortorder>… |
+| shoton | null | null | <shoton /> |
+| shotoff | null | null | <shotoff /> |
+| foulcommit | null | null | <foulcommit /> |
+| card | null | null | <card><value><comment>y</comment><stats><ycards>1</ycards></stats><event_incident_typefk>70</event_incident_typefk><elapsed>58</elapsed><card_type>y</card_type><player1>56992</player1><sortorder>0</s… |
+| cross | null | null | <cross /> |
+| corner | null | null | <corner /> |
+| possession | null | null | <possession /> |
+| B365H | null | 2.3 | 3 |
+| B365D | null | 3.1 | 3 |
+| B365A | null | 3.25 | 2.5 |
+| BWH | null | 2.55 | 2.85 |
+| BWD | null | 3 | 3.1 |
+| BWA | null | 2.8 | 2.45 |
+| IWH | null | 2.3 | 2.8 |
+| IWD | null | 3 | 3.1 |
+| IWA | null | 3 | 2.5 |
+| LBH | null | 2.38 | 2.75 |
+| LBD | null | 2.88 | 3 |
+| LBA | null | 2.8 | 2.38 |
 | PSH | null | null | null |
 | PSD | null | null | null |
 | PSA | null | null | null |
-| WHH | null | 1.25 | null |
-| WHD | null | 4.5 | null |
-| WHA | null | 10 | null |
-| SJH | null | 1.29 | null |
-| SJD | null | 5 | null |
-| SJA | null | 11 | null |
-| VCH | null | 1.25 | null |
-| VCD | null | 5 | null |
-| VCA | null | 10 | null |
-| GBH | null | 1.3 | null |
-| GBD | null | 5 | null |
-| GBA | null | 9 | null |
-| BSH | null | 1.25 | null |
-| BSD | null | 5 | null |
-| BSA | null | 11 | null |
+| WHH | null | 2.5 | 2.9 |
+| WHD | null | 3 | 3 |
+| WHA | null | 3 | 2.4 |
+| SJH | null | 2.4 | 2.88 |
+| SJD | null | 3 | 3 |
+| SJA | null | 3 | 2.6 |
+| VCH | null | 2.4 | 3.25 |
+| VCD | null | 3 | 2.88 |
+| VCA | null | 3.25 | 2.38 |
+| GBH | null | 2.4 | 2.9 |
+| GBD | null | 3 | 3 |
+| GBA | null | 3 | 2.5 |
+| BSH | null | 2.5 | 2.88 |
+| BSD | null | 3 | 3.1 |
+| BSA | null | 2.8 | 2.4 |
 
 # "Player"  (rows=11060)
 
@@ -301,18 +298,17 @@ columns:
 "weight" int: 50 distinct, 117..243, avg=168.38, median=168
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 11075 | 9307 | 4026 |
-| player_api_id | 39902 | 500618 | 13480 |
-| player_name | Zvjezdan Misimovic | Rui Correia | Grzegorz Wojtkowiak |
-| player_fifa_api_id | 102359 | 223625 | 152950 |
-| birthday | 1982-06-05 00:00:00 | 1990-08-23 00:00:00 | 1984-01-26 00:00:00 |
-| height | 180.34 | 187.96 | 182.88 |
-| weight | 176 | 165 | 165 |
+| id | 11075 | 5535 | 9160 |
+| player_api_id | 39902 | 163843 | 31300 |
+| player_name | Zvjezdan Misimovic | Julio Cesar | Rolando |
+| player_fifa_api_id | 102359 | 177831 | 163083 |
+| birthday | 1982-06-05 00:00:00 | 1986-09-02 00:00:00 | 1985-08-31 00:00:00 |
+| height | 180.34 | 193.04 | 190.5 |
+| weight | 176 | 176 | 176 |
 
 # "Player_Attributes"  (rows=183978)
 
@@ -361,53 +357,52 @@ columns:
 "gk_reflexes" int: nulls=836, 1..96, avg=16.4414
 
 indexes: none
-fk: "player_fifa_api_id"→"Player"."player_fifa_api_id", "player_api_id"→"Player"."player_api_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 183978 | 112445 | 83563 |
-| player_fifa_api_id | 102359 | 114356 | 228279 |
-| player_api_id | 39902 | 25947 | 588337 |
-| date | 2007-02-22 00:00:00 | 2015-09-21 00:00:00 | 2007-02-22 00:00:00 |
-| overall_rating | 80 | 65 | 57 |
-| potential | 81 | 65 | 70 |
+| id | 183978 | 28452 | 112564 |
+| player_fifa_api_id | 102359 | 179660 | 162951 |
+| player_api_id | 39902 | 40137 | 18520 |
+| date | 2007-02-22 00:00:00 | 2013-10-04 00:00:00 | 2009-02-22 00:00:00 |
+| overall_rating | 80 | 64 | 74 |
+| potential | 81 | 67 | 79 |
 | preferred_foot | right | right | right |
-| attacking_work_rate | medium | medium | medium |
-| defensive_work_rate | low | medium | medium |
-| crossing | 74 | 12 | 25 |
-| finishing | 68 | 13 | 25 |
-| heading_accuracy | 57 | 13 | 20 |
-| short_passing | 88 | 13 | 31 |
-| volleys | 77 | 14 | 25 |
-| dribbling | 87 | 11 | 25 |
-| curve | 86 | 16 | 20 |
-| free_kick_accuracy | 53 | 14 | 20 |
-| long_passing | 78 | 12 | 26 |
-| ball_control | 91 | 12 | 20 |
-| acceleration | 58 | 53 | 41 |
-| sprint_speed | 64 | 52 | 44 |
-| agility | 77 | 48 | 39 |
-| reactions | 66 | 66 | 58 |
-| balance | 73 | 57 | 44 |
-| shot_power | 72 | 13 | 20 |
-| jumping | 58 | 68 | 53 |
-| stamina | 67 | 24 | 51 |
-| strength | 59 | 60 | 68 |
-| long_shots | 78 | 12 | 25 |
-| aggression | 63 | 36 | 54 |
-| interceptions | 63 | 23 | 25 |
-| positioning | 68 | 16 | 25 |
-| vision | 88 | 50 | 20 |
-| penalties | 53 | 11 | 31 |
-| marking | 38 | 11 | 25 |
-| standing_tackle | 32 | 11 | 25 |
-| sliding_tackle | 30 | 13 | 25 |
-| gk_diving | 9 | 70 | 64 |
-| gk_handling | 9 | 53 | 55 |
-| gk_kicking | 78 | 75 | 50 |
-| gk_positioning | 7 | 64 | 50 |
-| gk_reflexes | 15 | 71 | 59 |
+| attacking_work_rate | medium | high | medium |
+| defensive_work_rate | low | medium | high |
+| crossing | 74 | 62 | 77 |
+| finishing | 68 | 53 | 36 |
+| heading_accuracy | 57 | 38 | 65 |
+| short_passing | 88 | 60 | 71 |
+| volleys | 77 | 32 | 41 |
+| dribbling | 87 | 63 | 64 |
+| curve | 86 | 61 | 55 |
+| free_kick_accuracy | 53 | 44 | 46 |
+| long_passing | 78 | 44 | 73 |
+| ball_control | 91 | 59 | 67 |
+| acceleration | 58 | 90 | 72 |
+| sprint_speed | 64 | 93 | 75 |
+| agility | 77 | 81 | 63 |
+| reactions | 66 | 61 | 81 |
+| balance | 73 | 71 | 55 |
+| shot_power | 72 | 59 | 70 |
+| jumping | 58 | 71 | 82 |
+| stamina | 67 | 81 | 74 |
+| strength | 59 | 66 | 78 |
+| long_shots | 78 | 54 | 53 |
+| aggression | 63 | 43 | 87 |
+| interceptions | 63 | 26 | 71 |
+| positioning | 68 | 63 | 39 |
+| vision | 88 | 60 | 65 |
+| penalties | 53 | 43 | 55 |
+| marking | 38 | 25 | 77 |
+| standing_tackle | 32 | 28 | 80 |
+| sliding_tackle | 30 | 27 | 82 |
+| gk_diving | 9 | 14 | 12 |
+| gk_handling | 9 | 12 | 9 |
+| gk_kicking | 78 | 9 | 6 |
+| gk_positioning | 7 | 6 | 5 |
+| gk_reflexes | 15 | 8 | 11 |
 
 # "Team"  (rows=299)
 
@@ -419,16 +414,15 @@ columns:
 "team_short_name" text: 259 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 51606 | 43051 | 20518 |
-| team_api_id | 7896 | 8315 | 10233 |
-| team_fifa_api_id | null | 448 | 110556 |
-| team_long_name | Lugano | Athletic Club de Bilbao | Genoa |
-| team_short_name | LUG | BIL | GEN |
+| id | 51606 | 3471 | 22042 |
+| team_api_id | 7896 | 8559 | 9880 |
+| team_fifa_api_id | null | 4 | 110915 |
+| team_long_name | Lugano | Bolton Wanderers | Cesena |
+| team_short_name | LUG | BOL | CES |
 
 # "Team_Attributes"  (rows=1458)
 
@@ -460,36 +454,35 @@ columns:
 "defenceDefenderLineClass" text: "Cover"=1362, "Offside Trap"=96
 
 indexes: none
-fk: "team_api_id"→"Team"."team_api_id", "team_fifa_api_id"→"Team"."team_fifa_api_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 1458 | 993 | 227 |
-| team_fifa_api_id | 15005 | 110746 | 1943 |
-| team_api_id | 10000 | 8023 | 8678 |
-| date | 2015-09-10 00:00:00 | 2013-09-20 00:00:00 | 2012-02-22 00:00:00 |
-| buildUpPlaySpeed | 54 | 67 | 46 |
+| id | 1458 | 1208 | 585 |
+| team_fifa_api_id | 15005 | 48 | 166 |
+| team_api_id | 10000 | 9875 | 8177 |
+| date | 2015-09-10 00:00:00 | 2013-09-20 00:00:00 | 2015-09-10 00:00:00 |
+| buildUpPlaySpeed | 54 | 68 | 47 |
 | buildUpPlaySpeedClass | Balanced | Fast | Balanced |
-| buildUpPlayDribbling | 42 | null | null |
-| buildUpPlayDribblingClass | Normal | Little | Little |
-| buildUpPlayPassing | 51 | 54 | 46 |
+| buildUpPlayDribbling | 42 | null | 44 |
+| buildUpPlayDribblingClass | Normal | Little | Normal |
+| buildUpPlayPassing | 51 | 52 | 55 |
 | buildUpPlayPassingClass | Mixed | Mixed | Mixed |
 | buildUpPlayPositioningClass | Organised | Organised | Organised |
-| chanceCreationPassing | 47 | 56 | 54 |
-| chanceCreationPassingClass | Normal | Normal | Normal |
-| chanceCreationCrossing | 52 | 62 | 60 |
-| chanceCreationCrossingClass | Normal | Normal | Normal |
-| chanceCreationShooting | 32 | 67 | 52 |
-| chanceCreationShootingClass | Little | Lots | Normal |
+| chanceCreationPassing | 47 | 68 | 59 |
+| chanceCreationPassingClass | Normal | Risky | Normal |
+| chanceCreationCrossing | 52 | 69 | 68 |
+| chanceCreationCrossingClass | Normal | Lots | Lots |
+| chanceCreationShooting | 32 | 53 | 45 |
+| chanceCreationShootingClass | Little | Normal | Normal |
 | chanceCreationPositioningClass | Organised | Organised | Organised |
-| defencePressure | 44 | 47 | 48 |
+| defencePressure | 44 | 44 | 50 |
 | defencePressureClass | Medium | Medium | Medium |
-| defenceAggression | 58 | 47 | 50 |
+| defenceAggression | 58 | 57 | 45 |
 | defenceAggressionClass | Press | Press | Press |
-| defenceTeamWidth | 37 | 63 | 62 |
+| defenceTeamWidth | 37 | 53 | 57 |
 | defenceTeamWidthClass | Normal | Normal | Normal |
-| defenceDefenderLineClass | Cover | Cover | Cover |
+| defenceDefenderLineClass | Cover | Offside Trap | Cover |
 
 # "match_view"  (rows=25979)
 
@@ -618,35 +611,35 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 25979 | 2420 | 2706 |
-| league | Switzerland Super League | England Premier League | England Premier League |
-| season | 2015/2016 | 2009/2010 | 2010/2011 |
-| match_api_id | 1992095 | 659370 | 840142 |
-| home_team | BSC Young Boys | Everton | Birmingham City |
-| away_team | FC Basel | Portsmouth | West Bromwich Albion |
-| home_team_goal | 4 | 1 | 1 |
-| away_team_goal | 3 | 0 | 3 |
-| home_gk | Yvon Mvogo | Tim Howard | Ben Foster |
-| home_center_back_1 | Florent Hadergjonaj | Tony Hibbert | Stephen Carr |
-| home_center_back_2 | Milan Vilotic | Phil Jagielka | Roger Johnson |
-| home_right_back | Steve von Bergen | Sylvain Distin | Curtis Davies |
-| home_left_back | Jan Lecjaks | Leighton Baines | Liam Ridgewell |
-| home_midfield_1 | Renato Steffen | Leon Osman | Jean Beausejour |
-| home_midfield_2 | Denis Zakaria | Jack Rodwell | Keith Fahey |
-| home_midfield_3 | Alain Rochat | Mikel Arteta | Lee Bowyer |
-| home_midfield_4 | Miralem Sulejmani | Steven Pienaar | David Bentley |
-| home_second_forward | Yuya Kubo | Victor Anichebe | Cameron Jerome |
-| home_center_forward | Alexander Gerndt | Louis Saha | Obafemi Martins |
-| away_gk | Tomas Vaclik | Jamie Ashdown | Scott Carson |
-| away_center_back_1 | Michael Lang | Steve Finnan | Steven Reid |
-| away_center_back_2 | Daniel Hoeegh | Ricardo Rocha | Jonas Olsson |
-| away_right_back | Marek Suchy | Aaron Mokoena | Abdoulaye Meite |
-| away_left_back | Naser Aliji | Anthony Vanden Borre | Nicky Shorey |
-| away_midfield_1 | Taulant Xhaka | Hayden Mullins | Chris Brunt |
-| away_midfield_2 | Zdravko Kuzmanovic | Papa Bouba Diop | Paul Scharner |
-| away_midfield_3 | Birkir Bjarnason | Marc Wilson | James Morrison |
-| away_midfield_4 | Matias Emilio Delgado | Kevin-Prince Boateng | Youssuf Mulumbu |
-| away_second_forward | Shkelzen Gashi | Frederic Piquionne | Jerome Thomas |
-| away_center_forward | Breel Embolo | John Utaka | Marc-Antoine Fortune |
-| goal | null | <goal><value><comment>n</comment><stats><goals>1</goals><shoton>1</shoton></stats><elapsed_plus>4</elapsed_plus><event_incident_typefk>393</event_incident_typefk><elapsed>90</elapsed><player2>30839</player2><subtype>shot</subtype><player1>10491</player1><sortorder>1</sortorder><team>8668</team><id>1083239</id><n>183</n><type>goal</type><goal_type>n</goal_type></value></goal> | <goal><value><comment>n</comment><stats><goals>1</goals><shoton>1</shoton></stats><event_incident_typefk>393</event_incident_typefk><elapsed>47</elapsed><player2>25550</player2><subtype>shot</subtype><player1>71502</player1><sortorder>0</sortorder><team>8659</team><id>1439659</id><n>287</n><type>goal</type><goal_type>n</goal_type></value><value><comment>n</comment><stats><goals>1</goals><shoton>1</shoton></stats><event_incident_typefk>393</event_incident_typefk><elapsed>48</elapsed><player2>33049</player2><subtype>shot</subtype><player1>38254</player1><sortorder>1</sortorder><team>8658</team><id>1439661</id><n>288</n><type>goal</type><goal_type>n</goal_type></value><value><comment>n</comment><stats><goals>1</goals><shoton>1</shoton></stats><event_incident_typefk>393</event_incident_typefk><elapsed>58</elapsed><player2>23922</player2><subtype>shot</subtype><player1>24171</player1><sortorder>0</sortorder><team>8659</team><id>1439683</id><n>301</n><type>goal</type><goal_type>n</goal_type></value><value><comment>n</comment><stats><goals>1</goals><shoton>1</shoton></stats><event_incident_typefk>406</event_incident_typefk><elapsed>72</elapsed><player2>24171</player2><subtype>header</subtype><player1>25005</player1><sortorder>4</sortorder><team>8659</team><id>1439726</id><n>317</n><type>goal</type><goal_type>n</goal_type></value></goal> |
-| card | null | <card /> | <card><value><comment>y</comment><stats><ycards>1</ycards></stats><event_incident_typefk>73</event_incident_typefk><elapsed>51</elapsed><card_type>y</card_type><subtype>serious_fouls</subtype><player1>33049</player1><sortorder>2</sortorder><team>8658</team><n>291</n><type>card</type><id>1439666</id></value><value><comment>y</comment><stats><ycards>1</ycards></stats><event_incident_typefk>505</event_incident_typefk><elapsed>53</elapsed><card_type>y</card_type><subtype>Unsportsmanlike Cond</subtype><player1>25005</player1><sortorder>0</sortorder><team>8659</team><n>293</n><type>card</type><id>1439668</id></value><value><comment>y</comment><stats><ycards>1</ycards></stats><event_incident_typefk>505</event_incident_typefk><elapsed>53</elapsed><card_type>y</card_type><subtype>Unsportsmanlike Cond</subtype><player1>23787</player1><sortorder>1</sortorder><team>8658</team><n>294</n><type>card</type><id>1439669</id></value><value><comment>y</comment><stats><ycards>1</ycards></stats><event_incident_typefk>73</event_incident_typefk><elapsed>88</elapsed><card_type>y</card_type><subtype>serious_fouls</subtype><player1>77704</player1><sortorder>3</sortorder><team>8658</team><n>334</n><type>card</type><id>1439770</id></value></card> |
+| id | 25979 | 16773 | 14854 |
+| league | Switzerland Super League | Poland Ekstraklasa | Netherlands Eredivisie |
+| season | 2015/2016 | 2012/2013 | 2013/2014 |
+| match_api_id | 1992095 | 1218871 | 1473145 |
+| home_team | BSC Young Boys | Pogoń Szczecin | FC Groningen |
+| away_team | FC Basel | Lechia Gdańsk | PEC Zwolle |
+| home_team_goal | 4 | 0 | 0 |
+| away_team_goal | 3 | 2 | 0 |
+| home_gk | Yvon Mvogo | Radoslaw Janukiewicz | Marco Bizot |
+| home_center_back_1 | Florent Hadergjonaj | null | Stefano Magnasco |
+| home_center_back_2 | Milan Vilotic | Maciej Dabrowski | Eric Fernando Botteghin |
+| home_right_back | Steve von Bergen | Hernani | Johan Kappelhof |
+| home_left_back | Jan Lecjaks | Adam Fraczczak | Giliano Wijnaldum |
+| home_midfield_1 | Renato Steffen | Maksymilian Rogalski | Tom Hiariej |
+| home_midfield_2 | Denis Zakaria | Wojciech Golla | Maikel Kieftenbeld |
+| home_midfield_3 | Alain Rochat | null | Tjaronn Chery |
+| home_midfield_4 | Miralem Sulejmani | null | Andraz Kirm |
+| home_second_forward | Yuya Kubo | Grzegorz Bonin | Richairo Zivkovic |
+| home_center_forward | Alexander Gerndt | null | Filip Kostic |
+| away_gk | Tomas Vaclik | Michal Buchalik | Diederik Boer |
+| away_center_back_1 | Michael Lang | Rafal Janicki | Giovanni Gravenbeek |
+| away_center_back_2 | Daniel Hoeegh | Jaroslaw Bieniuk | Darryl Lachman |
+| away_right_back | Marek Suchy | Sebastian Madera | Joost Broerse |
+| away_left_back | Naser Aliji | null | Rochdi Achenteh |
+| away_midfield_1 | Taulant Xhaka | Andreu Mayoral | Kamohelo Mokotjo |
+| away_midfield_2 | Zdravko Kuzmanovic | null | Mustafa Saymak |
+| away_midfield_3 | Birkir Bjarnason | Mateusz Machaj | Ryan Thomas |
+| away_midfield_4 | Matias Emilio Delgado | null | Giovanni Hiwat |
+| away_second_forward | Shkelzen Gashi | Marcin Pietrowski | Fred Benson |
+| away_center_forward | Breel Embolo | null | Stefan Nijland |
+| goal | null | null | null |
+| card | null | null | null |

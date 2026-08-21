@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:26:39.669422Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:31:48.838038Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-hqjmb0zt/thrombosis_prediction.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-01e_h1vo/thrombosis_prediction.sqlite
 schema: main
 ---
 
@@ -14,7 +14,7 @@ schema: main
 # "Examination"  (rows=106)
 
 columns:
-"ID" int FK: 69 distinct, nulls=36, 14872..5779550, avg=3.21898e+06, median=3.7128e+06
+"ID" int FK: 69 distinct, nulls=36, 14872..5779550
 "Examination Date" date: 94 distinct, nulls=4
 "aCL IgG" float: 33 distinct, 0..2150.3, avg=33.3887, median=0.8
 "aCL IgM" float: 49 distinct, 0..200, avg=4.94906, median=2
@@ -29,29 +29,28 @@ columns:
 "Thrombosis" int: 0=94, 1=8, 2=3, 3=1, 0..3
 
 indexes: none
-fk: "ID"→"Patient"."ID"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ID | 5779550 | 189721 | 762449 |
-| Examination Date | 1998-03-31 | 1997-03-10 | null |
-| aCL IgG | 0 | 0 | 1.2 |
-| aCL IgM | 2.5 | 0 | 1.7 |
-| ANA | 4 | 16 | 4096 |
-| ANA Pattern | S | P,S | P,S |
-| aCL IgA | 0 | 0 | 3 |
-| Diagnosis | SLE susp | Raynaud | MCTD |
-| KCT | null | null | null |
-| RVVT | null | null | null |
-| LAC | null | null | - |
-| Symptoms | null | null | null |
-| Thrombosis | 0 | 0 | 0 |
+| ID | 5779550 | 355009 | 2803470 |
+| Examination Date | 1998-03-31 | 1997-04-07 | 1994-05-09 |
+| aCL IgG | 0 | 19.3 | 2.9 |
+| aCL IgM | 2.5 | 2.1 | 3.8 |
+| ANA | 4 | 64 | 4 |
+| ANA Pattern | S | P,S | S |
+| aCL IgA | 0 | 5 | 0 |
+| Diagnosis | SLE susp | SLE, SjS, ITP | SLE+Psy |
+| KCT | null | + | + |
+| RVVT | null | + | + |
+| LAC | null | + | + |
+| Symptoms | null | null | CNS susp |
+| Thrombosis | 0 | 0 | 2 |
 
 # "Laboratory"  (rows=13908)
 
 columns:
-"ID" int PK FK: 302 distinct, 27654..5452747, avg=3.16549e+06, median=3.21599e+06, 2933261=226, 3182521=200, 444499=183, 2315140=166, 4884792=165, 2343945=147, 5122312=135, 4790235=130, 2370675=129, 2395148=126
+"ID" int PK FK: 302 distinct, 27654..5452747, 2933261=226, 3182521=200, 444499=183, 2315140=166, 4884792=165, 2343945=147, 5122312=135, 4790235=130, 2370675=129, 2395148=126
 "Date" date PK: 3723 distinct, "1985-11-11"=26, "1985-09-09"=25, "1984-10-01"=22, "1985-05-13"=21, "1984-12-17"=20, "1985-04-22"=20, "1985-12-09"=20, "1981-05-11"=19, "1985-05-20"=19, "1984-01-09"=18
 "GOT" int: 218 distinct, nulls=2630, 3..21480, avg=28.8021, median=20
 "GPT" int: 302 distinct, nulls=2634, 1..4780, avg=30.4459, median=18
@@ -97,47 +96,46 @@ columns:
 "DNA-II" int: all NULL
 
 indexes: none
-fk: "ID"→"Patient"."ID"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ID | 5452747 | 3552067 | 5405581 |
-| Date | 1998-11-17 | 1988-05-30 | 1997-04-01 |
-| GOT | 20 | 30 | 24 |
-| GPT | 16 | 18 | 33 |
-| LDH | 211 | 172 | 496 |
-| ALP | 241 | 66 | 137 |
-| TP | 8.1 | 8.8 | 7.6 |
-| ALB | 4.5 | 5.2 | 4 |
-| UA | 4.3 | 5 | 6.2 |
-| UN | 14 | 13 | 15 |
-| CRE | 0.5 | 0.9 | 0.6 |
-| T-BIL | 0.3 | 1 | 0.6 |
-| T-CHO | 247 | 300 | 175 |
-| TG | null | null | 84 |
-| CPK | null | null | 40 |
-| GLU | 127 | null | 149 |
-| WBC | 12 | 3.2 | 11.5 |
-| RBC | 4.5 | 4.1 | 5 |
-| HGB | 14 | 13.2 | 14.7 |
-| HCT | 41.7 | 39.4 | 45.6 |
-| PLT | 327 | 162 | 267 |
-| PT | null | null | null |
+| ID | 5452747 | 5176234 | 4652830 |
+| Date | 1998-11-17 | 1998-10-19 | 1991-08-26 |
+| GOT | 20 | 21 | 65 |
+| GPT | 16 | 18 | 209 |
+| LDH | 211 | 251 | 1479 |
+| ALP | 241 | 199 | 214 |
+| TP | 8.1 | 7.4 | 6.7 |
+| ALB | 4.5 | 3.7 | 3.7 |
+| UA | 4.3 | 5.2 | 3.1 |
+| UN | 14 | 10 | 14 |
+| CRE | 0.5 | 0.5 | 0.6 |
+| T-BIL | 0.3 | 0.3 | 0.7 |
+| T-CHO | 247 | 210 | 323 |
+| TG | null | 174 | null |
+| CPK | null | 63 | 14 |
+| GLU | 127 | null | null |
+| WBC | 12 | 7.4 | 10.1 |
+| RBC | 4.5 | 3.9 | 3.9 |
+| HGB | 14 | 11.5 | 12.9 |
+| HCT | 41.7 | 34.2 | 37.9 |
+| PLT | 327 | 335 | 91 |
+| PT | null | null | 11.6 |
 | APTT | null | null | null |
-| FG | null | null | null |
-| PIC | null | null | null |
-| TAT | null | null | null |
-| TAT2 | null | null | null |
-| U-PRO | - | - | - |
-| IGG | 1210 | null | 2313 |
-| IGA | 345 | null | 474 |
-| IGM | 88 | null | 99 |
-| CRP | null | <0.1 | 3.9 |
-| RA | - | - | null |
-| RF | null | null | 22 |
-| C3 | null | 76 | 90 |
-| C4 | null | 24 | 42 |
+| FG | null | null | 25.9 |
+| PIC | null | null | 272 |
+| TAT | null | null | 152 |
+| TAT2 | null | null | 130 |
+| U-PRO | - | +1(30) | - |
+| IGG | 1210 | 1870 | null |
+| IGA | 345 | 234 | null |
+| IGM | 88 | 129 | null |
+| CRP | null | 2.11 | 4.1 |
+| RA | - | null | null |
+| RF | null | <11 | null |
+| C3 | null | null | null |
+| C4 | null | null | null |
 | RNP | null | null | null |
 | SM | null | null | null |
 | SC170 | null | null | null |
@@ -150,7 +148,7 @@ samples:
 # "Patient"  (rows=1238)
 
 columns:
-"ID" int PK: unique identifier, 2110..5845877, avg=3.96171e+06, median=4.53395e+06
+"ID" int PK: unique identifier, 2110..5845877
 "SEX" text: "F"=1023, "M"=202, ""=13
 "Birthday" date: 1193 distinct, nulls=1
 "Description" date: 97 distinct, nulls=216
@@ -159,15 +157,14 @@ columns:
 "Diagnosis" text: 220 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ID | 5845877 | 4118855 | 4951865 |
-| SEX | F | F | M |
-| Birthday | 1951-12-13 | 1966-06-07 | 1976-06-24 |
-| Description | 1998-09-02 | 1998-07-01 | 1994-02-08 |
-| First Date | 1998-08-28 | null | 1993-12-21 |
+| ID | 5845877 | 4869782 | 911737 |
+| SEX | F | M | M |
+| Birthday | 1951-12-13 | 1961-03-18 | 1962-06-08 |
+| Description | 1998-09-02 | 1994-02-19 | 1998-07-01 |
+| First Date | 1998-08-28 | 1992-10-06 | 1994-06-02 |
 | Admission | + | - | - |
-| Diagnosis | Weber-Christian, PM | MCTD susp | PSS |
+| Diagnosis | Weber-Christian, PM | Adult STILL | BEHCET susp |

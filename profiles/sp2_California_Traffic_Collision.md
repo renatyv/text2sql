@@ -1,31 +1,30 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:26:51.696490Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:32:01.058608Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-er_fsn8z/California_Traffic_Collision.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-2wxeb2if/California_Traffic_Collision.sqlite
 schema: main
 ---
 
 # "case_ids"  (rows=94243)
 
 columns:
-"case_id" float: 94242 distinct, 45..9.87001e+18
+"case_id" float: 94242 distinct, 45..9.9e+18
 "db_year" int: 2021=52813, 2018=36903, 2020=4526, 2017=1, 2017..2021
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| case_id | 9.87001e+18 | 8.55456e+06 | 4.32006e+06 |
+| case_id | 9.9e+18 | 5.2e+06 | 6.7e+06 |
 | db_year | 2018 | 2021 | 2021 |
 
 # "collisions"  (rows=94243)
 
 columns:
-"case_id" float: unique identifier, 11..9.87001e+18
+"case_id" float: unique identifier, 11..9.9e+18
 "jurisdiction" float: 467 distinct, nulls=121, 100..9870, avg=5867.06, median=4807
 "officer_id" text: 30277 distinct, nulls=209
 "reporting_district" text: 6259 distinct, nulls=55424
@@ -41,7 +40,7 @@ columns:
 "beat_number" text: 5049 distinct, nulls=8075
 "primary_road" text: 21661 distinct
 "secondary_road" text: 33560 distinct, nulls=1
-"distance" float: 2121 distinct, 0..5.57568e+06, avg=716.122, median=100
+"distance" float: 2121 distinct, 0..5.6e+06, avg=716.122, median=100
 "direction" text: "south"=19444, "north"=19178, "east"=16095, "west"=15960, nulls=23566
 "intersection" float: 0=71354, 1=21947, nulls=942
 "weather_1" text: "clear"=77489, "cloudy"=12330, "raining"=3301, "fog"=389, "snowing"=134, "other"=98, "wind"=33, nulls=469
@@ -102,30 +101,29 @@ columns:
 "process_date" text: iso-date, 5432 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| case_id | 9.87001e+18 | 8.47263e+06 | 930078 |
-| jurisdiction | 9870 | 1942 | 9250 |
-| officer_id | 16011 | 41661 | 013275 |
-| reporting_district | 0 | 1145 | null |
-| chp_shift | 0600 thru 1359 | not chp | 1400 thru 2159 |
-| population | unincorporated | >250000 | unincorporated |
-| county_city_location | 3600 | 1942 | 3400 |
-| county_location | san bernardino | los angeles | sacramento |
+| case_id | 9.9e+18 | 6e+06 | 1.8e+06 |
+| jurisdiction | 9870 | 9860 | 9670 |
+| officer_id | 16011 | 011402 | 13317 |
+| reporting_district | 0 | null | null |
+| chp_shift | 0600 thru 1359 | 0600 thru 1359 | 1400 thru 2159 |
+| population | unincorporated | unincorporated | 50000 to 100000 |
+| county_city_location | 3600 | 3600 | 3003 |
+| county_location | san bernardino | san bernardino | orange |
 | special_condition | null | 0 | 0 |
-| beat_type | chp state highway | not chp | chp county roadline |
-| chp_beat_type | state route | not chp | county road line |
-| city_division_lapd | null | K | null |
-| chp_beat_class | chp primary | not chp | chp primary |
-| beat_number | 031 | 24T51 | 037 |
-| primary_road | RT 62 | CLEARWATER ST | HAZEL AV |
-| secondary_road | JUNIPER RD | RIVERSIDE DR | STEVEN AV |
-| distance | 267 | 0 | 226 |
-| direction | east | null | north |
-| intersection | 0 | 1 | 0 |
+| beat_type | chp state highway | chp county roadarea | chp state highway |
+| chp_beat_type | state route | county road area | state route |
+| city_division_lapd | null | null | null |
+| chp_beat_class | chp primary | chp other | chp other |
+| beat_number | 031 | 002 | 091 |
+| primary_road | RT 62 | STATE ST | RT 91 |
+| secondary_road | JUNIPER RD | KERN ST | STANTON AV |
+| distance | 267 | 580 | 200 |
+| direction | east | south | west |
+| intersection | 0 | 0 | 0 |
 | weather_1 | clear | clear | clear |
 | weather_2 | null | null | null |
 | state_highway_indicator | 1 | 0 | 0 |
@@ -138,22 +136,22 @@ samples:
 | location_type | highway | null | null |
 | ramp_intersection | highway | null | null |
 | side_of_highway | eastbound | null | null |
-| tow_away | 1 | 0 | 0 |
+| tow_away | 1 | 1 | 1 |
 | collision_severity | property damage only | property damage only | pain |
 | killed_victims | 0 | 0 | 0 |
-| injured_victims | 0 | 0 | 1 |
-| party_count | 2 | 2 | 2 |
+| injured_victims | 0 | 0 | 3 |
+| party_count | 2 | 1 | 2 |
 | primary_collision_factor | vehicle code violation | vehicle code violation | vehicle code violation |
 | pcf_violation_code | vehicle | null | null |
-| pcf_violation_category | automobile right of way | automobile right of way | speeding |
-| pcf_violation | 21801 | 21804 | 22350 |
-| pcf_violation_subsection | A | A | null |
+| pcf_violation_category | automobile right of way | speeding | improper turning |
+| pcf_violation | 21801 | 22350 | 22107 |
+| pcf_violation_subsection | A | null | null |
 | hit_and_run | not hit and run | misdemeanor | not hit and run |
-| type_of_collision | broadside | broadside | rear end |
-| motor_vehicle_involved_with | other motor vehicle | other motor vehicle | other motor vehicle |
+| type_of_collision | broadside | hit object | sideswipe |
+| motor_vehicle_involved_with | other motor vehicle | fixed object | parked motor vehicle |
 | pedestrian_action | no pedestrian involved | no pedestrian involved | no pedestrian involved |
 | road_surface | dry | dry | dry |
-| road_condition_1 | normal | normal | construction |
+| road_condition_1 | normal | normal | normal |
 | road_condition_2 | null | null | null |
 | lighting | daylight | daylight | daylight |
 | control_device | none | functioning | none |
@@ -164,11 +162,11 @@ samples:
 | truck_collision | 0 | 0 | 0 |
 | not_private_property | 1 | 1 | 1 |
 | alcohol_involved | null | null | null |
-| statewide_vehicle_type_at_fault | passenger car | null | passenger car |
-| chp_vehicle_type_at_fault | passenger car, station | unknown hit and run vehicle involvement | sport utility vehicle |
+| statewide_vehicle_type_at_fault | passenger car | passenger car | passenger car |
+| chp_vehicle_type_at_fault | passenger car, station | passenger car, station | passenger car, station |
 | severe_injury_count | 0 | 0 | 0 |
 | other_visible_injury_count | 0 | 0 | 0 |
-| complaint_of_pain_injury_count | 0 | 0 | 1 |
+| complaint_of_pain_injury_count | 0 | 0 | 3 |
 | pedestrian_killed_count | 0 | 0 | 0 |
 | pedestrian_injured_count | 0 | 0 | 0 |
 | bicyclist_killed_count | 0 | 0 | 0 |
@@ -177,17 +175,17 @@ samples:
 | motorcyclist_injured_count | 0 | 0 | 0 |
 | primary_ramp | null | null | null |
 | secondary_ramp | null | null | null |
-| latitude | null | null | null |
-| longitude | null | null | null |
-| collision_date | 2001-11-06 | 2017-08-25 | 2003-07-23 |
-| collision_time | 10:00:00 | 16:50:00 | 14:45:00 |
-| process_date | 2002-04-04 | 2017-10-27 | 2003-09-30 |
+| latitude | null | 34.1553 | null |
+| longitude | null | -117.335 | null |
+| collision_date | 2001-11-06 | 2013-01-15 | 2004-09-07 |
+| collision_time | 10:00:00 | 13:45:00 | 16:15:00 |
+| process_date | 2002-04-04 | 2014-06-23 | 2005-03-22 |
 
 # "parties"  (rows=186692)
 
 columns:
 "id" int: 34..16432232
-"case_id" float: 15..9.87001e+18
+"case_id" float: 15..9.9e+18
 "party_number" int: 1..92, avg=1.60592
 "party_type" text: nulls=431
 "at_fault" int: 0..1, avg=0.463421
@@ -220,49 +218,48 @@ columns:
 "party_race" text: nulls=43837
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 16432232 | 7502875 | 1155750 |
-| case_id | 9.87001e+18 | 9.00438e+07 | 638008 |
-| party_number | 2 | 2 | 3 |
-| party_type | driver | driver | parked vehicle |
-| at_fault | 0 | 0 | 0 |
-| party_sex | male | female | null |
-| party_age | 20 | 68 | null |
-| party_sobriety | had not been drinking | had not been drinking | not applicable |
-| party_drug_physical | null | null | not applicable |
-| direction_of_travel | south | east | east |
+| id | 16432232 | 7167746 | 1867493 |
+| case_id | 9.9e+18 | 8.9e+06 | 5.2e+06 |
+| party_number | 2 | 1 | 1 |
+| party_type | driver | driver | driver |
+| at_fault | 0 | 1 | 1 |
+| party_sex | male | male | null |
+| party_age | 20 | 31 | null |
+| party_sobriety | had not been drinking | had not been drinking | impairment unknown |
+| party_drug_physical | null | null | G |
+| direction_of_travel | south | west | null |
 | party_safety_equipment_1 | lap/shoulder harness used | air bag not deployed | null |
 | party_safety_equipment_2 | null | lap/shoulder harness used | null |
-| financial_responsibility | proof of insurance obtained | proof of insurance obtained | not applicable |
+| financial_responsibility | proof of insurance obtained | no proof of insurance obtained | null |
 | hazardous_materials | null | null | null |
-| cellphone_in_use | null | 0 | null |
-| cellphone_use_type | no cellphone/unknown | cellphone not in use | null |
+| cellphone_in_use | null | 0 | 0 |
+| cellphone_use_type | no cellphone/unknown | cellphone not in use | cellphone not in use |
 | school_bus_related | null | null | null |
 | oaf_violation_code | null | null | null |
 | oaf_violation_category | null | null | null |
 | oaf_violation_section | 0 | null | null |
 | oaf_violation_suffix | null | null | null |
-| other_associate_factor_1 | none apparent | none apparent | null |
+| other_associate_factor_1 | none apparent | none apparent | none apparent |
 | other_associate_factor_2 | null | null | null |
 | party_number_killed | 0 | 0 | 0 |
 | party_number_injured | 0 | 0 | 0 |
-| movement_preceding_collision | slowing/stopping | making left turn | parked |
-| vehicle_year | 2001 | 2015 | 1990 |
-| vehicle_make | ford | toyota | ford |
-| statewide_vehicle_type | pickup or panel truck | passenger car | pickup or panel truck |
+| movement_preceding_collision | slowing/stopping | proceeding straight | proceeding straight |
+| vehicle_year | 2001 | 2002 | null |
+| vehicle_make | ford | mercedes-benz | null |
+| statewide_vehicle_type | pickup or panel truck | passenger car | null |
 | chp_vehicle_type_towing | pickups & panels | passenger car, station | null |
-| chp_vehicle_type_towed | 00 | null | null |
-| party_race | null | white | null |
+| chp_vehicle_type_towed | 00 | null | 00 |
+| party_race | null | asian | null |
 
 # "victims"  (rows=96393)
 
 columns:
 "id" int: 95894 distinct, 5..8817516
-"case_id" float: 95458 distinct, 26..9.87001e+18
+"case_id" float: 95458 distinct, 26..9.9e+18
 "party_number" int: 2=45270, 1=44290, 3=5579, 4=949, 5=221, 6=48, 7=17, 8=12, 9=2, 10=1, 12=1, 13=1, 51=1, 84=1, 1..84
 "victim_role" text: "passenger"=54810, "driver"=33197, "non-injured party"=2974, "pedestrian"=2968, "bicyclist"=2344, "other"=99, nulls=1
 "victim_sex" text: "female"=47056, "male"=46995, "2"=1, "4"=1, nulls=2340
@@ -274,19 +271,18 @@ columns:
 "victim_ejected" text: "not ejected"=85677, "unknown"=6886, "fully ejected"=3037, "partially ejected"=356, nulls=437
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 8817516 | 2811734 | 2115829 |
-| case_id | 9.87001e+18 | 2.70063e+06 | 6.27724e+06 |
-| party_number | 2 | 2 | 2 |
-| victim_role | non-injured party | passenger | passenger |
-| victim_sex | male | female | female |
-| victim_age | 26 | 49 | 25 |
-| victim_degree_of_injury | no injury | no injury | no injury |
-| victim_seating_position | passenger seat 3 | other occupants | passenger seat 3 |
-| victim_safety_equipment_1 | lap/shoulder harness used | other | air bag not deployed |
-| victim_safety_equipment_2 | null | not required | lap/shoulder harness used |
+| id | 8817516 | 1604644 | 2510391 |
+| case_id | 9.9e+18 | 1.6e+06 | 6.7e+06 |
+| party_number | 2 | 1 | 2 |
+| victim_role | non-injured party | passenger | driver |
+| victim_sex | male | male | female |
+| victim_age | 26 | 9 | 30 |
+| victim_degree_of_injury | no injury | no injury | complaint of pain |
+| victim_seating_position | passenger seat 3 | passenger seat 6 | driver |
+| victim_safety_equipment_1 | lap/shoulder harness used | air bag not deployed | air bag deployed |
+| victim_safety_equipment_2 | null | lap/shoulder harness used | lap/shoulder harness used |
 | victim_ejected | not ejected | not ejected | not ejected |

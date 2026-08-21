@@ -32,6 +32,7 @@ def execute(sql: str, db_path: str | Path, timeout: float | None = None) -> Quer
                 cur = conn.cursor()
                 cur.execute("PRAGMA query_only = ON")
                 cur.execute(sql)
+                result.columns = len(cur.description or ())
                 result.rows = [tuple(r) for r in cur.fetchall()]
             finally:
                 conn.close()

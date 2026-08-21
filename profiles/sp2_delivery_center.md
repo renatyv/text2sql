@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:29:01.765249Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:34:14.372035Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-37uo0n37/delivery_center.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-4cbc6iht/delivery_center.sqlite
 schema: main
 ---
 
@@ -15,14 +15,13 @@ columns:
 "channel_type" varchar50: "MARKETPLACE"=26, "OWN CHANNEL"=14
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| channel_id | 49 | 43 | 29 |
-| channel_name | RIBA PLACE | CAICAI PLACE | GLUB PLACE |
-| channel_type | OWN CHANNEL | MARKETPLACE | MARKETPLACE |
+| channel_id | 49 | 4 | 48 |
+| channel_name | RIBA PLACE | FACE PLACE | CENTER PLACE |
+| channel_type | OWN CHANNEL | OWN CHANNEL | MARKETPLACE |
 
 # "deliveries"  (rows=≈378843)
 
@@ -34,7 +33,6 @@ columns:
 "delivery_status" varchar50
 
 indexes: none
-fk: none
 
 
 # "drivers"  (rows=4824)
@@ -45,12 +43,11 @@ columns:
 "driver_type" varchar50: "FREELANCE"=3939, "LOGISTIC OPERATOR"=885
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| driver_id | 66494 | 54688 | 32308 |
+| driver_id | 66494 | 11263 | 41047 |
 | driver_modal | MOTOBOY | MOTOBOY | MOTOBOY |
 | driver_type | FREELANCE | FREELANCE | FREELANCE |
 
@@ -65,17 +62,16 @@ columns:
 "hub_longitude" numeric: all distinct, -51.245997..-43.182181, avg=-46.5115, median=-46.6303
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| hub_id | 91 | 4 | 31 |
-| hub_name | GAROA SHOPPING | RED SHOPPING | PAGODE SHOPPING |
-| hub_city | SÃO PAULO | PORTO ALEGRE | SÃO PAULO |
-| hub_state | SP | RS | SP |
-| hub_latitude | -23.5251 | -30.0219 | -23.6298 |
-| hub_longitude | -46.5468 | -51.2084 | -46.7352 |
+| hub_id | 91 | 55 | 16 |
+| hub_name | GAROA SHOPPING | ELIXIR SHOPPING | PEOPLE SHOPPING |
+| hub_city | SÃO PAULO | SÃO PAULO | RIO DE JANEIRO |
+| hub_state | SP | SP | RJ |
+| hub_latitude | -23.5251 | -23.5218 | -23.0175 |
+| hub_longitude | -46.5468 | -46.6242 | -43.4799 |
 
 # "orders"  (rows=≈368999)
 
@@ -111,7 +107,6 @@ columns:
 "order_metric_cycle_time" numeric
 
 indexes: none
-fk: none
 
 
 # "payments"  (rows=≈400834)
@@ -125,7 +120,6 @@ columns:
 "payment_status" varchar50
 
 indexes: none
-fk: none
 
 
 # "stores"  (rows=951)
@@ -140,15 +134,14 @@ columns:
 "store_longitude" numeric: 87 distinct, nulls=16, -51.245997..-43.176536, avg=-46.0429, median=-46.6185
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| store_id | 4679 | 4440 | 3012 |
-| hub_id | 85 | 75 | 43 |
-| store_name | PIGUE PIPACO  | CICIU SZIS  | CISI PIUEUEMI  |
-| store_segment | FOOD | GOOD | GOOD |
-| store_plan_price | 49.9 | 49 | 29.9 |
-| store_latitude | -23.5134 | -25.4771 | -25.4412 |
-| store_longitude | -46.6185 | -49.2897 | -49.2777 |
+| store_id | 4679 | 2414 | 515 |
+| hub_id | 85 | 75 | 18 |
+| store_name | PIGUE PIPACO  | CAI DA PUERI  | GULIMURAI RE  |
+| store_segment | FOOD | GOOD | FOOD |
+| store_plan_price | 49.9 | 29 | 49 |
+| store_latitude | -23.5134 | -25.4771 | -22.9464 |
+| store_longitude | -46.6185 | -49.2897 | -43.1823 |

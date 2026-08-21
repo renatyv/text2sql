@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:25:44.329895Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:30:53.928667Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-jy8kvpxc/california_schools.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-t1v95_vh/california_schools.sqlite
 schema: main
 ---
 
@@ -17,7 +17,7 @@ columns:
 "CDSCode" text PK FK: digits, unique identifier
 "Academic Year" text: "2014-2015"=9986
 "County Code" text: digits, 58 distinct
-"District Code" int: 1012 distinct, 10017..76901, avg=65651.5, median=67082
+"District Code" int: 1012 distinct, 10017..76901
 "School Code" text: digits, 9942 distinct
 "County Name" text: 58 distinct
 "District Name" text: 1000 distinct
@@ -45,39 +45,38 @@ columns:
 "2013-14 CALPADS Fall 1 Certification Status" int: 1=9986
 
 indexes: none
-fk: "CDSCode"→"schools"."CDSCode"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| CDSCode | 58727695838305 | 33670906032189 | 34752830111138 |
+| CDSCode | 58727695838305 | 19649806061659 | 51713816053250 |
 | Academic Year | 2014-2015 | 2014-2015 | 2014-2015 |
-| County Code | 58 | 33 | 34 |
-| District Code | 72769 | 67090 | 75283 |
-| School Code | 5838305 | 6032189 | 0111138 |
-| County Name | Yuba | Riverside | Sacramento |
-| District Name | Wheatland Union High | Jurupa Unified | Natomas Unified |
-| School Name | Wheatland Union High | Mission Bell Elementary | Heron |
-| District Type | High School District | Unified School District | Unified School District |
-| School Type | High Schools (Public) | Elementary Schools (Public) | Elementary Schools (Public) |
+| County Code | 58 | 19 | 51 |
+| District Code | 72769 | 64980 | 71381 |
+| School Code | 5838305 | 6061659 | 6053250 |
+| County Name | Yuba | Los Angeles | Sutter |
+| District Name | Wheatland Union High | Santa Monica-Malibu Unified | Franklin Elementary |
+| School Name | Wheatland Union High | Lincoln Middle | Franklin Elementary |
+| District Type | High School District | Unified School District | Elementary School District |
+| School Type | High Schools (Public) | Intermediate/Middle Schools (Public) | Elemen Schools In 1 School Dist. (Public) |
 | Educational Option Type | Traditional | Traditional | Traditional |
 | NSLP Provision Status | null | null | null |
 | Charter School (Y/N) | 0 | 0 | 0 |
 | Charter School Number | null | null | null |
 | Charter Funding Type | null | null | null |
 | IRC | 0 | 0 | 0 |
-| Low Grade | 9 | K | K |
-| High Grade | 12 | 6 | 8 |
-| Enrollment (K-12) | 732 | 459 | 1062 |
-| Free Meal Count (K-12) | 164 | 349 | 285 |
-| Percent (%) Eligible Free (K-12) | 0.224044 | 0.760349 | 0.268362 |
-| FRPM Count (K-12) | 227 | 408 | 360 |
-| Percent (%) Eligible FRPM (K-12) | 0.310109 | 0.888889 | 0.338983 |
-| Enrollment (Ages 5-17) | 711 | 456 | 1058 |
-| Free Meal Count (Ages 5-17) | 158 | 346 | 283 |
-| Percent (%) Eligible Free (Ages 5-17) | 0.222222 | 0.758772 | 0.267486 |
-| FRPM Count (Ages 5-17) | 220 | 405 | 358 |
-| Percent (%) Eligible FRPM (Ages 5-17) | 0.309423 | 0.888158 | 0.338374 |
+| Low Grade | 9 | 6 | K |
+| High Grade | 12 | 8 | 8 |
+| Enrollment (K-12) | 732 | 1027 | 477 |
+| Free Meal Count (K-12) | 164 | 151 | 101 |
+| Percent (%) Eligible Free (K-12) | 0.224044 | 0.14703 | 0.21174 |
+| FRPM Count (K-12) | 227 | 188 | 142 |
+| Percent (%) Eligible FRPM (K-12) | 0.310109 | 0.183057 | 0.297694 |
+| Enrollment (Ages 5-17) | 711 | 1027 | 474 |
+| Free Meal Count (Ages 5-17) | 158 | 151 | 100 |
+| Percent (%) Eligible Free (Ages 5-17) | 0.222222 | 0.14703 | 0.21097 |
+| FRPM Count (Ages 5-17) | 220 | 188 | 141 |
+| Percent (%) Eligible FRPM (Ages 5-17) | 0.309423 | 0.183057 | 0.297468 |
 | 2013-14 CALPADS Fall 1 Certification Status | 1 | 1 | 1 |
 
 # "satscores"  (rows=2269)
@@ -96,22 +95,21 @@ columns:
 "NumGE1500" int: 368 distinct, nulls=596, 0..5837, avg=111.079, median=44
 
 indexes: none
-fk: "cds"→"schools"."CDSCode"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| cds | 58727695838305 | 23656150128280 | 19642460115337 |
+| cds | 58727695838305 | 38684783830288 | 48705734830089 |
 | rtype | S | S | S |
-| sname | Wheatland Union High | Ukiah Independent Study Academy | Los Angeles County Online High |
-| dname | Wheatland Union High | Ukiah Unified | Antelope Valley Union High |
-| cname | Yuba | Mendocino | Los Angeles |
-| enroll12 | 160 | 30 | 141 |
-| NumTstTakr | 54 | 0 | 6 |
-| AvgScrRead | 480 | null | null |
-| AvgScrMath | 475 | null | null |
-| AvgScrWrite | 463 | null | null |
-| NumGE1500 | 21 | null | null |
+| sname | Wheatland Union High | Balboa High | Will C. Wood High |
+| dname | Wheatland Union High | San Francisco Unified | Vacaville Unified |
+| cname | Yuba | San Francisco | Solano |
+| enroll12 | 160 | 297 | 335 |
+| NumTstTakr | 54 | 184 | 137 |
+| AvgScrRead | 480 | 467 | 487 |
+| AvgScrMath | 475 | 504 | 523 |
+| AvgScrWrite | 463 | 467 | 475 |
+| NumGE1500 | 21 | 79 | 59 |
 
 # "schools"  (rows=17686)
 
@@ -167,57 +165,56 @@ columns:
 "LastUpdate" date NOTNULL: 757 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| CDSCode | 58727695838305 | 04100416068332 | 30736506100861 |
-| NCESDist | 0642350 | 0691002 | 0684500 |
-| NCESSchool | 06930 | null | 07374 |
+| CDSCode | 58727695838305 | 19647330106856 | 37680230101592 |
+| NCESDist | 0642350 | 0622710 | 0608610 |
+| NCESSchool | 06930 | 10850 | 11227 |
 | StatusType | Active | Closed | Active |
-| County | Yuba | Butte | Orange |
-| District | Wheatland Union High | Butte County Office of Education | Irvine Unified |
-| School | Wheatland Union High | Development Center for Handicapped | Northwood Elementary |
-| Street | 1010 Wheatland Road | 5A County Center Drive | 28 Carson |
-| StreetAbr | 1010 Wheatland Rd. | 5A County Center Dr. | 28 Carson |
-| City | Wheatland | Oroville | Irvine |
-| Zip | 95692-9798 | 95965 | 92620-3313 |
+| County | Yuba | Los Angeles | San Diego |
+| District | Wheatland Union High | Los Angeles Unified | Chula Vista Elementary |
+| School | Wheatland Union High | Southern California School of Arts and Sciences | Hedenkamp (Anne and William) Elementary |
+| Street | 1010 Wheatland Road | 10513 Vermont Ave | 930 East Palomar |
+| StreetAbr | 1010 Wheatland Rd. | 10513 Vermont Ave | 930 East Palomar |
+| City | Wheatland | Los Angeles | Chula Vista |
+| Zip | 95692-9798 | 90044 | 91913-2895 |
 | State | CA | CA | CA |
-| MailStreet | 1010 Wheatland Road | 5A County Center Drive | 28 Carson |
-| MailStrAbr | 1010 Wheatland Rd. | 5A County Center Dr. | 28 Carson |
-| MailCity | Wheatland | Oroville | Irvine |
-| MailZip | 95692-9798 | 95965 | 92620-3313 |
+| MailStreet | 1010 Wheatland Road | 2110 Artesia Boulevard, Suite B224 | 930 East Palomar |
+| MailStrAbr | 1010 Wheatland Rd. | 2110 Artesia Blvd., Ste. B224 | 930 East Palomar |
+| MailCity | Wheatland | Redondo Beach | Chula Vista |
+| MailZip | 95692-9798 | 90278 | 91913-2895 |
 | MailState | CA | CA | CA |
-| Phone | (530) 633-3100 | null | (949) 936-5950 |
+| Phone | (530) 633-3100 | null | (619) 397-5828 |
 | Ext | null | null | null |
-| Website | www.wheatlandhigh.org | null | www.iusd.org/nw |
-| OpenDate | 1980-07-01 | 1980-07-01 | 1980-07-01 |
-| ClosedDate | null | 1984-07-09 | null |
-| Charter | 0 | 0 | 0 |
-| CharterNum | null | null | null |
-| FundingType | null | null | null |
-| DOC | 56 | 00 | 54 |
-| DOCType | High School District | County Office of Education (COE) | Unified School District |
-| SOC | 66 | 09 | 60 |
-| SOCType | High Schools (Public) | Special Education Schools (Public) | Elementary Schools (Public) |
-| EdOpsCode | TRAD | null | TRAD |
-| EdOpsName | Traditional | null | Traditional |
-| EILCode | HS | UG | ELEM |
-| EILName | High School | Ungraded | Elementary |
-| GSoffered | 9-12 | null | K-6 |
-| GSserved | 9-12 | null | K-6 |
+| Website | www.wheatlandhigh.org | null | http://schools.cvesd.org/schools/hedenkamp/ |
+| OpenDate | 1980-07-01 | 2004-09-01 | 2003-09-02 |
+| ClosedDate | null | 2006-05-12 | null |
+| Charter | 0 | 1 | 0 |
+| CharterNum | null | 0644 | null |
+| FundingType | null | Directly funded | null |
+| DOC | 56 | 54 | 52 |
+| DOCType | High School District | Unified School District | Elementary School District |
+| SOC | 66 | 66 | 60 |
+| SOCType | High Schools (Public) | High Schools (Public) | Elementary Schools (Public) |
+| EdOpsCode | TRAD | TRAD | TRAD |
+| EdOpsName | Traditional | Traditional | Traditional |
+| EILCode | HS | ELEMHIGH | ELEM |
+| EILName | High School | Elementary-High Combination | Elementary |
+| GSoffered | 9-12 | 6-12 | K-6 |
+| GSserved | 9-12 | 6-11 | K-6 |
 | Virtual | N | null | N |
 | Magnet | 0 | null | 0 |
-| Latitude | 38.999 | null | 33.7053 |
-| Longitude | -121.455 | null | -117.769 |
-| AdmFName1 | Vic | null | Michael |
-| AdmLName1 | Ramos | null | Salavia |
-| AdmEmail1 | vramos@wheatlandhigh.org | null | michaelsalavia@iusd.org |
-| AdmFName2 | null | null | null |
-| AdmLName2 | null | null | null |
-| AdmEmail2 | null | null | null |
+| Latitude | 38.999 | null | 32.6167 |
+| Longitude | -121.455 | null | -117.015 |
+| AdmFName1 | Vic | null | Ray |
+| AdmLName1 | Ramos | null | DeVore |
+| AdmEmail1 | vramos@wheatlandhigh.org | null | ray.devore@cvesd.org |
+| AdmFName2 | null | null | Gina |
+| AdmLName2 | null | null | Mazeau |
+| AdmEmail2 | null | null | gina.mazeau@cvesd.org |
 | AdmFName3 | null | null | null |
 | AdmLName3 | null | null | null |
 | AdmEmail3 | null | null | null |
-| LastUpdate | 2015-06-18 | 1999-06-24 | 2015-08-07 |
+| LastUpdate | 2015-06-18 | 2009-10-02 | 2016-01-21 |

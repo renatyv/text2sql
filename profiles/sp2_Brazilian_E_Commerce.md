@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:26:48.493779Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:31:57.738438Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-twx8043o/Brazilian_E_Commerce.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-oa8npo7b/Brazilian_E_Commerce.sqlite
 schema: main
 ---
 
@@ -17,16 +17,15 @@ columns:
 "customer_state" text: 27 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customer_id | ffffe8b65bbe3087b653a978c870db99 | cb177a0cad6d0debf72041b70b6ca9f5 | ff48f1a9014cdfc6f9cbfc1d0ac2b525 |
-| customer_unique_id | 736e6bfa0510aa5b878881a226a5fd89 | 0d20fac912fcef6baa10ef72530ee3c4 | a48a1b0b5708e03743e9564390772ed0 |
-| customer_zip_code_prefix | 6172 | 30120 | 5017 |
-| customer_city | osasco | belo horizonte | sao paulo |
-| customer_state | SP | MG | SP |
+| customer_id | ffffe8b65bbe3087b653a978c870db99 | 6c94244091c0ea6ecf242283e1455871 | 226152ac481f0b29cd416d4028f64224 |
+| customer_unique_id | 736e6bfa0510aa5b878881a226a5fd89 | 6e7932d65c10afc9c622770cdf6e9d1c | d38867091f1bf3531ce67c7f4b93b39b |
+| customer_zip_code_prefix | 6172 | 99955 | 62680 |
+| customer_city | osasco | vila langaro | paracuru |
+| customer_state | SP | RS | CE |
 
 # "olist_geolocation"  (rows=≈1000163)
 
@@ -38,7 +37,6 @@ columns:
 "geolocation_state" text
 
 indexes: none
-fk: none
 
 
 # "olist_order_items"  (rows=112650)
@@ -53,18 +51,17 @@ columns:
 "freight_value" float: 0..409.68, avg=19.9903
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| order_id | fffe41c64501cc87c801fd61db3f6244 | 56ff65d43900d5ae69573bbf9369c417 | 64d68b5e88c8e4cda34a9d46314132a1 |
-| order_item_id | 1 | 2 | 1 |
-| product_id | 350688d9dc1e75ff97be326363655e01 | 1600dcf1cea8c0c83702e07b577ab231 | dad27486af34282fef3bef995d0fda7b |
-| seller_id | f7ccf836d21b2fb1de37564105216cc1 | 6560211a19b47992c3666cc44a7e94c0 | 7a67c85e85bb2ce8582c35f2203ad736 |
-| shipping_limit_date | 2018-06-12 17:10:13 | 2017-11-06 18:33:04 | 2017-10-13 17:14:20 |
-| price | 43 | 44 | 199.99 |
-| freight_value | 12.79 | 14.1 | 18.65 |
+| order_id | fffe41c64501cc87c801fd61db3f6244 | 4082a09e70f0dcced54c17ec25ac2a50 | 741c75a2bee4e666de0415b10cd0cad7 |
+| order_item_id | 1 | 1 | 1 |
+| product_id | 350688d9dc1e75ff97be326363655e01 | e59dd207c69d86e890febadc796d1078 | 98c2f7da94217786e372e7d85462c354 |
+| seller_id | f7ccf836d21b2fb1de37564105216cc1 | 1c68394e931a64f90ea236c5ea590300 | 2199e7fe213c16213bf5d6a7eadc9a5d |
+| shipping_limit_date | 2018-06-12 17:10:13 | 2018-02-19 15:56:06 | 2018-06-12 22:30:49 |
+| price | 43 | 144.41 | 76 |
+| freight_value | 12.79 | 17.45 | 14.62 |
 
 # "olist_order_payments"  (rows=103886)
 
@@ -76,16 +73,15 @@ columns:
 "payment_value" float: 0..13664.1, avg=154.1
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| order_id | fffe41c64501cc87c801fd61db3f6244 | 25ec17a7457f797d4a253f3f492d4686 | 2be14bfbd7aa00107ece493cbbcc29f0 |
+| order_id | fffe41c64501cc87c801fd61db3f6244 | b15acd827ae5109303845f18ff8d4662 | 08c94cca559ddccd243fc551e088b856 |
 | payment_sequential | 1 | 1 | 1 |
-| payment_type | credit_card | boleto | credit_card |
-| payment_installments | 1 | 1 | 3 |
-| payment_value | 55.79 | 26.89 | 176.16 |
+| payment_type | credit_card | credit_card | credit_card |
+| payment_installments | 1 | 1 | 4 |
+| payment_value | 55.79 | 61 | 40.06 |
 
 # "olist_order_reviews"  (rows=99224)
 
@@ -99,18 +95,17 @@ columns:
 "review_answer_timestamp" text: iso-date, 98248 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| review_id | fffefe7a48d22f7b32046421062219d1 | 9fd59cd04b42f600df9f25e54082a8d1 | b8f79fe5aae72e2bbb3874760f6d5881 |
-| order_id | 1061bc32577c6b8beb107bf1b5a65175 | 3c314f50bc654f3c4e317b055681dff9 | f5bdbbff47c740c2cca90305841220a8 |
+| review_id | fffefe7a48d22f7b32046421062219d1 | 0da5fbb616b9667780903ae573227e95 | 2166f23eeb75757d6ba352963584a2c3 |
+| order_id | 1061bc32577c6b8beb107bf1b5a65175 | 9db4c3ce35bd9bdf6b8eb62c68eb4415 | fe784ed3dfc728fd4de44fa9918fe1eb |
 | review_score | 5 | 1 | 5 |
 | review_comment_title | null | null | null |
-| review_comment_message | null | Nada de chegar o meu pedido. | null |
-| review_creation_date | 2017-10-28 00:00:00 | 2017-04-21 00:00:00 | 2018-02-21 00:00:00 |
-| review_answer_timestamp | 2017-10-30 21:43:56 | 2017-04-23 05:37:03 | 2018-02-22 09:20:58 |
+| review_comment_message | null | null | null |
+| review_creation_date | 2017-10-28 00:00:00 | 2018-06-27 00:00:00 | 2018-08-07 00:00:00 |
+| review_answer_timestamp | 2017-10-30 21:43:56 | 2018-06-27 21:29:35 | 2018-08-10 15:35:52 |
 
 # "olist_orders"  (rows=99441)
 
@@ -125,19 +120,18 @@ columns:
 "order_estimated_delivery_date" text: iso-date, 459 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| order_id | fffe41c64501cc87c801fd61db3f6244 | e031b115c17b49bdf313c9150d4cfdb0 | 3147cb8f96cb619b380fd37e3da08c93 |
-| customer_id | 96d649da0cc4ff33bb408b199d4c7dcf | 4b7e3d0d6bbbfcf977e12746495b9e30 | 43537c82236df07bc096a68639cc3c25 |
+| order_id | fffe41c64501cc87c801fd61db3f6244 | 59471e5f3a931a6b88ced311417896b4 | 89a7e32e1ea0948b881497e7ae8bbfa2 |
+| customer_id | 96d649da0cc4ff33bb408b199d4c7dcf | 29930c7777c92ade51cb983da38b64b7 | 390d6b4ec75d23f0b453e3b7374db5df |
 | order_status | delivered | delivered | delivered |
-| order_purchase_timestamp | 2018-06-09 17:00:18 | 2018-03-19 14:26:20 | 2018-01-06 20:02:44 |
-| order_approved_at | 2018-06-09 17:10:13 | 2018-03-19 14:35:52 | 2018-01-06 20:13:19 |
-| order_delivered_carrier_date | 2018-06-11 14:11:00 | 2018-03-20 17:08:49 | 2018-01-09 20:18:21 |
-| order_delivered_customer_date | 2018-06-14 17:56:26 | 2018-04-13 20:32:20 | 2018-01-15 17:27:55 |
-| order_estimated_delivery_date | 2018-06-28 00:00:00 | 2018-04-09 00:00:00 | 2018-02-05 00:00:00 |
+| order_purchase_timestamp | 2018-06-09 17:00:18 | 2018-02-19 22:54:38 | 2018-03-28 10:38:12 |
+| order_approved_at | 2018-06-09 17:10:13 | 2018-02-20 00:06:48 | 2018-03-28 10:50:29 |
+| order_delivered_carrier_date | 2018-06-11 14:11:00 | 2018-02-22 00:58:57 | 2018-03-29 20:06:54 |
+| order_delivered_customer_date | 2018-06-14 17:56:26 | 2018-03-15 23:33:21 | 2018-04-12 15:30:54 |
+| order_estimated_delivery_date | 2018-06-28 00:00:00 | 2018-03-19 00:00:00 | 2018-04-19 00:00:00 |
 
 # "olist_products"  (rows=32951)
 
@@ -153,20 +147,19 @@ columns:
 "product_width_cm" float: 95 distinct, nulls=2, 6..118, avg=23.1967, median=20
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_id | fffe9eeff12fcbd74a2f2b007dde0c58 | 83ed3cc53055fe51099569075b77ceca | 3831462c36ead78cff9e8fb704dbb879 |
-| product_category_name | brinquedos | eletronicos | papelaria |
-| product_name_lenght | 57 | 55 | 60 |
-| product_description_lenght | 1536 | 600 | 313 |
-| product_photos_qty | 3 | 1 | 6 |
-| product_weight_g | 3900 | 817 | 7200 |
-| product_length_cm | 43 | 35 | 60 |
-| product_height_cm | 16 | 8 | 20 |
-| product_width_cm | 11 | 34 | 29 |
+| product_id | fffe9eeff12fcbd74a2f2b007dde0c58 | 4da918a160c19da9bfdf9945d18006ec | 5e14c2beea650eac6b94bc9d446cd71a |
+| product_category_name | brinquedos | instrumentos_musicais | eletronicos |
+| product_name_lenght | 57 | 56 | 46 |
+| product_description_lenght | 1536 | 1262 | 272 |
+| product_photos_qty | 3 | 2 | 1 |
+| product_weight_g | 3900 | 5600 | 175 |
+| product_length_cm | 43 | 30 | 22 |
+| product_height_cm | 16 | 62 | 12 |
+| product_width_cm | 11 | 45 | 16 |
 
 # "olist_products_dataset"  (rows=32951)
 
@@ -183,21 +176,20 @@ columns:
 "product_width_cm" float: 95 distinct, nulls=2, 6..118, avg=23.1967, median=20
 
 indexes: "index"
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 32950 | 18973 | 26524 |
-| product_id | 106392145fca363410d287a815be6de4 | 4272f4544f17efd4fa4ccdc76912feab | 3e08b2e39d6d62bba485dfd958639662 |
-| product_category_name | cama_mesa_banho | ferramentas_jardim | eletronicos |
-| product_name_lenght | 58 | 27 | 36 |
-| product_description_lenght | 309 | 961 | 167 |
-| product_photos_qty | 1 | 4 | 1 |
-| product_weight_g | 2083 | 1042 | 2350 |
-| product_length_cm | 12 | 20 | 26 |
-| product_height_cm | 2 | 24 | 26 |
-| product_width_cm | 7 | 20 | 16 |
+| index | 32950 | 4145 | 3691 |
+| product_id | 106392145fca363410d287a815be6de4 | 8c0794180bc059d1af097905d7352cfa | 79e42c4fa2bde6e0c828d23c4fb7df35 |
+| product_category_name | cama_mesa_banho | livros_tecnicos | instrumentos_musicais |
+| product_name_lenght | 58 | 25 | 57 |
+| product_description_lenght | 309 | 1002 | 962 |
+| product_photos_qty | 1 | 1 | 4 |
+| product_weight_g | 2083 | 2000 | 900 |
+| product_length_cm | 12 | 30 | 42 |
+| product_height_cm | 2 | 4 | 8 |
+| product_width_cm | 7 | 23 | 40 |
 
 # "olist_sellers"  (rows=3095)
 
@@ -208,15 +200,14 @@ columns:
 "seller_state" text: 23 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| seller_id | ffff564a4f9085cd26170f4732393726 | 4c8b8048e33af2bf94f2eb547746a916 | b3f19518fcec265b2e97af287725f981 |
-| seller_zip_code_prefix | 13070 | 14940 | 15170 |
-| seller_city | campinas | ibitinga | tanabi |
-| seller_state | SP | SP | SP |
+| seller_id | ffff564a4f9085cd26170f4732393726 | 3d0cd21d41671c46f82cd11176bf7277 | 066a6914e1ebf3ea95a216c73a986b91 |
+| seller_zip_code_prefix | 13070 | 89217 | 85863 |
+| seller_city | campinas | joinville | foz do iguacu |
+| seller_state | SP | SC | PR |
 
 # "product_category_name_translation"  (rows=71)
 
@@ -225,10 +216,9 @@ columns:
 "product_category_name_english" text: all distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_category_name | utilidades_domesticas | moveis_cozinha_area_de_servico_jantar_e_jardim | telefonia |
-| product_category_name_english | housewares | kitchen_dining_laundry_garden_furniture | telephony |
+| product_category_name | utilidades_domesticas | bebes | eletrodomesticos |
+| product_category_name_english | housewares | baby | home_appliances |

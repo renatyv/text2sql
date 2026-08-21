@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:28:09.653539Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:33:21.773570Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-xpjm6b2k/Pagila.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-xw_7i7of/Pagila.sqlite
 schema: main
 ---
 
@@ -31,15 +31,14 @@ columns:
 "last_update" timestamp NOTNULL: "2021-03-06 15:51:59"=123, "2021-03-06 15:52:00"=77
 
 indexes: "last_name"
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| actor_id | 200 | 32 | 54 |
-| first_name | THORA | TIM | PENELOPE |
-| last_name | TEMPLE | HACKMAN | PINKETT |
-| last_update | 2021-03-06T15:52:00 | 2021-03-06T15:51:59 | 2021-03-06T15:51:59 |
+| actor_id | 200 | 135 | 185 |
+| first_name | THORA | RITA | MICHAEL |
+| last_name | TEMPLE | REYNOLDS | BOLGER |
+| last_update | 2021-03-06T15:52:00 | 2021-03-06T15:52:00 | 2021-03-06T15:52:00 |
 
 # "address"  (rows=603)
 
@@ -48,25 +47,24 @@ columns:
 "address" varchar50 NOTNULL: all distinct
 "address2" varchar50: all NULL
 "district" varchar20 NOTNULL: " "=603
-"city_id" int NOTNULL FK: 599 distinct, 1..600, 42=2, 300=2, 312=2, 576=2, 1=1, 2=1, 3=1, 4=1, 5=1, 6=1
+"city_id" int NOTNULL FK: 599 distinct, 1..600
 "postal_code" varchar10: digits, 596 distinct, nulls=4
 "phone" varchar20 NOTNULL: " "=603
 "last_update" timestamp NOTNULL: "2021-03-06 15:51:55"=131, "2021-03-06 15:51:58"=131, "2021-03-06 15:51:57"=128, "2021-03-06 15:51:56"=124, "2021-03-06 15:51:54"=72, "2021-03-06 15:51:59"=17
 
 indexes: "city_id"
-fk: "city_id"→"city"."city_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| address_id | 605 | 205 | 142 |
-| address | 1325 Fukuyama Street | 68 Molodetno Manor | 1587 Sullana Lane |
+| address_id | 605 | 402 | 420 |
+| address | 1325 Fukuyama Street | 616 Hagonoy Avenue | 992 Klerksdorp Loop |
 | address2 | null | null | null |
 | district |   |   |   |
-| city_id | 537 | 575 | 207 |
-| postal_code | 27107 | 4662 | 85769 |
+| city_id | 537 | 39 | 23 |
+| postal_code | 27107 | 46043 | 33711 |
 | phone |   |   |   |
-| last_update | 2021-03-06T15:51:59 | 2021-03-06T15:51:56 | 2021-03-06T15:51:55 |
+| last_update | 2021-03-06T15:51:59 | 2021-03-06T15:51:57 | 2021-03-06T15:51:57 |
 
 # "category"  (rows=16)
 
@@ -76,13 +74,12 @@ columns:
 "last_update" timestamp NOTNULL: "2021-03-06 15:52:00"=16
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| category_id | 16 | 15 | 3 |
-| name | Travel | Sports | Children |
+| category_id | 16 | 9 | 11 |
+| name | Travel | Foreign | Horror |
 | last_update | 2021-03-06T15:52:00 | 2021-03-06T15:52:00 | 2021-03-06T15:52:00 |
 
 # "city"  (rows=600)
@@ -94,15 +91,14 @@ columns:
 "last_update" timestamp NOTNULL: "2021-03-06 15:51:51"=138, "2021-03-06 15:51:50"=135, "2021-03-06 15:51:52"=131, "2021-03-06 15:51:53"=128, "2021-03-06 15:51:54"=55, "2021-03-06 15:51:49"=13
 
 indexes: "country_id"
-fk: "country_id"→"country"."country_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| city_id | 600 | 262 | 226 |
-| city | Ziguinchor | Kansas City | Iwaki |
-| country_id | 83 | 103 | 50 |
-| last_update | 2021-03-06T15:51:54 | 2021-03-06T15:51:51 | 2021-03-06T15:51:51 |
+| city_id | 600 | 241 | 58 |
+| city | Ziguinchor | Jining | Batman |
+| country_id | 83 | 23 | 97 |
+| last_update | 2021-03-06T15:51:54 | 2021-03-06T15:51:51 | 2021-03-06T15:51:50 |
 
 # "country"  (rows=109)
 
@@ -112,13 +108,12 @@ columns:
 "last_update" timestamp: "2021-03-06 15:51:49"=109
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| country_id | 109 | 4 | 67 |
-| country | Zambia | Angola | Netherlands |
+| country_id | 109 | 4 | 69 |
+| country | Zambia | Angola | Nigeria |
 | last_update | 2021-03-06T15:51:49 | 2021-03-06T15:51:49 | 2021-03-06T15:51:49 |
 
 # "customer"  (rows=599)
@@ -135,20 +130,19 @@ columns:
 "last_update" timestamp NOTNULL: "2021-03-06 15:53:39"=120, "2021-03-06 15:53:38"=118, "2021-03-06 15:53:40"=118, "2021-03-06 15:53:37"=116, "2021-03-06 15:53:36"=111, "2021-03-06 15:53:41"=16
 
 indexes: "address_id", "store_id", "last_name"
-fk: "address_id"→"address"."address_id", "store_id"→"store"."store_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customer_id | 599 | 190 | 105 |
-| store_id | 2 | 2 | 1 |
-| first_name | AUSTIN | YOLANDA | DAWN |
-| last_name | CINTRON | WEAVER | SULLIVAN |
-| email | AUSTIN.CINTRON@sakilacustomer.org | YOLANDA.WEAVER@sakilacustomer.org | DAWN.SULLIVAN@sakilacustomer.org |
-| address_id | 605 | 194 | 109 |
+| customer_id | 599 | 560 | 172 |
+| store_id | 2 | 1 | 1 |
+| first_name | AUSTIN | JORDAN | BERNICE |
+| last_name | CINTRON | ARCHULETA | WILLIS |
+| email | AUSTIN.CINTRON@sakilacustomer.org | JORDAN.ARCHULETA@sakilacustomer.org | BERNICE.WILLIS@sakilacustomer.org |
+| address_id | 605 | 566 | 176 |
 | active | 1 | 1 | 1 |
-| create_date | 2006-02-14T22:04:37 | 2006-02-14T22:04:36 | 2006-02-14T22:04:36 |
-| last_update | 2021-03-06T15:53:41 | 2021-03-06T15:53:37 | 2021-03-06T15:53:36 |
+| create_date | 2006-02-14T22:04:37 | 2006-02-14T22:04:37 | 2006-02-14T22:04:36 |
+| last_update | 2021-03-06T15:53:41 | 2021-03-06T15:53:40 | 2021-03-06T15:53:37 |
 
 # "customer_list"  (rows=599)
 
@@ -169,7 +163,7 @@ FROM customer AS cu JOIN address AS a ON cu.address_id = a.address_id JOIN city 
 ```
 
 columns:
-"ID" int: unique identifier, 1..599, avg=300, median=300
+"ID" int: unique identifier, 1..599
 "name" text: all distinct
 "address" varchar50: all distinct
 "zip_code" varchar10: digits, 596 distinct
@@ -182,15 +176,15 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ID | 599 | 303 | 106 |
-| name | AUSTIN CINTRON | WILLIAM SATTERFIELD | CONNIE WALLACE |
-| address | 1325 Fukuyama Street | 687 Alessandria Parkway | 1867 San Juan Bautista Tuxtepec Avenue |
-| zip_code | 27107 | 57587 | 78311 |
+| ID | 599 | 317 | 584 |
+| name | AUSTIN CINTRON | EDWARD BAUGH | SALVADOR TEEL |
+| address | 1325 Fukuyama Street | 1359 Zhoushan Parkway | 247 Jining Parkway |
+| zip_code | 27107 | 29763 | 53446 |
 | phone |   |   |   |
-| city | Tieli | Sanaa | Ivanovo |
-| country | China | Yemen | Russian Federation |
+| city | Tieli | Trshavn | Banjul |
+| country | China | Faroe Islands | Gambia |
 | notes | active | active | active |
-| SID | 2 | 2 | 1 |
+| SID | 2 | 2 | 2 |
 
 # "film"  (rows=1000)
 
@@ -210,41 +204,39 @@ columns:
 "last_update" timestamp NOTNULL: "2021-03-06 15:52:02"=129, "2021-03-06 15:52:04"=127, "2021-03-06 15:52:03"=124, "2021-03-06 15:52:01"=123, "2021-03-06 15:52:06"=121, "2021-03-06 15:52:05"=118, "2021-03-06 15:52:07"=117, "2021-03-06 15:52:08"=107, "2021-03-06 15:52:00"=34
 
 indexes: "language_id", "original_language_id"
-fk: "original_language_id"→"language"."language_id", "language_id"→"language"."language_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| film_id | 1000 | 614 | 613 |
-| title | ZORRO ARK | NAME DETECTIVE | MYSTIC TRUMAN |
-| description | A Intrepid Panorama of a Mad Scientist And a Boy who must Redeem a Boy in A Monastery | A Touching Saga of a Sumo Wrestler And a Cat who must Pursue a Mad Scientist in Nigeria | A Epic Yarn of a Teacher And a Hunter who must Outgun a Explorer in Soviet Georgia |
+| film_id | 1000 | 606 | 308 |
+| title | ZORRO ARK | MUMMY CREATURES | FERRIS MOTHER |
+| description | A Intrepid Panorama of a Mad Scientist And a Boy who must Redeem a Boy in A Monastery | A Fateful Character Study of a Crocodile And a Monkey who must Meet a Dentist in Australia | A Touching Display of a Frisbee And a Frisbee who must Kill a Girl in The Gulf of Mexico |
 | release_year | 2006 | 2006 | 2006 |
 | language_id | 1 | 1 | 1 |
 | original_language_id | null | null | null |
-| rental_duration | 3 | 5 | 5 |
-| rental_rate | 4.99 | 4.99 | 0.99 |
-| length | 50 | 178 | 92 |
-| replacement_cost | 18.99 | 11.99 | 19.99 |
-| rating | NC-17 | PG-13 | NC-17 |
-| special_features | Trailers,Commentaries,Behind the Scenes | Trailers,Commentaries,Behind the Scenes | Commentaries,Behind the Scenes |
-| last_update | 2021-03-06T15:52:08 | 2021-03-06T15:52:05 | 2021-03-06T15:52:05 |
+| rental_duration | 3 | 3 | 3 |
+| rental_rate | 4.99 | 0.99 | 2.99 |
+| length | 50 | 160 | 142 |
+| replacement_cost | 18.99 | 15.99 | 13.99 |
+| rating | NC-17 | NC-17 | PG |
+| special_features | Trailers,Commentaries,Behind the Scenes | Trailers,Behind the Scenes | Trailers,Deleted Scenes,Behind the Scenes |
+| last_update | 2021-03-06T15:52:08 | 2021-03-06T15:52:05 | 2021-03-06T15:52:03 |
 
 # "film_actor"  (rows=5462)
 
 columns:
-"actor_id" int PK FK: 200 distinct, 1..200, 107=42, 102=41, 198=40, 181=39, 23=37, 81=36, 13=35, 37=35, 60=35, 106=35
+"actor_id" int PK FK: 200 distinct, 1..200
 "film_id" int PK FK: 997 distinct, 1..1000, 508=15, 87=13, 146=13, 188=13, 249=13, 606=13, 714=13, 34=12, 414=12, 517=12
 "last_update" timestamp NOTNULL: 44 distinct
 
 indexes: "actor_id", "film_id"
-fk: "actor_id"→"actor"."actor_id", "film_id"→"film"."film_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| actor_id | 200 | 37 | 62 |
-| film_id | 993 | 119 | 129 |
-| last_update | 2021-03-06T15:53:28 | 2021-03-06T15:52:52 | 2021-03-06T15:52:58 |
+| actor_id | 200 | 84 | 67 |
+| film_id | 993 | 19 | 477 |
+| last_update | 2021-03-06T15:53:28 | 2021-03-06T15:53:02 | 2021-03-06T15:52:59 |
 
 # "film_category"  (rows=1000)
 
@@ -254,14 +246,13 @@ columns:
 "last_update" timestamp NOTNULL: "2021-03-06 15:53:29"=130, "2021-03-06 15:53:34"=129, "2021-03-06 15:53:35"=127, "2021-03-06 15:53:33"=126, "2021-03-06 15:53:30"=124, "2021-03-06 15:53:32"=123, "2021-03-06 15:53:31"=118, "2021-03-06 15:53:28"=117, "2021-03-06 15:53:36"=6
 
 indexes: "category_id", "film_id"
-fk: "category_id"→"category"."category_id", "film_id"→"film"."film_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| film_id | 1000 | 501 | 882 |
-| category_id | 5 | 1 | 7 |
-| last_update | 2021-03-06T15:53:36 | 2021-03-06T15:53:32 | 2021-03-06T15:53:35 |
+| film_id | 1000 | 51 | 384 |
+| category_id | 5 | 12 | 12 |
+| last_update | 2021-03-06T15:53:36 | 2021-03-06T15:53:28 | 2021-03-06T15:53:31 |
 
 # "film_list"  (rows=5462)
 
@@ -294,43 +285,41 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| FID | 1000 | 238 | 177 |
-| title | ZORRO ARK | DOCTOR GRAIL | CONNECTICUT TRAMP |
-| description | A Intrepid Panorama of a Mad Scientist And a Boy who must Redeem a Boy in A Monastery | A Insightful Drama of a Womanizer And a Waitress who must Reach a Forensic Psychologist in The Outback | A Unbelieveable Drama of a Crocodile And a Mad Cow who must Reach a Dentist in A Shark Tank |
-| category | Comedy | Children | Sci-Fi |
+| FID | 1000 | 125 | 372 |
+| title | ZORRO ARK | CASSIDY WYOMING | GRACELAND DYNAMITE |
+| description | A Intrepid Panorama of a Mad Scientist And a Boy who must Redeem a Boy in A Monastery | A Intrepid Drama of a Frisbee And a Hunter who must Kill a Secret Agent in New Orleans | A Taut Display of a Cat And a Girl who must Overcome a Database Administrator in New Orleans |
+| category | Comedy | Travel | Sports |
 | price | 4.99 | 2.99 | 4.99 |
-| length | 50 | 57 | 172 |
-| rating | NC-17 | G | R |
-| actors | NICK DEGENERES | JON CHASE | MEG HAWKE |
+| length | 50 | 61 | 140 |
+| rating | NC-17 | NC-17 | R |
+| actors | NICK DEGENERES | AUDREY OLIVIER | CHRISTIAN NEESON |
 
 # "inventory"  (rows=4581)
 
 columns:
 "inventory_id" int PK: unique identifier, 1..4581
-"film_id" int NOTNULL FK: 958 distinct, 1..1000, 1=8, 31=8, 69=8, 73=8, 86=8, 91=8, 103=8, 109=8, 127=8, 174=8
+"film_id" int NOTNULL FK: 958 distinct, 1..1000
 "store_id" int NOTNULL FK: 2=2311, 1=2270
 "last_update" timestamp NOTNULL: 38 distinct
 
 indexes: "film_id", ("store_id","film_id")
-fk: "film_id"→"film"."film_id", "store_id"→"store"."store_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| inventory_id | 4581 | 3387 | 2745 |
-| film_id | 1000 | 743 | 602 |
-| store_id | 2 | 2 | 2 |
-| last_update | 2021-03-06T15:52:45 | 2021-03-06T15:52:35 | 2021-03-06T15:52:30 |
+| inventory_id | 4581 | 1917 | 3962 |
+| film_id | 1000 | 417 | 863 |
+| store_id | 2 | 1 | 2 |
+| last_update | 2021-03-06T15:52:45 | 2021-03-06T15:52:23 | 2021-03-06T15:52:40 |
 
 # "language"  (rows=6)
 
 columns:
-"language_id" smallint PK: unique identifier, 1..6
-"name" char20 NOTNULL: "English"=1, "French"=1, "German"=1, "Italian"=1, "Japanese"=1, "Mandarin"=1
-"last_update" timestamp NOTNULL: "2021-03-06 15:51:48"=6
+"language_id" smallint PK
+"name" char20 NOTNULL
+"last_update" timestamp NOTNULL
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 |
@@ -343,7 +332,7 @@ all rows:
 
 columns:
 "payment_id" int PK: unique identifier, 1..16049
-"customer_id" int NOTNULL FK: 599 distinct, 1..599, 148=46, 526=45, 144=42, 236=42, 75=41, 197=40, 469=40, 137=39, 178=39, 468=39
+"customer_id" int NOTNULL FK: 599 distinct, 1..599
 "staff_id" smallint NOTNULL FK: 1=8057, 2=7992
 "rental_id" int FK: all distinct, nulls=5, 1..16049
 "amount" numeric NOTNULL: 4.99=3789, 2.99=3542, 0.99=2979, 5.99=1299, 6.99=1119, 3.99=1109, 7.99=670, 1.99=640, 8.99=485, 9.99=256, 10.99=104, 0=24, 11.99=10, 3.98=8, 5.98=7, 7.98=5, 1.98=1, 8.97=1, 9.98=1, 0..11.99
@@ -351,43 +340,41 @@ columns:
 "last_update" timestamp NOTNULL: 133 distinct
 
 indexes: "customer_id", "staff_id"
-fk: "staff_id"→"staff"."staff_id", "customer_id"→"customer"."customer_id", "rental_id"→"rental"."rental_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| payment_id | 16049 | 12424 | 6046 |
-| customer_id | 599 | 460 | 224 |
-| staff_id | 2 | 1 | 1 |
-| rental_id | 15725 | 6788 | 4697 |
-| amount | 2.99 | 5.99 | 2.99 |
-| payment_date | 2005-08-23T11:25:00 | 2005-07-12T16:33:44 | 2005-07-08T11:19:14 |
-| last_update | 2021-03-06T15:58:09 | 2021-03-06T15:57:39 | 2021-03-06T15:56:48 |
+| payment_id | 16049 | 13230 | 13935 |
+| customer_id | 599 | 490 | 517 |
+| staff_id | 2 | 2 | 2 |
+| rental_id | 15725 | 14761 | 12705 |
+| amount | 2.99 | 6.99 | 0.99 |
+| payment_date | 2005-08-23T11:25:00 | 2005-08-21T23:30:28 | 2005-08-18T20:44:14 |
+| last_update | 2021-03-06T15:58:09 | 2021-03-06T15:57:46 | 2021-03-06T15:57:52 |
 
 # "rental"  (rows=16044)
 
 columns:
 "rental_id" int PK: unique identifier, 1..16049
 "rental_date" timestamp NOTNULL: 15815 distinct, "2006-02-14 15:16:03.000"=182, "2005-05-30 14:47:31.000"=2, "2005-06-20 10:10:29.000"=2, "2005-06-21 09:04:50.000"=2, "2005-07-09 14:55:07.000"=2, "2005-07-10 20:41:41.000"=2, "2005-07-12 14:22:08.000"=2, "2005-07-27 08:14:34.000"=2, "2005-07-27 12:39:48.000"=2, "2005-07-27 15:18:42.000"=2
-"inventory_id" int NOTNULL FK: 4580 distinct, 1..4581, 2=5, 6=5, 14=5, 17=5, 23=5, 26=5, 30=5, 37=5, 39=5, 40=5
-"customer_id" int NOTNULL FK: 599 distinct, 1..599, 148=46, 526=45, 144=42, 236=42, 75=41, 197=40, 469=40, 137=39, 178=39, 468=39
+"inventory_id" int NOTNULL FK: 4580 distinct, 1..4581
+"customer_id" int NOTNULL FK: 599 distinct, 1..599
 "return_date" timestamp: 15836 distinct, nulls=183
 "staff_id" smallint NOTNULL FK: 1=8040, 2=8004
 "last_update" timestamp NOTNULL: 137 distinct
 
 indexes: "customer_id", "inventory_id", "staff_id", UNIQUE ("rental_date","inventory_id","customer_id")
-fk: "inventory_id"→"inventory"."inventory_id", "customer_id"→"customer"."customer_id", "staff_id"→"staff"."staff_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| rental_id | 16049 | 6286 | 8622 |
-| rental_date | 2005-08-23T22:50:12 | 2005-07-11T16:55:35 | 2005-07-29T13:53:28 |
-| inventory_id | 2666 | 1070 | 4076 |
-| customer_id | 393 | 140 | 98 |
-| return_date | 2005-08-30T01:01:12 | 2005-07-13T22:51:35 | 2005-07-31T16:12:28 |
-| staff_id | 2 | 1 | 2 |
-| last_update | 2021-03-06T15:55:57 | 2021-03-06T15:54:32 | 2021-03-06T15:54:51 |
+| rental_id | 16049 | 2929 | 14002 |
+| rental_date | 2005-08-23T22:50:12 | 2005-06-20T04:47:39 | 2005-08-20T20:12:19 |
+| inventory_id | 2666 | 3389 | 87 |
+| customer_id | 393 | 333 | 33 |
+| return_date | 2005-08-30T01:01:12 | 2005-06-25T23:16:39 | 2005-08-23T00:23:19 |
+| staff_id | 2 | 2 | 1 |
+| last_update | 2021-03-06T15:55:57 | 2021-03-06T15:54:04 | 2021-03-06T15:55:37 |
 
 # "sales_by_film_category"  (rows=16)
 
@@ -413,8 +400,8 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| category | Travel | Horror | New |
-| total_sales | 3549.64 | 3722.54 | 4351.62 |
+| category | Travel | Horror | Foreign |
+| total_sales | 3549.64 | 3722.54 | 4270.67 |
 
 # "sales_by_store"  (rows=2)
 
@@ -441,10 +428,10 @@ GROUP BY
 ```
 
 columns:
-"store_id" int: unique identifier, 1..2
-"store" text: "Lethbridge,Canada"=1, "Woodridge,Australia"=1
-"manager" text: "Jon Stephens"=1, "Mike Hillyer"=1
-"total_sales" float: 33679.8=1, 33726.8=1
+"store_id" int
+"store" text
+"manager" text
+"total_sales" float
 
 all rows:
 | column | row 1 | row 2 |
@@ -457,20 +444,19 @@ all rows:
 # "staff"  (rows=2)
 
 columns:
-"staff_id" smallint PK: unique identifier, 1..2
-"first_name" varchar45 NOTNULL: "Jon"=1, "Mike"=1
-"last_name" varchar45 NOTNULL: "Hillyer"=1, "Stephens"=1
-"address_id" int NOTNULL FK: unique identifier, 3..4
-"picture" bytes: all NULL
-"email" varchar50: "Jon.Stephens@sakilastaff.com"=1, "Mike.Hillyer@sakilastaff.com"=1
-"store_id" int NOTNULL FK: unique identifier, 1..2
-"active" smallint NOTNULL: 1=2
-"username" varchar16 NOTNULL: "Jon"=1, "Mike"=1
-"password" varchar40: redacted
-"last_update" timestamp NOTNULL: "2021-03-06 15:52:00"=2
+"staff_id" smallint PK
+"first_name" varchar45 NOTNULL
+"last_name" varchar45 NOTNULL
+"address_id" int NOTNULL FK
+"picture" bytes
+"email" varchar50
+"store_id" int NOTNULL FK
+"active" smallint NOTNULL
+"username" varchar16 NOTNULL
+"password" varchar40
+"last_update" timestamp NOTNULL
 
 indexes: "address_id", "store_id"
-fk: "address_id"→"address"."address_id", "store_id"→"store"."store_id"
 
 all rows:
 | column | row 1 | row 2 |
@@ -504,14 +490,14 @@ FROM staff AS s JOIN address AS a ON s.address_id = a.address_id JOIN city ON a.
 ```
 
 columns:
-"ID" smallint: unique identifier, 1..2, avg=1.5, median=1.5
-"name" text: "Jon Stephens"=1, "Mike Hillyer"=1
-"address" varchar50: "1411 Lillydale Drive"=1, "23 Workhaven Lane"=1
-"zip_code" varchar10: all NULL
-"phone" varchar20: " "=2
-"city" varchar50: "Lethbridge"=1, "Woodridge"=1
-"country" varchar50: "Australia"=1, "Canada"=1
-"SID" int: unique identifier, 1..2, avg=1.5, median=1.5
+"ID" smallint
+"name" text
+"address" varchar50
+"zip_code" varchar10
+"phone" varchar20
+"city" varchar50
+"country" varchar50
+"SID" int
 
 all rows:
 | column | row 1 | row 2 |
@@ -528,13 +514,12 @@ all rows:
 # "store"  (rows=2)
 
 columns:
-"store_id" int PK: unique identifier, 1..2
-"manager_staff_id" smallint NOTNULL FK: unique identifier, 1..2
-"address_id" int NOTNULL FK: unique identifier, 1..2
-"last_update" timestamp NOTNULL: "2021-03-06 15:52:00"=2
+"store_id" int PK
+"manager_staff_id" smallint NOTNULL FK
+"address_id" int NOTNULL FK
+"last_update" timestamp NOTNULL
 
 indexes: "address_id", "manager_staff_id"
-fk: "address_id"→"address"."address_id", "manager_staff_id"→"staff"."staff_id"
 
 all rows:
 | column | row 1 | row 2 |

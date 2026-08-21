@@ -46,7 +46,7 @@ from rich.progress import (
     TimeElapsedColumn,
 )
 
-from harness import config, manifest as manifest_mod, metrics, network, prompts, runner_container, runner_pi, runner_zeroshot, scorer
+from harness import config, manifest as manifest_mod, metrics, network, parse_sql, prompts, runner_container, runner_pi, runner_zeroshot, scorer
 
 PHASE_DEFAULT_N = {"phase0": 1, "pilot": config.PILOT_N}
 PHASE_DEFAULT_TURNS = {"phase0": config.MAX_TURNS_PILOT,
@@ -290,7 +290,7 @@ def _run_dataset(args) -> int:
         with progress:
             for arm in arms:
                 recs = list(_load_existing(
-                    rdir / f"arm{arm}.jsonl", fingerprints[arm]
+                    rdir / f"arm{arm}.jsonl", None if args.score_only else fingerprints[arm]
                 ).values())
                 if args.score_only:
                     desc = f"rescore arm {arm}"
@@ -298,6 +298,7 @@ def _run_dataset(args) -> int:
                     for r in recs:
                         q = by_id.get(r.get("id"), {})
                         if q:
+                            r["pred_sql"] = parse_sql.extract_sql(r.get("raw_text", "")) or r.get("pred_sql")
                             q_engine, q_db, _key = _q_target(q, args.dataset)
                             _score(r, q, q_engine, q_db, spec["scoring"])
                         progress.advance(task)

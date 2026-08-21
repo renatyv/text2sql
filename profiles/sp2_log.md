@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:29:07.408953Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:34:20.005337Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-xqd5sny4/log.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-l629_u77/log.sqlite
 schema: main
 ---
 
@@ -16,15 +16,14 @@ columns:
 "stamp" varchar255: "/detail"=7, "/search"=6, "/top"=6, "2016-01-01 18:00:00"=1, "2016-01-02 20:00:00"=1, "2016-01-03 22:00:00"=1, "2016-01-04 23:00:00"=1, "2016-01-05 00:30:00"=1, "2016-01-06 02:30:00"=1, "2016-01-07 03:30:00"=1, "2016-01-08 04:00:00"=1, "2016-01-09 12:00:00"=1, "2016-01-10 13:00:00"=1, "2016-01-11 15:00:00"=1
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| session | eee2b2 | 1cf768 | 2016-10-01 17:00:00 |
-| user_id | U002 | U002 | 2bGs3i |
-| action | view | view | 1CwlSX |
-| stamp | 2016-01-10 13:00:00 | 2016-01-04 23:00:00 | /top |
+| session | eee2b2 | eee2b2 | 1cf768 |
+| user_id | U002 | U001 | U002 |
+| action | view | view | view |
+| stamp | 2016-01-10 13:00:00 | 2016-01-11 15:00:00 | 2016-01-04 23:00:00 |
 
 # "action_log"  (rows=120)
 
@@ -38,18 +37,17 @@ columns:
 "stamp" varchar255: "2016-11-03 18:00:00"=48, "2016-11-04 12:00:00"=18, "2016-11-03 18:10:00"=12, "2016-11-03 18:01:00"=6, "2016-11-03 18:02:00"=6, "2016-11-03 19:00:00"=6, "2016-11-03 20:00:00"=6, "2016-11-03 20:30:00"=6, "2016-11-04 13:00:00"=6, "2016-11-04 15:00:00"=6
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| session | 9afaf87c | 989004ea | 989004ea |
+| session | 9afaf87c | 87b5725f | 989004ea |
 | user_id | U002 | U001 | U001 |
-| action | purchase | view | add_cart |
-| category | drama | null | drama |
-| products | D002 | null | D001 |
-| amount | 1000 | null | null |
-| stamp | 2016-11-04 13:00:00 | 2016-11-03 18:00:00 | 2016-11-03 18:00:00 |
+| action | purchase | add_cart | purchase |
+| category | drama | action | drama |
+| products | D002 | A004 | D001,D002 |
+| amount | 1000 | null | 2000 |
+| stamp | 2016-11-04 13:00:00 | 2016-11-04 12:00:00 | 2016-11-03 18:10:00 |
 
 # "action_log_with_ip"  (rows=12)
 
@@ -61,16 +59,15 @@ columns:
 "stamp" varchar255: "2016-11-03 18:00:00"=2, "2016-11-03 19:00:00"=2, "2016-11-03 20:00:00"=2, "2016-11-03 21:00:00"=1, "2016-11-04 18:00:00"=1, "2016-11-04 19:00:00"=1, "2016-11-04 20:00:00"=1, "2016-11-04 21:00:00"=1, "2016-11-04 22:00:00"=1
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| session | fe05e1d8 | 1cf7678e | 1QceiB |
-| user_id | U001 | U003 | U002 |
+| session | fe05e1d8 | 1cf7678e | 111f2996 |
+| user_id | U001 | U003 | U007 |
 | action | view | view | view |
-| ip | 216.58.220.238 | 210.154.149.63 | 98.139.183.24 |
-| stamp | 2016-11-04 18:00:00 | 2016-11-03 20:00:00 | 2016-11-03 19:00:00 |
+| ip | 216.58.220.238 | 210.154.149.63 | 192.168.0.23 |
+| stamp | 2016-11-04 18:00:00 | 2016-11-03 20:00:00 | 2016-11-04 21:00:00 |
 
 # "activity_log"  (rows=244)
 
@@ -83,27 +80,25 @@ columns:
 "search_type" varchar255: ""=164, "Area-L"=22, "Area-S"=14, "Pref"=14, "Area-L-with-Job"=7, "Line"=7, "Pref-with-Job"=7, "Station-with-Job"=7, "Line-with-Job"=2
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| stamp | 2017-01-09 12:25:25 | 2017-01-09 12:18:43 | 2017-01-09 12:18:45 |
-| session | 87b5725f | 1cf7678e | 8cc03a54 |
+| stamp | 2017-01-09 12:25:25 | 2017-01-09 12:20:10 | 2017-01-09 12:19:49 |
+| session | 87b5725f | 111f2996 | 36dd0df7 |
 | action | view | view | view |
-| option | page | detail | page |
-| path | / | /detail/ | /confirm |
-| search_type |  |  | Area-L |
+| option | page | page | detail |
+| path | / |  | /detail |
+| search_type |  |  |  |
 
 # "app1_mst_users"  (rows=2)
 
 columns:
-"user_id" varchar255: unique identifier
-"name" varchar255: "Sato"=1, "Suzuki"=1
-"email" varchar255: "sato@example.com"=1, "suzuki@example.com"=1
+"user_id" varchar255
+"name" varchar255
+"email" varchar255
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 |
@@ -115,12 +110,11 @@ all rows:
 # "app2_mst_users"  (rows=2)
 
 columns:
-"user_id" varchar255: unique identifier
-"name" varchar255: "Ito"=1, "Tanaka"=1
-"phone" varchar255: "070-xxxx-xxxx"=1, "080-xxxx-xxxx"=1
+"user_id" varchar255
+"name" varchar255
+"phone" varchar255
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 |
@@ -139,29 +133,27 @@ columns:
 "products" varchar255: "A001"=5, "D001"=4, "D002"=2
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| stamp | 2016-11-04 22:00:10 | 2016-11-03 18:00:00 | 2016-11-03 19:00:00 |
-| session | 3efe001c | 989004ea | 47db0370 |
-| user_id | U008 | U001 | U002 |
+| stamp | 2016-11-04 22:00:10 | 2016-11-03 21:00:00 | 2016-11-03 20:00:00 |
+| session | 3efe001c | fe05e1d8 | 1cf7678e |
+| user_id | U008 | U004 | U003 |
 | action | click | click | click |
-| products | A001 | D001 | D002 |
+| products | A001 | D001 | A001 |
 
 # "form_error_log"  (rows=8)
 
 columns:
-"stamp" varchar255: "2016-12-30 00:56:08"=3, "2016-12-30 00:56:09"=3, "2016-12-30 00:56:42"=1, "2016-12-30 00:57:21"=1
-"session" varchar255: "004dc3ef"=3, "01061716"=2, "00700be4"=1, "02596e8a"=1, "035a1ebb"=1
-"form" varchar255: "regist"=6, "cart"=2
-"field" varchar255: "email"=3, "kana"=3, "tel"=1, "zip"=1
-"error_type" varchar255: "format_error"=4, "require"=3, "not_kana"=1
-"value" varchar255: ""=3, "03-99999999"=1, "101-"=1, "xxx---.co.jp"=1, "xxx@---cojp"=1, "山田 太郎"=1
+"stamp" varchar255
+"session" varchar255
+"form" varchar255
+"field" varchar255
+"error_type" varchar255
+"value" varchar255
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 |
@@ -183,30 +175,28 @@ columns:
 "status" varchar255: ""=30, "error"=15
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| stamp | 2016-12-30 01:00:19 | 2016-12-30 00:58:58 | 2016-12-30 00:56:08 |
-| session | 9b5f320f | b2dbcc54 | 8e9afadc |
+| stamp | 2016-12-30 01:00:19 | 2016-12-30 00:58:50 | 2016-12-30 01:00:19 |
+| session | 9b5f320f | 9b5f320f | 9b5f320f |
 | action | view | view | view |
-| path | /regist/confirm | /contact/confirm | /contact/input |
-| status | error |  |  |
+| path | /regist/confirm | /regist/confirm | /regist/confirm |
+| status | error | error | error |
 
 # "invalid_action_log"  (rows=7)
 
 columns:
-"stamp" varchar255: "2016-11-03 18:00:00"=2, "2016-11-03 18:01:00"=1, "2016-11-03 18:02:00"=1, "2016-11-03 18:10:00"=1, "2016-11-04 13:00:00"=1, nulls=1
-"session" varchar255: "0CVKaz"=5, "1QceiB"=2
-"user_id" varchar255: "U001"=5, "U002"=2
-"action" varchar255: "purchase"=3, "add_cart"=2, "favorite"=1, "view"=1
-"category" varchar255: "drama"=5, "action"=1, nulls=1
-"products" varchar255: "D002"=2, "A005,A006"=1, "D001"=1, "D001,D002"=1, nulls=2
-"amount" int: 1000=2, 2000=1, nulls=4
+"stamp" varchar255
+"session" varchar255
+"user_id" varchar255
+"action" varchar255
+"category" varchar255
+"products" varchar255
+"amount" int
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 |
@@ -222,12 +212,11 @@ all rows:
 # "mst_categories"  (rows=8)
 
 columns:
-"id" int: 6=2, 1=1, 2=1, 3=1, 4=1, 5=1, 7=1, 1..7
-"name" varchar255: "book"=1, "cooking"=1, "dvd"=1, "food"=1, "game"=1, "ladys_fashion"=1, "mens_fashion"=1, "supplement"=1
-"stamp" varchar255: "2016-01-01 10:00:00"=7, "2016-02-01 10:00:00"=1
+"id" int
+"name" varchar255
+"stamp" varchar255
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 |
@@ -239,13 +228,12 @@ all rows:
 # "mst_products_20161201"  (rows=6)
 
 columns:
-"product_id" varchar255: unique identifier
-"name" varchar255: "AAA"=1, "AAB"=1, "BBB"=1, "BBD"=1, "CCA"=1, "DAA"=1
-"price" int: 3000=2, 4000=2, 5000=2, 3000..5000
-"updated_at" varchar255: "2016-11-03 18:00:00"=1, "2016-11-03 19:00:00"=1, "2016-11-03 20:00:00"=1, "2016-11-03 21:00:00"=1, "2016-11-04 18:00:00"=1, "2016-11-04 19:00:00"=1
+"product_id" varchar255
+"name" varchar255
+"price" int
+"updated_at" varchar255
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 |
@@ -258,13 +246,12 @@ all rows:
 # "mst_products_20170101"  (rows=6)
 
 columns:
-"product_id" varchar255: unique identifier
-"name" varchar255: "AAA"=1, "AAB"=1, "BBD"=1, "CCA"=1, "DAA"=1, "DAD"=1
-"price" int: 5000=3, 3000=2, 4000=1, 3000..5000
-"updated_at" varchar255: "2016-11-03 18:00:00"=1, "2016-11-03 19:00:00"=1, "2016-11-03 21:00:00"=1, "2016-11-04 19:00:00"=1, "2016-12-04 18:00:00"=1, "2016-12-04 19:00:00"=1
+"product_id" varchar255
+"name" varchar255
+"price" int
+"updated_at" varchar255
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 |
@@ -285,26 +272,24 @@ columns:
 "withdraw_date" varchar255: "2016-10-10"=32, nulls=288
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| user_id | U030 | U018 | U015 |
+| user_id | U030 | U001 | U027 |
 | sex | M | M | F |
-| birth_date | 1959-10-07 | 2009-10-12 | 1994-03-01 |
-| register_date | 2016-11-28 | 2016-11-01 | 2016-10-01 |
-| register_device | sp | app | app |
+| birth_date | 1959-10-07 | 1977-06-17 | 2001-07-10 |
+| register_date | 2016-11-28 | 2016-10-01 | 2016-10-02 |
+| register_device | sp | pc | pc |
 | withdraw_date | null | null | null |
 
 # "mst_users_with_card_number"  (rows=3)
 
 columns:
-"user_id" varchar255: unique identifier
-"card_number" varchar255: "1234-xxxx-xxxx-xxxx"=1, "5678-xxxx-xxxx-xxxx"=1, nulls=1
+"user_id" varchar255
+"card_number" varchar255
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 |
@@ -315,12 +300,11 @@ all rows:
 # "product_sales"  (rows=10)
 
 columns:
-"category_name" varchar255: "book"=4, "cd"=3, "dvd"=3
-"product_id" varchar255: unique identifier
-"sales" int: 10000=3, 20000=3, 5000=1, 15000=1, 30000=1, 50000=1, 5000..50000
+"category_name" varchar255
+"product_id" varchar255
+"sales" int
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 | row 9 | row 10 |
@@ -332,13 +316,12 @@ all rows:
 # "purchase_log"  (rows=5)
 
 columns:
-"purchase_id" int: unique identifier, 10001..10005
-"user_id" varchar255: "U001"=3, "U002"=2
-"amount" int: 200=2, 400=1, 500=1, 800=1, 200..800
-"stamp" varchar255: "2017-01-30 10:00:00"=1, "2017-02-10 10:00:00"=1, "2017-02-12 10:00:00"=1, "2017-03-01 10:00:00"=1, "2017-03-02 10:00:00"=1
+"purchase_id" int
+"user_id" varchar255
+"amount" int
+"stamp" varchar255
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 |
@@ -357,14 +340,13 @@ columns:
 "url" varchar255: "http://www.example.com/article?id=news731"=6, "http://www.example.com/article?id=trend925"=5, "http://www.example.com/article?id=it605"=2, "http://www.example.com/article?id=news341"=1, "http://www.example.com/article?id=trend132"=1
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| stamp | 2016-12-29 21:46:25 | 2016-12-29 21:45:56 | 2016-12-29 21:45:47 |
-| session | df6eb25d | df6eb25d | a80ded24 |
-| action | read-100% | read-20% | view |
-| url | http://www.example.com/article?id=news731 | http://www.example.com/article?id=news731 | http://www.example.com/article?id=trend925 |
+| stamp | 2016-12-29 21:46:25 | 2016-12-29 21:45:59 | 2016-12-29 21:45:47 |
+| session | df6eb25d | 76c67c39 | df6eb25d |
+| action | read-100% | read-40% | view |
+| url | http://www.example.com/article?id=news731 | http://www.example.com/article?id=trend925 | http://www.example.com/article?id=news731 |
 
 - Skipped 1 empty table(s): "action_log_with_noise"

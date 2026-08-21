@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:26:38.121896Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:31:47.401329Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-u904z_2i/financial.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-w4yu5ew3/financial.sqlite
 schema: main
 ---
 
@@ -23,15 +23,14 @@ columns:
 "date" date NOTNULL: 1535 distinct
 
 indexes: none
-fk: "district_id"→"district"."district_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| account_id | 11382 | 3517 | 2670 |
-| district_id | 74 | 26 | 13 |
+| account_id | 11382 | 3967 | 10656 |
+| district_id | 74 | 54 | 8 |
 | frequency | POPLATEK MESICNE | POPLATEK MESICNE | POPLATEK MESICNE |
-| date | 1995-08-20 | 1996-11-22 | 1993-01-27 |
+| date | 1995-08-20 | 1996-09-22 | 1993-05-05 |
 
 # "card"  (rows=892)
 
@@ -42,15 +41,14 @@ columns:
 "issued" date NOTNULL: 607 distinct
 
 indexes: none
-fk: "disp_id"→"disp"."disp_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| card_id | 1247 | 204 | 361 |
-| disp_id | 13660 | 1239 | 2312 |
-| type | classic | junior | classic |
-| issued | 1995-06-13 | 1996-05-30 | 1998-09-23 |
+| card_id | 1247 | 560 | 296 |
+| disp_id | 13660 | 3577 | 1876 |
+| type | classic | classic | gold |
+| issued | 1995-06-13 | 1998-12-17 | 1995-11-13 |
 
 # "client"  (rows=5369)
 
@@ -61,15 +59,14 @@ columns:
 "district_id" int NOTNULL FK: 77 distinct, 1..77
 
 indexes: none
-fk: "district_id"→"district"."district_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| client_id | 13998 | 1137 | 4004 |
+| client_id | 13998 | 442 | 2419 |
 | gender | F | F | F |
-| birth_date | 1953-08-12 | 1977-03-05 | 1957-08-12 |
-| district_id | 74 | 1 | 30 |
+| birth_date | 1953-08-12 | 1971-12-16 | 1954-06-23 |
+| district_id | 74 | 1 | 1 |
 
 # "disp"  (rows=5369)
 
@@ -80,15 +77,14 @@ columns:
 "type" text NOTNULL: "OWNER"=4500, "DISPONENT"=869
 
 indexes: none
-fk: "account_id"→"account"."account_id", "client_id"→"client"."client_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| disp_id | 13690 | 12020 | 9 |
-| client_id | 13998 | 12328 | 9 |
-| account_id | 11382 | 10022 | 7 |
-| type | OWNER | OWNER | OWNER |
+| disp_id | 13690 | 4563 | 3672 |
+| client_id | 13998 | 4563 | 3672 |
+| account_id | 11382 | 3785 | 3038 |
+| type | OWNER | OWNER | DISPONENT |
 
 # "district"  (rows=77)
 
@@ -111,27 +107,26 @@ columns:
 "A16" int NOTNULL: 76 distinct, 888..99107, avg=5030.83, median=3040
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| district_id | 77 | 13 | 76 |
-| A2 | Vsetin | Rakovnik | Sumperk |
-| A3 | north Moravia | central Bohemia | north Moravia |
-| A4 | 148545 | 53921 | 127369 |
-| A5 | 8 | 61 | 31 |
-| A6 | 35 | 22 | 32 |
-| A7 | 12 | 1 | 13 |
-| A8 | 3 | 1 | 2 |
-| A9 | 4 | 2 | 7 |
-| A10 | 53.5 | 41.3 | 51.2 |
-| A11 | 8909 | 8598 | 8369 |
-| A12 | 4 | 2.7 | 4.7 |
-| A13 | 5.56 | 3.26 | 5.88 |
-| A14 | 113 | 123 | 107 |
-| A15 | 3460 | 1597 | 3736 |
-| A16 | 3590 | 1875 | 2807 |
+| district_id | 77 | 46 | 43 |
+| A2 | Vsetin | Nachod | Hradec Kralove |
+| A3 | north Moravia | east Bohemia | east Bohemia |
+| A4 | 148545 | 112709 | 161854 |
+| A5 | 8 | 48 | 73 |
+| A6 | 35 | 20 | 21 |
+| A7 | 12 | 7 | 6 |
+| A8 | 3 | 3 | 1 |
+| A9 | 4 | 10 | 6 |
+| A10 | 53.5 | 73.5 | 76.3 |
+| A11 | 8909 | 8369 | 9425 |
+| A12 | 4 | 1.7 | 1.7 |
+| A13 | 5.56 | 2.31 | 2.5 |
+| A14 | 113 | 117 | 125 |
+| A15 | 3460 | 2854 | 4085 |
+| A16 | 3590 | 2618 | 3891 |
 
 # "loan"  (rows=682)
 
@@ -145,17 +140,16 @@ columns:
 "status" text NOTNULL: "C"=403, "A"=203, "D"=45, "B"=31
 
 indexes: none
-fk: "account_id"→"account"."account_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| loan_id | 7308 | 7189 | 6235 |
-| account_id | 11362 | 10728 | 6062 |
-| date | 1996-12-27 | 1996-03-21 | 1998-04-19 |
-| amount | 129408 | 154656 | 321360 |
-| duration | 24 | 48 | 60 |
-| payments | 5392 | 3222 | 5356 |
+| loan_id | 7308 | 5041 | 6574 |
+| account_id | 11362 | 319 | 7745 |
+| date | 1996-12-27 | 1997-07-11 | 1997-12-20 |
+| amount | 129408 | 369000 | 77544 |
+| duration | 24 | 60 | 36 |
+| payments | 5392 | 6150 | 2154 |
 | status | A | C | C |
 
 # "order"  (rows=6471)
@@ -164,22 +158,21 @@ columns:
 "order_id" int PK: unique identifier, 29401..46338
 "account_id" int NOTNULL FK: 3758 distinct, 1..11362
 "bank_to" text NOTNULL: "QR"=531, "YZ"=521, "AB"=519, "WX"=515, "ST"=511, "KL"=500, "UV"=499, "IJ"=496, "GH"=487, "OP"=485, "EF"=483, "MN"=466, "CD"=458
-"account_to" int NOTNULL: 6446 distinct, 399..99994199, avg=4.9399e+07, median=4.97561e+07
+"account_to" int NOTNULL: 6446 distinct, 399..99994199, avg=4.9e+07, median=5e+07
 "amount" float NOTNULL: 4412 distinct, 1..14882, avg=3280.64, median=2596
 "k_symbol" text NOTNULL: "SIPO"=3502, ""=1379, "UVER"=717, "POJISTNE"=532, "LEASING"=341
 
 indexes: none
-fk: "account_id"→"account"."account_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| order_id | 46338 | 29545 | 40816 |
-| account_id | 11362 | 90 | 7713 |
-| bank_to | MN | YZ | ST |
-| account_to | 61540514 | 2028567 | 45360702 |
-| amount | 5392 | 361 | 8418 |
-| k_symbol | UVER |  | SIPO |
+| order_id | 46338 | 34985 | 35011 |
+| account_id | 11362 | 3784 | 3804 |
+| bank_to | MN | IJ | WX |
+| account_to | 61540514 | 70703857 | 32746297 |
+| amount | 5392 | 1583 | 643 |
+| k_symbol | UVER | SIPO | SIPO |
 
 # "trans"  (rows=≈1056320)
 
@@ -196,4 +189,3 @@ columns:
 "account" int
 
 indexes: none
-fk: "account_id"→"account"."account_id"

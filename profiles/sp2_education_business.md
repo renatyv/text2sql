@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:29:01.830662Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:34:14.436776Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-eg06_qxs/education_business.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-e5u76und/education_business.sqlite
 schema: main
 ---
 
@@ -18,17 +18,16 @@ columns:
 "Salary" text: 3101 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 4343 | 1231 | 407 |
-| CompanyName | vPhrase | Kool Smiles | Bestintown Analytics |
+| index | 4343 | 407 | 1718 |
+| CompanyName | vPhrase | Bestintown Analytics | Freelancer |
 | JobTitle | Machine Learning Engineer | Data Scientist | Data Scientist |
 | SalariesReported | 1 | 1 | 1 |
-| Location | Mumbai | Pune | Bangalore |
-| Salary | ₹9,39,843/yr | ₹12,00,000/yr | ₹23,616/mo |
+| Location | Mumbai | Bangalore | New Delhi |
+| Salary | ₹9,39,843/yr | ₹23,616/mo | ₹10,31,658/yr |
 
 # "StaffHours"  (rows=236)
 
@@ -39,20 +38,19 @@ columns:
 "EventType" text: "Enter"=123, "Exit"=113
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StaffMember | Z | Q | U |
-| EventDate | 2013-03-09 | 2013-03-06 | 2013-01-22 |
-| EventTime | 11:45 | 15:20 | 09:15 |
-| EventType | Enter | Enter | Enter |
+| StaffMember | Z | T | L |
+| EventDate | 2013-03-09 | 2013-03-02 | 2013-02-14 |
+| EventTime | 11:45 | 15:20 | 15:25 |
+| EventType | Enter | Exit | Exit |
 
 # "hardware_dim_customer"  (rows=209)
 
 columns:
-"customer_code" int: all distinct, 70002017..90027207, avg=8.59465e+07, median=9.0012e+07
+"customer_code" int: all distinct, 70002017..90027207
 "customer" text: 75 distinct
 "platform" text: "Brick & Mortar"=150, "E-Commerce"=59
 "channel" text: "Retailer"=164, "Direct"=40, "Distributor"=5
@@ -61,18 +59,17 @@ columns:
 "region" text: "EU"=105, "APAC"=71, "LATAM"=7, nulls=26
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customer_code | 90027207 | 90018109 | 90011191 |
-| customer | Amazon  | Chiptec | Sorefoz |
+| customer_code | 90027207 | 90015144 | 90004065 |
+| customer | Amazon  | Sound | Neptune |
 | platform | E-Commerce | Brick & Mortar | Brick & Mortar |
 | channel | Retailer | Retailer | Retailer |
-| market | Brazil | Spain | France |
-| sub_zone | LATAM | SE | SE |
-| region | LATAM | EU | EU |
+| market | Brazil | Norway | Japan |
+| sub_zone | LATAM | NE | ROA |
+| region | LATAM | EU | APAC |
 
 # "hardware_dim_product"  (rows=397)
 
@@ -85,17 +82,16 @@ columns:
 "variant" text: 27 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_code | A7321160303 | A4021150405 | A3920150304 |
-| division | N & S | P & A | P & A |
-| segment | Networking | Accessories | Accessories |
-| category | Wi fi extender | Batteries | Batteries |
-| product | AQ Wi Power Dx3 | AQ Mx NB | AQ LION x3 |
-| variant | Premium | Premium | Plus 3 |
+| product_code | A7321160303 | A5318110106 | A0821150502 |
+| division | N & S | PC | P & A |
+| segment | Networking | Notebook | Peripherals |
+| category | Wi fi extender | Gaming Laptop | Graphic Card |
+| product | AQ Wi Power Dx3 | AQ Gamer 1 | AQ Marquee P3 |
+| variant | Premium | Plus Black | Plus 1 |
 
 # "hardware_fact_gross_price"  (rows=579)
 
@@ -105,14 +101,13 @@ columns:
 "gross_price" float: all distinct, 2.9168..834.981, avg=206.053, median=35.1332
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_code | A7321160303 | A0620150304 | A2419150402 |
-| fiscal_year | 2021 | 2021 | 2021 |
-| gross_price | 42.8483 | 37.5826 | 11.2819 |
+| product_code | A7321160303 | A0321150302 | A5318110102 |
+| fiscal_year | 2021 | 2021 | 2020 |
+| gross_price | 42.8483 | 27.1027 | 527.01 |
 
 # "hardware_fact_manufacturing_cost"  (rows=579)
 
@@ -122,31 +117,29 @@ columns:
 "manufacturing_cost" float: 488 distinct, 0.892..240.536, avg=61.5661, median=10.4828
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_code | A7321160303 | A5721110503 | A6018110106 |
-| cost_year | 2021 | 2021 | 2021 |
-| manufacturing_cost | 12.9502 | 194.329 | 233.487 |
+| product_code | A7321160303 | A2918150102 | A4218110206 |
+| cost_year | 2021 | 2020 | 2021 |
+| manufacturing_cost | 12.9502 | 2.2299 | 73.7165 |
 
 # "hardware_fact_pre_invoice_deductions"  (rows=418)
 
 columns:
-"customer_code" int: 209 distinct, 70002017..90027207, avg=8.59465e+07, median=9.0012e+07
+"customer_code" int: 209 distinct, 70002017..90027207
 "fiscal_year" int: 2020=209, 2021=209
 "pre_invoice_discount_pct" float: 351 distinct, 0.0531..0.3095, avg=0.233616, median=0.24005
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customer_code | 90027207 | 90017049 | 90015149 |
-| fiscal_year | 2021 | 2021 | 2020 |
-| pre_invoice_discount_pct | 0.2772 | 0.2938 | 0.27 |
+| customer_code | 90027207 | 90011189 | 90012034 |
+| fiscal_year | 2021 | 2020 | 2021 |
+| pre_invoice_discount_pct | 0.2772 | 0.2054 | 0.2195 |
 
 # "hardware_fact_sales_monthly"  (rows=≈971631)
 
@@ -158,18 +151,16 @@ columns:
 "fiscal_year" int
 
 indexes: none
-fk: none
 
 
 # "university_course"  (rows=7)
 
 columns:
-"CourseNo" text: "FIN300"=1, "FIN450"=1, "FIN480"=1, "IS320"=1, "IS460"=1, "IS470"=1, "IS480"=1
-"CrsDesc" text: "BUSINESS DATA COMMUNICATIONS"=1, "CORPORATE FINANCE"=1, "FUNDAMENTALS OF BUSINESS PROGRAMMING"=1, "FUNDAMENTALS OF DATABASE MANAGEMENT"=1, "FUNDAMENTALS OF FINANCE"=1, "PRINCIPLES OF INVESTMENTS"=1, "SYSTEMS ANALYSIS"=1
-"CrsUnits" int: 4=7
+"CourseNo" text
+"CrsDesc" text
+"CrsUnits" int
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 |
@@ -186,32 +177,30 @@ columns:
 "EnrGrade" float: 3.2=6, 3.4=6, 3.1=5, 3.3=4, 3.5=4, 2.6=2, 3.7=2, 3.8=2, 2=1, 2.7=1, 2.8=1, 2.9=1, 3.6=1, 4=1, 2..4
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| OfferNo | 9876 | 1234 | 1234 |
-| StdNo | 901234567 | 678901234 | 234567890 |
-| EnrGrade | 4 | 3.4 | 3.5 |
+| OfferNo | 9876 | 9876 | 5678 |
+| StdNo | 901234567 | 678901234 | 123456789 |
+| EnrGrade | 4 | 3.3 | 3.2 |
 
 # "university_faculty"  (rows=8)
 
 columns:
-"FacNo" int: 98765432=1, 123456789=1, 543210987=1, 654321098=1, 765432109=1, 876543210=1, 987654321=1, 987654322=1, 98765432..987654322
-"FacFirstName" text: "LEONARD"=2, "CRISTOPHER"=1, "JANE"=1, "JOHN"=1, "JULIA"=1, "NICKI"=1, "VICTORIA"=1
-"FacLastName" text: "COLAN"=1, "DOE"=1, "EMMANUEL"=1, "FIBON"=1, "MACON"=1, "MILLS"=1, "SMITH"=1, "VINCE"=1
-"FacCity" text: "SEATTLE"=5, "BELLEVUE"=1, "BOTHELL"=1, "REDMOND"=1
-"FacState" text: "WA"=8
-"FacDept" text: "MS"=4, "CS"=2, "FIN"=2
-"FacRank" text: "ASST"=3, "PROF"=3, "ASSC"=2
-"FacSalary" int: 35000=1, 40000=1, 55000=1, 65000=1, 70000=1, 75000=1, 110000=1, 120000=1, 35000..120000
-"FacSupervisor" float: 5.43211e+08=3, 6.54321e+08=2, 7.65432e+08=1, nulls=2, 5.43211e+08..7.65432e+08
-"FacHireDate" text: "1996-05-01"=1, "1997-04-10"=1, "1998-04-15"=1, "1999-04-11"=1, "2001-03-01"=1, "2002-03-15"=1, "2005-06-15"=1, "2007-08-20"=1
-"FacZipCode" text: "98011-2242"=1, "98015-9945"=1, "98052-1234"=1, "98111-1234"=1, "98111-9921"=1, "98114-1332"=1, "98114-9954"=1, "98121-0094"=1
+"FacNo" int
+"FacFirstName" text
+"FacLastName" text
+"FacCity" text
+"FacState" text
+"FacDept" text
+"FacRank" text
+"FacSalary" int
+"FacSupervisor" float
+"FacHireDate" text
+"FacZipCode" text
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 |
@@ -224,7 +213,7 @@ all rows:
 | FacDept | MS | CS | MS | MS | FIN | MS | FIN | CS |
 | FacRank | ASST | ASST | PROF | ASSC | PROF | ASST | ASSC | PROF |
 | FacSalary | 35000 | 55000 | 120000 | 70000 | 65000 | 40000 | 75000 | 110000 |
-| FacSupervisor | 6.54321e+08 | 5.43211e+08 | null | 5.43211e+08 | null | 6.54321e+08 | 7.65432e+08 | 5.43211e+08 |
+| FacSupervisor | 6.5e+08 | 5.4e+08 | null | 5.4e+08 | null | 6.5e+08 | 7.7e+08 | 5.4e+08 |
 | FacHireDate | 1997-04-10 | 2005-06-15 | 1998-04-15 | 1996-05-01 | 1999-04-11 | 2001-03-01 | 2002-03-15 | 2007-08-20 |
 | FacZipCode | 98111-9921 | 98111-1234 | 98011-2242 | 98121-0094 | 98015-9945 | 98114-1332 | 98114-9954 | 98052-1234 |
 
@@ -237,22 +226,21 @@ columns:
 "OffYear" int: 2010=10, 2009=3
 "OffLocation" text: "BLM302"=4, "BLM214"=2, "BLM412"=2, "BLM207"=1, "BLM212"=1, "BLM305"=1, "BLM307"=1, "BLM405"=1
 "OffTime" text: "10:30 AM"=4, "1:30 PM"=4, "3:30 PM"=3, "8:30 AM"=2
-"FacNo" float: 9.87654e+07=3, 6.54321e+08=2, 7.65432e+08=2, 9.87654e+08=2, 5.43211e+08=1, 8.76543e+08=1, nulls=2, 9.87654e+07..9.87654e+08
+"FacNo" float: 9.9e+07=3, 6.5e+08=2, 7.7e+08=2, 9.9e+08=2, 5.4e+08=1, 8.8e+08=1, nulls=2, 9.9e+07..9.9e+08
 "OffDays" text: "MW"=7, "TTH"=6
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| OfferNo | 9876 | 5555 | 1234 |
-| CourseNo | IS460 | FIN300 | IS320 |
-| OffTerm | SPRING | WINTER | FALL |
-| OffYear | 2010 | 2010 | 2009 |
-| OffLocation | BLM307 | BLM207 | BLM302 |
-| OffTime | 1:30 PM | 8:30 AM | 10:30 AM |
-| FacNo | 6.54321e+08 | 7.65432e+08 | 9.87654e+07 |
+| OfferNo | 9876 | 1234 | 5555 |
+| CourseNo | IS460 | IS320 | FIN300 |
+| OffTerm | SPRING | FALL | WINTER |
+| OffYear | 2010 | 2009 | 2010 |
+| OffLocation | BLM307 | BLM302 | BLM207 |
+| OffTime | 1:30 PM | 10:30 AM | 8:30 AM |
+| FacNo | 6.5e+08 | 9.9e+07 | 7.7e+08 |
 | OffDays | TTH | MW | MW |
 
 # "university_student"  (rows=11)
@@ -269,20 +257,19 @@ columns:
 "StdGPA" float: 2.2=1, 2.5=1, 2.7=1, 2.8=1, 3=1, 3.2=1, 3.3=1, 3.5=1, 3.6=1, 3.8=1, 4=1, 2.2..4
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StdNo | 901234567 | 456789012 | 678901234 |
-| StdFirstName | WILLIAM | JOE | TESS |
-| StdLastName | PILGRIM | ESTRADA | DODGE |
-| StdCity | BOTHELL | SEATTLE | REDMOND |
+| StdNo | 901234567 | 901234567 | 890123456 |
+| StdFirstName | WILLIAM | WILLIAM | LUKE |
+| StdLastName | PILGRIM | PILGRIM | BRAZZI |
+| StdCity | BOTHELL | BOTHELL | SEATTLE |
 | StdState | WA | WA | WA |
-| StdZip | 98113-1885 | 98121-2333 | 98116-2344 |
-| StdMajor | IS | FIN | ACCT |
-| StdClass | SO | SR | SO |
-| StdGPA | 3.8 | 3.2 | 3.3 |
+| StdZip | 98113-1885 | 98113-1885 | 98116-0021 |
+| StdMajor | IS | IS | IS |
+| StdClass | SO | SO | SR |
+| StdGPA | 3.8 | 3.8 | 2.2 |
 
 # "web_accounts"  (rows=351)
 
@@ -296,18 +283,17 @@ columns:
 "sales_rep_id" int: 50 distinct, 321500..321990
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 4501 | 3081 | 3731 |
-| name | SpartanNash | Textron | DTE Energy |
-| website | www.spartannash.com | www.textron.com | www.dteenergy.com |
-| lat | 45.5557 | 30.4499 | 34.0501 |
-| long | -122.657 | -84.2655 | -118.246 |
-| primary_poc | Jewell Likes | Myrtice Maxon | Nita Mingle |
-| sales_rep_id | 321970 | 321840 | 321930 |
+| id | 4501 | 3961 | 1771 |
+| name | SpartanNash | Sonic Automotive | Morgan Stanley |
+| website | www.spartannash.com | www.sonicautomotive.com | www.morganstanley.com |
+| lat | 45.5557 | 34.0457 | 40.7604 |
+| long | -122.657 | -118.249 | -73.9823 |
+| primary_poc | Jewell Likes | Keena Caffrey | Elvia Snipes |
+| sales_rep_id | 321970 | 321960 | 321700 |
 
 # "web_events"  (rows=9073)
 
@@ -318,15 +304,14 @@ columns:
 "channel" text: "direct"=5298, "facebook"=967, "organic"=952, "adwords"=906, "banner"=476, "twitter"=474
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 9073 | 2781 | 528 |
-| account_id | 4501 | 3051 | 1411 |
-| occurred_at | 2016-05-30T00:46:53.000Z | 2016-06-16T14:48:41.000Z | 2016-10-29T22:28:39.000Z |
-| channel | organic | direct | direct |
+| id | 9073 | 5955 | 5106 |
+| account_id | 4501 | 2051 | 1531 |
+| occurred_at | 2016-05-30T00:46:53.000Z | 2016-09-27T10:11:52.000Z | 2015-10-10T13:09:35.000Z |
+| channel | organic | direct | adwords |
 
 # "web_orders"  (rows=6912)
 
@@ -344,31 +329,29 @@ columns:
 "total_amt_usd" float: 6597 distinct, 0..232207, avg=3348.02, median=2482.86
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 6912 | 1759 | 1364 |
-| account_id | 4501 | 2341 | 1961 |
-| occurred_at | 2016-12-21T13:30:42.000Z | 2016-05-31T09:06:29.000Z | 2017-01-01T16:40:57.000Z |
-| standard_qty | 61 | 496 | 102 |
-| gloss_qty | 150 | 0 | 39 |
-| poster_qty | 52 | 1 | 29 |
-| total | 263 | 497 | 170 |
-| standard_amt_usd | 304.39 | 2475.04 | 508.98 |
-| gloss_amt_usd | 1123.5 | 0 | 292.11 |
-| poster_amt_usd | 422.24 | 8.12 | 235.48 |
-| total_amt_usd | 1850.13 | 2483.16 | 1036.57 |
+| id | 6912 | 2644 | 32 |
+| account_id | 4501 | 2981 | 1051 |
+| occurred_at | 2016-12-21T13:30:42.000Z | 2016-10-31T05:31:18.000Z | 2016-11-30T07:31:16.000Z |
+| standard_qty | 61 | 90 | 490 |
+| gloss_qty | 150 | 26 | 18 |
+| poster_qty | 52 | 13 | 0 |
+| total | 263 | 129 | 508 |
+| standard_amt_usd | 304.39 | 449.1 | 2445.1 |
+| gloss_amt_usd | 1123.5 | 194.74 | 134.82 |
+| poster_amt_usd | 422.24 | 105.56 | 0 |
+| total_amt_usd | 1850.13 | 749.4 | 2579.92 |
 
 # "web_region"  (rows=4)
 
 columns:
-"id" int: unique identifier, 1..4
-"name" text: "Midwest"=1, "Northeast"=1, "Southeast"=1, "West"=1
+"id" int
+"name" text
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 |
@@ -384,11 +367,10 @@ columns:
 "region_id" int: 1=21, 3=10, 4=10, 2=9, 1..4
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 321990 | 321670 | 321680 |
-| name | Dawna Agnew | Nakesha Renn | Elna Condello |
+| id | 321990 | 321600 | 321680 |
+| name | Dawna Agnew | Ernestine Pickron | Elna Condello |
 | region_id | 4 | 1 | 1 |

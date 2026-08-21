@@ -68,6 +68,10 @@ class ContainerIsolationTests(unittest.TestCase):
         self.assertEqual(parse_sql.extract_sql("<ans>WITH q AS (SELECT 3) SELECT * FROM q"),
                          "WITH q AS (SELECT 3) SELECT * FROM q;")
 
+    def test_ans_html_entities_are_unescaped(self) -> None:
+        self.assertEqual(parse_sql.extract_sql("<ans>SELECT 1 WHERE 2 &gt; 1</ans>"),
+                         "SELECT 1 WHERE 2 > 1;")
+
     def test_non_pi_telemetry_is_not_reported_as_zero(self) -> None:
         parsed = runner_container._parse_agent_output("codex", "```sql\nSELECT 1\n```")
         self.assertFalse(parsed["metrics_available"])

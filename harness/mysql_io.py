@@ -10,12 +10,14 @@ from . import config
 
 
 class QueryResult:
-    __slots__ = ("rows", "error", "timed_out")
+    __slots__ = ("rows", "error", "timed_out", "columns")
 
-    def __init__(self, rows: list[tuple] | None, error: str | None, timed_out: bool):
+    def __init__(self, rows: list[tuple] | None, error: str | None, timed_out: bool,
+                 columns: int | None = None):
         self.rows = rows
         self.error = error
         self.timed_out = timed_out
+        self.columns = columns
 
     @property
     def ok(self) -> bool:
@@ -53,6 +55,7 @@ def execute(sql: str, database: str, timeout: float | None = None) -> QueryResul
             try:
                 with conn.cursor() as cur:
                     cur.execute(sql)
+                    result.columns = len(cur.description or ())
                     result.rows = [tuple(r) for r in cur.fetchall()]
             finally:
                 conn.close()

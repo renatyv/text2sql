@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:26:39.386442Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:31:48.600489Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-piuecq4q/student_club.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-6izzs0_w/student_club.sqlite
 schema: main
 ---
 
@@ -19,16 +19,15 @@ schema: main
 
 columns:
 "link_to_event" text PK FK: "recLKj8BbTNqxFbTb"=30, "recykdvf4LgsyA3wZ"=30, "recEVTik3MlqbvLFi"=29, "recI43CzsZ0Q625ma"=27, "reciRZdAqNIKuMC96"=27, "reczhS8wix6Kzbp9P"=27, "recmbOVHSyzXQZpQr"=25, "recggMW2eyCYceNcy"=23, "rec5XDvJLyxDsGZWc"=20, "rec2N69DMcrqN9PJC"=17, "recvCUOytx5jPw7kh"=17, "recGxVCwaLW3mDIa3"=14, "recIuIXdbLe5j5vCA"=12, "recsgSUqFCJqekzL5"=11, "recoVo6dFSzG1ypX7"=8, "reckYL4xtQWpkTJ8k"=5, "recLrY8kyOR1PcZeF"=4
-"link_to_member" text PK FK: 30 distinct, "recD078PnS3x2doBe"=16, "recro8T1MPMwRadVH"=16, "rec4BLdZHS2Blfp4v"=14, "recEFd8s6pkrTt4Pz"=14, "recTjHY5xXhvkCdVT"=14, "recZ4PkGERzl9ziHO"=14, "recP6DJPyi5donvXL"=13, "rec28ORZgcm1dtqBZ"=12, "rec75vvFxgYtHmqxY"=12, "recT92PyyZCGq1R68"=12
+"link_to_member" text PK FK: 30 distinct
 
 indexes: none
-fk: "link_to_event"→"event"."event_id", "link_to_member"→"member"."member_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| link_to_event | reczhS8wix6Kzbp9P | rec5XDvJLyxDsGZWc | recoVo6dFSzG1ypX7 |
-| link_to_member | recxBj3tjKTGHqucS | recf4UKTfipCzgcSA | recVsoJJHFI8bgtfw |
+| link_to_event | reczhS8wix6Kzbp9P | rec2N69DMcrqN9PJC | recmbOVHSyzXQZpQr |
+| link_to_member | recxBj3tjKTGHqucS | recTjHY5xXhvkCdVT | recEymrwCUKxiiosI |
 
 # "budget"  (rows=52)
 
@@ -42,18 +41,17 @@ columns:
 "link_to_event" text FK: 23 distinct
 
 indexes: none
-fk: "link_to_event"→"event"."event_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| budget_id | recziC0Fccvve12RF | recynAp4ySkYoycct | recsI0IzpUuxl2bPh |
-| category | Parking | Food | Advertisement |
-| spent | 0 | 0 | 67.81 |
-| remaining | 10 | 20 | 7.19 |
-| amount | 10 | 20 | 75 |
-| event_status | Open | Planning | Closed |
-| link_to_event | recAlAwtBZ0Fqbr5K | recLrY8kyOR1PcZeF | recEVTik3MlqbvLFi |
+| budget_id | recziC0Fccvve12RF | recN9yY7okNrFps0Y | recvKTAWAFKkVNnXQ |
+| category | Parking | Advertisement | Advertisement |
+| spent | 0 | 74.59 | 122.06 |
+| remaining | 10 | 0.41 | 27.94 |
+| amount | 10 | 75 | 150 |
+| event_status | Open | Closed | Closed |
+| link_to_event | recAlAwtBZ0Fqbr5K | reciRZdAqNIKuMC96 | recykdvf4LgsyA3wZ |
 
 # "event"  (rows=42)
 
@@ -67,18 +65,17 @@ columns:
 "status" text: "Closed"=18, "Open"=13, "Planning"=11
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| event_id | reczhS8wix6Kzbp9P | recwM7GMBSLDlb1Ix | recLePFQvYN36qANI |
-| event_name | September Meeting | April Meeting | Fall Elections |
-| event_date | 2019-09-10T12:00:00 | 2020-04-07T12:00:00 | 2020-04-26T09:00:00 |
-| type | Meeting | Meeting | Election |
-| notes | null | null | All active members can vote for new officers between 4pm-8pm. |
-| location | MU 215 | MU 215 | MU 215 |
-| status | Closed | Open | Planning |
+| event_id | reczhS8wix6Kzbp9P | recWJFyajeK4jCNYz | recIuIXdbLe5j5vCA |
+| event_name | September Meeting | Officers meeting - February | Football game |
+| event_date | 2019-09-10T12:00:00 | 2020-02-11T09:30:00 | 2019-10-10T06:00:00 |
+| type | Meeting | Meeting | Game |
+| notes | null | null | Attend school football game as a group. |
+| location | MU 215 | null | Campus Football stadium |
+| status | Closed | Planning | Closed |
 
 # "expense"  (rows=32)
 
@@ -92,18 +89,17 @@ columns:
 "link_to_budget" text FK: 24 distinct
 
 indexes: none
-fk: "link_to_member"→"member"."member_id", "link_to_budget"→"budget"."budget_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| expense_id | recytertXPNtYtkC3 | reckyNexGnIVMiNGn | recnK8dKtLnRpm34U |
-| expense_description | Bakery - Donuts, muffins | Travel Mug | Pizza |
-| expense_date | 2019-09-03 | 2019-10-15 | 2019-09-24 |
-| cost | 195.3 | 13.45 | 113.33 |
+| expense_id | recytertXPNtYtkC3 | rec017x6R3hQqkLAo | receRmFWtS9xJdkL2 |
+| expense_description | Bakery - Donuts, muffins | Post Cards, Posters | Pizza |
+| expense_date | 2019-09-03 | 2019-08-20 | 2019-10-08 |
+| cost | 195.3 | 122.06 | 51.81 |
 | approved | true | true | true |
-| link_to_member | rec4BLdZHS2Blfp4v | rec4BLdZHS2Blfp4v | recro8T1MPMwRadVH |
-| link_to_budget | recca5tkvdQgoLKZz | recZuCiQzCDAs4zDQ | rec5V70sIuIgpOzDT |
+| link_to_member | rec4BLdZHS2Blfp4v | rec4BLdZHS2Blfp4v | recD078PnS3x2doBe |
+| link_to_budget | recca5tkvdQgoLKZz | recvKTAWAFKkVNnXQ | rec1bG6HSft7XIvTP |
 
 # "income"  (rows=36)
 
@@ -116,17 +112,16 @@ columns:
 "link_to_member" text FK: 31 distinct, nulls=3
 
 indexes: none
-fk: "link_to_member"→"member"."member_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| income_id | reczYkzM4iPYdi8rh | rech1nxcukSGGnyJC | recpiEFskUe0ccvmq |
-| date_received | 2019-09-12 | 2019-10-10 | 2019-09-25 |
+| income_id | reczYkzM4iPYdi8rh | recihQPJWBjlTlS5i | rec8BUJa8GXUjiglg |
+| date_received | 2019-09-12 | 2019-10-13 | 2019-10-08 |
 | amount | 50 | 50 | 50 |
 | source | Dues | Dues | Dues |
 | notes | null | null | null |
-| link_to_member | rec3pH4DxMcWHMRB7 | recuSfhAZIlKba4s2 | recWh2lJVOT6HjChK |
+| link_to_member | rec3pH4DxMcWHMRB7 | recVsoJJHFI8bgtfw | recUdRhbhcEO1Hk5r |
 
 # "major"  (rows=113)
 
@@ -137,15 +132,14 @@ columns:
 "college" text: "College of Agriculture and Applied Sciences"=36, "College of Humanities and Social Sciences"=24, "College of Education & Human Services"=13, "College of Science"=12, "College of Natural Resources"=9, "School of Business"=7, "College of Engineering"=6, "College of the Arts"=6
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| major_id | recz2waxrgL2KJEHe | recsiWnUNDT2kmOnr | rec8UcO67UAV7r4dm |
-| major_name | Art History | Landscape Architecture | Psychology |
-| department | Art and Design Department | Landscape Architecture and Environmental Planning Department | Psychology Department |
-| college | College of the Arts | College of Agriculture and Applied Sciences | College of Education & Human Services |
+| major_id | recz2waxrgL2KJEHe | recE5U2qZOYMmmnKZ | recPEBey5gCeh97rv |
+| major_name | Art History | Public Health | English |
+| department | Art and Design Department | Biology Department | English Department |
+| college | College of the Arts | College of Science | College of Humanities and Social Sciences |
 
 # "member"  (rows=33)
 
@@ -161,25 +155,24 @@ columns:
 "link_to_major" text FK: 26 distinct, nulls=1
 
 indexes: none
-fk: "zip"→"zip_code"."zip_code", "link_to_major"→"major"."major_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| member_id | recxBj3tjKTGHqucS | rec4O9rmGnLx3j8vt | reccW7q1KkhSKZsea |
-| first_name | Sherri | Christof | Adela |
-| last_name | Ramsey | Nielson | O'Gallagher |
-| email | sherri.ramsey@lpu.edu | christof.nielson@lpu.edu | adela.o'gallagher@lpu.edu |
-| position | Member | Member | Member |
-| t_shirt_size | Large | X-Large | Medium |
-| phone | 942-555-1132 | (701) 932-1903 | 887-555-7733 |
-| zip | 8861 | 58102 | 46123 |
-| link_to_major | recVYIFAwjT91pnv7 | rectOU2QnznthfWv7 | recVNDNQrJxsXPFXa |
+| member_id | recxBj3tjKTGHqucS | rec4BLdZHS2Blfp4v | reco0mr8dXTgs5wWA |
+| first_name | Sherri | Sacha | Keith |
+| last_name | Ramsey | Harrison | Dunlop |
+| email | sherri.ramsey@lpu.edu | sacha.harrison@lpu.edu | keith.dunlap@lpu.edu |
+| position | Member | President | Member |
+| t_shirt_size | Large | Large | Large |
+| phone | 942-555-1132 | 840-555-4781 | 394-555-4909 |
+| zip | 8861 | 7080 | 98290 |
+| link_to_major | recVYIFAwjT91pnv7 | recCk8lCDOTRp6rKN | recVeoVlIsO6k6iUM |
 
 # "zip_code"  (rows=41877)
 
 columns:
-"zip_code" int PK: unique identifier, 501..99950, avg=49616, median=48850
+"zip_code" int PK: unique identifier, 501..99950
 "type" text: "Standard"=29973, "PO Box"=9438, "Unique"=2466
 "city" text: 18729 distinct
 "county" text: 2010 distinct, nulls=88
@@ -187,14 +180,13 @@ columns:
 "short_state" text: 52 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| zip_code | 99950 | 33991 | 17970 |
-| type | PO Box | Standard | Standard |
-| city | Ketchikan | Cape Coral | Saint Clair |
-| county | Prince of Wales-Outer Ketchikan Borough | Lee County | Schuylkill County |
-| state | Alaska | Florida | Pennsylvania |
-| short_state | AK | FL | PA |
+| zip_code | 99950 | 75089 | 78788 |
+| type | PO Box | Standard | Unique |
+| city | Ketchikan | Rowlett | Austin |
+| county | Prince of Wales-Outer Ketchikan Borough | Dallas County | Travis County |
+| state | Alaska | Texas | Texas |
+| short_state | AK | TX | TX |

@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:28:16.358085Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:33:28.706829Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-6uj3lso3/complex_oracle.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-ysx5skg4/complex_oracle.sqlite
 schema: main
 ---
 
@@ -37,21 +37,20 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| calendar_month_desc | 2022-12 | 2021-06 | 2020-10 |
-| dollars | 2.54704e+06 | 1.73173e+06 | 1.72262e+06 |
+| calendar_month_desc | 2022-12 | 2022-09 | 2022-10 |
+| dollars | 2.5e+06 | 2.4e+06 | 2.4e+06 |
 
 # "channels"  (rows=5)
 
 columns:
-"channel_id" int PK: unique identifier, 2..9
-"channel_desc" text NOTNULL: "Catalog"=1, "Direct Sales"=1, "Internet"=1, "Partners"=1, "Tele Sales"=1
-"channel_class" text NOTNULL: "Direct"=2, "Indirect"=2, "Others"=1
-"channel_class_id" int NOTNULL: 12=2, 13=2, 14=1, 12..14
-"channel_total" text NOTNULL: "Channel total"=5
-"channel_total_id" int NOTNULL: 1=5
+"channel_id" int PK
+"channel_desc" text NOTNULL
+"channel_class" text NOTNULL
+"channel_class_id" int NOTNULL
+"channel_total" text NOTNULL
+"channel_total_id" int NOTNULL
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 |
@@ -74,17 +73,16 @@ columns:
 "unit_price" float NOTNULL: 3609 distinct, 6.4..1782.72, avg=148.246, median=38.12
 
 indexes: "channel_id", "promo_id"
-fk: "time_id"→"times"."time_id", "promo_id"→"promotions"."promo_id", "prod_id"→"products"."prod_id", "channel_id"→"channels"."channel_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| prod_id | 148 | 113 | 48 |
-| time_id | 2022-12-28 | 2022-06-11 | 2019-01-04 |
+| prod_id | 148 | 29 | 33 |
+| time_id | 2022-12-28 | 2021-11-02 | 2022-05-07 |
 | promo_id | 999 | 999 | 999 |
-| channel_id | 4 | 4 | 4 |
-| unit_cost | 17.36 | 20.3 | 10.29 |
-| unit_price | 21.98 | 24.4 | 13.13 |
+| channel_id | 4 | 3 | 3 |
+| unit_cost | 17.36 | 500.27 | 38.71 |
+| unit_price | 21.98 | 557.13 | 45.78 |
 
 # "countries"  (rows=35)
 
@@ -100,18 +98,17 @@ columns:
 "country_total_id" int NOTNULL: 52806=35
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| country_id | 52803 | 52790 | 52782 |
-| country_iso_code | HU | US | JP |
-| country_name | Hungary | United States of America | Japan |
-| country_subregion | Eastern Europe | Northern America | Asia |
-| country_subregion_id | 52795 | 52797 | 52793 |
-| country_region | Europe | Americas | Asia |
-| country_region_id | 52803 | 52801 | 52802 |
+| country_id | 52803 | 52797 | 52799 |
+| country_iso_code | HU | NG | ZW |
+| country_name | Hungary | Nigeria | Zimbabwe |
+| country_subregion | Eastern Europe | Africa | Africa |
+| country_subregion_id | 52795 | 52792 | 52792 |
+| country_region | Europe | Africa | Africa |
+| country_region_id | 52803 | 52800 | 52800 |
 | country_total | World total | World total | World total |
 | country_total_id | 52806 | 52806 | 52806 |
 
@@ -124,14 +121,13 @@ columns:
 "to_us" float: 1=1224, 0.74=36
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| country | Zimbabwe | Zimbabwe | France |
-| year | 2021 | 2021 | 2021 |
-| month | 12 | 10 | 10 |
+| country | Zimbabwe | Chile | Switzerland |
+| year | 2021 | 2019 | 2020 |
+| month | 12 | 9 | 4 |
 | to_us | 1 | 1 | 1 |
 
 # "customers"  (rows=55500)
@@ -162,28 +158,27 @@ columns:
 "cust_valid" char1: "I"=44879, "A"=10621
 
 indexes: none
-fk: "country_id"→"countries"."country_id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| cust_id | 104500 | 20382 | 43003 |
-| cust_first_name | Lauren | Gordon | Roscoe |
-| cust_last_name | Fenton | Kkotzman | Tanney |
-| cust_gender | F | M | F |
-| cust_year_of_birth | 1973 | 1988 | 1980 |
-| cust_marital_status | divorced | single | null |
-| cust_street_address | 47 South Guayanilla Road | 67 South Lassen Avenue | 117 West Boyd Avenue |
-| cust_postal_code | 68524 | 59200 | 65771 |
-| cust_city | Glasco | Diss | Wigan |
-| cust_city_id | 51583 | 51390 | 52511 |
-| cust_state_province | KS | England - Norfolk | England - Greater Manchester |
-| cust_state_province_id | 52630 | 52591 | 52590 |
-| country_id | 52790 | 52789 | 52789 |
-| cust_main_phone_number | 236-199-2209 | 605-368-2096 | 381-667-3782 |
-| cust_income_level | K: 250,000 - 299,999 | A: Below 30,000 | B: 30,000 - 49,999 |
-| cust_credit_limit | 15000 | 1500 | 1500 |
-| cust_email | Fenton@company.example.com | Kkotzman@company.example.com | Tanney@company.example.com |
+| cust_id | 104500 | 43924 | 16693 |
+| cust_first_name | Lauren | Biddy | Carlos |
+| cust_last_name | Fenton | Rothrock | Tanney |
+| cust_gender | F | M | M |
+| cust_year_of_birth | 1973 | 1967 | 1957 |
+| cust_marital_status | divorced | single | single |
+| cust_street_address | 47 South Guayanilla Road | 17 South Honolulu Court | 67 San Miguel Avenue |
+| cust_postal_code | 68524 | 89153 | 91700 |
+| cust_city | Glasco | Celle | Stornoway |
+| cust_city_id | 51583 | 51320 | 52328 |
+| cust_state_province | KS | Niedersachsen | Scotland - Highlands and Islands |
+| cust_state_province_id | 52630 | 52681 | 52737 |
+| country_id | 52790 | 52776 | 52789 |
+| cust_main_phone_number | 236-199-2209 | 200-395-9208 | 151-738-3162 |
+| cust_income_level | K: 250,000 - 299,999 | B: 30,000 - 49,999 | G: 130,000 - 149,999 |
+| cust_credit_limit | 15000 | 1500 | 5000 |
+| cust_email | Fenton@company.example.com | Rothrock@company.example.com | Tanney@company.example.com |
 | cust_total | Customer total | Customer total | Customer total |
 | cust_total_id | 52772 | 52772 | 52772 |
 | cust_src_id | null | null | null |
@@ -222,11 +217,11 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| week_ending_day | 2023-01-01 | 2019-11-17 | 2019-06-02 |
-| prod_subcategory | Training Aids and Equipment | Training Aids and Equipment | Cricket |
-| dollars | 25186.4 | 22416.7 | 1284.3 |
-| channel_id | 3 | 3 | 3 |
-| promo_id | 351 | 999 | 999 |
+| week_ending_day | 2023-01-01 | 2021-07-04 | 2019-06-16 |
+| prod_subcategory | Training Aids and Equipment | Baseballs | Baseballs |
+| dollars | 25186.4 | 183.92 | 1505.93 |
+| channel_id | 3 | 4 | 2 |
+| promo_id | 351 | 350 | 999 |
 
 # "products"  (rows=24)
 
@@ -255,7 +250,6 @@ columns:
 "prod_valid" char1: "A"=24
 
 indexes: none
-fk: none
 
 - latest rows skipped (unreadable values); random rows skipped (unreadable values)
 
@@ -297,16 +291,16 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| channel_id | 4 | 2 | 3 |
-| cust_id | 50840 | 2389 | 4097 |
-| prod_id | 148 | 28 | 133 |
+| channel_id | 4 | 3 | 4 |
+| cust_id | 50840 | 2188 | 17630 |
+| prod_id | 148 | 113 | 25 |
 | promo_id | 999 | 999 | 999 |
-| time_id | 2022-08-02 | 2022-11-13 | 2020-05-24 |
-| unit_cost | 17.28 | 156.96 | 29.36 |
-| unit_price | 22.14 | 209.01 | 39.93 |
-| amount_sold | 22.14 | 209.01 | 39.93 |
+| time_id | 2022-08-02 | 2021-10-26 | 2022-02-16 |
+| unit_cost | 17.28 | 21.91 | 92.12 |
+| unit_price | 22.14 | 24.93 | 117.33 |
+| amount_sold | 22.14 | 24.93 | 117.33 |
 | quantity_sold | 1 | 1 | 1 |
-| TOTAL_COST | 17.28 | 156.96 | 29.36 |
+| TOTAL_COST | 17.28 | 21.91 | 92.12 |
 
 # "promotions"  (rows=503)
 
@@ -324,20 +318,19 @@ columns:
 "promo_total_id" int NOTNULL: 1=503
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| promo_id | 999 | 132 | 378 |
-| promo_name | NO PROMOTION # | TV promotion #13-132 | newspaper promotion #27-378 |
-| promo_subcategory | NO PROMOTION | TV program sponsorship | manufacture rebate news |
-| promo_subcategory_id | 11 | 13 | 27 |
-| promo_category | NO PROMOTION | TV | newspaper |
-| promo_category_id | 2 | 3 | 8 |
-| promo_cost | 0 | 76300 | 36100 |
-| promo_begin_date | 9999-01-01 | 2019-06-13 | 2021-02-21 |
-| promo_end_date | 9999-01-01 | 2019-08-13 | 2021-03-21 |
+| promo_id | 999 | 136 | 141 |
+| promo_name | NO PROMOTION # | flyer promotion #24-136 | TV promotion #12-141 |
+| promo_subcategory | NO PROMOTION | household flyer | TV commercial |
+| promo_subcategory_id | 11 | 24 | 12 |
+| promo_category | NO PROMOTION | flyer | TV |
+| promo_category_id | 2 | 5 | 3 |
+| promo_cost | 0 | 78000 | 41000 |
+| promo_begin_date | 9999-01-01 | 2019-07-17 | 2021-08-23 |
+| promo_end_date | 9999-01-01 | 2019-09-17 | 2021-09-23 |
 | promo_total | Promotion total | Promotion total | Promotion total |
 | promo_total_id | 1 | 1 | 1 |
 
@@ -353,7 +346,6 @@ columns:
 "amount_sold" float NOTNULL
 
 indexes: none
-fk: "promo_id"→"promotions"."promo_id", "prod_id"→"products"."prod_id", "time_id"→"times"."time_id", "channel_id"→"channels"."channel_id", "cust_id"→"customers"."cust_id"
 
 
 # "supplementary_demographics"  (rows=4500)
@@ -375,25 +367,24 @@ columns:
 "comments" text: 44 distinct, nulls=205
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| cust_id | 104500 | 102087 | 100422 |
-| education | HS-grad | < Bach. | Assoc-V |
-| occupation | Crafts | Exec. | ? |
-| household_size | 9+ | 3 | 4-5 |
-| yrs_residence | 5 | 10 | 3 |
-| affinity_card | 0 | 1 | 0 |
-| cricket | 1 | 0 | 1 |
-| baseball | 1 | 0 | 1 |
-| tennis | 1 | 1 | 1 |
-| soccer | 1 | 1 | 1 |
+| cust_id | 104500 | 100374 | 102419 |
+| education | HS-grad | < Bach. | 7th-8th |
+| occupation | Crafts | Sales | Farming |
+| household_size | 9+ | 2 | 9+ |
+| yrs_residence | 5 | 2 | 2 |
+| affinity_card | 0 | 0 | 0 |
+| cricket | 1 | 0 | 0 |
+| baseball | 1 | 0 | 0 |
+| tennis | 1 | 0 | 1 |
+| soccer | 1 | 1 | 0 |
 | golf | 1 | 1 | 1 |
-| unknown | 0 | 0 | 0 |
+| unknown | 0 | 1 | 0 |
 | misc | 0 | 0 | 0 |
-| comments | Affinity card is a great idea. But your store is still too expensive. I am tired of your lousy junk mail. | Can I use my Affinity card to buy bulk purchases and ship them to my mother in Arizona? | Affinity card makese sense only for bulk purchases. For all others, driving so far is not worth the discount. Either offer free shipping or build a store close by. |
+| comments | Affinity card is a great idea. But your store is still too expensive. I am tired of your lousy junk mail. | Affinity card is a great idea. But your store is still too expensive. I am tired of your lousy junk mail. | Great program.  Love the discount. Signed happy customer. |
 
 # "times"  (rows=1826)
 
@@ -438,46 +429,45 @@ columns:
 "end_of_fis_year" date NOTNULL: "2021-12-31"=370, "2020-12-26"=365, "2022-12-30"=364, "2023-12-29"=364, "2019-12-27"=361, "2024-12-28"=2
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| time_id | 2023-12-31 | 2021-10-10 | 2022-09-19 |
-| day_name | Sunday | Sunday | Monday |
-| day_number_in_week | 7 | 7 | 1 |
-| day_number_in_month | 31 | 10 | 19 |
-| calendar_week_number | 53 | 41 | 38 |
-| fiscal_week_number | 53 | 41 | 38 |
-| week_ending_day | 2023-12-31 | 2021-10-10 | 2022-09-25 |
-| week_ending_day_id | 2257 | 1565 | 1620 |
-| calendar_month_number | 12 | 10 | 9 |
-| fiscal_month_number | 1 | 10 | 9 |
-| calendar_month_desc | 2023-12 | 2021-10 | 2022-09 |
-| calendar_month_id | 2223 | 1705 | 1716 |
-| fiscal_month_desc | 2024-01 | 2021-10 | 2022-09 |
-| fiscal_month_id | 2258 | 1753 | 1764 |
-| days_in_cal_month | 31 | 31 | 30 |
-| days_in_fis_month | 28 | 35 | 35 |
-| end_of_cal_month | 2023-12-31 | 2021-10-31 | 2022-09-30 |
-| end_of_fis_month | 2024-01-26 | 2021-10-29 | 2022-09-30 |
-| calendar_month_name | December | October | September |
-| fiscal_month_name | January | October | September |
-| calendar_quarter_desc | 2023-04 | 2021-04 | 2022-03 |
-| calendar_quarter_id | 2150 | 1780 | 1783 |
-| fiscal_quarter_desc | 2024-01 | 2021-04 | 2022-03 |
-| fiscal_quarter_id | 2260 | 1796 | 1799 |
-| days_in_cal_quarter | 92 | 92 | 92 |
-| days_in_fis_quarter | 91 | 98 | 98 |
-| end_of_cal_quarter | 2023-12-31 | 2021-12-31 | 2022-09-30 |
-| end_of_fis_quarter | 2024-03-30 | 2021-12-31 | 2022-09-30 |
-| calendar_quarter_number | 4 | 4 | 3 |
-| fiscal_quarter_number | 1 | 4 | 3 |
-| calendar_year | 2023 | 2021 | 2022 |
-| calendar_year_id | 1813 | 1804 | 1805 |
-| fiscal_year | 2024 | 2021 | 2022 |
-| fiscal_year_id | 2259 | 1808 | 1809 |
-| days_in_cal_year | 365 | 365 | 365 |
-| days_in_fis_year | 364 | 371 | 364 |
-| end_of_cal_year | 2023-12-31 | 2021-12-31 | 2022-12-31 |
-| end_of_fis_year | 2024-12-28 | 2021-12-31 | 2022-12-30 |
+| time_id | 2023-12-31 | 2020-02-13 | 2019-12-07 |
+| day_name | Sunday | Thursday | Saturday |
+| day_number_in_week | 7 | 4 | 6 |
+| day_number_in_month | 31 | 13 | 7 |
+| calendar_week_number | 53 | 7 | 49 |
+| fiscal_week_number | 53 | 7 | 49 |
+| week_ending_day | 2023-12-31 | 2020-02-16 | 2019-12-08 |
+| week_ending_day_id | 2257 | 1552 | 1547 |
+| calendar_month_number | 12 | 2 | 12 |
+| fiscal_month_number | 1 | 2 | 12 |
+| calendar_month_desc | 2023-12 | 2020-02 | 2019-12 |
+| calendar_month_id | 2223 | 1685 | 1683 |
+| fiscal_month_desc | 2024-01 | 2020-02 | 2019-12 |
+| fiscal_month_id | 2258 | 1733 | 1731 |
+| days_in_cal_month | 31 | 29 | 31 |
+| days_in_fis_month | 28 | 28 | 28 |
+| end_of_cal_month | 2023-12-31 | 2020-02-29 | 2019-12-31 |
+| end_of_fis_month | 2024-01-26 | 2020-02-29 | 2019-12-27 |
+| calendar_month_name | December | February | December |
+| fiscal_month_name | January | February | December |
+| calendar_quarter_desc | 2023-04 | 2020-01 | 2019-04 |
+| calendar_quarter_id | 2150 | 1773 | 1772 |
+| fiscal_quarter_desc | 2024-01 | 2020-01 | 2019-04 |
+| fiscal_quarter_id | 2260 | 1789 | 1788 |
+| days_in_cal_quarter | 92 | 90 | 92 |
+| days_in_fis_quarter | 91 | 91 | 91 |
+| end_of_cal_quarter | 2023-12-31 | 2020-03-31 | 2019-12-31 |
+| end_of_fis_quarter | 2024-03-30 | 2020-03-28 | 2019-12-27 |
+| calendar_quarter_number | 4 | 1 | 4 |
+| fiscal_quarter_number | 1 | 1 | 4 |
+| calendar_year | 2023 | 2020 | 2019 |
+| calendar_year_id | 1813 | 1803 | 1802 |
+| fiscal_year | 2024 | 2020 | 2019 |
+| fiscal_year_id | 2259 | 1807 | 1806 |
+| days_in_cal_year | 365 | 366 | 365 |
+| days_in_fis_year | 364 | 364 | 361 |
+| end_of_cal_year | 2023-12-31 | 2020-12-31 | 2019-12-31 |
+| end_of_fis_year | 2024-12-28 | 2020-12-26 | 2019-12-27 |

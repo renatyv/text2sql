@@ -1,21 +1,20 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:26:42.380910Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:31:51.433120Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-ouztrf0f/Airlines.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-h57x9pkw/Airlines.sqlite
 schema: main
 ---
 
 # "aircrafts_data"  (rows=9)
 
 columns:
-"aircraft_code" text NOTNULL: "319"=1, "320"=1, "321"=1, "733"=1, "763"=1, "773"=1, "CN1"=1, "CR2"=1, "SU9"=1
-"model" numeric→text NOTNULL: "{"en": "Airbus A319-100", "ru": "Аэробус A319-100"}"=1, "{"en": "Airbus A320-200", "ru": "Аэробус A320-200"}"=1, "{"en": "Airbus A321-200", "ru": "Аэробус A321-200"}"=1, "{"en": "Boeing 737-300", "ru": "Боинг 737-300"}"=1, "{"en": "Boeing 767-300", "ru": "Боинг 767-300"}"=1, "{"en": "Boeing 777-300", "ru": "Боинг 777-300"}"=1, "{"en": "Bombardier CRJ-200", "ru": "Бомбардье CRJ-200"}"=1, "{"en": "Cessna 208 Caravan", "ru": "Сессна 208 Караван"}"=1, "{"en": "Sukhoi Superjet-100", "ru": "Сухой Суперджет-100"}"=1
-"range" int NOTNULL: 1200=1, 2700=1, 3000=1, 4200=1, 5600=1, 5700=1, 6700=1, 7900=1, 11100=1, 1200..11100
+"aircraft_code" text NOTNULL
+"model" numeric→text NOTNULL
+"range" int NOTNULL
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 | row 9 |
@@ -34,16 +33,15 @@ columns:
 "timezone" text NOTNULL: "Europe/Moscow"=44, "Asia/Yekaterinburg"=22, "Asia/Krasnoyarsk"=8, "Asia/Irkutsk"=5, "Asia/Yakutsk"=5, "Europe/Samara"=5, "Asia/Vladivostok"=3, "Asia/Novokuznetsk"=2, "Europe/Volgograd"=2, "Asia/Anadyr"=1, "Asia/Chita"=1, "Asia/Kamchatka"=1, "Asia/Magadan"=1, "Asia/Novosibirsk"=1, "Asia/Omsk"=1, "Asia/Sakhalin"=1, "Europe/Kaliningrad"=1
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| airport_code | YKS | IJK | EGO |
-| airport_name | {"en": "Yakutsk Airport", "ru": "Якутск"} | {"en": "Izhevsk Airport", "ru": "Ижевск"} | {"en": "Belgorod International Airport", "ru": "Белгород"} |
-| city | {"en": "Yakutsk", "ru": "Якутск"} | {"en": "Izhevsk", "ru": "Ижевск"} | {"en": "Belgorod", "ru": "Белгород"} |
-| coordinates | (129.77099609375,62.0932998657226562) | (53.4575004577636719,56.8280982971191406) | (36.5900993347167969,50.643798828125) |
-| timezone | Asia/Yakutsk | Europe/Samara | Europe/Moscow |
+| airport_code | YKS | KVX | KLF |
+| airport_name | {"en": "Yakutsk Airport", "ru": "Якутск"} | {"en": "Pobedilovo Airport", "ru": "Победилово"} | {"en": "Grabtsevo Airport", "ru": "Калуга"} |
+| city | {"en": "Yakutsk", "ru": "Якутск"} | {"en": "Kirov", "ru": "Киров"} | {"en": "Kaluga", "ru": "Калуга"} |
+| coordinates | (129.77099609375,62.0932998657226562) | (49.3483009338379972,58.5032997131350001) | (36.3666687011999983,54.5499992371000033) |
+| timezone | Asia/Yakutsk | Europe/Moscow | Europe/Moscow |
 
 # "boarding_passes"  (rows=≈579686)
 
@@ -54,7 +52,6 @@ columns:
 "seat_no" text NOTNULL
 
 indexes: none
-fk: none
 
 
 # "bookings"  (rows=≈262788)
@@ -65,7 +62,6 @@ columns:
 "total_amount" numeric NOTNULL
 
 indexes: none
-fk: none
 
 
 # "flights"  (rows=33121)
@@ -83,21 +79,20 @@ columns:
 "actual_arrival" numeric→text: 11851 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| flight_id | 33121 | 1675 | 15682 |
-| flight_no | PG0063 | PG0095 | PG0153 |
-| scheduled_departure | 2017-08-26 19:25:00+03 | 2017-08-09 10:45:00+03 | 2017-09-03 10:05:00+03 |
-| scheduled_arrival | 2017-08-26 20:10:00+03 | 2017-08-09 13:00:00+03 | 2017-09-03 12:00:00+03 |
-| departure_airport | SKX | DME | MMK |
-| arrival_airport | SVO | URJ | SVO |
+| flight_id | 33121 | 15798 | 31017 |
+| flight_no | PG0063 | PG0699 | PG0618 |
+| scheduled_departure | 2017-08-26 19:25:00+03 | 2017-07-18 11:20:00+03 | 2017-08-17 16:45:00+03 |
+| scheduled_arrival | 2017-08-26 20:10:00+03 | 2017-07-18 12:30:00+03 | 2017-08-17 19:30:00+03 |
+| departure_airport | SKX | YKS | AER |
+| arrival_airport | SVO | MJZ | EGO |
 | status | Scheduled | Arrived | Scheduled |
-| aircraft_code | CR2 | SU9 | SU9 |
-| actual_departure | \N | 2017-08-09 10:47:00+03 | \N |
-| actual_arrival | \N | 2017-08-09 13:01:00+03 | \N |
+| aircraft_code | CR2 | CR2 | CN1 |
+| actual_departure | \N | 2017-07-18 11:21:00+03 | \N |
+| actual_arrival | \N | 2017-07-18 12:29:00+03 | \N |
 
 # "seats"  (rows=1339)
 
@@ -107,13 +102,12 @@ columns:
 "fare_conditions" text NOTNULL: "Economy"=1139, "Business"=152, "Comfort"=48
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| aircraft_code | SU9 | 763 | 773 |
-| seat_no | 9F | 30B | 25C |
+| aircraft_code | SU9 | 320 | 763 |
+| seat_no | 9F | 21A | 31G |
 | fare_conditions | Economy | Economy | Economy |
 
 # "ticket_flights"  (rows=≈1045726)
@@ -125,7 +119,6 @@ columns:
 "amount" numeric NOTNULL
 
 indexes: none
-fk: none
 
 
 # "tickets"  (rows=≈366733)
@@ -136,4 +129,3 @@ columns:
 "passenger_id" text NOTNULL
 
 indexes: none
-fk: none

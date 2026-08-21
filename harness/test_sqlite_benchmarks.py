@@ -90,6 +90,8 @@ class BirdScoringTests(unittest.TestCase):
         rec = self._score("SELECT name FROM dept UNION ALL SELECT 'x'",
                           "SELECT name FROM dept")
         self.assertFalse(rec["correct"])
+        self.assertEqual(rec["missing_rows"], [])
+        self.assertEqual(rec["extra_rows"], [["x"]])
 
     def test_cell_value_difference_is_wrong(self) -> None:
         rec = self._score("SELECT name || '!' FROM dept", "SELECT name FROM dept")
@@ -162,6 +164,14 @@ class Spider2EvalTests(unittest.TestCase):
         self.assertEqual(spider2_eval.score_pred([("sales",)], [g1, g2]), 1)
         self.assertEqual(spider2_eval.score_pred([("other",)], [g1, g2]), 0)
 
+    def test_mismatch_diagnostics_select_closest_gold_variant(self) -> None:
+        g1 = self._gold("g_a.csv", ["a", "b"], [["eng", 10]])
+        g2 = self._gold("g_b.csv", ["a"], [["sales"]])
+        details = spider2_eval.score_pred_details([("other",)], [g1, g2], [[0, 1], [0]])
+        self.assertEqual(details["selected_index"], 1)
+        self.assertEqual(details["condition_cols"], [0])
+        self.assertEqual(details["unmatched_gold_columns"], [["sales"]])
+
     def test_empty_gold_csv_scores_vacuously(self) -> None:
         gold = self._gold("g.csv", ["a"], [])
         self.assertEqual(spider2_eval.score_pred([], [gold]), 1)
@@ -179,6 +189,36 @@ class Spider2EvalTests(unittest.TestCase):
         self.assertTrue(rec["valid_sql"])
         self.assertTrue(rec["correct"])
         self.assertEqual(rec["gold_rows"], 2)
+
+    def test_scoring_record_carries_spider_diagnostics(self) -> None:
+        db = self.dir / "sp.sqlite"
+        _make_db(db)
+        g1 = self._gold("g_a.csv", ["name", "count"], [["other", 1]])
+        g2 = self._gold("g_b.csv", ["name"], [["other"]])
+        rec = scorer.score_prediction(
+            "SELECT name FROM dept ORDER BY id", None, str(db),
+            engine="sqlite", mode="spider2",
+            eval_meta={"gold_csvs": [g1, g2], "condition_cols": [[0, 1], [0]],
+                       "ignore_order": False},
+        )
+        self.assertEqual(rec["selected_gold_variant"], g2)
+        self.assertEqual(rec["condition_cols"], [0])
+        self.assertEqual(rec["unmatched_gold_columns"], [["other"]])
+
+
+class BeaverDiagnosticTests(unittest.TestCase):
+    def test_column_counts_and_missing_extra_samples(self) -> None:
+        with TemporaryDirectory() as tmp:
+            db = Path(tmp) / "beaver.sqlite"
+            _make_db(db)
+            rec = scorer.score_prediction(
+                "SELECT name, id FROM dept WHERE id = 2",
+                "SELECT name FROM dept WHERE id = 1",
+                str(db), engine="sqlite", mode="beaver",
+            )
+        self.assertEqual((rec["gold_columns"], rec["pred_columns"]), (1, 2))
+        self.assertEqual(rec["missing_row_sample"], ["eng"])
+        self.assertEqual(rec["extra_row_sample"], ["sales", 2])
 
     def test_no_gold_csvs_is_unscorable(self) -> None:
         rec = scorer.score_prediction("SELECT 1", None, "whatever.sqlite",

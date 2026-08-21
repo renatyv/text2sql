@@ -1,6 +1,7 @@
 """Extract the final SQL statement from model/agent output."""
 from __future__ import annotations
 
+import html
 import re
 
 _FENCE_RE = re.compile(r"```(?:sql|SQL|mysql|MySQL)?\s*\n(.*?)```", re.DOTALL)
@@ -26,7 +27,7 @@ def extract_sql(text: str) -> str | None:
 
     answers = [m.group(1) for m in _ANS_RE.finditer(text)]
     if answers and _looks_like_sql(answers[-1]):
-        return _clean(answers[-1])
+        return _clean(html.unescape(answers[-1]))
 
     # Backward-compatible Markdown parsing.
     final_match = _FINAL_RE.search(text)

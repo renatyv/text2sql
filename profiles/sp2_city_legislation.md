@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:28:12.993041Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:33:25.148158Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-xwazsad0/city_legislation.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-hxrnh7su/city_legislation.sqlite
 schema: main
 ---
 
@@ -28,26 +28,25 @@ columns:
 "country" text: "united states"=50000
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 50000 | 16235 | 42170 |
-| first_name | theressa | frederigo | joshia |
-| last_name | wahncke | wild | fraczak |
-| email | twahncke12kv@telegraph.co.uk | fwildciy@mozilla.org | jfraczakwjd@google.es |
-| gender | female | male | male |
-| type | green | reptile | reptile |
-| birth_year | 1822 | 1758 | 1873 |
-| age | 202 | 266 | 151 |
-| favorite_food | galapagos mockingbird | anteater, giant | avocet, pied |
-| feeding_frequency | never | once | never |
-| aggressive | 1 | 1 | 0 |
-| occupation | chief design engineer | account representative iv | quality control specialist |
-| current_location | dayton | winston salem | albany |
-| state | ohio | north carolina | new york |
-| us_region | great lakes | southeast | mideast |
+| id | 50000 | 36239 | 7224 |
+| first_name | theressa | marty | ardella |
+| last_name | wahncke | godney | danter |
+| email | twahncke12kv@telegraph.co.uk | mgodneyrym@t-online.de | adanter5kn@devhub.com |
+| gender | female | female | female |
+| type | green | nordic | reptile |
+| birth_year | 1822 | 1970 | 1763 |
+| age | 202 | 54 | 261 |
+| favorite_food | galapagos mockingbird | phascogale, brush-tailed | black-throated butcher bird |
+| feeding_frequency | never | often | yearly |
+| aggressive | 1 | 0 | 0 |
+| occupation | chief design engineer | biostatistician iii | safety technician iii |
+| current_location | dayton | shawnee mission | van nuys |
+| state | ohio | kansas | california |
+| us_region | great lakes | plains | far west |
 | country | united states | united states | united states |
 
 # "aliens"  (rows=50000)
@@ -62,18 +61,17 @@ columns:
 "birth_year" int: 301 distinct, 1672..1972, avg=1822.07, median=1823
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 50000 | 10838 | 14129 |
-| first_name | Theressa | Vladimir | Shandra |
-| last_name | Wahncke | Pead | Saunder |
-| email | twahncke12kv@telegraph.co.uk | vpead8d1@t.co | ssaunderawg@msu.edu |
-| gender | Female | Male | Non-binary |
-| type | Green | Flatwoods | Grey |
-| birth_year | 1822 | 1956 | 1863 |
+| id | 50000 | 47817 | 38866 |
+| first_name | Theressa | Chauncey | Jasun |
+| last_name | Wahncke | Yeowell | Dannehl |
+| email | twahncke12kv@telegraph.co.uk | cyeowell10w8@people.com.cn | jdannehltzl@digg.com |
+| gender | Female | Male | Male |
+| type | Green | Green | Reptile |
+| birth_year | 1822 | 1777 | 1713 |
 
 # "aliens_details"  (rows=50000)
 
@@ -84,15 +82,14 @@ columns:
 "aggressive" int: 0=25053, 1=24947
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| detail_id | 50000 | 20559 | 9851 |
-| favorite_food | Galapagos mockingbird | Kingfisher, malachite | Lion, south american sea |
-| feeding_frequency | Never | Often | Weekly |
-| aggressive | 1 | 0 | 0 |
+| detail_id | 50000 | 30696 | 1817 |
+| favorite_food | Galapagos mockingbird | Thomson's gazelle | Vervet monkey |
+| feeding_frequency | Never | Monthly | Daily |
+| aggressive | 1 | 1 | 0 |
 
 # "aliens_location"  (rows=50000)
 
@@ -104,16 +101,15 @@ columns:
 "occupation" text: 195 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| loc_id | 50000 | 36110 | 13327 |
-| current_location | Dayton | Winston Salem | Birmingham |
-| state | Ohio | North Carolina | Alabama |
+| loc_id | 50000 | 35506 | 39554 |
+| current_location | Dayton | Jacksonville | Boston |
+| state | Ohio | Florida | Massachusetts |
 | country | United States | United States | United States |
-| occupation | Chief Design Engineer | Marketing Manager | Human Resources Assistant II |
+| occupation | Chief Design Engineer | Recruiter | Web Designer I |
 
 # "cities"  (rows=44622)
 
@@ -124,23 +120,22 @@ columns:
 "longitude" float: 34608 distinct, -54.9333..81.7166, avg=25.9138, median=32.3286
 "country_code_2" text: 236 distinct
 "capital" int: 0=44376, 1=246
-"population" float: 29611 distinct, nulls=305, 0..3.7732e+07, avg=114467, median=20992
+"population" float: 29611 distinct, nulls=305, 0..3.8e+07, avg=114467, median=20992
 "insert_date" text: iso-date, 943 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| city_id | 44622 | 6146 | 4168 |
-| city_name | nordvik | bhola | kerch |
-| latitude | 111.51 | 90.6461 | 36.4711 |
-| longitude | 74.0165 | 22.6863 | 45.3619 |
-| country_code_2 | ru | bd | ua |
+| city_id | 44622 | 10317 | 16541 |
+| city_name | nordvik | craponne | ales |
+| latitude | 111.51 | 4.7233 | 4.0817 |
+| longitude | 74.0165 | 45.7453 | 44.1281 |
+| country_code_2 | ru | fr | fr |
 | capital | 0 | 0 | 0 |
-| population | 0 | 87243 | 149566 |
-| insert_date | 2022-04-27 | 2022-09-24 | 2021-05-16 |
+| population | 0 | 11248 | 41837 |
+| insert_date | 2022-04-27 | 2023-01-02 | 2021-10-05 |
 
 # "cities_countries"  (rows=241)
 
@@ -155,18 +150,17 @@ columns:
 "created_on" text: "2024-07-18"=241
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| country_id | 256 | 104 | 13 |
-| country_name | zambia | hong kong | armenia |
-| country_code_2 | zm | hk | am |
-| country_code_3 | zmb | hkg | arm |
-| region | africa | asia | asia |
-| sub_region | subsaharan africa | eastern asia | western asia |
-| intermediate_region | eastern africa | null | null |
+| country_id | 256 | 200 | 41 |
+| country_name | zambia | saint martin french part | cambodia |
+| country_code_2 | zm | mf | kh |
+| country_code_3 | zmb | maf | khm |
+| region | africa | americas | asia |
+| sub_region | subsaharan africa | latin america and the caribbean | southeastern asia |
+| intermediate_region | eastern africa | caribbean | null |
 | created_on | 2024-07-18 | 2024-07-18 | 2024-07-18 |
 
 # "cities_currencies"  (rows=254)
@@ -178,15 +172,14 @@ columns:
 "currency_code" text: 166 distinct, nulls=1
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| currency_id | 254 | 204 | 223 |
-| country_code_2 | zw | sl | tw |
-| currency_name | zimbabwe dollar | leone | new taiwan dollar |
-| currency_code | zwl | sle | twd |
+| currency_id | 254 | 212 | 180 |
+| country_code_2 | zw | gs | pn |
+| currency_name | zimbabwe dollar | no universal currency | new zealand dollar |
+| currency_code | zwl | null | nzd |
 
 # "cities_languages"  (rows=608)
 
@@ -196,14 +189,13 @@ columns:
 "country_code_2" text: 237 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| language_id | 608 | 174 | 267 |
-| language | shona | english | arabic |
-| country_code_2 | zw | fj | iq |
+| language_id | 608 | 311 | 229 |
+| language | shona | russian | spanish |
+| country_code_2 | zw | kg | hn |
 
 # "job_company"  (rows=14003)
 
@@ -215,16 +207,15 @@ columns:
 "thumbnail" text: 6032 distinct, nulls=5884
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| company_id | 787652 | 158713 | 64273 |
-| name | Rotary Engineering Pte. Ltd. | SignalFire, LLC | iCore Pioneer Business Solution Pvt. LTD Technopark Trivandrum |
-| link | http://www.rotaryeng.com.sg/ | http://www.signalfire.com/ | null |
-| link_google | null | https://www.google.com/search?sca_esv=562982649&hl=en&gl=us&q=SignalFire,+LLC&sa=X&ved=0ahUKEwiP8suUqJWBAxVXSTABHYORC4k4eBCYkAII7Q0 | https://www.google.com/search?sca_esv=6cf689fb59020b19&gl=us&hl=en&q=iCore+Pioneer+Business+Solution+Pvt.+LTD+Technopark+Trivandrum&sa=X&ved=0ahUKEwiUldLP8qSDAxWtQzABHbM0CbI4FBCYkAIIqgo |
-| thumbnail | https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcgZKxQBsMj83FmbDN7BE6mCKD63zc8F70HMUOUllYYRByt3Pz_q_c&s | null | null |
+| company_id | 787652 | 133973 | 363641 |
+| name | Rotary Engineering Pte. Ltd. | Danos | BTC Electronic Components |
+| link | http://www.rotaryeng.com.sg/ | null | http://www.btcelectronics.com/ |
+| link_google | null | https://www.google.com/search?gl=us&hl=en&q=Danos&sa=X&ved=0ahUKEwie2-KHtu__AhVukmoFHZa8B3oQmJACCIAJ | https://www.google.com/search?sca_esv=556449418&gl=us&hl=en&q=BTC+Electronic+Components&sa=X&ved=0ahUKEwi6u_TZ-tiAAxU-ZTABHbXqAoQ4HhCYkAIIkg0 |
+| thumbnail | https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcgZKxQBsMj83FmbDN7BE6mCKD63zc8F70HMUOUllYYRByt3Pz_q_c&s | https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRy7BDVLI1v0TTiEd_1-A9erQIeLXnbzmstT3FzCrk&s | null |
 
 # "job_postings_fact"  (rows=78769)
 
@@ -247,24 +238,23 @@ columns:
 "salary_hour_avg" float: 334 distinct, nulls=77679, 8.5..391, avg=47.737, median=46.3775
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| job_id | 1826663 | 324262 | 163034 |
-| company_id | 87729 | 44018 | 6677 |
-| job_title_short | Data Scientist | Data Analyst | Data Scientist |
-| job_title | Data Scientist, Data Science – Bangalore, Karnataka – Cardinal Health | Consultant, Data Analyst | Traineeship Data Science |
-| job_location | Anywhere | Budapest, Hungary | Amsterdam, Netherlands |
-| job_via | via MySmartPros | via LinkedIn Hungary | via BeBee Nederland |
+| job_id | 1826663 | 1190244 | 262926 |
+| company_id | 87729 | 111259 | 9901 |
+| job_title_short | Data Scientist | Data Scientist | Senior Data Engineer |
+| job_title | Data Scientist, Data Science – Bangalore, Karnataka – Cardinal Health | Data Scientist, Product Analytics | Senior Data Engineer |
+| job_location | Anywhere | New York, NY | Tel Aviv-Yafo, Israel |
+| job_via | via MySmartPros | via Jobs Trabajo.org | via LinkedIn |
 | job_schedule_type | Full-time | Full-time | Full-time |
 | job_work_from_home | 1 | 0 | 0 |
-| search_location | India | Hungary | Netherlands |
-| job_posted_date | 2023-03-21 20:33:44 | 2023-02-03 15:54:57 | 2023-06-14 17:17:43 |
+| search_location | India | New York, United States | Israel |
+| job_posted_date | 2023-03-21 20:33:44 | 2023-08-22 12:03:17 | 2023-02-13 18:03:38 |
 | job_no_degree_mention | 0 | 0 | 0 |
 | job_health_insurance | 0 | 0 | 0 |
-| job_country | India | Hungary | Netherlands |
+| job_country | India | United States | Israel |
 | salary_rate | null | null | null |
 | salary_year_avg | null | null | null |
 | salary_hour_avg | null | null | null |
@@ -277,14 +267,13 @@ columns:
 "day_of_month" int: 31 distinct, 1..31, avg=15.7293, median=16
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| date | 1999-12-31 | 1993-06-01 | 1971-06-13 |
-| month_name | December | June | June |
-| day_of_month | 31 | 1 | 13 |
+| date | 1999-12-31 | 1929-09-01 | 1923-07-19 |
+| month_name | December | September | July |
+| day_of_month | 31 | 1 | 19 |
 
 # "legislators"  (rows=12518)
 
@@ -307,10 +296,10 @@ columns:
 "id_wikipedia" text: all distinct, nulls=2
 "id_wikidata" text: all distinct, nulls=2
 "id_google_entity_id" text: all distinct, nulls=69
-"id_house_history" float: all distinct, nulls=1492, 7672..1.50324e+10, avg=6.00041e+07, median=16356.5
+"id_house_history" float: all distinct, nulls=1492, 7672..1.5e+10, avg=6e+07, median=16356.5
 "id_house_history_alternate" float: 13283=1, nulls=12517
 "id_thomas" float: all distinct, nulls=10337, 1..2296, avg=1110.53, median=1092
-"id_cspan" float: all distinct, nulls=11664, 5..9.27826e+06, avg=569127, median=76348
+"id_cspan" float: all distinct, nulls=11664, 5..9.3e+06, avg=569127, median=76348
 "id_votesmart" float: all distinct, nulls=11437, 0..182310, avg=58344.8, median=29674
 "id_lis" text: all distinct, nulls=12226
 "id_ballotpedia" text: all distinct, nulls=11998
@@ -320,32 +309,31 @@ columns:
 "id_fec_2" text: "H0GA03017"=1, "H0MD07114"=1, "P80003247"=1, "S0NV00237"=1, "S4TN00096"=1, "S8ND00120"=1, nulls=12512
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| full_name | Zoe Lofgren | Ralph Henry Cameron | Ferdinand Brucker |
-| first_name | Zoe | Ralph | Ferdinand |
-| last_name | Lofgren | Cameron | Brucker |
-| middle_name | null | Henry | null |
+| full_name | Zoe Lofgren | Rufus Hardy | James Fredrick Lloyd |
+| first_name | Zoe | Rufus | James |
+| last_name | Lofgren | Hardy | Lloyd |
+| middle_name | null | null | Fredrick |
 | nickname | null | null | null |
 | suffix | null | null | null |
 | other_names_end | null | null | null |
 | other_names_middle | null | null | null |
 | other_names_last | null | null | null |
-| birthday | 1947-12-21 | 1863-10-21 | 1858-01-08 |
+| birthday | 1947-12-21 | 1855-12-16 | 1922-09-27 |
 | gender | F | M | M |
-| id_bioguide | L000397 | C000066 | B000973 |
+| id_bioguide | L000397 | H000198 | L000379 |
 | id_bioguide_previous_0 | null | null | null |
-| id_govtrack | 400245 | 402224 | 401925 |
-| id_icpsr | 29504 | 1436 | 1158 |
-| id_wikipedia | Zoe Lofgren | Ralph H. Cameron | Ferdinand Brucker |
-| id_wikidata | Q218217 | Q976300 | Q1405148 |
-| id_google_entity_id | kg:/m/024t94 | kg:/m/07sgkx | kg:/m/0494rk |
-| id_house_history | 17087 | 10525 | 10035 |
+| id_govtrack | 400245 | 405079 | 406871 |
+| id_icpsr | 29504 | 4065 | 14250 |
+| id_wikipedia | Zoe Lofgren | Rufus Hardy (representative) | James F. Lloyd |
+| id_wikidata | Q218217 | Q2174776 | Q507358 |
+| id_google_entity_id | kg:/m/024t94 | kg:/m/02prkwf | kg:/m/0dp07h |
+| id_house_history | 17087 | 14531 | 17065 |
 | id_house_history_alternate | null | null | null |
-| id_thomas | 701 | null | null |
+| id_thomas | 701 | null | 697 |
 | id_cspan | 36520 | null | null |
 | id_votesmart | 21899 | null | null |
 | id_lis | null | null | null |
@@ -379,30 +367,29 @@ columns:
 "caucus" text: "Democrat"=14, nulls=44049
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id_bioguide | Z000018 | L000076 | S000345 |
-| term_number | 1 | 5 | 5 |
-| term_id | Z000018-1 | L000076-5 | S000345-5 |
-| term_type | rep | rep | rep |
-| term_start | 2017-01-03 | 1929-04-15 | 1899-12-04 |
-| term_end | 2017-03-01 | 1931-03-03 | 1901-03-03 |
-| state | MT | TX | NY |
-| district | 0 | 12 | 25 |
-| class | null | null | null |
-| party | Republican | Democrat | Republican |
+| id_bioguide | Z000018 | G000360 | W000802 |
+| term_number | 1 | 2 | 1 |
+| term_id | Z000018-1 | G000360-2 | W000802-1 |
+| term_type | rep | rep | sen |
+| term_start | 2017-01-03 | 1943-01-06 | 2013-01-03 |
+| term_end | 2017-03-01 | 1945-01-03 | 2019-01-03 |
+| state | MT | PA | RI |
+| district | 0 | 26 | null |
+| class | null | null | 1 |
+| party | Republican | Republican | Democrat |
 | how | null | null | null |
-| url | https://zinke.house.gov | null | null |
-| address | 1419 Longworth HOB; Washington DC 20515-2600 | null | null |
-| phone | 202-225-3211 | null | null |
-| fax | 202-225-5687 | null | null |
-| contact_form | null | null | null |
-| office | 1419 Longworth House Office Building | null | null |
-| state_rank | null | null | null |
-| rss_url | null | null | null |
+| url | https://zinke.house.gov | null | https://www.whitehouse.senate.gov |
+| address | 1419 Longworth HOB; Washington DC 20515-2600 | null | 530 Hart Senate Office Building Washington DC 20510 |
+| phone | 202-225-3211 | null | 202-224-2921 |
+| fax | 202-225-5687 | null | 202-228-6362 |
+| contact_form | null | null | https://www.whitehouse.senate.gov/contact/email-sheldon |
+| office | 1419 Longworth House Office Building | null | 530 Hart Senate Office Building |
+| state_rank | null | null | junior |
+| rss_url | null | null | http://www.whitehouse.senate.gov/rss/feeds/?type=all&amp;cachebuster=1 |
 | caucus | null | null | null |
 
 # "skills_dim"  (rows=26)
@@ -413,14 +400,13 @@ columns:
 "type" text: "programming"=9, "analyst_tools"=4, "databases"=4, "cloud"=3, "webframeworks"=3, "async"=2, "sync"=1
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| skill_id | 250 | 7 | 34 |
-| skills | twilio | sas | objective-c |
-| type | sync | programming | programming |
+| skill_id | 250 | 31 | 84 |
+| skills | twilio | perl | ibm cloud |
+| type | sync | programming | cloud |
 
 # "skills_job_dim"  (rows=≈366960)
 
@@ -429,4 +415,3 @@ columns:
 "skill_id" int
 
 indexes: none
-fk: none

@@ -1,7 +1,7 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:19:28.767538Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:30:35.392809Z
 dialect: mysql
 database: dw
 schema: dw
@@ -10,17 +10,16 @@ schema: dw
 # `academic_term_parameter`  (rows=3)
 
 columns:
-`TERM_PARAMETER` varchar127: "SIS_CURRENT_TERM"=1, "SIS_PREVIOUS_TERM"=1, "SIS_UPCOMING_TERM"=1
-`TERM_INDICATOR` varchar127: "C"=1, "F"=1, "P"=1
-`TERM_CODE` varchar127: "2024SU"=1, "2025FA"=1, "2025JA"=1
-`TERM_DESCRIPTION` varchar127: "Fall Term 2024-2025"=1, "January Term 2024-2025"=1, "Summer Term 2024"=1
-`TERM_START_DATE` varchar255: "03-SEP-24"=1, "06-JAN-25"=1, "10-JUN-24"=1
-`TERM_END_DATE` varchar255: "20-AUG-24"=1, "20-DEC-24"=1, "31-JAN-25"=1
-`TERM_LAST_DAY_BEFORE_NEXT_TERM` varchar255: "02-SEP-24"=1, "05-JAN-25"=1, "31-JAN-25"=1
-`IS_CURRENT_TERM` varchar127: "N"=2, "Y"=1
+`TERM_PARAMETER` varchar127
+`TERM_INDICATOR` varchar127
+`TERM_CODE` varchar127
+`TERM_DESCRIPTION` varchar127
+`TERM_START_DATE` varchar255
+`TERM_END_DATE` varchar255
+`TERM_LAST_DAY_BEFORE_NEXT_TERM` varchar255
+`IS_CURRENT_TERM` varchar127
 
 indexes: `TERM_CODE`
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 |
@@ -63,36 +62,34 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=144
 
 indexes: `ACADEMIC_TERMS_KEY`, `TERM_CODE`, `TERM_START_DATE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| ACADEMIC_TERMS_KEY | 2030SU |
-| TERM_CODE | 2030SU |
-| TERM_DESCRIPTION | Summer Term 2030 |
-| TERM_SELECTOR | 2030SU-Summer Term 2030 |
-| TERM_START_DATE | 10-JUN-30 |
-| TERM_END_DATE | 20-AUG-30 |
-| ACADEMIC_YEAR | 2030 |
-| ACADEMIC_YEAR_DESC | Academic Year 2029-2030 |
-| IS_CURRENT_TERM | N |
-| IS_REGULAR_TERM | N |
-| TERM_STATUS_INDICATOR | null |
-| TERM_STATUS | Unspecified |
-| FINANCIAL_AID_YEAR | 2031 |
-| DEGREE_YEAR | 2031 |
-| LAST_DAY_OF_FINAL_EXAM | 18-AUG-30 |
-| PRE_REGISTRATION_START_DAY | 01-MAY-30 |
-| REGISTRATION_DAY | 08-JUN-30 |
-| FIRST_DAY_OF_CLASSES | null |
-| LAST_DAY_OF_CLASSES | null |
-| ADD_DATE | null |
-| DROP_DATE | null |
-| GRADUATE_AWARD_START_DATE | null |
-| GRADUATE_AWARD_END_DATE | null |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| ACADEMIC_TERMS_KEY | 2030SU | 2009SP | 2026FA |
+| TERM_CODE | 2030SU | 2009SP | 2026FA |
+| TERM_DESCRIPTION | Summer Term 2030 | Spring Term 2008-2009 | Fall Term 2025-2026 |
+| TERM_SELECTOR | 2030SU-Summer Term 2030 | 2009SP-Spring Term 2008-2009 | 2026FA-Fall Term 2025-2026 |
+| TERM_START_DATE | 10-JUN-30 | 02-FEB-09 | 02-SEP-25 |
+| TERM_END_DATE | 20-AUG-30 | 22-MAY-09 | 19-DEC-25 |
+| ACADEMIC_YEAR | 2030 | 2009 | 2026 |
+| ACADEMIC_YEAR_DESC | Academic Year 2029-2030 | Academic Year 2008-2009 | Academic Year 2025-2026 |
+| IS_CURRENT_TERM | N | N | N |
+| IS_REGULAR_TERM | N | Y | Y |
+| TERM_STATUS_INDICATOR | null | P | null |
+| TERM_STATUS | Unspecified | Previous | Unspecified |
+| FINANCIAL_AID_YEAR | 2031 | 2009 | 2026 |
+| DEGREE_YEAR | 2031 | 2009 | 2026 |
+| LAST_DAY_OF_FINAL_EXAM | 18-AUG-30 | 22-MAY-09 | 20-DEC-25 |
+| PRE_REGISTRATION_START_DAY | 01-MAY-30 | 01-DEC-08 | 01-MAY-25 |
+| REGISTRATION_DAY | 08-JUN-30 | 02-FEB-09 | 03-SEP-25 |
+| FIRST_DAY_OF_CLASSES | null | 03-FEB-09 | null |
+| LAST_DAY_OF_CLASSES | null | 14-MAY-09 | null |
+| ADD_DATE | null | 06-MAR-09 | 03-OCT-25 |
+| DROP_DATE | null | 23-APR-09 | 19-NOV-25 |
+| GRADUATE_AWARD_START_DATE | null | 16-JAN-09 | null |
+| GRADUATE_AWARD_END_DATE | null | 31-MAY-09 | null |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `academic_terms_all`  (rows=300)
 
@@ -119,32 +116,30 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=300
 
 indexes: `ACADEMIC_TERMS_KEY`, `TERM_CODE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| ACADEMIC_TERMS_KEY | 2030SU |
-| TERM_CODE | 2030SU |
-| TERM_DESCRIPTION | Summer Term 2030 |
-| TERM_SELECTOR | 2030SU-Summer Term 2030 |
-| TERM_START_DATE | 10-JUN-30 |
-| TERM_END_DATE | 20-AUG-30 |
-| ACADEMIC_YEAR | 2030 |
-| ACADEMIC_YEAR_DESC | Academic Year 2029-2030 |
-| IS_CURRENT_TERM | N |
-| TERM_STATUS_INDICATOR | null |
-| FINANCIAL_AID_YEAR | 2031 |
-| DEGREE_YEAR | 2031 |
-| LAST_DAY_OF_FINAL_EXAM | 18-AUG-30 |
-| PRE_REGISTRATION_START_DAY | 01-MAY-30 |
-| REGISTRATION_DAY | 08-JUN-30 |
-| FIRST_DAY_OF_CLASSES | null |
-| LAST_DAY_OF_CLASSES | null |
-| GRADUATE_AWARD_START_DATE | null |
-| GRADUATE_AWARD_END_DATE | null |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| ACADEMIC_TERMS_KEY | 2030SU | 1987SU | 2029JA |
+| TERM_CODE | 2030SU | 1987SU | 2029JA |
+| TERM_DESCRIPTION | Summer Term 2030 | Summer Term 1987 | January Term 2028-2029 |
+| TERM_SELECTOR | 2030SU-Summer Term 2030 | 1987SU-Summer Term 1987 | 2029JA-January Term 2028-2029 |
+| TERM_START_DATE | 10-JUN-30 | 08-JUN-87 | 03-JAN-29 |
+| TERM_END_DATE | 20-AUG-30 | 19-AUG-87 | 28-JAN-29 |
+| ACADEMIC_YEAR | 2030 | 1987 | 2029 |
+| ACADEMIC_YEAR_DESC | Academic Year 2029-2030 | Academic Year 1986-1987 | Academic Year 2028-2029 |
+| IS_CURRENT_TERM | N | N | N |
+| TERM_STATUS_INDICATOR | null | P | null |
+| FINANCIAL_AID_YEAR | 2031 | 1988 | 2029 |
+| DEGREE_YEAR | 2031 | 1988 | 2029 |
+| LAST_DAY_OF_FINAL_EXAM | 18-AUG-30 | 19-AUG-87 | 30-JAN-29 |
+| PRE_REGISTRATION_START_DAY | 01-MAY-30 | 01-MAY-87 | 01-DEC-28 |
+| REGISTRATION_DAY | 08-JUN-30 | 08-JUN-87 | 05-JAN-29 |
+| FIRST_DAY_OF_CLASSES | null | 08-JUN-87 | null |
+| LAST_DAY_OF_CLASSES | null | 19-AUG-87 | null |
+| GRADUATE_AWARD_START_DATE | null | 01-JUN-87 | null |
+| GRADUATE_AWARD_END_DATE | null | 31-AUG-87 | null |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `buildings`  (rows=211)
 
@@ -160,21 +155,19 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=211
 
 indexes: `BUILDING_KEY`, `BUILDING_NUMBER`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| BUILDING_KEY | WW15 |
-| BUILDING_NUMBER | WW15 |
-| BUILDING_NAME | Building WW15 |
-| BUILDING_STREET_ADDRESS | 350  BROOKLINE ST |
-| BUILDING_MAILING_ADDRESS | null |
-| BLDG_GROSS_SQUARE_FOOTAGE | 42146 |
-| BLDG_ASSIGNABLE_SQUARE_FOOTAGE | 37271 |
-| BUILDING_COUNTER | 1 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| BUILDING_KEY | WW15 | 45 | 8 |
+| BUILDING_NUMBER | WW15 | 45 | 8 |
+| BUILDING_NAME | Building WW15 | SCHWARZMAN COLLEGE OF COMPUTING | Building 8 |
+| BUILDING_STREET_ADDRESS | 350  BROOKLINE ST | 51  VASSAR ST | 21  AMES ST |
+| BUILDING_MAILING_ADDRESS | null | null | null |
+| BLDG_GROSS_SQUARE_FOOTAGE | 42146 | 188512 | 66165 |
+| BLDG_ASSIGNABLE_SQUARE_FOOTAGE | 37271 | 119314 | 36919 |
+| BUILDING_COUNTER | 1 | 1 | 1 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `cip`  (rows=3059)
 
@@ -190,21 +183,19 @@ columns:
 `VERSION` varchar127: "2020"=2142, "1990"=606, "2000"=159, "2010"=152
 
 indexes: `PROGRAM_CODE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| PROGRAM_CODE | 619999 |
-| PROGRAM_TITLE | Medical Residency/Fellowship Programs, Other |
-| CATEGORY_CODE | 61 |
-| CATEGORY_TITLE | MEDICAL RESIDENCY/FELLOWSHIP PROGRAMS |
-| FOUR_DIGIT_CODE | 6199 |
-| FOUR_DIGIT_TITLE | Medical Residency/Fellowship Programs, Other |
-| NOTE | New in 2020 |
-| WAREHOUSE_LOAD_DATE | 17-MAY-23 |
-| VERSION | 2020 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| PROGRAM_CODE | 619999 | 449999 | 131312 |
+| PROGRAM_TITLE | Medical Residency/Fellowship Programs, Other | Public Administration and Social Service Professions, Other | Music Teacher Education |
+| CATEGORY_CODE | 61 | 44 | 13 |
+| CATEGORY_TITLE | MEDICAL RESIDENCY/FELLOWSHIP PROGRAMS | PUBLIC ADMINISTRATION AND SOCIAL SERVICE PROFESSIONS | EDUCATION |
+| FOUR_DIGIT_CODE | 6199 | 4499 | 1313 |
+| FOUR_DIGIT_TITLE | Medical Residency/Fellowship Programs, Other | Public Administration and Social Service Professions, Other | Teacher Education and Professional Development, Specific Subject Areas |
+| NOTE | New in 2020 | (2020) No substantive changes  | (2020) No substantive changes  |
+| WAREHOUSE_LOAD_DATE | 17-MAY-23 | 17-MAY-23 | 17-MAY-23 |
+| VERSION | 2020 | 2020 | 2020 |
 
 # `cip_with_version`  (rows=6350)
 
@@ -220,21 +211,19 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "17-MAY-23"=2142, "17-OCT-10"=1720, "27-MAR-03"=1432, "09-JAN-02"=1056
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| CIP_WITH_VERSION_KEY | 999992020 |
-| VERSION | 2020 |
-| PROGRAM_CODE | 99999 |
-| PROGRAM_TITLE | Communication, Journalism, and Related Programs, Other |
-| CATEGORY_CODE | 9 |
-| CATEGORY_TITLE | COMMUNICATION, JOURNALISM, AND RELATED PROGRAMS |
-| FOUR_DIGIT_CODE | 999 |
-| FOUR_DIGIT_TITLE | Communication, Journalism, and Related Programs, Other |
-| WAREHOUSE_LOAD_DATE | 17-MAY-23 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| CIP_WITH_VERSION_KEY | 999992020 | 5107102020 | 3019012010 |
+| VERSION | 2020 | 2020 | 2010 |
+| PROGRAM_CODE | 99999 | 510710 | 301901 |
+| PROGRAM_TITLE | Communication, Journalism, and Related Programs, Other | Medical Office Assistant/Specialist | Nutrition Sciences |
+| CATEGORY_CODE | 9 | 51 | 30 |
+| CATEGORY_TITLE | COMMUNICATION, JOURNALISM, AND RELATED PROGRAMS | HEALTH PROFESSIONS AND RELATED PROGRAMS | MULTI/INTERDISCIPLINARY STUDIES |
+| FOUR_DIGIT_CODE | 999 | 5107 | 3019 |
+| FOUR_DIGIT_TITLE | Communication, Journalism, and Related Programs, Other | Health and Medical Administrative Services | Nutrition Sciences |
+| WAREHOUSE_LOAD_DATE | 17-MAY-23 | 17-MAY-23 | 17-OCT-10 |
 
 # `cis_course_catalog`  (rows=10000)
 
@@ -256,7 +245,7 @@ columns:
 `GLOBAL_COUNTRIES` varchar127: all NULL
 `ON_LINE_PAGE_NUMBER` varchar127: all NULL
 `ACADEMIC_YEAR` varchar127: "2008"=1444, "2007"=1429, "2006"=1377, "2005"=1369, "2009"=1353, "2004"=1185, "2003"=1018, "2002"=825
-`SUBJECT_ID` varchar127: 2269 distinct, "1.011"=8, "1.482"=8, "1.961"=8, "1.962"=8, "1.971"=8, "1.972"=8, "1.973"=8, "1.974"=8, "1.975"=8, "1.976"=8
+`SUBJECT_ID` varchar127: 2269 distinct
 `SUBJECT_CODE` varchar127: digits, 41 distinct, "15"=1033, "6"=757, "12"=750, "SP"=746, "11"=714, "4"=685, "1"=371, "7"=363, "HST"=359, "10"=345
 `SUBJECT_NUMBER` varchar127: 928 distinct
 `SOURCE_SUBJECT_ID` varchar127: 2269 distinct
@@ -299,70 +288,68 @@ columns:
 `IS_OFFERED_THIS_YEAR` varchar127: "Y"=8903, "N"=371, nulls=726
 
 indexes: `DEPARTMENT_CODE`, `HGN_CODE`, `MASTER_SUBJECT_ID`, `SUBJECT_CODE`, `SUBJECT_ID`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| IS_OFFERED_FALL_TERM | Y |
-| IS_OFFERED_IAP | Y |
-| IS_OFFERED_SPRING_TERM | Y |
-| IS_OFFERED_SUMMER_TERM | Y |
-| FALL_INSTRUCTORS | Z. Graham |
-| SPRING_INSTRUCTORS | Z. Graham |
-| STATUS_CHANGE | null |
-| LAST_ACTIVITY_DATE | 19-OCT-06 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-| MASTER_SUBJECT_ID | null |
-| HASS_ATTRIBUTE | null |
-| HASS_ATTRIBUTE_DESC | null |
-| TERM_DURATION | null |
-| GLOBAL_REGIONS | null |
-| GLOBAL_COUNTRIES | null |
-| ON_LINE_PAGE_NUMBER | null |
-| ACADEMIC_YEAR | 2008 |
-| SUBJECT_ID | HST.989 |
-| SUBJECT_CODE | HST |
-| SUBJECT_NUMBER | 989 |
-| SOURCE_SUBJECT_ID | HST.989 |
-| PRINT_SUBJECT_ID | HST.986-HST.989 |
-| IS_PRINTED_IN_BULLETIN | Y |
-| DEPARTMENT_CODE | HST |
-| DEPARTMENT_NAME | Health Sciences & Technology |
-| EFFECTIVE_TERM_CODE | 2006FA |
-| SUBJECT_SHORT_TITLE | Spec Subjs  Biomedical Ent |
-| SUBJECT_TITLE | Special Subjects in Biomedical Enterprise |
-| IS_VARIABLE_UNITS | Y |
-| LECTURE_UNITS | 0 |
-| LAB_UNITS | 0 |
-| PREPARATION_UNITS | 0 |
-| TOTAL_UNITS | 0 |
-| DESIGN_UNITS | 0 |
-| GRADE_TYPE | L |
-| GRADE_TYPE_DESC | Letter graded |
-| GRADE_RULE | R |
-| GRADE_RULE_DESC | Can be repeated for credit |
-| HGN_CODE | H |
-| HGN_DESC | High Graduate |
-| HGN_EXCEPT | null |
-| GIR_ATTRIBUTE | null |
-| GIR_ATTRIBUTE_DESC | null |
-| COMM_REQ_ATTRIBUTE | null |
-| COMM_REQ_ATTRIBUTE_DESC | null |
-| TUITION_ATTRIBUTE | null |
-| TUITION_ATTRIBUTE_DESC | null |
-| WRITE_REQ_ATTRIBUTE | null |
-| WRITE_REQ_ATTRIBUTE_DESC | null |
-| SUPERVISOR_ATTRIBUTE | null |
-| SUPERVISOR_ATTRIBUTE_DESC | null |
-| PREREQUISITES | Permission of instructor |
-| SUBJECT_DESCRIPTION | Opportunity for group study of advanced subjects relating to Biomedical Enterprise not otherwise included in the curriculum. Of |
-| JOINT_SUBJECTS | null |
-| SCHOOL_WIDE_ELECTIVES | null |
-| MEETS_WITH_SUBJECTS | null |
-| EQUIVALENT_SUBJECTS | null |
-| IS_OFFERED_THIS_YEAR | Y |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| IS_OFFERED_FALL_TERM | Y | Y | Y |
+| IS_OFFERED_IAP | Y | N | N |
+| IS_OFFERED_SPRING_TERM | Y | Y | N |
+| IS_OFFERED_SUMMER_TERM | Y | N | N |
+| FALL_INSTRUCTORS | Z. Graham | Staff | C. B. Brock, R. Martinez, W. M. Neal |
+| SPRING_INSTRUCTORS | Z. Graham | Staff | C. B. Brock, R. Martinez, W. M. Neal |
+| STATUS_CHANGE | null | null | null |
+| LAST_ACTIVITY_DATE | 19-OCT-06 | 19-OCT-06 | 19-OCT-06 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
+| MASTER_SUBJECT_ID | null | null | null |
+| HASS_ATTRIBUTE | null | null | null |
+| HASS_ATTRIBUTE_DESC | null | null | null |
+| TERM_DURATION | null | null | null |
+| GLOBAL_REGIONS | null | null | null |
+| GLOBAL_COUNTRIES | null | null | null |
+| ON_LINE_PAGE_NUMBER | null | null | null |
+| ACADEMIC_YEAR | 2008 | 2008 | 2008 |
+| SUBJECT_ID | HST.989 | 7.931 | 17.276 |
+| SUBJECT_CODE | HST | 7 | 17 |
+| SUBJECT_NUMBER | 989 | 931 | 276 |
+| SOURCE_SUBJECT_ID | HST.989 | 7.931 | 17.276 |
+| PRINT_SUBJECT_ID | HST.986-HST.989 | 7.931 | 17.276 |
+| IS_PRINTED_IN_BULLETIN | Y | Y | Y |
+| DEPARTMENT_CODE | HST | 7 | 17 |
+| DEPARTMENT_NAME | Health Sciences & Technology | Biology | Political Science |
+| EFFECTIVE_TERM_CODE | 2006FA | 2004FA | 2007FA |
+| SUBJECT_SHORT_TITLE | Spec Subjs  Biomedical Ent | Special Topics/Grad students | PORTL |
+| SUBJECT_TITLE | Special Subjects in Biomedical Enterprise | Special Topics in Biology for Graduate Students | Public Opinion Research Training Lab |
+| IS_VARIABLE_UNITS | Y | Y | N |
+| LECTURE_UNITS | 0 | 0 | 3 |
+| LAB_UNITS | 0 | 0 | 0 |
+| PREPARATION_UNITS | 0 | 0 | 9 |
+| TOTAL_UNITS | 0 | 0 | 12 |
+| DESIGN_UNITS | 0 | 0 | 0 |
+| GRADE_TYPE | L | P | L |
+| GRADE_TYPE_DESC | Letter graded | P/D/F | Letter graded |
+| GRADE_RULE | R | R | N |
+| GRADE_RULE_DESC | Can be repeated for credit | Can be repeated for credit | Not repeatable for credit |
+| HGN_CODE | H | H | H |
+| HGN_DESC | High Graduate | High Graduate | High Graduate |
+| HGN_EXCEPT | null | null | null |
+| GIR_ATTRIBUTE | null | null | null |
+| GIR_ATTRIBUTE_DESC | null | null | null |
+| COMM_REQ_ATTRIBUTE | null | null | null |
+| COMM_REQ_ATTRIBUTE_DESC | null | null | null |
+| TUITION_ATTRIBUTE | null | null | null |
+| TUITION_ATTRIBUTE_DESC | null | null | null |
+| WRITE_REQ_ATTRIBUTE | null | null | null |
+| WRITE_REQ_ATTRIBUTE_DESC | null | null | null |
+| SUPERVISOR_ATTRIBUTE | null | null | null |
+| SUPERVISOR_ATTRIBUTE_DESC | null | null | null |
+| PREREQUISITES | Permission of instructor | Permission of instructor | 17.872 and 17.266; or permission of instructor |
+| SUBJECT_DESCRIPTION | Opportunity for group study of advanced subjects relating to Biomedical Enterprise not otherwise included in the curriculum. Of | null | Follows 17.266. Offers practical training in public opinion research and provides students with an opportunity to conduct their |
+| JOINT_SUBJECTS | null | null | null |
+| SCHOOL_WIDE_ELECTIVES | null | null | null |
+| MEETS_WITH_SUBJECTS | null | null | null |
+| EQUIVALENT_SUBJECTS | null | null | null |
+| IS_OFFERED_THIS_YEAR | Y | Y | Y |
 
 # `cis_hass_attribute`  (rows=17)
 
@@ -380,23 +367,21 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=17
 
 indexes: `HASS_ATTRIBUTE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| HASS_ATTRIBUTE | HS2 |
-| DESCRIPTION_ON_FORM | 1/2 HASS Social Sciences |
-| DESCRIPTION_IN_BULLETIN | HASS-S/2 |
-| CIS_ATTRIBUTE_GROUP | H |
-| CIS_ATTRIBUTE_GROUP_NOTE | HASS_ATTRIBUTE, for students entering in Fall 2010 or later |
-| ICON_GIF_NAME | null |
-| ICON_HEIGHT | null |
-| ICON_WIDTH | null |
-| LAST_ACTIVITY_DATE | 22-FEB-12 |
-| LAST_UPDATE_USER | PETECHOI |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| HASS_ATTRIBUTE | HS2 | HD2 | HE |
+| DESCRIPTION_ON_FORM | 1/2 HASS Social Sciences | HASS-D, Category 2 | HASS Elective |
+| DESCRIPTION_IN_BULLETIN | HASS-S/2 | HASS-D 2 | HASS-E |
+| CIS_ATTRIBUTE_GROUP | H | G | H |
+| CIS_ATTRIBUTE_GROUP_NOTE | HASS_ATTRIBUTE, for students entering in Fall 2010 or later | GIR_ATTRIBUTE, for students entering prior to Fall 2010 | HASS_ATTRIBUTE, for students entering in Fall 2010 or later |
+| ICON_GIF_NAME | null | hass2.gif | hassT.gif |
+| ICON_HEIGHT | null | 16 | 16 |
+| ICON_WIDTH | null | 16 | 16 |
+| LAST_ACTIVITY_DATE | 22-FEB-12 | 05-MAR-10 | 05-MAR-10 |
+| LAST_UPDATE_USER | PETECHOI | PETECHOI | PETECHOI |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `course_catalog_subject_offered`  (rows=10000)
 
@@ -472,81 +457,79 @@ columns:
 `MEET_PLACE` varchar127: 553 distinct, nulls=5526, "VIRTUAL"=202, "E51-350"=43, "2-113G"=35, "14N-315"=34, "E51-385D"=34, "1-337A"=33, "E51-357E"=33, "14E-362"=32, "E51-364A"=32, "TBA"=32
 
 indexes: `DEPARTMENT_CODE`, `EFFECTIVE_TERM_CODE`, `HASS_ATTRIBUTE`, `HGN_CODE`, `MASTER_SUBJECT_ID`, `MEET_PLACE`, `RESPONSIBLE_FACULTY_MIT_ID`, `SECTION_ID`, `SUBJECT_CODE`, `SUBJECT_ID`, `TERM_CODE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| ACADEMIC_YEAR | 2025 |
-| TERM_CODE | 2025SP |
-| SUBJECT_ID | WGS.UR |
-| SUBJECT_CODE | WGS |
-| SUBJECT_NUMBER | UR |
-| SOURCE_SUBJECT_ID | WGS.UR |
-| PRINT_SUBJECT_ID | WGS.UR |
-| IS_PRINTED_IN_BULLETIN | Y |
-| DEPARTMENT_CODE | WGS |
-| DEPARTMENT_NAME | Women's and Gender Studies |
-| EFFECTIVE_TERM_CODE | 2013FA |
-| SUBJECT_SHORT_TITLE | Undergraduate Research |
-| SUBJECT_TITLE | Undergraduate Research in Women's and Gender Studies |
-| IS_VARIABLE_UNITS | Y |
-| LECTURE_UNITS | 0 |
-| LAB_UNITS | 0 |
-| PREPARATION_UNITS | 0 |
-| TOTAL_UNITS | 0 |
-| DESIGN_UNITS | 0 |
-| GRADE_TYPE | P |
-| GRADE_TYPE_DESC | P/D/F |
-| GRADE_RULE | J |
-| GRADE_RULE_DESC | Continuing and Repeatable |
-| HGN_CODE | U |
-| HGN_DESC | Undergraduate |
-| HGN_EXCEPT | null |
-| GIR_ATTRIBUTE | null |
-| GIR_ATTRIBUTE_DESC | null |
-| COMM_REQ_ATTRIBUTE | null |
-| COMM_REQ_ATTRIBUTE_DESC | null |
-| TUITION_ATTRIBUTE | null |
-| TUITION_ATTRIBUTE_DESC | null |
-| WRITE_REQ_ATTRIBUTE | null |
-| WRITE_REQ_ATTRIBUTE_DESC | null |
-| SUPERVISOR_ATTRIBUTE | UROP |
-| SUPERVISOR_ATTRIBUTE_DESC | UROP subject |
-| PREREQUISITES | Permission of instructor |
-| SUBJECT_DESCRIPTION | Undergraduate research opportunities in the Women's and Gender Studies Program. |
-| JOINT_SUBJECTS | null |
-| SCHOOL_WIDE_ELECTIVES | null |
-| MEETS_WITH_SUBJECTS | null |
-| EQUIVALENT_SUBJECTS | null |
-| IS_OFFERED_THIS_YEAR | Y |
-| IS_OFFERED_FALL_TERM | Y |
-| IS_OFFERED_IAP | Y |
-| IS_OFFERED_SPRING_TERM | Y |
-| IS_OFFERED_SUMMER_TERM | Y |
-| FALL_INSTRUCTORS | Staff |
-| SPRING_INSTRUCTORS | Staff |
-| STATUS_CHANGE | null |
-| LAST_ACTIVITY_DATE | 26-OCT-23 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-| MASTER_SUBJECT_ID | WGS.UR |
-| HASS_ATTRIBUTE | null |
-| HASS_ATTRIBUTE_DESC | null |
-| TERM_DURATION | Full Term Subject |
-| GLOBAL_REGIONS | null |
-| GLOBAL_COUNTRIES | null |
-| ON_LINE_PAGE_NUMBER | http://student.mit.edu/catalog/mWGSa.html |
-| SECTION_ID | 000 |
-| IS_MASTER_SECTION | Y |
-| IS_LECTURE_SECTION | N |
-| IS_LAB_SECTION | N |
-| IS_RECITATION_SECTION | N |
-| IS_DESIGN_SECTION | N |
-| RESPONSIBLE_FACULTY_NAME | Kirby, Barney |
-| RESPONSIBLE_FACULTY_MIT_ID | 934724720 |
-| MEET_TIME | null |
-| MEET_PLACE | null |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| ACADEMIC_YEAR | 2025 | 2015 | 2009 |
+| TERM_CODE | 2025SP | 2015SP | 2009FA |
+| SUBJECT_ID | WGS.UR | 21W.759 | 9.10 |
+| SUBJECT_CODE | WGS | 21W | 9 |
+| SUBJECT_NUMBER | UR | 759 | 10 |
+| SOURCE_SUBJECT_ID | WGS.UR | 21W.759 | 9.10 |
+| PRINT_SUBJECT_ID | WGS.UR | 21W.759 | 9.10 |
+| IS_PRINTED_IN_BULLETIN | Y | Y | Y |
+| DEPARTMENT_CODE | WGS | 21W | 9 |
+| DEPARTMENT_NAME | Women's and Gender Studies | Writing & Humanistic Studies | Brain and Cognitive Sciences |
+| EFFECTIVE_TERM_CODE | 2013FA | 2015FA | 2009FA |
+| SUBJECT_SHORT_TITLE | Undergraduate Research | Writing Science Fiction | Cognitive Neuroscience |
+| SUBJECT_TITLE | Undergraduate Research in Women's and Gender Studies | Writing Science Fiction | Cognitive Neuroscience |
+| IS_VARIABLE_UNITS | Y | N | N |
+| LECTURE_UNITS | 0 | 3 | 3 |
+| LAB_UNITS | 0 | 0 | 0 |
+| PREPARATION_UNITS | 0 | 9 | 9 |
+| TOTAL_UNITS | 0 | 12 | 12 |
+| DESIGN_UNITS | 0 | 0 | 0 |
+| GRADE_TYPE | P | L | L |
+| GRADE_TYPE_DESC | P/D/F | Letter graded | Letter graded |
+| GRADE_RULE | J | N | N |
+| GRADE_RULE_DESC | Continuing and Repeatable | Not repeatable for credit | Not repeatable for credit |
+| HGN_CODE | U | U | U |
+| HGN_DESC | Undergraduate | Undergraduate | Undergraduate |
+| HGN_EXCEPT | null | null | null |
+| GIR_ATTRIBUTE | null | null | null |
+| GIR_ATTRIBUTE_DESC | null | null | null |
+| COMM_REQ_ATTRIBUTE | null | CIM | null |
+| COMM_REQ_ATTRIBUTE_DESC | null | Communication Intensive Major | null |
+| TUITION_ATTRIBUTE | null | null | null |
+| TUITION_ATTRIBUTE_DESC | null | null | null |
+| WRITE_REQ_ATTRIBUTE | null | null | null |
+| WRITE_REQ_ATTRIBUTE_DESC | null | null | null |
+| SUPERVISOR_ATTRIBUTE | UROP | null | null |
+| SUPERVISOR_ATTRIBUTE_DESC | UROP subject | null | null |
+| PREREQUISITES | Permission of instructor | null | 9.01 |
+| SUBJECT_DESCRIPTION | Undergraduate research opportunities in the Women's and Gender Studies Program. | Students write and read science fiction and analyze and discuss stories written for the class. For the first eight weeks, readi | Explores the cognitive and neural processes that support attention, vision, language, motor control, navigation, and memory. In |
+| JOINT_SUBJECTS | null | null | null |
+| SCHOOL_WIDE_ELECTIVES | null | null | null |
+| MEETS_WITH_SUBJECTS | null | null | null |
+| EQUIVALENT_SUBJECTS | null | null | null |
+| IS_OFFERED_THIS_YEAR | Y | Y | Y |
+| IS_OFFERED_FALL_TERM | Y | N | Y |
+| IS_OFFERED_IAP | Y | N | N |
+| IS_OFFERED_SPRING_TERM | Y | Y | N |
+| IS_OFFERED_SUMMER_TERM | Y | N | N |
+| FALL_INSTRUCTORS | Staff | K. Hart | M. Salas |
+| SPRING_INSTRUCTORS | Staff | K. Hart | M. Salas |
+| STATUS_CHANGE | null | null | null |
+| LAST_ACTIVITY_DATE | 26-OCT-23 | 24-SEP-14 | 12-MAY-08 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
+| MASTER_SUBJECT_ID | WGS.UR | 21W.759 | null |
+| HASS_ATTRIBUTE | null | HA | null |
+| HASS_ATTRIBUTE_DESC | null | HASS Arts | null |
+| TERM_DURATION | Full Term Subject | Full Term Subject | null |
+| GLOBAL_REGIONS | null | null | null |
+| GLOBAL_COUNTRIES | null | null | null |
+| ON_LINE_PAGE_NUMBER | http://student.mit.edu/catalog/mWGSa.html | http://student.mit.edu/catalog/m21Wa.html | null |
+| SECTION_ID | 000 | L01 | 000 |
+| IS_MASTER_SECTION | Y | N | Y |
+| IS_LECTURE_SECTION | N | Y | N |
+| IS_LAB_SECTION | N | N | N |
+| IS_RECITATION_SECTION | N | N | N |
+| IS_DESIGN_SECTION | N | N | N |
+| RESPONSIBLE_FACULTY_NAME | Kirby, Barney | Johnston, Michaela | Frost, Ellena |
+| RESPONSIBLE_FACULTY_MIT_ID | 934724720 | 932366600 | 967905386 |
+| MEET_TIME | null | TR3-4.30 | null |
+| MEET_PLACE | null | 1-326 | null |
 
 # `drupal_course_catalog`  (rows=10000)
 
@@ -625,84 +608,82 @@ columns:
 `MEET_PLACE` varchar127: 2131 distinct, nulls=3056
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| ACADEMIC_YEAR | 2025 |
-| SUBJECT_ID | 9.UR |
-| SUBJECT_CODE | 9 |
-| SUBJECT_NUMBER | UR |
-| SOURCE_SUBJECT_ID | 9.UR |
-| PRINT_SUBJECT_ID | 9.UR |
-| IS_PRINTED_IN_BULLETIN | Y |
-| DEPARTMENT_CODE | 9 |
-| DEPARTMENT_NAME | Brain and Cognitive Sciences |
-| EFFECTIVE_TERM_CODE | 2010FA |
-| SUBJECT_SHORT_TITLE | Undergraduate Research |
-| SUBJECT_TITLE | Undergraduate Research |
-| IS_VARIABLE_UNITS | Y |
-| LECTURE_UNITS | 0 |
-| LAB_UNITS | 0 |
-| PREPARATION_UNITS | 0 |
-| TOTAL_UNITS | 0 |
-| DESIGN_UNITS | 0 |
-| GRADE_TYPE | P |
-| GRADE_TYPE_DESC | P/D/F |
-| GRADE_RULE | J |
-| GRADE_RULE_DESC | Continuing and Repeatable |
-| HGN_CODE | U |
-| HGN_DESC | Undergraduate |
-| HGN_EXCEPT | null |
-| GIR_ATTRIBUTE | null |
-| GIR_ATTRIBUTE_DESC | null |
-| COMM_REQ_ATTRIBUTE | null |
-| COMM_REQ_ATTRIBUTE_DESC | null |
-| TUITION_ATTRIBUTE | null |
-| TUITION_ATTRIBUTE_DESC | null |
-| WRITE_REQ_ATTRIBUTE | null |
-| WRITE_REQ_ATTRIBUTE_DESC | null |
-| SUPERVISOR_ATTRIBUTE | UROP |
-| SUPERVISOR_ATTRIBUTE_DESC | UROP subject |
-| PREREQUISITES | null |
-| SUBJECT_DESCRIPTION | Individual participation in an ongoing research project. |
-| JOINT_SUBJECTS | null |
-| SCHOOL_WIDE_ELECTIVES | null |
-| MEETS_WITH_SUBJECTS | null |
-| EQUIVALENT_SUBJECTS | null |
-| IS_OFFERED_THIS_YEAR | Y |
-| IS_OFFERED_FALL_TERM | Y |
-| IS_OFFERED_IAP | Y |
-| IS_OFFERED_SPRING_TERM | Y |
-| IS_OFFERED_SUMMER_TERM | Y |
-| FALL_INSTRUCTORS | Staff |
-| SPRING_INSTRUCTORS | Staff |
-| STATUS_CHANGE | null |
-| LAST_ACTIVITY_DATE | 26-OCT-23 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-| MASTER_SUBJECT_ID | 9.UR |
-| HASS_ATTRIBUTE | null |
-| HASS_ATTRIBUTE_DESC | null |
-| TERM_DURATION | Full Term Subject |
-| GLOBAL_REGIONS | null |
-| GLOBAL_COUNTRIES | null |
-| ON_LINE_PAGE_NUMBER | http://student.mit.edu/catalog/m9b.html |
-| SO_SUBJECT_ID | 9.UR |
-| SO_TERM_CODE | 2025SP |
-| SO_TERM_DESCRIPTION | Spring Term 2024-2025 |
-| SO_CLUSTER_TYPE | null |
-| SECTION_ID | 000 |
-| IS_MASTER_SECTION | Y |
-| IS_LECTURE_SECTION | N |
-| IS_LAB_SECTION | N |
-| IS_RECITATION_SECTION | N |
-| IS_DESIGN_SECTION | N |
-| RESPONSIBLE_FACULTY_NAME | Barton, Kevin |
-| RESPONSIBLE_FACULTY_MIT_ID | 940702290 |
-| MEET_TIME | null |
-| MEET_PLACE | null |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| ACADEMIC_YEAR | 2025 | 2005 | 2021 |
+| SUBJECT_ID | 9.UR | 1.995 | 1.041 |
+| SUBJECT_CODE | 9 | 1 | 1 |
+| SUBJECT_NUMBER | UR | 995 | 041 |
+| SOURCE_SUBJECT_ID | 9.UR | 1.995 | 1.041 |
+| PRINT_SUBJECT_ID | 9.UR | 1.9931.995 | 1.041 |
+| IS_PRINTED_IN_BULLETIN | Y | Y | Y |
+| DEPARTMENT_CODE | 9 | 1 | 1 |
+| DEPARTMENT_NAME | Brain and Cognitive Sciences | Civil and Environmental Eng | Civil and Environmental Eng |
+| EFFECTIVE_TERM_CODE | 2010FA | 2005FA | 2017FA |
+| SUBJECT_SHORT_TITLE | Undergraduate Research | Spec Stud: Civil & Environ Eng | Transportation Systms Modeling |
+| SUBJECT_TITLE | Undergraduate Research | Special Undergraduate Studies in Civil and Environmental Engineering | Transportation Systems Modeling |
+| IS_VARIABLE_UNITS | Y | Y | N |
+| LECTURE_UNITS | 0 | 0 | 3 |
+| LAB_UNITS | 0 | 0 | 1 |
+| PREPARATION_UNITS | 0 | 0 | 8 |
+| TOTAL_UNITS | 0 | 0 | 12 |
+| DESIGN_UNITS | 0 | 0 | 0 |
+| GRADE_TYPE | P | L | L |
+| GRADE_TYPE_DESC | P/D/F | Letter graded | Letter graded |
+| GRADE_RULE | J | R | N |
+| GRADE_RULE_DESC | Continuing and Repeatable | Can be repeated for credit | Not repeatable for credit |
+| HGN_CODE | U | U | U |
+| HGN_DESC | Undergraduate | Undergraduate | Undergraduate |
+| HGN_EXCEPT | null | null | null |
+| GIR_ATTRIBUTE | null | null | null |
+| GIR_ATTRIBUTE_DESC | null | null | null |
+| COMM_REQ_ATTRIBUTE | null | null | null |
+| COMM_REQ_ATTRIBUTE_DESC | null | null | null |
+| TUITION_ATTRIBUTE | null | null | null |
+| TUITION_ATTRIBUTE_DESC | null | null | null |
+| WRITE_REQ_ATTRIBUTE | null | null | null |
+| WRITE_REQ_ATTRIBUTE_DESC | null | null | null |
+| SUPERVISOR_ATTRIBUTE | UROP | null | null |
+| SUPERVISOR_ATTRIBUTE_DESC | UROP subject | null | null |
+| PREREQUISITES | null | Permission of instructor | 1.010 and (1.00 or 1.000) |
+| SUBJECT_DESCRIPTION | Individual participation in an ongoing research project. | Undergraduate subjects taught experimentally; special subjects offered by visiting faculty; and seminars on topics of current i | Introduces basic concepts of transportation systems modeling, data analysis and visualization techniques. Covers fundamental an |
+| JOINT_SUBJECTS | null | null | null |
+| SCHOOL_WIDE_ELECTIVES | null | null | null |
+| MEETS_WITH_SUBJECTS | null | null | null |
+| EQUIVALENT_SUBJECTS | null | null | null |
+| IS_OFFERED_THIS_YEAR | Y | Y | Y |
+| IS_OFFERED_FALL_TERM | Y | Y | Y |
+| IS_OFFERED_IAP | Y | Y | N |
+| IS_OFFERED_SPRING_TERM | Y | Y | N |
+| IS_OFFERED_SUMMER_TERM | Y | Y | N |
+| FALL_INSTRUCTORS | Staff | A. Kemp | M. Solomon |
+| SPRING_INSTRUCTORS | Staff | A. Kemp | M. Solomon |
+| STATUS_CHANGE | null | null | null |
+| LAST_ACTIVITY_DATE | 26-OCT-23 | 26-MAR-04 | 24-MAR-21 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
+| MASTER_SUBJECT_ID | 9.UR | null | 1.041 |
+| HASS_ATTRIBUTE | null | null | null |
+| HASS_ATTRIBUTE_DESC | null | null | null |
+| TERM_DURATION | Full Term Subject | null | Full Term Subject |
+| GLOBAL_REGIONS | null | null | null |
+| GLOBAL_COUNTRIES | null | null | null |
+| ON_LINE_PAGE_NUMBER | http://student.mit.edu/catalog/m9b.html | null | http://student.mit.edu/catalog/m1a.html |
+| SO_SUBJECT_ID | 9.UR | 1.995 | 1.041 |
+| SO_TERM_CODE | 2025SP | 2005SP | 2021FA |
+| SO_TERM_DESCRIPTION | Spring Term 2024-2025 | Spring Term 2004-2005 | Fall Term 2020-2021 |
+| SO_CLUSTER_TYPE | null | null | null |
+| SECTION_ID | 000 | 000 | R01,000,L01 |
+| IS_MASTER_SECTION | Y | Y | N,N,Y |
+| IS_LECTURE_SECTION | N | N | N,N,Y |
+| IS_LAB_SECTION | N | N | N,N,N |
+| IS_RECITATION_SECTION | N | N | Y,N,N |
+| IS_DESIGN_SECTION | N | N | N,N,N |
+| RESPONSIBLE_FACULTY_NAME | Barton, Kevin | Booth, Matthew | Khan, Crystal,Khan, Crystal,Khan, Crystal |
+| RESPONSIBLE_FACULTY_MIT_ID | 940702290 | 965591884 | 972169101,972169101,972169101 |
+| MEET_TIME | null | null | *TO BE ARRANGED,MW1-2.30 |
+| MEET_PLACE | null | null | VIRTUAL |
 
 # `drupal_employee_directory`  (rows=10000)
 
@@ -727,30 +708,28 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=10000
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| MIT_ID | 999997078 |
-| LAST_NAME | Holland |
-| FIRST_NAME | Alec |
-| MIDDLE_NAME | null |
-| FULL_NAME | Holland, Alec |
-| EMPLOYEE_GROUP | Exempt |
-| EMPLOYEE_TYPE | Other Academic Group |
-| HAS_ADDL_APPOINTMENT | N |
-| HAS_DUAL_APPOINTMENT | N |
-| OFFICE_LOCATION | null |
-| OFFICE_PHONE | null |
-| HR_ORG_UNIT_ID | 10004284 |
-| HR_ORG_UNIT_TITLE | Institute for Medical Eng. and Science |
-| DIRECTORY_TITLE | null |
-| PRIMARY_TITLE | null |
-| EMAIL_ADDRESS | ah@worker.com |
-| PERSONAL_URL | null |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| MIT_ID | 999997078 | 918898823 | 962181509 |
+| LAST_NAME | Holland | Greer | Morales |
+| FIRST_NAME | Alec | Cole | Stacey |
+| MIDDLE_NAME | null | null | null |
+| FULL_NAME | Holland, Alec | Greer, Cole | Morales, Stacey |
+| EMPLOYEE_GROUP | Exempt | Exempt | Exempt |
+| EMPLOYEE_TYPE | Other Academic Group | Other Academic Group | Other Academic Group |
+| HAS_ADDL_APPOINTMENT | N | N | N |
+| HAS_DUAL_APPOINTMENT | N | N | N |
+| OFFICE_LOCATION | null | 36-878C | 4-051D |
+| OFFICE_PHONE | null | 6313234080 | null |
+| HR_ORG_UNIT_ID | 10004284 | 10000578 | 10000325 |
+| HR_ORG_UNIT_TITLE | Institute for Medical Eng. and Science | Research Laboratory of Electronics | Materials Science and Engineering |
+| DIRECTORY_TITLE | null | null | null |
+| PRIMARY_TITLE | null | null | null |
+| EMAIL_ADDRESS | ah@worker.com | coleg@worker.com | staceym@worker.com |
+| PERSONAL_URL | null | null | null |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `employee_directory`  (rows=10000)
 
@@ -781,36 +760,34 @@ columns:
 `PREFERRED_LAST_NAME` varchar127: 339 distinct
 
 indexes: `KRB_NAME`, `MIT_ID`, `OFFICE_LOCATION`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| MIT_ID | 999983523 |
-| LAST_NAME | Leonard |
-| FIRST_NAME | Hattie |
-| MIDDLE_NAME | null |
-| FULL_NAME | Leonard, Hattie |
-| DIRECTORY_FULL_NAME | Leonard, Hattie |
-| OFFICE_LOCATION | 4-022B |
-| OFFICE_PHONE | 5325034320 |
-| DIRECTORY_TITLE | null |
-| PRIMARY_TITLE | null |
-| DEPARTMENT_NUMBER | 861000 |
-| DEPARTMENT_NAME | Housing & Residential Services |
-| KRB_NAME | hattiel |
-| KRB_NAME_UPPERCASE | HATTIEL |
-| EMAIL_ADDRESS | hattiel@worker.com |
-| PERSONAL_URL | null |
-| NAME_KNOWN_BY | Hattie |
-| EMAIL_ADDRESS_UPPERCASE | HATTIEL@WORKER.COM |
-| FULL_NAME_UPPERCASE | LEONARD, HATTIE |
-| PREFERRED_FIRST_NAME_UPPER | HATTIE |
-| PREFERRED_LAST_NAME_UPPER | LEONARD |
-| PREFERRED_FIRST_NAME | Hattie |
-| PREFERRED_MIDDLE_NAME | null |
-| PREFERRED_LAST_NAME | Leonard |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| MIT_ID | 999983523 | 996254273 | 955821623 |
+| LAST_NAME | Leonard | Powers | Weeks |
+| FIRST_NAME | Hattie | Francesca | Tariq |
+| MIDDLE_NAME | null | null | null |
+| FULL_NAME | Leonard, Hattie | Powers, Francesca | Weeks, Tariq |
+| DIRECTORY_FULL_NAME | Leonard, Hattie | Powers, Francesca | Weeks, Tariq |
+| OFFICE_LOCATION | 4-022B | null | 11-415H |
+| OFFICE_PHONE | 5325034320 | null | 4849060443 |
+| DIRECTORY_TITLE | null | null | null |
+| PRIMARY_TITLE | null | null | null |
+| DEPARTMENT_NUMBER | 861000 | 97500 | 490002 |
+| DEPARTMENT_NAME | Housing & Residential Services | Center for International Studies | Institute Office of Communications |
+| KRB_NAME | hattiel | francescap | tariqw |
+| KRB_NAME_UPPERCASE | HATTIEL | FRANCESCAP | TARIQW |
+| EMAIL_ADDRESS | hattiel@worker.com | francescap@worker.com | tariqw@worker.com |
+| PERSONAL_URL | null | null | null |
+| NAME_KNOWN_BY | Hattie | Francesca | Tariq |
+| EMAIL_ADDRESS_UPPERCASE | HATTIEL@WORKER.COM | FRANCESCAP@WORKER.COM | TARIQW@WORKER.COM |
+| FULL_NAME_UPPERCASE | LEONARD, HATTIE | POWERS, FRANCESCA | WEEKS, TARIQ |
+| PREFERRED_FIRST_NAME_UPPER | HATTIE | FRANCESCA | TARIQ |
+| PREFERRED_LAST_NAME_UPPER | LEONARD | POWERS | WEEKS |
+| PREFERRED_FIRST_NAME | Hattie | Francesca | Tariq |
+| PREFERRED_MIDDLE_NAME | null | null | null |
+| PREFERRED_LAST_NAME | Leonard | Powers | Weeks |
 
 # `fac_building`  (rows=242)
 
@@ -842,51 +819,49 @@ columns:
 `LATITUDE_WGS` float: 78 distinct, nulls=104, 42.2539..42.6233, avg=42.3812, median=42.3601
 `LONGITUDE_WGS` float: 109 distinct, nulls=104, -71.4937..-70.979, avg=-71.1068, median=-71.0935
 `EASTING_X_SPCS` float: 134 distinct, nulls=104, 657854..796445, avg=762408, median=766026
-`NORTHING_Y_SPCS` float: 115 distinct, nulls=104, 2.91772e+06..3.05219e+06, avg=2.96419e+06, median=2.95652e+06
+`NORTHING_Y_SPCS` float: 115 distinct, nulls=104, 2.9e+06..3.1e+06, avg=3e+06, median=3e+06
 `BUILDING_SORT` varchar127: all distinct
 `BUILDING_NAMED_FOR` varchar127: 68 distinct, nulls=41
 `BUILDING_NAME` varchar127: 236 distinct
 `DATE_BUILT` varchar127: 111 distinct, nulls=92
 
 indexes: `FAC_BUILDING_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| DATE_ACQUIRED | 12/31/1955 |
-| DATE_OCCUPIED | 12/31/1955 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-| NUM_OF_ROOMS | 168 |
-| FAC_BUILDING_KEY | NW12 |
-| BUILDING_NUMBER | NW12 |
-| PARENT_BUILDING_NUMBER | null |
-| PARENT_BUILDING_NAME | null |
-| PARENT_BUILDING_NAME_LONG | null |
-| BUILDING_NAME_LONG | Nuclear Reactor Laboratory |
-| EXT_GROSS_AREA | 50294.2 |
-| ASSIGNABLE_AREA | 34662.8 |
-| NON_ASSIGNABLE_AREA | 10096.1 |
-| SITE | MIT |
-| CAMPUS_SECTOR | NORTHWEST |
-| ACCESS_LEVEL_CODE | 0 |
-| ACCESS_LEVEL_NAME | 0 |
-| BUILDING_TYPE | ACADEMIC |
-| OWNERSHIP_TYPE | OWNED |
-| BUILDING_USE | AER |
-| OCCUPANCY_CLASS | UGB |
-| BUILDING_HEIGHT | 47.3 |
-| COST_CENTER_CODE | 1841200 |
-| COST_COLLECTOR_KEY | 1841200 |
-| LATITUDE_WGS | 42.3601 |
-| LONGITUDE_WGS | -71.0969 |
-| EASTING_X_SPCS | 765123 |
-| NORTHING_Y_SPCS | 2.95651e+06 |
-| BUILDING_SORT | NW12 |
-| BUILDING_NAMED_FOR | - |
-| BUILDING_NAME | NUCLEAR REACTOR LAB |
-| DATE_BUILT | 12/31/1937 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| DATE_ACQUIRED | 12/31/1955 | null | null |
+| DATE_OCCUPIED | 12/31/1955 | null | null |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
+| NUM_OF_ROOMS | 168 | 10 | 3 |
+| FAC_BUILDING_KEY | NW12 | W85C | OC19Q |
+| BUILDING_NUMBER | NW12 | W85C | OC19Q |
+| PARENT_BUILDING_NUMBER | null | W85ABC | null |
+| PARENT_BUILDING_NAME | null | WESTGATE (ABC) | null |
+| PARENT_BUILDING_NAME_LONG | null | Westgate ABC | null |
+| BUILDING_NAME_LONG | Nuclear Reactor Laboratory | Westgate C Married Student Housing | BATES LINAC: Water Tower |
+| EXT_GROSS_AREA | 50294.2 | 4661.33 | 241.54 |
+| ASSIGNABLE_AREA | 34662.8 | 3701.95 | 188.14 |
+| NON_ASSIGNABLE_AREA | 10096.1 | 454.98 | 2.51 |
+| SITE | MIT | MIT | BATES |
+| CAMPUS_SECTOR | NORTHWEST | WEST | OFFCAMPUS |
+| ACCESS_LEVEL_CODE | 0 | 2 | 1 |
+| ACCESS_LEVEL_NAME | 0 | 2 | 1 |
+| BUILDING_TYPE | ACADEMIC | RESIDENT | ACADEMIC |
+| OWNERSHIP_TYPE | OWNED | OWNED | OWNED |
+| BUILDING_USE | AER | DHOA | AER |
+| OCCUPANCY_CLASS | UGB | (NULL) | (NULL) |
+| BUILDING_HEIGHT | 47.3 | null | null |
+| COST_CENTER_CODE | 1841200 | null | 1876000 |
+| COST_COLLECTOR_KEY | 1841200 | null | 1876000 |
+| LATITUDE_WGS | 42.3601 | null | null |
+| LONGITUDE_WGS | -71.0969 | null | null |
+| EASTING_X_SPCS | 765123 | null | null |
+| NORTHING_Y_SPCS | 3e+06 | null | null |
+| BUILDING_SORT | NW12 | W85C | OC19Q |
+| BUILDING_NAMED_FOR | - | - | - |
+| BUILDING_NAME | NUCLEAR REACTOR LAB | WESTGATE (C) | BATES LINAC: WATER TOWER |
+| DATE_BUILT | 12/31/1937 | null | null |
 
 # `fac_building_address`  (rows=785)
 
@@ -908,27 +883,25 @@ columns:
 `POSTAL_CODE` varchar127: "2139"=489, "2142"=194, "1949"=28, "1886"=27, "2421"=18, "1879"=9, "2026"=5, "2110"=3, "1040"=2, "1887"=2, "20002"=2, "20036"=2, "2155"=2, "2210"=2
 
 indexes: `BUILDING_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-| BUILDING_ADDRESS_KEY | WW15-STREET |
-| BUILDING_KEY | WW15 |
-| ADDRESS_PURPOSE | STREET |
-| ADDRESS_CITY_ID | 25455 |
-| IS_E911_ADDRESS | null |
-| STREET_NUMBER | 350 |
-| STREET_NUMBER_SUFFIX | null |
-| PRE_DIRECTIONAL | null |
-| STREET_NAME | BROOKLINE |
-| STREET_SUFFIX | ST |
-| POST_DIRECTIONAL | null |
-| CITY | CAMBRIDGE |
-| STATE | MA |
-| POSTAL_CODE | 2139 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
+| BUILDING_ADDRESS_KEY | WW15-STREET | W5-STREET | W16-STREET |
+| BUILDING_KEY | WW15 | W5 | W16 |
+| ADDRESS_PURPOSE | STREET | STREET | STREET |
+| ADDRESS_CITY_ID | 25455 | 673 | 31044 |
+| IS_E911_ADDRESS | null | null | null |
+| STREET_NUMBER | 350 | 350 | 48 |
+| STREET_NUMBER_SUFFIX | null | null | R |
+| PRE_DIRECTIONAL | null | null | null |
+| STREET_NAME | BROOKLINE | MEMORIAL | MASSACHUSETTS |
+| STREET_SUFFIX | ST | DR | AVE |
+| POST_DIRECTIONAL | null | null | null |
+| CITY | CAMBRIDGE | CAMBRIDGE | CAMBRIDGE |
+| STATE | MA | MA | MA |
+| POSTAL_CODE | 2139 | 2139 | 2139 |
 
 # `fac_floor`  (rows=1079)
 
@@ -946,23 +919,21 @@ columns:
 `ACCESS_LEVEL` varchar127: "2"=994, "1"=71, "0"=11, "3"=3
 
 indexes: `BUILDING_KEY`, `FLOOR_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-| BUILDING_KEY | WW15 |
-| FLOOR | 1 |
-| FLOOR_KEY | WW15-1 |
-| EXT_GROSS_AREA | 40280.1 |
-| ASSIGNABLE_AREA | 36378.2 |
-| NON_ASSIGNABLE_AREA | 2313.55 |
-| FLOOR_SORT_SEQUENCE | 1 |
-| LEVEL_ID | 1 |
-| BUILDING_WINGS_ID | null |
-| ACCESS_LEVEL | 0 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
+| BUILDING_KEY | WW15 | 64B | OC19J |
+| FLOOR | 1 | 5 | 1 |
+| FLOOR_KEY | WW15-1 | 64B-5 | OC19J-1 |
+| EXT_GROSS_AREA | 40280.1 | 3947.95 | 400.94 |
+| ASSIGNABLE_AREA | 36378.2 | 2633.54 | 348.95 |
+| NON_ASSIGNABLE_AREA | 2313.55 | 906.17 | 0 |
+| FLOOR_SORT_SEQUENCE | 1 | 5 | 1 |
+| LEVEL_ID | 1 | 5 | null |
+| BUILDING_WINGS_ID | null | null | null |
+| ACCESS_LEVEL | 0 | 2 | 2 |
 
 # `fac_major_use`  (rows=14)
 
@@ -974,17 +945,15 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=14
 
 indexes: `MAJOR_USE_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| MAJOR_USE_KEY | 114 |
-| MAJOR_USE | ZUSE |
-| DESCRIPTION | ZUSE ICR ONLY |
-| ASSIGNABLE | 1 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| MAJOR_USE_KEY | 114 | 114 | 106 |
+| MAJOR_USE | ZUSE | ZUSE | LABS |
+| DESCRIPTION | ZUSE ICR ONLY | ZUSE ICR ONLY | LABORATORIES |
+| ASSIGNABLE | 1 | 1 | 1 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `fac_organization`  (rows=169)
 
@@ -1010,37 +979,35 @@ columns:
 `HR_DEPARTMENT_NAME` varchar127: 147 distinct, nulls=12
 
 indexes: `ORGANIZATION_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| ORGANIZATION_KEY | 288 |
-| ORGANIZATION_ID | 288 |
-| ORGANIZATION | HEALTH |
-| ORGANIZATION_NAME | MIT HEALTH |
-| ORG_PARENT_KEY | 163 |
-| ORG_PARENT | EXECVP |
-| MAJOR_ORG_KEY | 163 |
-| MAJOR_ORG | EXECVP |
-| ORGANIZATION_LEVEL | 4 |
-| ORGANIZATION_NUMBER | 495000 |
-| ORGANIZATION_SORT | 101030640 |
-| ASSIGNABLE | 1 |
-| COURSE | null |
-| DESCRIPTION | null |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-| D_CODE | D_MEDICAL |
-| HR_DEPARTMENT_CODE_OLD | 495000 |
-| HR_ORG_UNIT_ID | 10000792 |
-| HR_DEPARTMENT_NAME | MIT Health |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| ORGANIZATION_KEY | 288 | 232 | 165 |
+| ORGANIZATION_ID | 288 | 232 | 165 |
+| ORGANIZATION | HEALTH | PUBSVC | FBML |
+| ORGANIZATION_NAME | MIT HEALTH | PUBLIC REL SVCS | F BITTER MAG LAB |
+| ORG_PARENT_KEY | 163 | 267 | 266 |
+| ORG_PARENT | EXECVP | VP-SCP | VP-RES |
+| MAJOR_ORG_KEY | 163 | 267 | 230 |
+| MAJOR_ORG | EXECVP | VP-SCP | PROVST |
+| ORGANIZATION_LEVEL | 4 | 5 | 5 |
+| ORGANIZATION_NUMBER | 495000 | 490000 | 265000 |
+| ORGANIZATION_SORT | 101030640 | 101090006 | 101060219 |
+| ASSIGNABLE | 1 | 1 | 1 |
+| COURSE | null | null | null |
+| DESCRIPTION | null | null | null |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
+| D_CODE | D_MEDICAL | D_VP_SEC_CORP | D_MAGLAB |
+| HR_DEPARTMENT_CODE_OLD | 495000 | 490000 | 265000 |
+| HR_ORG_UNIT_ID | 10000792 | 10000789 | 10000576 |
+| HR_DEPARTMENT_NAME | MIT Health | Institute Affairs | Francis Bitter Magnet Laboratory |
 
 # `fac_rooms`  (rows=10000)
 
 columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=10000
-`FAC_ROOM_KEY` varchar127: 9878 distinct, "1-069"=2, "1-113"=2, "10-187"=2, "10-426"=2, "12-126"=2, "12-429"=2, "12-553"=2, "13-443"=2, "13-553"=2, "13-579"=2
+`FAC_ROOM_KEY` varchar127: 9878 distinct
 `BUILDING_KEY` varchar127: 188 distinct, "46"=859, "32"=436, "E37"=414, "54"=362, "36"=277, "68"=268, "76"=255, "E62"=201, "13"=192, "12"=188
 `FLOOR` varchar127: 47 distinct
 `FLOOR_KEY` varchar127: 827 distinct, "46-4"=227, "46-6"=161, "46-5"=128, "46-2"=110, "32-0"=95, "46-3"=77, "46-1"=75, "46-7"=58, "76-0"=48, "32-3"=47
@@ -1066,37 +1033,35 @@ columns:
 `EASTING_SPCS` float: all NULL
 
 indexes: `BUILDING_KEY`, `FAC_ROOM_KEY`, `FLOOR_KEY`, `MAJOR_USE_KEY`, `ORGANIZATION_KEY`, `ROOM`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-| FAC_ROOM_KEY | WW15-197H |
-| BUILDING_KEY | WW15 |
-| FLOOR | 1 |
-| FLOOR_KEY | WW15-1 |
-| ROOM | 197H |
-| SPACE_ID | WW15-1-197H |
-| MAJOR_USE_KEY | 101 |
-| MAJOR_USE_DESC | BLDG SRV |
-| USE_KEY | 106 |
-| USE_DESC | null |
-| MINOR_USE_KEY | null |
-| MINOR_USE_DESC | null |
-| ORGANIZATION_KEY | 149 |
-| ORGANIZATION_NAME | DOF |
-| MINOR_ORGANIZATION_KEY | null |
-| MINOR_ORGANIZATION | null |
-| AREA | 126 |
-| ROOM_FULL_NAME | null |
-| DEPT_CODE | null |
-| ACCESS_LEVEL | 3 |
-| LATITUDE_WGS | null |
-| LONGITUDE_WGS | null |
-| NORTHING_SPCS | null |
-| EASTING_SPCS | null |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
+| FAC_ROOM_KEY | WW15-197H | W79-447 | 38-292 |
+| BUILDING_KEY | WW15 | W79 | 38 |
+| FLOOR | 1 | 4 | 2 |
+| FLOOR_KEY | WW15-1 | W79-4 | 38-2 |
+| ROOM | 197H | 447 | 292 |
+| SPACE_ID | WW15-1-197H | W79-4-447 | 38-2-292 |
+| MAJOR_USE_KEY | 101 | 107 | 107 |
+| MAJOR_USE_DESC | BLDG SRV | MECHANIC | MECHANIC |
+| USE_KEY | 106 | 154 | 155 |
+| USE_DESC | null | null | null |
+| MINOR_USE_KEY | null | null | null |
+| MINOR_USE_DESC | null | null | null |
+| ORGANIZATION_KEY | 149 | 149 | 149 |
+| ORGANIZATION_NAME | DOF | DOF | DOF |
+| MINOR_ORGANIZATION_KEY | null | null | null |
+| MINOR_ORGANIZATION | null | null | null |
+| AREA | 126 | 415.25 | 24.78 |
+| ROOM_FULL_NAME | null | null | null |
+| DEPT_CODE | null | null | null |
+| ACCESS_LEVEL | 3 | 0 | 0 |
+| LATITUDE_WGS | null | null | null |
+| LONGITUDE_WGS | null | null | null |
+| NORTHING_SPCS | null | null | null |
+| EASTING_SPCS | null | null | null |
 
 # `fclt_building`  (rows=242)
 
@@ -1124,7 +1089,7 @@ columns:
 `LATITUDE_WGS` float: 78 distinct, nulls=104, 42.2539..42.6233, avg=42.3812, median=42.3601
 `LONGITUDE_WGS` float: 109 distinct, nulls=104, -71.4937..-70.979, avg=-71.1068, median=-71.0935
 `EASTING_X_SPCS` float: 134 distinct, nulls=104, 657854..796445, avg=762408, median=766026
-`NORTHING_Y_SPCS` float: 115 distinct, nulls=104, 2.91772e+06..3.05219e+06, avg=2.96419e+06, median=2.95652e+06
+`NORTHING_Y_SPCS` float: 115 distinct, nulls=104, 2.9e+06..3.1e+06, avg=3e+06, median=3e+06
 `BUILDING_SORT` varchar127: all distinct
 `BUILDING_NAMED_FOR` varchar127: 68 distinct, nulls=41
 `BUILDING_NAME` varchar127: 236 distinct
@@ -1135,44 +1100,42 @@ columns:
 `NUM_OF_ROOMS` int: 151 distinct, 0..1424, avg=178.4091, median=90.5
 
 indexes: `ACCESS_LEVEL_CODE`, `COST_CENTER_CODE`, `COST_COLLECTOR_KEY`, `FCLT_BUILDING_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FCLT_BUILDING_KEY | WW15 |
-| BUILDING_NUMBER | WW15 |
-| PARENT_BUILDING_NUMBER | null |
-| PARENT_BUILDING_NAME | null |
-| PARENT_BUILDING_NAME_LONG | null |
-| BUILDING_NAME_LONG | Building WW15 |
-| EXT_GROSS_AREA | 42145.8 |
-| ASSIGNABLE_AREA | 37271.3 |
-| NON_ASSIGNABLE_AREA | 3048.68 |
-| SITE | MIT |
-| CAMPUS_SECTOR | WESTWEST |
-| ACCESS_LEVEL_CODE | 2 |
-| ACCESS_LEVEL_NAME | 2 |
-| BUILDING_TYPE | SERVICE |
-| OWNERSHIP_TYPE | OWNED |
-| BUILDING_USE | AER |
-| OCCUPANCY_CLASS | UGS2 |
-| BUILDING_HEIGHT | 16 |
-| COST_CENTER_CODE | 1846500 |
-| COST_COLLECTOR_KEY | 1846500 |
-| LATITUDE_WGS | 42.3554 |
-| LONGITUDE_WGS | -71.1095 |
-| EASTING_X_SPCS | 761724 |
-| NORTHING_Y_SPCS | 2.95476e+06 |
-| BUILDING_SORT | WW15 |
-| BUILDING_NAMED_FOR | - |
-| BUILDING_NAME | BUILDING WW15 |
-| DATE_BUILT | 12/31/1969 |
-| DATE_ACQUIRED | null |
-| DATE_OCCUPIED | 12/31/1969 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-| NUM_OF_ROOMS | 109 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FCLT_BUILDING_KEY | WW15 | NW17 | N16 |
+| BUILDING_NUMBER | WW15 | NW17 | N16 |
+| PARENT_BUILDING_NUMBER | null | null | null |
+| PARENT_BUILDING_NAME | null | null | null |
+| PARENT_BUILDING_NAME_LONG | null | null | null |
+| BUILDING_NAME_LONG | Building WW15 | Plasma Science And Fusion Center (NW17) | Cooling Tower & Oil Reserve |
+| EXT_GROSS_AREA | 42145.8 | 45542.4 | 34794.9 |
+| ASSIGNABLE_AREA | 37271.3 | 28487.9 | 3441.66 |
+| NON_ASSIGNABLE_AREA | 3048.68 | 12693.6 | 29361 |
+| SITE | MIT | MIT | MIT |
+| CAMPUS_SECTOR | WESTWEST | NORTHWEST | NORTH |
+| ACCESS_LEVEL_CODE | 2 | 2 | 0 |
+| ACCESS_LEVEL_NAME | 2 | 2 | 0 |
+| BUILDING_TYPE | SERVICE | ACADEMIC | SERVICE |
+| OWNERSHIP_TYPE | OWNED | OWNED | OWNED |
+| BUILDING_USE | AER | AER | OTH |
+| OCCUPANCY_CLASS | UGS2 | UGB | UGU |
+| BUILDING_HEIGHT | 16 | 33.8 | 59 |
+| COST_CENTER_CODE | 1846500 | 1841700 | null |
+| COST_COLLECTOR_KEY | 1846500 | 1841700 | null |
+| LATITUDE_WGS | 42.3554 | 42.3599 | 42.3613 |
+| LONGITUDE_WGS | -71.1095 | -71.0991 | -71.0941 |
+| EASTING_X_SPCS | 761724 | 764508 | 765877 |
+| NORTHING_Y_SPCS | 3e+06 | 3e+06 | 3e+06 |
+| BUILDING_SORT | WW15 | NW17 | N16 |
+| BUILDING_NAMED_FOR | - | - | - |
+| BUILDING_NAME | BUILDING WW15 | PLASMA SCIENCE & FUSION CENTER (NW17) | COOLING TOWER & OIL RESERVE |
+| DATE_BUILT | 12/31/1969 | 12/31/1923 | 09/20/1971 |
+| DATE_ACQUIRED | null | null | null |
+| DATE_OCCUPIED | 12/31/1969 | 12/31/1923 | 12/31/1972 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
+| NUM_OF_ROOMS | 109 | 151 | 24 |
 
 # `fclt_building_address`  (rows=785)
 
@@ -1195,28 +1158,26 @@ columns:
 `STATE` varchar127: "MA"=698, "DC"=4, nulls=83
 
 indexes: `FCLT_BUILDING_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| POSTAL_CODE | 2421 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-| FCLT_BUILDING_ADDRESS_KEY | OC36A-STREET |
-| FCLT_BUILDING_KEY | OC36A |
-| BUILDING_NUMBER | OC36A |
-| ADDRESS_PURPOSE | STREET |
-| ADDRESS_CITY_ID | null |
-| IS_E911_ADDRESS | null |
-| STREET_NUMBER | 244 |
-| STREET_NUMBER_SUFFIX | null |
-| PRE_DIRECTIONAL | null |
-| STREET_NAME | WOOD |
-| STREET_SUFFIX | ST |
-| POST_DIRECTIONAL | null |
-| CITY | LEXINGTON |
-| STATE | MA |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| POSTAL_CODE | 2421 | 2139 | 2139 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
+| FCLT_BUILDING_ADDRESS_KEY | OC36A-STREET | W85B-PARCL1 | NW30-STREET |
+| FCLT_BUILDING_KEY | OC36A | W85B | NW30 |
+| BUILDING_NUMBER | OC36A | W85B | NW30 |
+| ADDRESS_PURPOSE | STREET | PARCL1 | STREET |
+| ADDRESS_CITY_ID | null | null | 629 |
+| IS_E911_ADDRESS | null | null | null |
+| STREET_NUMBER | 244 | MEM545R | 224 |
+| STREET_NUMBER_SUFFIX | null | null | null |
+| PRE_DIRECTIONAL | null | null | null |
+| STREET_NAME | WOOD | null | ALBANY |
+| STREET_SUFFIX | ST | null | ST |
+| POST_DIRECTIONAL | null | null | null |
+| CITY | LEXINGTON | null | CAMBRIDGE |
+| STATE | MA | null | MA |
 
 # `fclt_building_address_hist`  (rows=10000)
 
@@ -1241,37 +1202,35 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "01-JUN-15"=776, "01-APR-15"=774, "01-DEC-14"=774, "01-FEB-15"=774, "01-JAN-15"=774, "01-MAR-15"=774, "01-MAY-15"=774, "01-AUG-15"=768, "01-JUL-15"=768, "01-SEP-15"=768, "01-DEC-15"=484, "01-OCT-15"=465, "31-OCT-15"=426, "01-JAN-16"=414, "01-AUG-16"=349, "01-MAY-16"=138
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FCLT_BUILDING_ADDRESS_KEY | WW25-STREET |
-| FCLT_BUILDING_KEY | WW25 |
-| FISCAL_PERIOD | 201602 |
-| FCLT_BUILDING_ADDRESS_HIST_KEY | WW25-STREET-201602 |
-| BUILDING_NUMBER | WW25 |
-| ADDRESS_PURPOSE | STREET |
-| ADDRESS_CITY_ID | 31908 |
-| IS_E911_ADDRESS | null |
-| STREET_NUMBER | 142 |
-| STREET_NUMBER_SUFFIX | null |
-| PRE_DIRECTIONAL | null |
-| STREET_NAME | WAVERLY |
-| STREET_SUFFIX | ST |
-| POST_DIRECTIONAL | null |
-| CITY | CAMBRIDGE |
-| STATE | MA |
-| POSTAL_CODE | 2139 |
-| WAREHOUSE_LOAD_DATE | 01-SEP-15 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FCLT_BUILDING_ADDRESS_KEY | WW25-STREET | W1-E911_1 | W85G-E911_1 |
+| FCLT_BUILDING_KEY | WW25 | W1 | W85G |
+| FISCAL_PERIOD | 201602 | 201602 | 201506 |
+| FCLT_BUILDING_ADDRESS_HIST_KEY | WW25-STREET-201602 | W1-E911_1-201602 | W85G-E911_1-201506 |
+| BUILDING_NUMBER | WW25 | W1 | W85G |
+| ADDRESS_PURPOSE | STREET | E911_1 | E911_1 |
+| ADDRESS_CITY_ID | 31908 | 677 | 590 |
+| IS_E911_ADDRESS | null | null | null |
+| STREET_NUMBER | 142 | 305 | 284 |
+| STREET_NUMBER_SUFFIX | null | null | null |
+| PRE_DIRECTIONAL | null | null | null |
+| STREET_NAME | WAVERLY | MEMORIAL | VASSAR |
+| STREET_SUFFIX | ST | DR | ST |
+| POST_DIRECTIONAL | null | null | null |
+| CITY | CAMBRIDGE | CAMBRIDGE | CAMBRIDGE |
+| STATE | MA | MA | MA |
+| POSTAL_CODE | 2139 | 2139 | 2139 |
+| WAREHOUSE_LOAD_DATE | 01-SEP-15 | 01-SEP-15 | 01-JAN-15 |
 
 # `fclt_building_hist`  (rows=10000)
 
 columns:
 `FCLT_BUILDING_HIST_KEY` varchar127: all distinct
 `FISCAL_PERIOD` varchar127: digits, 48 distinct
-`FCLT_BUILDING_KEY` varchar127: 255 distinct, "10"=46, "11"=46, "13"=46, "14"=46, "16"=46, "17"=46, "18"=46, "24"=46, "26"=46, "31"=46
+`FCLT_BUILDING_KEY` varchar127: 255 distinct
 `BUILDING_NUMBER` varchar127: 255 distinct
 `PARENT_BUILDING_NUMBER` varchar127: "W61"=410, "W70"=287, "14"=172, "62"=129, "64"=127, "W85ABC"=123, "W85HJK"=120, "W85DE"=80, "W85FG"=80, "42"=38, nulls=8434
 `PARENT_BUILDING_NAME` varchar127: "MACGREGOR HOUSE"=410, "NEW HOUSE"=287, "HAYDEN MEMORIAL LIBRARY"=172, "ALUMNI HOUSES: MUNROE HAYDEN WOOD"=129, "EAST CAMPUS: WALCOTT BEMIS GOODALE"=127, "WESTGATE (ABC)"=123, "WESTGATE (HJK)"=120, "WESTGATE (DE)"=80, "WESTGATE (FG)"=80, "COGENERATION PLANT"=38, nulls=8434
@@ -1294,7 +1253,7 @@ columns:
 `LATITUDE_WGS` float: 81 distinct, nulls=3497, 42.2539..42.6233, avg=42.3783, median=42.3602
 `LONGITUDE_WGS` float: 120 distinct, nulls=3497, -71.4937..-70.979, avg=-71.1052, median=-71.0932
 `EASTING_X_SPCS` float: 150 distinct, nulls=3497, 922.337..796445, avg=754952, median=766034
-`NORTHING_Y_SPCS` float: 128 distinct, nulls=3497, 922.337..3.05219e+06, avg=2.93267e+06, median=2.95652e+06
+`NORTHING_Y_SPCS` float: 128 distinct, nulls=3497, 922.337..3.1e+06, avg=2.9e+06, median=3e+06
 `BUILDING_SORT` varchar127: 255 distinct
 `BUILDING_NAMED_FOR` varchar127: 66 distinct, nulls=1332
 `BUILDING_NAME` varchar127: 264 distinct
@@ -1305,46 +1264,44 @@ columns:
 `NUM_OF_ROOMS` int: 358 distinct, 0..1410, avg=179.2031, median=95
 
 indexes: `ACCESS_LEVEL_CODE`, `COST_CENTER_CODE`, `COST_COLLECTOR_KEY`, `FCLT_BUILDING_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FCLT_BUILDING_HIST_KEY | WW25-201902 |
-| FISCAL_PERIOD | 201902 |
-| FCLT_BUILDING_KEY | WW25 |
-| BUILDING_NUMBER | WW25 |
-| PARENT_BUILDING_NUMBER | null |
-| PARENT_BUILDING_NAME | null |
-| PARENT_BUILDING_NAME_LONG | null |
-| BUILDING_NAME_LONG | Building WW25 |
-| EXT_GROSS_AREA | 2300.01 |
-| ASSIGNABLE_AREA | 2300 |
-| NON_ASSIGNABLE_AREA | 0 |
-| SITE | MIT |
-| CAMPUS_SECTOR | WESTWEST |
-| ACCESS_LEVEL_CODE | 2 |
-| ACCESS_LEVEL_NAME | 2 |
-| BUILDING_TYPE | SERVICE |
-| OWNERSHIP_TYPE | LEASED |
-| BUILDING_USE | OTH |
-| OCCUPANCY_CLASS | UGS1 |
-| BUILDING_HEIGHT | null |
-| COST_CENTER_CODE | null |
-| COST_COLLECTOR_KEY | null |
-| LATITUDE_WGS | 42.3557 |
-| LONGITUDE_WGS | -71.1063 |
-| EASTING_X_SPCS | 762573 |
-| NORTHING_Y_SPCS | 2.95491e+06 |
-| BUILDING_SORT | WW25 |
-| BUILDING_NAMED_FOR | - |
-| BUILDING_NAME | BUILDING WW25 |
-| DATE_BUILT | null |
-| DATE_ACQUIRED | null |
-| DATE_OCCUPIED | null |
-| WAREHOUSE_LOAD_DATE | 01-SEP-18 |
-| NUM_OF_ROOMS | 2 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FCLT_BUILDING_HIST_KEY | WW25-201902 | 62M-201805 | 64B-201901 |
+| FISCAL_PERIOD | 201902 | 201805 | 201901 |
+| FCLT_BUILDING_KEY | WW25 | 62M | 64B |
+| BUILDING_NUMBER | WW25 | 62M | 64B |
+| PARENT_BUILDING_NUMBER | null | 62 | 64 |
+| PARENT_BUILDING_NAME | null | ALUMNI HOUSES: MUNROE HAYDEN WOOD | EAST CAMPUS: WALCOTT BEMIS GOODALE |
+| PARENT_BUILDING_NAME_LONG | null | Alumni Houses: Munroe Hayden Wood | Alumni Houses: Walcott Bemis Goodale |
+| BUILDING_NAME_LONG | Building WW25 | Alumni Houses: Munroe | Alumni Houses: Bemis |
+| EXT_GROSS_AREA | 2300.01 | 25568.4 | 23656.7 |
+| ASSIGNABLE_AREA | 2300 | 17814.3 | 14584.4 |
+| NON_ASSIGNABLE_AREA | 0 | 5082.82 | 6479.93 |
+| SITE | MIT | MIT | MIT |
+| CAMPUS_SECTOR | WESTWEST | MAIN GROUP | MAIN GROUP |
+| ACCESS_LEVEL_CODE | 2 | 2 | 2 |
+| ACCESS_LEVEL_NAME | 2 | 2 | 2 |
+| BUILDING_TYPE | SERVICE | RESIDENT | RESIDENT |
+| OWNERSHIP_TYPE | LEASED | OWNED | OWNED |
+| BUILDING_USE | OTH | DHOA | DHOA |
+| OCCUPANCY_CLASS | UGS1 | (NULL) | (NULL) |
+| BUILDING_HEIGHT | null | null | null |
+| COST_CENTER_CODE | null | null | null |
+| COST_COLLECTOR_KEY | null | null | null |
+| LATITUDE_WGS | 42.3557 | null | null |
+| LONGITUDE_WGS | -71.1063 | null | null |
+| EASTING_X_SPCS | 762573 | null | null |
+| NORTHING_Y_SPCS | 3e+06 | null | null |
+| BUILDING_SORT | WW25 | 62M | 64B |
+| BUILDING_NAMED_FOR | - | JAMES P. MUNROE | ALBERT F. BEMIS |
+| BUILDING_NAME | BUILDING WW25 | ALUMNI HOUSES: MUNROE | EAST CAMPUS: BEMIS |
+| DATE_BUILT | null | null | null |
+| DATE_ACQUIRED | null | null | null |
+| DATE_OCCUPIED | null | null | null |
+| WAREHOUSE_LOAD_DATE | 01-SEP-18 | 01-DEC-17 | 01-AUG-18 |
+| NUM_OF_ROOMS | 2 | 103 | 114 |
 
 # `fclt_building_hist_1`  (rows=10000)
 
@@ -1374,7 +1331,7 @@ columns:
 `LATITUDE_WGS` float: 81 distinct, nulls=3497, 42.2539..42.6233, avg=42.3783, median=42.3602
 `LONGITUDE_WGS` float: 120 distinct, nulls=3497, -71.4937..-70.979, avg=-71.1052, median=-71.0932
 `EASTING_X_SPCS` float: 150 distinct, nulls=3497, 922.337..796445, avg=754952, median=766034
-`NORTHING_Y_SPCS` float: 128 distinct, nulls=3497, 922.337..3.05219e+06, avg=2.93267e+06, median=2.95652e+06
+`NORTHING_Y_SPCS` float: 128 distinct, nulls=3497, 922.337..3.1e+06, avg=2.9e+06, median=3e+06
 `BUILDING_SORT` varchar127: 255 distinct
 `BUILDING_NAMED_FOR` varchar127: 66 distinct, nulls=1332
 `BUILDING_NAME` varchar127: 264 distinct
@@ -1385,46 +1342,44 @@ columns:
 `NUM_OF_ROOMS` int: 358 distinct, 0..1410, avg=179.2031, median=95
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FCLT_BUILDING_HIST_KEY | WW25-201902 |
-| FISCAL_PERIOD | 201902 |
-| FCLT_BUILDING_KEY | WW25 |
-| BUILDING_NUMBER | WW25 |
-| PARENT_BUILDING_NUMBER | null |
-| PARENT_BUILDING_NAME | null |
-| PARENT_BUILDING_NAME_LONG | null |
-| BUILDING_NAME_LONG | Building WW25 |
-| EXT_GROSS_AREA | 2300.01 |
-| ASSIGNABLE_AREA | 2300 |
-| NON_ASSIGNABLE_AREA | 0 |
-| SITE | MIT |
-| CAMPUS_SECTOR | WESTWEST |
-| ACCESS_LEVEL_CODE | 2 |
-| ACCESS_LEVEL_NAME | 2 |
-| BUILDING_TYPE | SERVICE |
-| OWNERSHIP_TYPE | LEASED |
-| BUILDING_USE | OTH |
-| OCCUPANCY_CLASS | UGS1 |
-| BUILDING_HEIGHT | null |
-| COST_CENTER_CODE | null |
-| COST_COLLECTOR_KEY | null |
-| LATITUDE_WGS | 42.3557 |
-| LONGITUDE_WGS | -71.1063 |
-| EASTING_X_SPCS | 762573 |
-| NORTHING_Y_SPCS | 2.95491e+06 |
-| BUILDING_SORT | WW25 |
-| BUILDING_NAMED_FOR | - |
-| BUILDING_NAME | BUILDING WW25 |
-| DATE_BUILT | null |
-| DATE_ACQUIRED | null |
-| DATE_OCCUPIED | null |
-| WAREHOUSE_LOAD_DATE | 01-SEP-18 |
-| NUM_OF_ROOMS | 2 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FCLT_BUILDING_HIST_KEY | WW25-201902 | 14-201810 | 38-201708 |
+| FISCAL_PERIOD | 201902 | 201810 | 201708 |
+| FCLT_BUILDING_KEY | WW25 | 14 | 38 |
+| BUILDING_NUMBER | WW25 | 14 | 38 |
+| PARENT_BUILDING_NUMBER | null | null | null |
+| PARENT_BUILDING_NAME | null | null | null |
+| PARENT_BUILDING_NAME_LONG | null | null | null |
+| BUILDING_NAME_LONG | Building WW25 | Charles Hayden Memorial Library | Fairchild Buildings (38) |
+| EXT_GROSS_AREA | 2300.01 | 142707 | 84329.5 |
+| ASSIGNABLE_AREA | 2300 | 103000 | 56162.6 |
+| NON_ASSIGNABLE_AREA | 0 | 38472.3 | 19888.6 |
+| SITE | MIT | MIT | MIT |
+| CAMPUS_SECTOR | WESTWEST | MAIN GROUP | MAIN GROUP |
+| ACCESS_LEVEL_CODE | 2 | 2 | 2 |
+| ACCESS_LEVEL_NAME | 2 | 2 | 2 |
+| BUILDING_TYPE | SERVICE | ACADEMIC | ACADEMIC |
+| OWNERSHIP_TYPE | LEASED | OWNED | OWNED |
+| BUILDING_USE | OTH | AER | AER |
+| OCCUPANCY_CLASS | UGS1 | UGA3 | UGB |
+| BUILDING_HEIGHT | null | 70.4 | 91.4 |
+| COST_CENTER_CODE | null | 1811400 | 1813800 |
+| COST_COLLECTOR_KEY | null | 1811400 | 1813800 |
+| LATITUDE_WGS | 42.3557 | 42.3592 | 42.3611 |
+| LONGITUDE_WGS | -71.1063 | -71.0893 | -71.0923 |
+| EASTING_X_SPCS | 762573 | 767168 | 766341 |
+| NORTHING_Y_SPCS | 3e+06 | 3e+06 | 3e+06 |
+| BUILDING_SORT | WW25 | 14 | 38 |
+| BUILDING_NAMED_FOR | - | CHARLES HAYDEN | SHERMAN M. FAIRCHILD |
+| BUILDING_NAME | BUILDING WW25 | HAYDEN MEMORIAL LIBRARY | FAIRCHILD BUILDING (38) |
+| DATE_BUILT | null | 05-APR-48 | 12-APR-71 |
+| DATE_ACQUIRED | null | null | null |
+| DATE_OCCUPIED | null | 31-DEC-51 | 01-OCT-73 |
+| WAREHOUSE_LOAD_DATE | 01-SEP-18 | 01-MAY-18 | 01-MAR-17 |
+| NUM_OF_ROOMS | 2 | 89 | 328 |
 
 # `fclt_floor`  (rows=1079)
 
@@ -1442,23 +1397,21 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=1079
 
 indexes: `FCLT_BUILDING_KEY`, `FCLT_FLOOR_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FCLT_FLOOR_KEY | WW15-1 |
-| FCLT_BUILDING_KEY | WW15 |
-| FLOOR | 1 |
-| EXT_GROSS_AREA | 40280.1 |
-| ASSIGNABLE_AREA | 36378.2 |
-| NON_ASSIGNABLE_AREA | 2313.55 |
-| FLOOR_SORT_SEQUENCE | 1 |
-| LEVEL_ID | 1 |
-| BUILDING_WINGS_ID | null |
-| ACCESS_LEVEL | 0 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FCLT_FLOOR_KEY | WW15-1 | 54-11 | 14S-4 |
+| FCLT_BUILDING_KEY | WW15 | 54 | 14S |
+| FLOOR | 1 | 11 | 4 |
+| EXT_GROSS_AREA | 40280.1 | 5855.69 | 6181.19 |
+| ASSIGNABLE_AREA | 36378.2 | 3588.44 | 0 |
+| NON_ASSIGNABLE_AREA | 2313.55 | 1512.46 | 5664.52 |
+| FLOOR_SORT_SEQUENCE | 1 | 11 | 4 |
+| LEVEL_ID | 1 | 11 | 4 |
+| BUILDING_WINGS_ID | null | null | null |
+| ACCESS_LEVEL | 0 | 2 | 2 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `fclt_floor_hist`  (rows=10000)
 
@@ -1478,25 +1431,23 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "01-JUN-15"=1054, "01-APR-15"=1052, "01-MAY-15"=1052, "01-AUG-15"=1049, "01-JUL-15"=1049, "01-DEC-14"=1037, "01-FEB-15"=1037, "01-JAN-15"=1037, "01-MAR-15"=1037, "01-SEP-15"=596
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FCLT_FLOOR_HIST_KEY | WW25-1-201601 |
-| FISCAL_PERIOD | 201601 |
-| FCLT_FLOOR_KEY | WW25-1 |
-| FCLT_BUILDING_KEY | WW25 |
-| FLOOR | 1 |
-| EXT_GROSS_AREA | 2300.01 |
-| ASSIGNABLE_AREA | 2300 |
-| NON_ASSIGNABLE_AREA | 0 |
-| FLOOR_SORT_SEQUENCE | 1 |
-| LEVEL_ID | 1 |
-| BUILDING_WINGS_ID | null |
-| ACCESS_LEVEL | 0 |
-| WAREHOUSE_LOAD_DATE | 01-AUG-15 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FCLT_FLOOR_HIST_KEY | WW25-1-201601 | 66-4-201507 | 8-5-201508 |
+| FISCAL_PERIOD | 201601 | 201507 | 201508 |
+| FCLT_FLOOR_KEY | WW25-1 | 66-4 | 8-5 |
+| FCLT_BUILDING_KEY | WW25 | 66 | 8 |
+| FLOOR | 1 | 4 | 5 |
+| EXT_GROSS_AREA | 2300.01 | 18459.6 | 961.85 |
+| ASSIGNABLE_AREA | 2300 | 11155.1 | 0 |
+| NON_ASSIGNABLE_AREA | 0 | 5056.34 | 868.69 |
+| FLOOR_SORT_SEQUENCE | 1 | 4 | 5 |
+| LEVEL_ID | 1 | 4 | 5 |
+| BUILDING_WINGS_ID | null | null | null |
+| ACCESS_LEVEL | 0 | 2 | 2 |
+| WAREHOUSE_LOAD_DATE | 01-AUG-15 | 01-FEB-15 | 01-MAR-15 |
 
 # `fclt_major_use`  (rows=14)
 
@@ -1508,17 +1459,15 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=14
 
 indexes: `FCLT_MAJOR_USE_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FCLT_MAJOR_USE_KEY | 114 |
-| MAJOR_USE | ZUSE |
-| DESCRIPTION | ZUSE ICR ONLY |
-| ASSIGNABLE | 1 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FCLT_MAJOR_USE_KEY | 114 | 113 | 101 |
+| MAJOR_USE | ZUSE | UNCLASS | BLDG SRV |
+| DESCRIPTION | ZUSE ICR ONLY | UNCLASSIFIED | BLDG SERVICE AREA |
+| ASSIGNABLE | 1 | 1 | 0 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `fclt_major_use_hist`  (rows=1680)
 
@@ -1532,19 +1481,17 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: 120 distinct
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FCLT_MAJOR_USE_HIST_KEY | 114-202505 |
-| FISCAL_PERIOD | 202505 |
-| FCLT_MAJOR_USE_KEY | 114 |
-| MAJOR_USE | ZUSE |
-| DESCRIPTION | ZUSE ICR ONLY |
-| ASSIGNABLE | 1 |
-| WAREHOUSE_LOAD_DATE | 01-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FCLT_MAJOR_USE_HIST_KEY | 114-202505 | 109-201605 | 113-202205 |
+| FISCAL_PERIOD | 202505 | 201605 | 202205 |
+| FCLT_MAJOR_USE_KEY | 114 | 109 | 113 |
+| MAJOR_USE | ZUSE | RESIDENT | UNCLASS |
+| DESCRIPTION | ZUSE ICR ONLY | RESIDENTIAL | UNCLASSIFIED |
+| ASSIGNABLE | 1 | 1 | 1 |
+| WAREHOUSE_LOAD_DATE | 01-DEC-24 | 01-DEC-15 | 01-DEC-21 |
 
 # `fclt_org_dlc_key`  (rows=168)
 
@@ -1553,14 +1500,12 @@ columns:
 `DLC_KEY` varchar127: 136 distinct, nulls=8, "D_RESDEV"=4, "D_IS&T"=3, "D_MECHE"=3, "D_PROVOST"=3, "D_ROTC"=3, "D_UNDEF"=3, "D_CMS"=2, "D_DHSS"=2, "D_DINING"=2, "D_DMSE"=2
 
 indexes: `DLC_KEY`, `FCLT_ORGANIZATION_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FCLT_ORGANIZATION_KEY | 288 |
-| DLC_KEY | null |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FCLT_ORGANIZATION_KEY | 288 | 258 | 167 |
+| DLC_KEY | null | D_TECHREVIEW | D_FLL |
 
 # `fclt_organization`  (rows=180)
 
@@ -1583,36 +1528,34 @@ columns:
 `DLC_KEY` varchar127: 136 distinct, nulls=8, "D_FACILITIES"=11, "D_PROVOST"=4, "D_RESDEV"=4, "D_DOF_RESIDENCE"=3, "D_IS&T"=3, "D_MECHE"=3, "D_ROTC"=3, "D_UNDEF"=3, "D_CMS"=2, "D_DHSS"=2
 `DLC_NAME` varchar127: 136 distinct, nulls=8
 `HR_DEPARTMENT_CODE_OLD` varchar127: digits, 147 distinct, nulls=12, "591040"=10, "591030"=3, "153000"=2, "401800"=2, "402200"=2, "409000"=2, "410000"=2, "449000"=2, "495000"=2, "591024"=2
-`HR_ORG_UNIT_ID` varchar127: digits, 159 distinct, nulls=12, "10000357"=2, "10000527"=2, "10000603"=2, "10000613"=2, "10000653"=2, "10000658"=2, "10000768"=2, "10000792"=2, "10000889"=2, "10000265"=1
+`HR_ORG_UNIT_ID` varchar127: digits, 159 distinct, nulls=12
 `HR_DEPARTMENT_NAME` varchar127: 159 distinct, nulls=12
 
 indexes: `DLC_KEY`, `FCLT_ORGANIZATION_KEY`, `HR_DEPARTMENT_CODE_OLD`, `HR_ORG_UNIT_ID`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FCLT_ORGANIZATION_KEY | 288 |
-| ORGANIZATION_ID | 288 |
-| ORGANIZATION | HEALTH |
-| ORGANIZATION_NAME | MIT HEALTH |
-| FCLT_ORG_PARENT_KEY | 163 |
-| ORG_PARENT | EXECVP |
-| FCLT_MAJOR_ORG_KEY | 163 |
-| MAJOR_ORG | EXECVP |
-| ORGANIZATION_LEVEL | 4 |
-| ORGANIZATION_NUMBER | 495000 |
-| ORGANIZATION_SORT | 101030640 |
-| ASSIGNABLE | 1 |
-| COURSE | null |
-| DESCRIPTION | null |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-| DLC_KEY | null |
-| DLC_NAME | null |
-| HR_DEPARTMENT_CODE_OLD | 495000 |
-| HR_ORG_UNIT_ID | 10000792 |
-| HR_DEPARTMENT_NAME | MIT Health |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FCLT_ORGANIZATION_KEY | 288 | 263 | 256 |
+| ORGANIZATION_ID | 288 | 263 | 256 |
+| ORGANIZATION | HEALTH | VP-DEV | STUSVC |
+| ORGANIZATION_NAME | MIT HEALTH | VP-RESOURCE DEV | STU SERVICES CTR |
+| FCLT_ORG_PARENT_KEY | 163 | 163 | 152 |
+| ORG_PARENT | EXECVP | EXECVP | OVC |
+| FCLT_MAJOR_ORG_KEY | 163 | 163 | 129 |
+| MAJOR_ORG | EXECVP | EXECVP | CHNCLR |
+| ORGANIZATION_LEVEL | 4 | 4 | 5 |
+| ORGANIZATION_NUMBER | 495000 | 410000 | 449000 |
+| ORGANIZATION_SORT | 101030640 | 101030675 | 101030433 |
+| ASSIGNABLE | 1 | 1 | 1 |
+| COURSE | null | null | null |
+| DESCRIPTION | null | null | null |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
+| DLC_KEY | null | D_RESDEV | D_SFS |
+| DLC_NAME | null | Vice President for Resource Development | Student Financial Services |
+| HR_DEPARTMENT_CODE_OLD | 495000 | 410000 | 449000 |
+| HR_ORG_UNIT_ID | 10000792 | 10000658 | 10000768 |
+| HR_DEPARTMENT_NAME | MIT Health | Vice Pres for Resource Development | Student Financial Services |
 
 # `fclt_organization_hist`  (rows=10000)
 
@@ -1641,34 +1584,32 @@ columns:
 `HR_DEPARTMENT_NAME` varchar127: 187 distinct, nulls=764
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FCLT_ORGANIZATION_HIST_KEY | 277-201912 |
-| FISCAL_PERIOD | 201912 |
-| FCLT_ORGANIZATION_KEY | 277 |
-| ORGANIZATION_ID | 277 |
-| ORGANIZATION | MRL |
-| ORGANIZATION_NAME | MATERIALS RESEARCH LAB |
-| FCLT_ORG_PARENT_KEY | 266 |
-| ORG_PARENT | VP-RES |
-| FCLT_MAJOR_ORG_KEY | 230 |
-| MAJOR_ORG | PROVST |
-| ORGANIZATION_LEVEL | 5 |
-| ORGANIZATION_NUMBER | 417500 |
-| ORGANIZATION_SORT | 101060224 |
-| ASSIGNABLE | 1 |
-| COURSE | null |
-| DESCRIPTION | null |
-| WAREHOUSE_LOAD_DATE | 01-JUL-19 |
-| DLC_KEY | D_MRL |
-| DLC_NAME | Materials Research Laboratory |
-| HR_DEPARTMENT_CODE_OLD | 417500 |
-| HR_ORG_UNIT_ID | 10005459 |
-| HR_DEPARTMENT_NAME | Materials Research Laboratory |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FCLT_ORGANIZATION_HIST_KEY | 277-201912 | 234-201704 | 257-201809 |
+| FISCAL_PERIOD | 201912 | 201704 | 201809 |
+| FCLT_ORGANIZATION_KEY | 277 | 234 | 257 |
+| ORGANIZATION_ID | 277 | 234 | 257 |
+| ORGANIZATION | MRL | RESDEV | T&LL |
+| ORGANIZATION_NAME | MATERIALS RESEARCH LAB | RESOURCE DEVLMNT | TEACH & LRN LAB |
+| FCLT_ORG_PARENT_KEY | 266 | 163 | 152 |
+| ORG_PARENT | VP-RES | VP-DEV | DUE |
+| FCLT_MAJOR_ORG_KEY | 230 | EXECVP | 129 |
+| MAJOR_ORG | PROVST | 411000 | CHNCLR |
+| ORGANIZATION_LEVEL | 5 | 5 | 5 |
+| ORGANIZATION_NUMBER | 417500 | 410000 | 441700 |
+| ORGANIZATION_SORT | 101060224 | 101030681 | 101030435 |
+| ASSIGNABLE | 1 | 1 | 1 |
+| COURSE | null | null | null |
+| DESCRIPTION | null | null | null |
+| WAREHOUSE_LOAD_DATE | 01-JUL-19 | 01-NOV-16 | 01-APR-18 |
+| DLC_KEY | D_MRL | D_RESDEV | D_TLL |
+| DLC_NAME | Materials Research Laboratory | Vice President for Resource Development | Teaching and Learning Lab |
+| HR_DEPARTMENT_CODE_OLD | 417500 | 410000 | 441700 |
+| HR_ORG_UNIT_ID | 10005459 | 10000658 | 10000743 |
+| HR_DEPARTMENT_NAME | Materials Research Laboratory | Vice Pres for Resource Development | Teaching & Learning Laboratory |
 
 # `fclt_rooms`  (rows=10000)
 
@@ -1701,38 +1642,36 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=10000
 
 indexes: `BUILDING_ROOM`, `FCLT_BUILDING_KEY`, `FCLT_FLOOR_KEY`, `FCLT_MAJOR_USE_KEY`, `FCLT_ORGANIZATION_KEY`, `FCLT_ROOM_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FCLT_ROOM_KEY | WW15-196A |
-| BUILDING_ROOM | WW15-196A |
-| FCLT_BUILDING_KEY | WW15 |
-| FLOOR | 1 |
-| FCLT_FLOOR_KEY | WW15-1 |
-| ROOM | 196A |
-| SPACE_ID | WW15-1-196A |
-| FCLT_MAJOR_USE_KEY | 112 |
-| MAJOR_USE_DESC | SUPPORT |
-| FCLT_USE_KEY | 190 |
-| USE_DESC | null |
-| FCLT_MINOR_USE_KEY | null |
-| MINOR_USE_DESC | null |
-| FCLT_ORGANIZATION_KEY | 228 |
-| ORGANIZATION_NAME | PROPTY |
-| FCLT_MINOR_ORGANIZATION_KEY | null |
-| MINOR_ORGANIZATION | null |
-| AREA | 180 |
-| ROOM_FULL_NAME | null |
-| DEPT_CODE | null |
-| ACCESS_LEVEL | 2 |
-| LATITUDE_WGS | null |
-| LONGITUDE_WGS | null |
-| NORTHING_SPCS | null |
-| EASTING_SPCS | null |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FCLT_ROOM_KEY | WW15-196A | 38-412B | 24-104 |
+| BUILDING_ROOM | WW15-196A | 38-412B | 24-104 |
+| FCLT_BUILDING_KEY | WW15 | 38 | 24 |
+| FLOOR | 1 | 4 | 1 |
+| FCLT_FLOOR_KEY | WW15-1 | 38-4 | 24-1 |
+| ROOM | 196A | 412B | 104 |
+| SPACE_ID | WW15-1-196A | 38-4-412B | 24-1-104 |
+| FCLT_MAJOR_USE_KEY | 112 | 108 | 107 |
+| MAJOR_USE_DESC | SUPPORT | OFFICES | MECHANIC |
+| FCLT_USE_KEY | 190 | 159 | 155 |
+| USE_DESC | null | null | null |
+| FCLT_MINOR_USE_KEY | null | null | null |
+| MINOR_USE_DESC | null | null | null |
+| FCLT_ORGANIZATION_KEY | 228 | 156 | 149 |
+| ORGANIZATION_NAME | PROPTY | EE&CS | DOF |
+| FCLT_MINOR_ORGANIZATION_KEY | null | null | null |
+| MINOR_ORGANIZATION | null | null | null |
+| AREA | 180 | 15.38 | 50.67 |
+| ROOM_FULL_NAME | null | null | null |
+| DEPT_CODE | null | null | null |
+| ACCESS_LEVEL | 2 | 2 | 0 |
+| LATITUDE_WGS | null | null | null |
+| LONGITUDE_WGS | null | null | null |
+| NORTHING_SPCS | null | null | null |
+| EASTING_SPCS | null | null | null |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `fclt_rooms_hist`  (rows=10000)
 
@@ -1767,50 +1706,47 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "01-DEC-14"=10000
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FCLT_ROOM_HIST_KEY | 9-667-201505 |
-| FISCAL_PERIOD | 201505 |
-| FCLT_ROOM_KEY | 9-667 |
-| BUILDING_ROOM | 9-667 |
-| FCLT_BUILDING_KEY | 9 |
-| FLOOR | 6 |
-| FCLT_FLOOR_KEY | 9-6 |
-| ROOM | 667 |
-| SPACE_ID | 9-6-667 |
-| FCLT_MAJOR_USE_KEY | 108 |
-| MAJOR_USE_DESC | OFFICES |
-| FCLT_USE_KEY | 162 |
-| USE_DESC | null |
-| FCLT_MINOR_USE_KEY | null |
-| MINOR_USE_DESC | null |
-| FCLT_ORGANIZATION_KEY | 262 |
-| ORGANIZATION_NAME | US&P |
-| FCLT_MINOR_ORGANIZATION_KEY | null |
-| MINOR_ORGANIZATION | null |
-| AREA | 64.89 |
-| ROOM_FULL_NAME | null |
-| DEPT_CODE | null |
-| ACCESS_LEVEL | 2 |
-| LATITUDE_WGS | null |
-| LONGITUDE_WGS | null |
-| NORTHING_SPCS | null |
-| EASTING_SPCS | null |
-| WAREHOUSE_LOAD_DATE | 01-DEC-14 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FCLT_ROOM_HIST_KEY | 9-667-201505 | 8-137-201505 | 34-530H-201505 |
+| FISCAL_PERIOD | 201505 | 201505 | 201505 |
+| FCLT_ROOM_KEY | 9-667 | 8-137 | 34-530H |
+| BUILDING_ROOM | 9-667 | 8-137 | 34-530H |
+| FCLT_BUILDING_KEY | 9 | 8 | 34 |
+| FLOOR | 6 | 1 | 5 |
+| FCLT_FLOOR_KEY | 9-6 | 8-1 | 34-5 |
+| ROOM | 667 | 137 | 530H |
+| SPACE_ID | 9-6-667 | 8-1-137 | 34-5-530H |
+| FCLT_MAJOR_USE_KEY | 108 | 107 | 106 |
+| MAJOR_USE_DESC | OFFICES | MECHANIC | LABS |
+| FCLT_USE_KEY | 162 | 154 | 145 |
+| USE_DESC | null | null | null |
+| FCLT_MINOR_USE_KEY | null | null | null |
+| MINOR_USE_DESC | null | null | null |
+| FCLT_ORGANIZATION_KEY | 262 | 149 | 156 |
+| ORGANIZATION_NAME | US&P | DOF | EE&CS |
+| FCLT_MINOR_ORGANIZATION_KEY | null | null | null |
+| MINOR_ORGANIZATION | null | null | null |
+| AREA | 64.89 | 271.32 | 35.42 |
+| ROOM_FULL_NAME | null | null | null |
+| DEPT_CODE | null | null | null |
+| ACCESS_LEVEL | 2 | 0 | 2 |
+| LATITUDE_WGS | null | null | null |
+| LONGITUDE_WGS | null | null | null |
+| NORTHING_SPCS | null | null | null |
+| EASTING_SPCS | null | null | null |
+| WAREHOUSE_LOAD_DATE | 01-DEC-14 | 01-DEC-14 | 01-DEC-14 |
 
 # `frc_fiscal_periods`  (rows=10)
 
 columns:
-`TIME_MONTH_KEY` varchar127: "202412"=1, "202413"=1, "202414"=1, "202415"=1, "202416"=1, "202501"=1, "202502"=1, "202503"=1, "202504"=1, "202505"=1
-`CALENDAR_PERIOD_DESCRIPTION` varchar127: "August 2024"=1, "July 2024"=1, "June 2024"=1, "June 2024, fiscal period 13"=1, "June 2024, fiscal period 14"=1, "June 2024, fiscal period 15"=1, "June 2024, fiscal period 16"=1, "November 2024"=1, "October 2024"=1, "September 2024"=1
-`FISCAL_PERIOD` varchar127: "202412"=1, "202413"=1, "202414"=1, "202415"=1, "202416"=1, "202501"=1, "202502"=1, "202503"=1, "202504"=1, "202505"=1
+`TIME_MONTH_KEY` varchar127
+`CALENDAR_PERIOD_DESCRIPTION` varchar127
+`FISCAL_PERIOD` varchar127
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 | row 9 | row 10 |
@@ -1840,35 +1776,33 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=681
 
 indexes: `HR_ORG_UNIT_TITLE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| MIT_ID | 999779388 |
-| LAST_NAME | Bates |
-| FIRST_NAME | Antonia |
-| MIDDLE_NAME | W |
-| TERMINAL_DEGREE | Doctoral Degree |
-| APPOINTMENT_TYPE | Primary Appointment |
-| JOB_TITLE | Professor |
-| HR_ORG_UNIT_TITLE | Mechanical Engineering |
-| POSITION_TITLE | null |
-| ADMIN_ORG_UNIT_TITLE | null |
-| ADMIN_POSITION_TITLE | null |
-| ADMIN_JOB_TITLE | null |
-| DIRECTORY_ORG_UNIT_TITLE | null |
-| ENDOWED_CHAIR | null |
-| EMERITUS_STATUS | null |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| MIT_ID | 999779388 | 913995778 | 993598372 |
+| LAST_NAME | Bates | Jacobs | Martinez |
+| FIRST_NAME | Antonia | Erika | Ayesha |
+| MIDDLE_NAME | W | Kennedy | null |
+| TERMINAL_DEGREE | Doctoral Degree | Doctoral Degree | Doctoral Degree |
+| APPOINTMENT_TYPE | Primary Appointment | Primary Appointment | Primary Appointment |
+| JOB_TITLE | Professor | Professor | Professor |
+| HR_ORG_UNIT_TITLE | Mechanical Engineering | Department of Biological Engineering | Sloan School of Management |
+| POSITION_TITLE | null | null | null |
+| ADMIN_ORG_UNIT_TITLE | null | null | null |
+| ADMIN_POSITION_TITLE | null | null | null |
+| ADMIN_JOB_TITLE | null | null | null |
+| DIRECTORY_ORG_UNIT_TITLE | null | null | null |
+| ENDOWED_CHAIR | null | null | null |
+| EMERITUS_STATUS | null | null | null |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `hr_org_unit`  (rows=641)
 
 columns:
 `HR_ORG_UNIT_KEY` varchar127: all distinct
 `HR_ORG_UNIT_ID` varchar127: digits, unique identifier
-`HR_ORG_UNIT_TITLE` varchar127: 637 distinct, nulls=1, "[MEDIA82] OXMAN /NERI"=2, "Libraries"=2, "Student Support Services"=2, "Abdul Latif Jameel Poverty Action Lab"=1, "Academic Media Production Services"=1, "Administrative Services: Chem E/DMSE"=1, "Admissions Office"=1, "Admissions Office Area"=1, "Advanced Study Program"=1, "Aeronautics and Astronautics"=1
+`HR_ORG_UNIT_TITLE` varchar127: 637 distinct, nulls=1
 `HR_ORG_UNIT_LEVEL` varchar127: "DEPARTMENTS"=494, "ORGANIZATION LEVEL"=108, "SUB DEPARTMENT"=17, "NON HIERARCHY ORG UNITS"=4, "TOP LEVEL"=3, "ALL MIT"=1, nulls=14
 `HR_DEPARTMENT_ID` varchar127: digits, 492 distinct, nulls=130
 `HR_DEPARTMENT_CODE` varchar127: 492 distinct, nulls=130
@@ -1905,49 +1839,47 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "03-DEC-24"=640, "13-DEC-24"=1
 
 indexes: `DLC_KEY`, `HR_DEPARTMENT_CODE_OLD`, `HR_ORG_UNIT_ID`, `HR_ORG_UNIT_TITLE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| HR_ORG_UNIT_KEY | O19999999 |
-| HR_ORG_UNIT_ID | 19999999 |
-| HR_ORG_UNIT_TITLE | HR-Affiliates |
-| HR_ORG_UNIT_LEVEL | NON HIERARCHY ORG UNITS |
-| HR_DEPARTMENT_ID | null |
-| HR_DEPARTMENT_CODE | null |
-| HR_DEPARTMENT_CODE_OLD | null |
-| HR_DEPARTMENT_NAME | null |
-| HR_DEPARTMENT_NAME_LONG | null |
-| HR_DEPARTMENT_NAME_ALPHA | null |
-| ORG_HIER_SCHOOL_AREA_NAME | null |
-| ORG_HIER_TOP_LEVEL_NAME | null |
-| ORG_HIER_ROOT_NAME | MIT-All |
-| HR_ORG_LEVEL1_ID | null |
-| HR_ORG_LEVEL1_SORT | null |
-| HR_ORG_LEVEL1_NAME | MIT-All |
-| HR_ORG_LEVEL2_ID | null |
-| HR_ORG_LEVEL2_SORT | null |
-| HR_ORG_LEVEL2_NAME | null |
-| HR_ORG_LEVEL3_ID | null |
-| HR_ORG_LEVEL3_SORT | null |
-| HR_ORG_LEVEL3_NAME | null |
-| HR_ORG_LEVEL4_ID | null |
-| HR_ORG_LEVEL4_SORT | null |
-| HR_ORG_LEVEL4_NAME | null |
-| HR_ORG_LEVEL5_ID | null |
-| HR_ORG_LEVEL5_SORT | null |
-| HR_ORG_LEVEL5_NAME | null |
-| HR_ORG_LEVEL6_ID | null |
-| HR_ORG_LEVEL6_SORT | null |
-| HR_ORG_LEVEL6_NAME | null |
-| HR_ORG_LEVEL7_ID | null |
-| HR_ORG_LEVEL7_SORT | null |
-| HR_ORG_LEVEL7_NAME | null |
-| DLC_KEY | null |
-| DLC_NAME | null |
-| WAREHOUSE_LOAD_DATE | 03-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| HR_ORG_UNIT_KEY | O19999999 | O10002885 | O10002460 |
+| HR_ORG_UNIT_ID | 19999999 | 10002885 | 10002460 |
+| HR_ORG_UNIT_TITLE | HR-Affiliates | Student Support and Wellbeing Area | Dof Custodial Services |
+| HR_ORG_UNIT_LEVEL | NON HIERARCHY ORG UNITS | ORGANIZATION LEVEL | DEPARTMENTS |
+| HR_DEPARTMENT_ID | null | null | 10002460 |
+| HR_DEPARTMENT_CODE | null | null | HR-591020 |
+| HR_DEPARTMENT_CODE_OLD | null | null | 591020 |
+| HR_DEPARTMENT_NAME | null | null | Dof Custodial Services |
+| HR_DEPARTMENT_NAME_LONG | null | null | Department of Facilities |
+| HR_DEPARTMENT_NAME_ALPHA | null | null | Dof Custodial Services |
+| ORG_HIER_SCHOOL_AREA_NAME | null | Dean for Student Life Area | MIT Department of Facilities area |
+| ORG_HIER_TOP_LEVEL_NAME | null | Provost Area | Executive Vice President Area |
+| ORG_HIER_ROOT_NAME | MIT-All | MIT-All | MIT-All |
+| HR_ORG_LEVEL1_ID | null | 10000000 | 10000000 |
+| HR_ORG_LEVEL1_SORT | null | 1 | 1 |
+| HR_ORG_LEVEL1_NAME | MIT-All | MIT-All | MIT-All |
+| HR_ORG_LEVEL2_ID | null | 10000001 | 10000002 |
+| HR_ORG_LEVEL2_SORT | null | 2 | 3 |
+| HR_ORG_LEVEL2_NAME | null | Provost Area | Executive Vice President Area |
+| HR_ORG_LEVEL3_ID | null | 10000012 | 10004934 |
+| HR_ORG_LEVEL3_SORT | null | 7 | 416 |
+| HR_ORG_LEVEL3_NAME | null | Dean for Student Life Area | MIT Department of Facilities area |
+| HR_ORG_LEVEL4_ID | null | 10002885 | 10004858 |
+| HR_ORG_LEVEL4_SORT | null | 303 | 410 |
+| HR_ORG_LEVEL4_NAME | null | Student Support and Wellbeing Area | Dof Facilities Operations |
+| HR_ORG_LEVEL5_ID | null | null | 10005410 |
+| HR_ORG_LEVEL5_SORT | null | null | 468 |
+| HR_ORG_LEVEL5_NAME | null | null | Dof Campus Services & Maintenance Area |
+| HR_ORG_LEVEL6_ID | null | null | 10002460 |
+| HR_ORG_LEVEL6_SORT | null | null | 265 |
+| HR_ORG_LEVEL6_NAME | null | null | Dof Custodial Services |
+| HR_ORG_LEVEL7_ID | null | null | null |
+| HR_ORG_LEVEL7_SORT | null | null | null |
+| HR_ORG_LEVEL7_NAME | null | null | null |
+| DLC_KEY | null | null | D_FACILITIES |
+| DLC_NAME | null | null | Department of Facilities |
+| WAREHOUSE_LOAD_DATE | 03-DEC-24 | 03-DEC-24 | 03-DEC-24 |
 
 # `hr_org_unit_new`  (rows=691)
 
@@ -1984,42 +1916,40 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "03-DEC-24"=690, "13-DEC-24"=1
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| HR_ORG_UNIT_KEY | O19999999 |
-| HR_ORG_UNIT_ID | 19999999 |
-| HR_ORG_UNIT_TITLE | HR-Affiliates |
-| HR_ORG_UNIT_LEVEL | NON HIERARCHY ORG UNITS |
-| HR_DEPARTMENT_CODE | null |
-| HR_DEPARTMENT_ABBR | null |
-| HR_DEPARTMENT_CODE_OLD | null |
-| HR_DEPARTMENT_NAME | null |
-| HR_DEPARTMENT_NAME_LONG | null |
-| HR_DEPARTMENT_NAME_ALPHA | null |
-| ORG_HIER_SCHOOL_AREA_NAME | null |
-| ORG_HIER_TOP_LEVEL_NAME | null |
-| ORG_HIER_ROOT_NAME | MIT-All |
-| HR_ORG_LEVEL1_ID | null |
-| HR_ORG_LEVEL1_SORT | null |
-| HR_ORG_LEVEL1_NAME | MIT-All |
-| HR_ORG_LEVEL2_ID | null |
-| HR_ORG_LEVEL2_SORT | null |
-| HR_ORG_LEVEL2_NAME | null |
-| HR_ORG_LEVEL3_ID | null |
-| HR_ORG_LEVEL3_SORT | null |
-| HR_ORG_LEVEL3_NAME | null |
-| HR_ORG_LEVEL4_ID | null |
-| HR_ORG_LEVEL4_SORT | null |
-| HR_ORG_LEVEL4_NAME | null |
-| HR_ORG_LEVEL5_ID | null |
-| HR_ORG_LEVEL5_SORT | null |
-| HR_ORG_LEVEL5_NAME | null |
-| DLC_KEY | null |
-| WAREHOUSE_LOAD_DATE | 03-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| HR_ORG_UNIT_KEY | O19999999 | O10002187 | O10005914 |
+| HR_ORG_UNIT_ID | 19999999 | 10002187 | 10005914 |
+| HR_ORG_UNIT_TITLE | HR-Affiliates | Center Matl Rsc in Arch & Ethnology(old) | Sloan Faculty & Research Services Area |
+| HR_ORG_UNIT_LEVEL | NON HIERARCHY ORG UNITS | DEPARTMENTS | ORGANIZATION LEVEL |
+| HR_DEPARTMENT_CODE | null | 10002187 | null |
+| HR_DEPARTMENT_ABBR | null | HR-092000 | null |
+| HR_DEPARTMENT_CODE_OLD | null | 92000 | null |
+| HR_DEPARTMENT_NAME | null | Center Matl Rsc in Arch & Ethnology(old) | null |
+| HR_DEPARTMENT_NAME_LONG | null | Center Matl Rsc in Arch & Ethnology(old) | null |
+| HR_DEPARTMENT_NAME_ALPHA | null | Center Matl Rsc in Arch & Ethnology(old) | null |
+| ORG_HIER_SCHOOL_AREA_NAME | null | Humanities, Arts, & Social Sciences Area | Sloan School of Management Area |
+| ORG_HIER_TOP_LEVEL_NAME | null | Humanities, Arts, & Social Sciences Area | Provost Area |
+| ORG_HIER_ROOT_NAME | MIT-All | MIT-All | MIT-All |
+| HR_ORG_LEVEL1_ID | null | null | 10000000 |
+| HR_ORG_LEVEL1_SORT | null | null | 1 |
+| HR_ORG_LEVEL1_NAME | MIT-All | MIT-All | MIT-All |
+| HR_ORG_LEVEL2_ID | null | null | 10000001 |
+| HR_ORG_LEVEL2_SORT | null | null | 2 |
+| HR_ORG_LEVEL2_NAME | null | null | Provost Area |
+| HR_ORG_LEVEL3_ID | null | null | 10000031 |
+| HR_ORG_LEVEL3_SORT | null | null | 17 |
+| HR_ORG_LEVEL3_NAME | null | null | Sloan School of Management Area |
+| HR_ORG_LEVEL4_ID | null | null | 10005914 |
+| HR_ORG_LEVEL4_SORT | null | null | 538 |
+| HR_ORG_LEVEL4_NAME | null | null | Sloan Faculty & Research Services Area |
+| HR_ORG_LEVEL5_ID | null | null | null |
+| HR_ORG_LEVEL5_SORT | null | null | null |
+| HR_ORG_LEVEL5_NAME | null | null | null |
+| DLC_KEY | null | null | null |
+| WAREHOUSE_LOAD_DATE | 03-DEC-24 | 03-DEC-24 | 03-DEC-24 |
 
 # `iap_subject_category`  (rows=49)
 
@@ -2030,16 +1960,14 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=49
 
 indexes: `IAP_SUBJECT_CATEGORY_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| IAP_SUBJECT_CATEGORY_KEY | B9953FF477EE12EFE0440003BAB016E8 |
-| IAP_CATEGORY_NAME | Research Skills |
-| IAP_CATEGORY_DESC | null |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| IAP_SUBJECT_CATEGORY_KEY | B9953FF477EE12EFE0440003BAB016E8 | 9289af8f517c291d0151921c1c02022c | B9953FF477E412EFE0440003BAB016E8 |
+| IAP_CATEGORY_NAME | Research Skills | Life Skills | Leadership Skills |
+| IAP_CATEGORY_DESC | null | null | Developing leaders, creating plans of action, setting agendas, etc. |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `iap_subject_detail`  (rows=465)
 
@@ -2065,31 +1993,29 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=465
 
 indexes: `IAP_SUBJECT_CATEGORY_KEY`, `IAP_SUBJECT_PERSON_KEY`, `IAP_SUBJECT_SESSION_KEY`, `IAP_SUBJECT_SPONSOR_KEY`, `TERM_CODE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| IAP_SUBJECT_CATEGORY_KEY | B9953FF477EE12EFE0440003BAB016E8 |
-| IAP_SUBJECT_SPONSOR_KEY | B979A5B908FF644BE0440003BAB016E8 |
-| IAP_SUBJECT_SESSION_KEY | 9289afed754ffd4701764d88c6e0054c |
-| IAP_SUBJECT_PERSON_KEY | 9289afed754ffd4701764d88c6e0054c |
-| ACTIVITY_TITLE | GIS Level 3: Automating Arcgis Using Python |
-| ACTIVITY_DESCRIPTION | <p>Learn to automate GIS tool using Python. You'll learn just enough Python scripting to work with the ArcPy module. These tool |
-| TERM_CODE | 2021JA |
-| ENROLLMENT_TYPE | Advance sign-up required |
-| MAX_ENROLLMENT | null |
-| ATTENDANCE | Participants must attend all sessions |
-| PREREQUISITES | experience with GIS software |
-| FEE | null |
-| FEE_REASON | null |
-| PREREG_DEADLINE | null |
-| CREATE_DATE | 10-DEC-20 |
-| LAST_ACTIVITY_DATE | 10-DEC-20 |
-| IS_MULTIPLE_SESSION | N |
-| IS_CANCELLED | N |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| IAP_SUBJECT_CATEGORY_KEY | B9953FF477EE12EFE0440003BAB016E8 | 9289af8f517c291d0151921beca0022b | B9953FF477ED12EFE0440003BAB016E8 |
+| IAP_SUBJECT_SPONSOR_KEY | B979A5B908FF644BE0440003BAB016E8 | 9289af8f5fd92585015fe0471ab7007c | B979A5B907EC644BE0440003BAB016E8 |
+| IAP_SUBJECT_SESSION_KEY | 9289afed754ffd4701764d88c6e0054c | 9289afec754ffaf201759a818f9b0036 | 9289afec754ffaf20176d38392d80c8c |
+| IAP_SUBJECT_PERSON_KEY | 9289afed754ffd4701764d88c6e0054c | 9289afec754ffaf201759a818f9b0036 | 9289afec754ffaf20176d38392d80c8c |
+| ACTIVITY_TITLE | GIS Level 3: Automating Arcgis Using Python | Biomechanics in everyday life | Classical Music in the Social Media Generation |
+| ACTIVITY_DESCRIPTION | <p>Learn to automate GIS tool using Python. You'll learn just enough Python scripting to work with the ArcPy module. These tool | <p>Most of us learn to breathe and walk and move&#160;at a time that we can&#8217;t recall much from and use these skills throu | <p>Musicians can now extend their reach and connect to fans on a personalized level more than ever before through social media. |
+| TERM_CODE | 2021JA | 2021JA | 2021JA |
+| ENROLLMENT_TYPE | Advance sign-up required | Advance sign-up required | Advance sign-up required |
+| MAX_ENROLLMENT | null | null | 200 |
+| ATTENDANCE | Participants must attend all sessions | Participants welcome at individual sessions | Other |
+| PREREQUISITES | experience with GIS software | null | Interest in social media or music |
+| FEE | null | null | 10 |
+| FEE_REASON | null | null | Class Registration |
+| PREREG_DEADLINE | null | 31-JAN-21 | 04-JAN-21 |
+| CREATE_DATE | 10-DEC-20 | 05-NOV-20 | 05-JAN-21 |
+| LAST_ACTIVITY_DATE | 10-DEC-20 | 13-NOV-20 | 05-JAN-21 |
+| IS_MULTIPLE_SESSION | N | Y | Y |
+| IS_CANCELLED | N | N | N |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `iap_subject_person`  (rows=1113)
 
@@ -2105,21 +2031,19 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=1113
 
 indexes: `IAP_SUBJECT_PERSON_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| IAP_SUBJECT_PERSON_KEY | 9289afed772f5a47017746bb27790021 |
-| PERSON_ROLE | Contact person |
-| PERSON_MIT_AFFILIATION | null |
-| PERSON_NAME | Rihanna Ashley |
-| PERSON_LOCATION | null |
-| PERSON_EMAIL | null |
-| PERSON_ORGANIZATION | null |
-| PERSON_TITLE | null |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| IAP_SUBJECT_PERSON_KEY | 9289afed772f5a47017746bb27790021 | 9289afec754ffaf201762137478502c8 | 9289afed754ffd47017688b60415096f |
+| PERSON_ROLE | Contact person | Activity leader | Activity leader |
+| PERSON_MIT_AFFILIATION | null | Grad Student | Other MIT |
+| PERSON_NAME | Rihanna Ashley | Steffan Boone | Aimee Houston |
+| PERSON_LOCATION | null | null | null |
+| PERSON_EMAIL | null | null | null |
+| PERSON_ORGANIZATION | null | null | null |
+| PERSON_TITLE | null | null | null |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `iap_subject_session`  (rows=1199)
 
@@ -2136,22 +2060,20 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=1199
 
 indexes: `IAP_SUBJECT_SESSION_KEY`, `SESSION_LOCATION`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| IAP_SUBJECT_SESSION_KEY | 9289afed772f5a47017746bb27790021 |
-| SESSION_SEQUENCE | null |
-| SESSION_TITLE | null |
-| SESSION_DESCRIPTION | null |
-| SESSION_LOCATION | virtual |
-| SESSION_DATE | 29-JAN-21 |
-| SESSION_START_TIME | 0200PM |
-| SESSION_END_TIME | 0400PM |
-| HAS_SESSION_INFO | Y |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| IAP_SUBJECT_SESSION_KEY | 9289afed772f5a47017746bb27790021 | 9289afed754ffd4701766da9b52607b5 | 9289afed754ffd470175e1e879c7017d |
+| SESSION_SEQUENCE | null | null | null |
+| SESSION_TITLE | null | null | Biomechanics and yoga |
+| SESSION_DESCRIPTION | null | null | <p>Yoga can be used to achieve balance across muscle systems to improve movement coordination. In this session, you will go thr |
+| SESSION_LOCATION | virtual | On Zoom | Zoom |
+| SESSION_DATE | 29-JAN-21 | 28-JAN-21 | 17-JAN-21 |
+| SESSION_START_TIME | 0200PM | 0100PM | 1100AM |
+| SESSION_END_TIME | 0400PM | 0230PM | 1200PM |
+| HAS_SESSION_INFO | Y | Y | Y |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `iap_subject_sponsor`  (rows=68)
 
@@ -2162,16 +2084,14 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=68
 
 indexes: `IAP_SUBJECT_SPONSOR_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| IAP_SUBJECT_SPONSOR_KEY | B979A5B90923644BE0440003BAB016E8 |
-| SPONSOR_NAME | MIT Flying Club |
-| SPONSOR_TYPE | Student Group |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| IAP_SUBJECT_SPONSOR_KEY | B979A5B90923644BE0440003BAB016E8 | B979A5B90906644BE0440003BAB016E8 | B979A5B90923644BE0440003BAB016E8 |
+| SPONSOR_NAME | MIT Flying Club | Research Laboratory of Electronics | MIT Flying Club |
+| SPONSOR_TYPE | Student Group | Lab | Student Group |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `ir_institution`  (rows=10000)
 
@@ -2191,30 +2111,28 @@ columns:
 `RECORD_CREATED_DATE` varchar255: "17-JUL-14"=9064, "16-JUL-24"=930, "01-DEC-24"=5, "10-JUL-24"=1
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| INSTITUTION_ID | M0019 |
-| INSTITUTION_NAME | Penn Foster Career School |
-| ALTERNATE_INSTITUTION_NAME | null |
-| STREET_ADDRESS | null |
-| CITY | SCRANTON |
-| ZIP | null |
-| STATE | PA |
-| COUNTRY_CODE | US |
-| COUNTRY | UNITED STATES |
-| INSTITUTION_CATEGORY_VALUE | -3 |
-| INSTITUTION_CATEGORY_LABEL | Not applicable, not in Carnegie universe (not accredited or nondegree-granting)  |
-| INSTITUTION_SORT_ORDER | 900 |
-| RECORD_CREATED_DATE | 17-JUL-14 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| INSTITUTION_ID | M0019 | F01109 | 181880 |
+| INSTITUTION_NAME | Penn Foster Career School | Fhwien University of Applied Sciences of Wkw | Academy of Hair Design-Las Vegas |
+| ALTERNATE_INSTITUTION_NAME | null | null | Academy of Hair Design |
+| STREET_ADDRESS | null | WAHRINGER GURTEL 97 | 5191 W. Charleston Blvd. #150 |
+| CITY | SCRANTON | VIENNA | LAS VEGAS |
+| ZIP | null | null | 89146 |
+| STATE | PA | null | NV |
+| COUNTRY_CODE | US | AT | US |
+| COUNTRY | UNITED STATES | AUSTRIA | UNITED STATES |
+| INSTITUTION_CATEGORY_VALUE | -3 | -3 | -3 |
+| INSTITUTION_CATEGORY_LABEL | Not applicable, not in Carnegie universe (not accredited or nondegree-granting)  | Not applicable, not in Carnegie universe (not accredited or nondegree-granting)  | Not applicable, not in Carnegie universe (not accredited or nondegree-granting)  |
+| INSTITUTION_SORT_ORDER | 900 | 108 | 900 |
+| RECORD_CREATED_DATE | 17-JUL-14 | 17-JUL-14 | 17-JUL-14 |
 
 # `library_course_instructor`  (rows=10000)
 
 columns:
-`LIBRARY_COURSE_INSTRUCTOR_KEY` varchar127: 9999 distinct, "6.002-WATERS2012FA:6.002"=2, "1.00-BRADFORD2009FA:1.00"=1, "1.00-BRYANT132014FA:1.00"=1, "1.00-GALLEGOS122013FA:1.00"=1, "1.00-GALLEGOS2011SU:1.00"=1, "1.00-JACOBS2010FA:1.00"=1, "1.00-MCNEIL2010SU:1.00"=1, "1.00-NASH2010SP:1.00"=1, "1.00-O'GALLAGHER132013SP:1.00"=1, "1.00-SLOAN2011SP:1.00"=1
+`LIBRARY_COURSE_INSTRUCTOR_KEY` varchar127: 9999 distinct
 `COURSE_NAME` varchar127: 2998 distinct
 `INSTRUCTOR_NAME` varchar127: 9591 distinct, "Blackburn, Gianluca"=3, "Coffey, Nicolas"=3, "Conner, Zayn"=3, "Dorsey, Sydney"=3, "Haines, Khalil"=3, "Mckee, Shauna"=3, "Obrien, Josef"=3, "Randall, Mariya"=3, "Robbins, Barnaby"=3, "Sears, Mia"=3
 `DEPARTMENT` varchar127: 128 distinct
@@ -2225,32 +2143,29 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: 30 distinct
 
 indexes: `INSTRUCTOR_NAME`, `LIBRARY_COURSE_INSTRUCTOR_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| LIBRARY_COURSE_INSTRUCTOR_KEY | WGS.S10-LINDSEY142014SP:WGS.S10 |
-| COURSE_NAME | Special Subject in Women's and Gender Studies, Gender, Power and Leadership in the Workplace |
-| INSTRUCTOR_NAME | Lindsey, Sion |
-| DEPARTMENT | WGS - Women's and Gender Studies |
-| DATE_FROM | 03-FEB-14 |
-| DATE_TO | 23-MAY-14 |
-| UNIT_CODE | Hayden |
-| UNIT | Hayden |
-| WAREHOUSE_LOAD_DATE | 24-APR-14 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| LIBRARY_COURSE_INSTRUCTOR_KEY | WGS.S10-LINDSEY142014SP:WGS.S10 | 2.875-GILMORE2012FA:2.875 | 2.612-CURRY132014FA:2.612 |
+| COURSE_NAME | Special Subject in Women's and Gender Studies, Gender, Power and Leadership in the Workplace | Mech Assemblies & Product Dev | Marine Power and Propulsion |
+| INSTRUCTOR_NAME | Lindsey, Sion | Gilmore, Amaan | Curry, Ayden |
+| DEPARTMENT | WGS - Women's and Gender Studies | 2 - Mechanical Engineering | 2 - Mechanical Engineering |
+| DATE_FROM | 03-FEB-14 | 06-SEP-11 | 03-SEP-13 |
+| DATE_TO | 23-MAY-14 | 22-DEC-11 | 20-DEC-13 |
+| UNIT_CODE | Hayden | ENG | ENG |
+| UNIT | Hayden | Barker | Barker |
+| WAREHOUSE_LOAD_DATE | 24-APR-14 | 23-NOV-11 | 21-NOV-13 |
 
 # `library_material_status`  (rows=6)
 
 columns:
-`LIBRARY_MATERIAL_STATUS_KEY` varchar127: "N"=1, "O"=1, "R"=1, "U"=1, "X"=1, "Y"=1
-`LIBRARY_MATERIAL_STATUS_CODE` varchar127: "N"=1, "O"=1, "R"=1, "U"=1, "X"=1, "Y"=1
-`LIBRARY_MATERIAL_STATUS` varchar127: "No Required Textbook"=1, "Non-Required Course Material"=1, "Required Course Material"=1, "Reserve only"=1, "Unknown"=1, nulls=1
-`WAREHOUSE_LOAD_DATE` varchar255: "23-DEC-21"=6
+`LIBRARY_MATERIAL_STATUS_KEY` varchar127
+`LIBRARY_MATERIAL_STATUS_CODE` varchar127
+`LIBRARY_MATERIAL_STATUS` varchar127
+`WAREHOUSE_LOAD_DATE` varchar255
 
 indexes: `LIBRARY_MATERIAL_STATUS_KEY`
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 |
@@ -2277,24 +2192,22 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: 1128 distinct
 
 indexes: `LIBRARY_RESERVE_CATALOG_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| LIBRARY_RESERVE_CATALOG_KEY | 9999 |
-| CATALOG_TITLE | null |
-| CATALOG_AUTHOR_NAME | null |
-| CATALOG_YEAR | 0 |
-| CATALOG_PUBLISHER | null |
-| CATALOG_CALL_NUMBER | null |
-| CATALOG_ISBN | null |
-| CATALOG_SYSTEM_NUMBER | 9999 |
-| CATALOG_RECORD_CREATE_DATE | 03-SEP-02 |
-| CATALOG_RECORD_UPDATE_DATE | 24-APR-03 |
-| RECORD_COUNTER | 1 |
-| WAREHOUSE_LOAD_DATE | 13-MAR-08 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| LIBRARY_RESERVE_CATALOG_KEY | 9999 | 2103 | 97756 |
+| CATALOG_TITLE | null | null | null |
+| CATALOG_AUTHOR_NAME | null | null | null |
+| CATALOG_YEAR | 0 | 0 | 0 |
+| CATALOG_PUBLISHER | null | null | null |
+| CATALOG_CALL_NUMBER | null | null | null |
+| CATALOG_ISBN | null | null | null |
+| CATALOG_SYSTEM_NUMBER | 9999 | 2103 | 97756 |
+| CATALOG_RECORD_CREATE_DATE | 03-SEP-02 | 29-AUG-01 | 08-NOV-15 |
+| CATALOG_RECORD_UPDATE_DATE | 24-APR-03 | 08-JUL-03 | 08-NOV-15 |
+| RECORD_COUNTER | 1 | 1 | 1 |
+| WAREHOUSE_LOAD_DATE | 13-MAR-08 | 13-MAR-08 | 09-NOV-15 |
 
 # `library_reserve_matrl_detail`  (rows=10000)
 
@@ -2308,19 +2221,17 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "05-DEC-08"=3311, "08-MAY-09"=2638, "09-MAY-08"=2463, "07-MAY-10"=619, "01-AUG-08"=600, "31-JUL-09"=256, "18-NOV-10"=92, "02-FEB-09"=21
 
 indexes: `LIBRARY_COURSE_INSTRUCTOR_KEY`, `LIBRARY_MATERIAL_STATUS_KEY`, `LIBRARY_RESERVE_CATALOG_KEY`, `LIBRARY_SUBJECT_OFFERED_KEY`, `SUBJECT_ID`, `TERM_CODE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| LIBRARY_COURSE_INSTRUCTOR_KEY | STS.CASTELLS2009SP:STS.CASTELLS-HUMPHREY |
-| LIBRARY_RESERVE_CATALOG_KEY | 53319 |
-| LIBRARY_SUBJECT_OFFERED_KEY | STS.CASTELLS2009SP |
-| LIBRARY_MATERIAL_STATUS_KEY | N |
-| TERM_CODE | 2009SP |
-| SUBJECT_ID | STS.CASTELLS |
-| WAREHOUSE_LOAD_DATE | 08-MAY-09 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| LIBRARY_COURSE_INSTRUCTOR_KEY | STS.CASTELLS2009SP:STS.CASTELLS-HUMPHREY | 21M.262-PALMER2009FA:21M.262 | 11.439-WEISS2009SP:11.439 |
+| LIBRARY_RESERVE_CATALOG_KEY | 53319 | 49290 | 51894 |
+| LIBRARY_SUBJECT_OFFERED_KEY | STS.CASTELLS2009SP | 21M.2622009FA | 11.4392009SP |
+| LIBRARY_MATERIAL_STATUS_KEY | N | U | U |
+| TERM_CODE | 2009SP | 2009FA | 2009SP |
+| SUBJECT_ID | STS.CASTELLS | 21M.262 | 11.439 |
+| WAREHOUSE_LOAD_DATE | 08-MAY-09 | 05-DEC-08 | 08-MAY-09 |
 
 # `library_subject_offered`  (rows=10000)
 
@@ -2347,58 +2258,54 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=10000
 
 indexes: `COURSE_NUMBER`, `LIBRARY_SUBJECT_OFFERED_KEY`, `MASTER_SUBJECT_ID`, `MASTER_SUBJECT_ID_SORT`, `OFFER_DEPT_CODE`, `RESPONSIBLE_FACULTY_MIT_ID`, `SUBJECT_ID`, `SUBJECT_ID_SORT`, `TERM_CODE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| LIBRARY_SUBJECT_OFFERED_KEY | 21L.0232014FA |
-| TERM_CODE | 2014FA |
-| MASTER_COURSE_NUMBER | 21M |
-| MASTER_COURSE_NUMBER_SORT | 21M |
-| MASTER_COURSE_NUMBER_DESC | Music and Theater Arts |
-| MASTER_SUBJECT_ID | 21M.223 |
-| MASTER_SUBJECT_ID_SORT | 21M.223 |
-| COURSE_NUMBER | 21L |
-| COURSE_NUMBER_SORT | 21L |
-| COURSE_NUMBER_DESC | Literature |
-| SUBJECT_ID | 21L.023 |
-| SUBJECT_ID_SORT | 21L.023 |
-| SUBJECT_TITLE | Folk Music: Britain & N Amer |
-| OFFER_DEPT_CODE | 21L |
-| OFFER_DEPT_NAME | Literature |
-| OFFER_SCHOOL_NAME | Hum, Arts & Social Sciences |
-| RESPONSIBLE_FACULTY_NAME | Mata, Martha |
-| RESPONSIBLE_FACULTY_MIT_ID | 918228668 |
-| NUM_ENROLLED_STUDENTS | 1 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| LIBRARY_SUBJECT_OFFERED_KEY | 21L.0232014FA | 15.4662021SP | 16.6532020FA |
+| TERM_CODE | 2014FA | 2021SP | 2020FA |
+| MASTER_COURSE_NUMBER | 21M | 15 | 2 |
+| MASTER_COURSE_NUMBER_SORT | 21M |  15 |   2 |
+| MASTER_COURSE_NUMBER_DESC | Music and Theater Arts | Management | Mechanical Engineering |
+| MASTER_SUBJECT_ID | 21M.223 | 15.466 | 2.96 |
+| MASTER_SUBJECT_ID_SORT | 21M.223 | 15.466 | 2.96 |
+| COURSE_NUMBER | 21L | 15 | 16 |
+| COURSE_NUMBER_SORT | 21L |  15 |  16 |
+| COURSE_NUMBER_DESC | Literature | Management | Aeronautics and Astronautics |
+| SUBJECT_ID | 21L.023 | 15.466 | 16.653 |
+| SUBJECT_ID_SORT | 21L.023 |  15.466 |  16.653 |
+| SUBJECT_TITLE | Folk Music: Britain & N Amer | Functional & Strategic Finance | Management in Engineering |
+| OFFER_DEPT_CODE | 21L | 15 | 16 |
+| OFFER_DEPT_NAME | Literature | Management | Aeronautics and Astronautics |
+| OFFER_SCHOOL_NAME | Hum, Arts & Social Sciences | Sloan School of Management | Engineering |
+| RESPONSIBLE_FACULTY_NAME | Mata, Martha | Chase, Taha | Stein, Katrina |
+| RESPONSIBLE_FACULTY_MIT_ID | 918228668 | 984416238 | 993673204 |
+| NUM_ENROLLED_STUDENTS | 1 | 45 | 1 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `master_dept_dcode_parent`  (rows=340)
 
 columns:
-`DEPT_ID` int: unique identifier, 11396..16220, avg=13491.3765, median=13614.5
+`DEPT_ID` int: unique identifier, 11396..16220
 `D_CODE` varchar127: all distinct
 `D_NAME` varchar127: 339 distinct
-`PARENT_ID` int: 31 distinct, 10000..15701, avg=12777.2441, median=12263
+`PARENT_ID` int: 31 distinct, 10000..15701
 `PARENT_D_CODE` varchar127: 31 distinct
 `PARENT_D_NAME` varchar127: 31 distinct
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=340
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| DEPT_ID | 16220 |
-| D_CODE | D_TATA-MIT |
-| D_NAME | TATA-MIT ALLIANCE |
-| PARENT_ID | 12259 |
-| PARENT_D_CODE | D_SCHOOL_ENG |
-| PARENT_D_NAME | School of Engineering |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| DEPT_ID | 16220 | 12637 | 14400 |
+| D_CODE | D_TATA-MIT | D_REG | D_SCSB |
+| D_NAME | TATA-MIT ALLIANCE | Registrar | Simons Center for the Social Brain |
+| PARENT_ID | 12259 | 12336 | 12263 |
+| PARENT_D_CODE | D_SCHOOL_ENG | D_DUE | D_SCHOOL_SCI |
+| PARENT_D_NAME | School of Engineering | Dean for Undergraduate Education | School of Science |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `master_dept_hierarchy`  (rows=310)
 
@@ -2419,26 +2326,24 @@ columns:
 `MASTER_DEPT_HIER_LEVEL_5_NAME` varchar127: all NULL
 
 indexes: `DLC_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| HIERARCHY_TYPE | Standard Hierarchy |
-| DLC_KEY | D_WHITEHEAD |
-| DLC_CODE | D_WHITEHEAD |
-| DLC_NAME | Whitehead Institute |
-| MASTER_DEPT_HIER_LEVEL_1_CODE | D_ALL |
-| MASTER_DEPT_HIER_LEVEL_1_NAME | All Departments |
-| MASTER_DEPT_HIER_LEVEL_2_CODE | D_OTHER_ORG |
-| MASTER_DEPT_HIER_LEVEL_2_NAME | Outside organizations affiliated with MIT |
-| MASTER_DEPT_HIER_LEVEL_3_CODE | null |
-| MASTER_DEPT_HIER_LEVEL_3_NAME | null |
-| MASTER_DEPT_HIER_LEVEL_4_CODE | null |
-| MASTER_DEPT_HIER_LEVEL_4_NAME | null |
-| MASTER_DEPT_HIER_LEVEL_5_CODE | null |
-| MASTER_DEPT_HIER_LEVEL_5_NAME | null |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| HIERARCHY_TYPE | Standard Hierarchy | Standard Hierarchy | Standard Hierarchy |
+| DLC_KEY | D_WHITEHEAD | D_CBI | D_ESI |
+| DLC_CODE | D_WHITEHEAD | D_CBI | D_ESI |
+| DLC_NAME | Whitehead Institute | Center for Biomedical Innovation | Earth Systems Initiative |
+| MASTER_DEPT_HIER_LEVEL_1_CODE | D_ALL | D_ALL | D_ALL |
+| MASTER_DEPT_HIER_LEVEL_1_NAME | All Departments | All Departments | All Departments |
+| MASTER_DEPT_HIER_LEVEL_2_CODE | D_OTHER_ORG | D_PROVOST_AREA | D_PROVOST_AREA |
+| MASTER_DEPT_HIER_LEVEL_2_NAME | Outside organizations affiliated with MIT | Provost Area | Provost Area |
+| MASTER_DEPT_HIER_LEVEL_3_CODE | null | D_COLLEGE_COMPU | D_VPRES |
+| MASTER_DEPT_HIER_LEVEL_3_NAME | null | Stephen A. Schwarzman College of Computing | VP Research |
+| MASTER_DEPT_HIER_LEVEL_4_CODE | null | null | null |
+| MASTER_DEPT_HIER_LEVEL_4_NAME | null | null | null |
+| MASTER_DEPT_HIER_LEVEL_5_CODE | null | null | null |
+| MASTER_DEPT_HIER_LEVEL_5_NAME | null | null | null |
 
 # `master_dept_hierarchy_links`  (rows=10000)
 
@@ -2452,19 +2357,17 @@ columns:
 `LINKED_OBJECT_CODE` varchar127: 9942 distinct
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| HIERARCHY_TYPE | Standard Hierarchy |
-| LINK_TYPE_CODE | SIS |
-| LINK_TYPE | Student Systems Unit |
-| DLC_KEY | D_WHIT |
-| DLC_CODE | D_WHIT |
-| LINKED_OBJECT_KEY | WHIT |
-| LINKED_OBJECT_CODE | WHIT |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| HIERARCHY_TYPE | Standard Hierarchy | Standard Hierarchy | Standard Hierarchy |
+| LINK_TYPE_CODE | SIS | FC | FC |
+| LINK_TYPE | Student Systems Unit | Standard Funds Center | Standard Funds Center |
+| DLC_KEY | D_WHIT | D_POLSCI | D_DL |
+| DLC_CODE | D_WHIT | D_POLSCI | D_DL |
+| LINKED_OBJECT_KEY | WHIT | FC201105 | FC403310 |
+| LINKED_OBJECT_CODE | WHIT | FC201105 | FC403310 |
 
 # `mit_holiday_closing_calendar`  (rows=580)
 
@@ -2475,16 +2378,14 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=580
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| HOLIDAY_CLOSING_DATE | 31-MAY-27 |
-| HOLIDAY_CLOSING_DESCRIPTION | MIT Memorial Day |
-| HOLIDAY_CLOSING_TYPE | Standard Holiday |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| HOLIDAY_CLOSING_DATE | 31-MAY-27 | 31-DEC-24 | 19-JAN-15 |
+| HOLIDAY_CLOSING_DESCRIPTION | MIT Memorial Day | SHOL | MIT Martin Luther King Day |
+| HOLIDAY_CLOSING_TYPE | Standard Holiday | Special Holiday/Closing | Standard Holiday |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `mit_student_directory`  (rows=10000)
 
@@ -2503,24 +2404,22 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=10000
 
 indexes: `DEPARTMENT`, `FULL_NAME`, `OFFICE_LOCATION`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FIRST_NAME | Zoe |
-| MIDDLE_NAME | W |
-| LAST_NAME | Fuller |
-| FULL_NAME | Fuller, Zoe |
-| OFFICE_LOCATION | null |
-| OFFICE_PHONE | null |
-| EMAIL_ADDRESS | zoef@worker.com |
-| DEPARTMENT | 15 |
-| DEPARTMENT_NAME | Management |
-| STUDENT_YEAR | G |
-| FULL_NAME_UPPERCASE | FULLER, ZOE |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FIRST_NAME | Zoe | Roy | Nevaeh |
+| MIDDLE_NAME | W | null | null |
+| LAST_NAME | Fuller | Ashley | Copeland |
+| FULL_NAME | Fuller, Zoe | Ashley, Roy | Copeland, Nevaeh |
+| OFFICE_LOCATION | null | null | null |
+| OFFICE_PHONE | null | null | null |
+| EMAIL_ADDRESS | zoef@worker.com | ra@worker.com | nc@worker.com |
+| DEPARTMENT | 15 | NIH | 6 |
+| DEPARTMENT_NAME | Management | Harvard Cross-Enrollment Prog | Electrical Eng & Computer Sci |
+| STUDENT_YEAR | G | G | 3 |
+| FULL_NAME_UPPERCASE | FULLER, ZOE | ASHLEY, ROY | COPELAND, NEVAEH |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `moira_list`  (rows=10000)
 
@@ -2536,21 +2435,19 @@ columns:
 `IS_HIDDEN` varchar127: "N"=10000
 
 indexes: `MOIRA_LIST_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| MOIRA_LIST_KEY | zephyr-zephyr |
-| MOIRA_LIST_NAME | zephyr-zephyr |
-| MOIRA_LIST_DESCRIPTION | null |
-| IS_ACTIVE | Y |
-| IS_MOIRA_MAILING_LIST | Y |
-| IS_MOIRA_GROUP | N |
-| IS_NFS_GROUP | N |
-| IS_PUBLIC | N |
-| IS_HIDDEN | N |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| MOIRA_LIST_KEY | zephyr-zephyr | snake-ant-falcon | elephant-fortune-ant |
+| MOIRA_LIST_NAME | zephyr-zephyr | snake-ant-falcon | elephant-fortune-ant |
+| MOIRA_LIST_DESCRIPTION | null | null | null |
+| IS_ACTIVE | Y | Y | Y |
+| IS_MOIRA_MAILING_LIST | Y | Y | Y |
+| IS_MOIRA_GROUP | N | N | N |
+| IS_NFS_GROUP | N | N | N |
+| IS_PUBLIC | N | N | N |
+| IS_HIDDEN | N | N | N |
 
 # `moira_list_detail`  (rows=10000)
 
@@ -2565,20 +2462,18 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=10000
 
 indexes: `MOIRA_LIST_KEY`, `MOIRA_LIST_MEMBER`, `MOIRA_LIST_MEMBER_MIT_ID`, `MOIRA_LIST_OWNER_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| MOIRA_LIST_KEY | zephyr-zephyr-tower |
-| MOIRA_LIST_OWNER_KEY | LISTant-kindness |
-| MOIRA_LIST_MEMBER | kl |
-| MOIRA_LIST_MEMBER_FULL_NAME | Lowe, Kitty |
-| MOIRA_LIST_MEMBER_MIT_ID | 910981628 |
-| LAST_UPDATE_DATE | 14-SEP-08 |
-| COUNTER | 1 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| MOIRA_LIST_KEY | zephyr-zephyr-tower | ant-elephant-lion | whale-inspire-amber |
+| MOIRA_LIST_OWNER_KEY | LISTant-kindness | LISTjasmine-panda | USERkindness-candle |
+| MOIRA_LIST_MEMBER | kl | melodym5 | anikaw |
+| MOIRA_LIST_MEMBER_FULL_NAME | Lowe, Kitty | null | Webster, Anika |
+| MOIRA_LIST_MEMBER_MIT_ID | 910981628 | null | 986130650 |
+| LAST_UPDATE_DATE | 14-SEP-08 | 26-APR-18 | 07-SEP-22 |
+| COUNTER | 1 | 1 | 1 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `moira_list_owner`  (rows=10000)
 
@@ -2589,16 +2484,14 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=10000
 
 indexes: `MOIRA_LIST_OWNER_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| MOIRA_LIST_OWNER_KEY | USERzephyr-yarrow |
-| OWNER | zephyr-yarrow |
-| OWNER_TYPE | USER |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| MOIRA_LIST_OWNER_KEY | USERzephyr-yarrow | LIST81.661-date-azure | LISTdancer-azure |
+| OWNER | zephyr-yarrow | 81.661-date-azure | dancer-azure |
+| OWNER_TYPE | USER | LIST | LIST |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `person_auth_area`  (rows=10000)
 
@@ -2611,18 +2504,16 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=10000
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| USER_NAME | ZW |
-| HAS_FINANCIAL_AUTH | N |
-| HAS_HR_FULL_AUTH | N |
-| HAS_HR_LIMITED_AUTH | N |
-| HAS_PAYROLL_AUTH | N |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| USER_NAME | ZW | TYRONEB | ALISAB |
+| HAS_FINANCIAL_AUTH | N | N | N |
+| HAS_HR_FULL_AUTH | N | N | N |
+| HAS_HR_LIMITED_AUTH | N | N | N |
+| HAS_PAYROLL_AUTH | N | N | N |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `roles_fin_pa`  (rows=1395)
 
@@ -2631,14 +2522,12 @@ columns:
 `DLC_KEY` varchar127: 292 distinct
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| USERNAME | zs |
-| DLC_KEY | D_SCM |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| USERNAME | zs | faizas | theodores |
+| DLC_KEY | D_SCM | D_CSS | D_VPRES |
 
 # `se_person`  (rows=10000)
 
@@ -2657,24 +2546,22 @@ columns:
 `EMPLOYEE_TYPE` varchar127: "Student"=3515, "Other Academic Group"=2140, "Admin Staff"=1587, "Sponsored Research Staff"=979, "Support Staff"=662, "Faculty"=579, "Service Staff"=478, "Medical"=60
 
 indexes: `FULL_NAME`, `MIT_ID`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| MIT_ID | 999996252 |
-| KRB_NAME | do |
-| FULL_NAME | O'Reilly, Dillan |
-| PAYROLL_RANK | Spon Res-Tech |
-| POSITION_TITLE | null |
-| IS_ACTIVE | Y |
-| OFFICE_LOCATION | 76-474 |
-| ORGANIZATION | Koch Inst - Integrative Cancer Research |
-| FIRST_NAME | Dillan |
-| LAST_NAME | O'Reilly |
-| MIDDLE_NAME | R |
-| EMPLOYEE_TYPE | Sponsored Research Staff |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| MIT_ID | 999996252 | 976484808 | 989503852 |
+| KRB_NAME | do | wl | katrinap |
+| FULL_NAME | O'Reilly, Dillan | Leonard, Wanda | Palmer, Katrina |
+| PAYROLL_RANK | Spon Res-Tech | Svc SEIU Facil | Support Staff |
+| POSITION_TITLE | null | null | null |
+| IS_ACTIVE | Y | Y | Y |
+| OFFICE_LOCATION | 76-474 | 10-072A | 1 |
+| ORGANIZATION | Koch Inst - Integrative Cancer Research | Dof Custodial Services | Civil and Environmental Engineering |
+| FIRST_NAME | Dillan | Wanda | Katrina |
+| LAST_NAME | O'Reilly | Leonard | Palmer |
+| MIDDLE_NAME | R | H | null |
+| EMPLOYEE_TYPE | Sponsored Research Staff | Service Staff | Support Staff |
 
 # `sis_admin_department`  (rows=179)
 
@@ -2688,25 +2575,23 @@ columns:
 `LAST_ACTIVITY_DATE` varchar255: 84 distinct
 
 indexes: `SIS_ADMIN_DEPARTMENT_CODE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-| SIS_ADMIN_DEPARTMENT_CODE | WWW |
-| SIS_ADMIN_DEPARTMENT_NAME | World Wide Web |
-| DEPARTMENT_PHONE_AREA_CODE | null |
-| DEPARTMENT_PHONE_NUMBER | null |
-| CLEARING_COST_COLLECTOR | null |
-| LAST_ACTIVITY_DATE | 07-APR-97 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
+| SIS_ADMIN_DEPARTMENT_CODE | WWW | CONC | 13 |
+| SIS_ADMIN_DEPARTMENT_NAME | World Wide Web | Concourse Program | Ocean Engineering |
+| DEPARTMENT_PHONE_AREA_CODE | null | null | null |
+| DEPARTMENT_PHONE_NUMBER | null | 1764857 | 5132122 |
+| CLEARING_COST_COLLECTOR | null | null | 1323400 |
+| LAST_ACTIVITY_DATE | 07-APR-97 | 12-AUG-96 | 12-AUG-96 |
 
 # `sis_course_description`  (rows=695)
 
 columns:
 `SIS_COURSE_DESCRIPTION_KEY` varchar127: all distinct
-`COURSE` varchar127: 630 distinct, "1 NIE"=2, "1 NIV"=2, "10"=2, "10 NIE"=2, "10 NIV"=2, "11"=2, "12"=2, "12 NIE"=2, "12 NIV"=2, "13"=2
+`COURSE` varchar127: 630 distinct
 `COURSE_DESCRIPTION` varchar127: 535 distinct
 `COURSE_DESCRIPTION_LONG` varchar127: 298 distinct, nulls=5
 `DEPARTMENT` varchar127: 72 distinct, "12"=39, "6"=39, "15"=37, "ASP"=33, "UND"=33, "1"=26, "2"=26, "16"=25, "4"=25, "ESD"=21
@@ -2729,34 +2614,32 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=695
 
 indexes: `CIP_PROGRAM_CODE`, `COURSE`, `DEPARTMENT`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| SIS_COURSE_DESCRIPTION_KEY | WCD::U |
-| COURSE | WCD |
-| COURSE_DESCRIPTION | Wellesley Coll Dbl Degree Prog |
-| COURSE_DESCRIPTION_LONG | null |
-| DEPARTMENT | WCD |
-| DEPARTMENT_NAME | Wellesley Double Degree Prog |
-| DEPT_NAME_IN_COMMENCEMENT_BK | null |
-| SCHOOL_NAME | MIT, academic |
-| SCHOOL_NAME_IN_COMMENCEMENT_BK | null |
-| FROM_TERM | 000000 |
-| FROM_TERM_DESCRIPTION | Beginning of Time |
-| THRU_TERM | 999999 |
-| THRU_TERM_DESCRIPTION | End of Time |
-| COURSE_OPTION | null |
-| COURSE_LEVEL | U |
-| CIP_PROGRAM_CODE | 123456 |
-| IS_DEGREE_GRANTING | N |
-| DEFAULT_ULTIMATE_DEGREE | NDG |
-| GRADAUTE_LEVEL | null |
-| GRADUATE_LEVEL | null |
-| LAST_ACTIVITY_DATE | 29-OCT-94 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| SIS_COURSE_DESCRIPTION_KEY | WCD::U | 8:D:G | ASP:24:G |
+| COURSE | WCD | 8 D | ASP 24 |
+| COURSE_DESCRIPTION | Wellesley Coll Dbl Degree Prog | Physics - Doctoral | Ling & Phil - Special |
+| COURSE_DESCRIPTION_LONG | null | Physics | Linguistics and Philosophy - Special |
+| DEPARTMENT | WCD | 8 | ASP |
+| DEPARTMENT_NAME | Wellesley Double Degree Prog | Physics | Advanced Study Program |
+| DEPT_NAME_IN_COMMENCEMENT_BK | null | Department of Physics | null |
+| SCHOOL_NAME | MIT, academic | Science | Engineering |
+| SCHOOL_NAME_IN_COMMENCEMENT_BK | null | School of Science | School of Engineering |
+| FROM_TERM | 000000 | 000000 | 2015JA |
+| FROM_TERM_DESCRIPTION | Beginning of Time | Beginning of Time | January Term 2014-2015 |
+| THRU_TERM | 999999 | 999999 | 999999 |
+| THRU_TERM_DESCRIPTION | End of Time | End of Time | End of Time |
+| COURSE_OPTION | null | D | 24 |
+| COURSE_LEVEL | U | G | G |
+| CIP_PROGRAM_CODE | 123456 | 400801 | 160102 |
+| IS_DEGREE_GRANTING | N | Y | N |
+| DEFAULT_ULTIMATE_DEGREE | NDG | DOC | NDG |
+| GRADAUTE_LEVEL | null | Doctoral | null |
+| GRADUATE_LEVEL | null | Doctoral | null |
+| LAST_ACTIVITY_DATE | 29-OCT-94 | 23-JUL-15 | 03-DEC-14 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `sis_department`  (rows=128)
 
@@ -2776,25 +2659,23 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=128
 
 indexes: `DEPARTMENT_CODE`, `SCHOOL_CODE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| DEPARTMENT_CODE | ZZZZ |
-| DEPARTMENT_NAME | Dummy to get sorts |
-| DEPARTMENT_FULL_NAME | ZZZZ-Dummy to get sorts |
-| SCHOOL_CODE | Y |
-| SCHOOL_NAME | MIT, academic |
-| DEPT_BUDGET_CODE | null |
-| IS_DEGREE_GRANTING | N |
-| DEPT_NAME_IN_COMMENCEMENT_BK | null |
-| SCHOOL_NAME_IN_COMMENCEMENT_BK | null |
-| DEPARTMENT_NAME_HISTORY | null |
-| DEPARTMENT_LAST_ACTIVITY_DATE | 13-APR-95 |
-| DLC_KEY | D_UNDEF |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| DEPARTMENT_CODE | ZZZZ | 16 | CSB |
+| DEPARTMENT_NAME | Dummy to get sorts | Aeronautics and Astronautics | Computational and Systems Bio |
+| DEPARTMENT_FULL_NAME | ZZZZ-Dummy to get sorts | 16-Aeronautics and Astronautics | CSB-Computational and Systems Bio |
+| SCHOOL_CODE | Y | E | E |
+| SCHOOL_NAME | MIT, academic | Engineering | Engineering |
+| DEPT_BUDGET_CODE | null | 61000 | 69200 |
+| IS_DEGREE_GRANTING | N | Y | Y |
+| DEPT_NAME_IN_COMMENCEMENT_BK | null | Department of Aeronautics and Astronautics | Program in Computational and Systems Biology |
+| SCHOOL_NAME_IN_COMMENCEMENT_BK | null | School of Engineering | School of Engineering |
+| DEPARTMENT_NAME_HISTORY | null | null | null |
+| DEPARTMENT_LAST_ACTIVITY_DATE | 13-APR-95 | 17-FEB-94 | 15-MAR-07 |
+| DLC_KEY | D_UNDEF | D_AEROASTRO | D_CSBI |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `sis_lookup`  (rows=67)
 
@@ -2805,16 +2686,14 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=67
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| LOOKUP_TYPE | Registration Type |
-| CODE | X |
-| DESCRIPTION | Cross-Registered |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| LOOKUP_TYPE | Registration Type | Registration Status | Load Level |
+| CODE | X | PP | HT |
+| DESCRIPTION | Cross-Registered | ? | Half Time |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `sis_subject_code`  (rows=221)
 
@@ -2829,20 +2708,18 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=221
 
 indexes: `COURSE_NUMBER`, `DEPARTMENT_CODE`, `SCHOOL_CODE`, `SUBJECT_CODE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| COURSE_NUMBER | WWS |
-| SUBJECT_CODE | WWS |
-| SUBJECT_CODE_DESC | Wellesley, Women's and Gender |
-| DEPARTMENT_CODE | NIW |
-| DEPARTMENT_NAME | Wellesley Cross-Enrollment Pro |
-| SCHOOL_CODE | Z |
-| SCHOOL_NAME | Non-MIT |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| COURSE_NUMBER | WWS | EM | 12 |
+| SUBJECT_CODE | WWS | EM | 12 |
+| SUBJECT_CODE_DESC | Wellesley, Women's and Gender | Engineering Management | Earth, Atmos, & Planetary Sci |
+| DEPARTMENT_CODE | NIW | EM | 12 |
+| DEPARTMENT_NAME | Wellesley Cross-Enrollment Pro | Engineering Management | Earth, Atmos & Planetary Sci |
+| SCHOOL_CODE | Z | E | S |
+| SCHOOL_NAME | Non-MIT | Engineering | Science |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `sis_term_address_category`  (rows=112)
 
@@ -2857,20 +2734,18 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=112
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| TERM_ADDRESS_CATEGORY_CODE | ZP |
-| TERM_ADDRESS_CATEGORY | Zeta Psi |
-| LIVING_GROUP_TYPE | F |
-| LIVING_GROUP_TYPE_DESC | Fraternity |
-| VALID_FROM_DATE | 17-FEB-94 |
-| VALID_THRU_DATE | null |
-| LAST_ACTIVITY_DATE | 22-FEB-94 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| TERM_ADDRESS_CATEGORY_CODE | ZP | SAM | TEP |
+| TERM_ADDRESS_CATEGORY | Zeta Psi | Sigma Alpha Mu (old; now FEN) | Tau Epsilon Phi |
+| LIVING_GROUP_TYPE | F | F | F |
+| LIVING_GROUP_TYPE_DESC | Fraternity | Fraternity | Fraternity |
+| VALID_FROM_DATE | 17-FEB-94 | 01-JAN-60 | 17-FEB-94 |
+| VALID_THRU_DATE | null | 01-JAN-94 | null |
+| LAST_ACTIVITY_DATE | 22-FEB-94 | 18-NOV-94 | 22-FEB-94 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `space_detail`  (rows=10000)
 
@@ -2878,7 +2753,7 @@ columns:
 `BUILDING_KEY` varchar127: digits, 29 distinct, "32"=1319, "36"=624, "13"=578, "10"=571, "3"=547, "18"=529, "4"=503, "14"=491, "37"=415, "1"=406
 `FLOOR_KEY` varchar127: bool-like, 27 distinct, "2"=1847, "3"=1723, "1"=1507, "0"=1396, "4"=1223, "5"=725, "6"=371, "7"=181, "8"=138, "G5"=88
 `SPACE_UNIT_KEY` varchar127: digits, 66 distinct, nulls=3, "591000"=3551, "65000"=575, "267000"=561, "67900"=521, "152000"=462, "417500"=378, "61000"=359, "271000"=237, "60600"=192, "446700"=185
-`SPACE_USAGE_KEY` int: 61 distinct, 1..87, avg=52.2918, median=54, 54=2595, 55=810, 69=785, 36=688, 85=640, 77=485, 71=473, 24=429, 17=397, 25=329
+`SPACE_USAGE_KEY` int: 61 distinct, 1..87, 54=2595, 55=810, 69=785, 36=688, 85=640, 77=485, 71=473, 24=429, 17=397, 25=329
 `BUILDING_ROOM` varchar127: 9332 distinct
 `BUILDING_ROOM_NAME` varchar127: 9331 distinct
 `ROOM_NUMBER` varchar127: 949 distinct
@@ -2888,23 +2763,21 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=10000
 
 indexes: `BUILDING_KEY`, `FLOOR_KEY`, `SPACE_UNIT_KEY`, `SPACE_USAGE_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| BUILDING_KEY | 45 |
-| FLOOR_KEY | 3 |
-| SPACE_UNIT_KEY | 401930 |
-| SPACE_USAGE_KEY | 55 |
-| BUILDING_ROOM | 45-398 |
-| BUILDING_ROOM_NAME | 45-398 |
-| ROOM_NUMBER | 98 |
-| ROOM_SQUARE_FOOTAGE | 13 |
-| ROOM_COUNTER | 1 |
-| BUILDING_COMPONENT | 45 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| BUILDING_KEY | 45 | 13 | 4 |
+| FLOOR_KEY | 3 | 4 | 1 |
+| SPACE_UNIT_KEY | 401930 | 417500 | 66000 |
+| SPACE_USAGE_KEY | 55 | 69 | 69 |
+| BUILDING_ROOM | 45-398 | 13-464 | 4-110A |
+| BUILDING_ROOM_NAME | 45-398 | 13-464 | 4-110A |
+| ROOM_NUMBER | 98 | 64 | 10A |
+| ROOM_SQUARE_FOOTAGE | 13 | 424 | 527 |
+| ROOM_COUNTER | 1 | 1 | 1 |
+| BUILDING_COMPONENT | 45 | 13 | 4 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `space_floor`  (rows=49)
 
@@ -2915,16 +2788,14 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=49
 
 indexes: `FLOOR_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FLOOR_KEY | G9 |
-| FLOOR | G9 |
-| FLOOR_NAME | G9 Floor |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FLOOR_KEY | G9 | D6 | 15 |
+| FLOOR | G9 | D6 | 15 |
+| FLOOR_NAME | G9 Floor | D6 Floor | 15 Floor |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `space_supervisor_usage`  (rows=2135)
 
@@ -2934,27 +2805,25 @@ columns:
 `DEPT_NAMES` varchar127: 135 distinct, "D_RESDEV"=188, "D_LIBRARIES"=137, "D_SLOAN"=114, "D_ALUM"=103, "D_LFEE"=97, "D_DUSP"=94, "D_CMS"=92, "D_ECO"=85, "D_MECHE"=84, "D_ARCH"=80
 `NUM_OF_SUPERVISEES` int: 51 distinct, 1..121, avg=3.7742, median=1
 `SQFT` float: 909 distinct, 0..215723, avg=1834.72, median=159
-`RESEARCH_VOLUME` float: 651 distinct, -832234..9.50486e+06, avg=305837, median=0
+`RESEARCH_VOLUME` float: 651 distinct, -832234..9.5e+06, avg=305837, median=0
 `SQFT_PER_SUPERVISEE` float: 598 distinct, 0..215723, avg=717.312, median=129
 `SQFT_PER_RES_VOL` float: 0=2132, -18=1, 1=1, 5=1, -18..5
 `RES_VOL_PER_SQFT` float: 538 distinct, -723..41497, avg=313.083, median=0
 
 indexes: `DEPT_NAMES`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| MIT_ID | 999874431 |
-| DEPT_COUNT | 1 |
-| DEPT_NAMES | D_MECHE |
-| NUM_OF_SUPERVISEES | 3 |
-| SQFT | 300 |
-| RESEARCH_VOLUME | 98518.3 |
-| SQFT_PER_SUPERVISEE | 100 |
-| SQFT_PER_RES_VOL | 0 |
-| RES_VOL_PER_SQFT | 328 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| MIT_ID | 999874431 | 922725511 | 975689992 |
+| DEPT_COUNT | 1 | 1 | 1 |
+| DEPT_NAMES | D_MECHE | D_ANTHRO | D_CHEM |
+| NUM_OF_SUPERVISEES | 3 | 5 | 12 |
+| SQFT | 300 | 3348 | 3310 |
+| RESEARCH_VOLUME | 98518.3 | 0 | 572521 |
+| SQFT_PER_SUPERVISEE | 100 | 670 | 276 |
+| SQFT_PER_RES_VOL | 0 | 0 | 0 |
+| RES_VOL_PER_SQFT | 328 | 0 | 173 |
 
 # `space_unit`  (rows=150)
 
@@ -2967,18 +2836,16 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=150
 
 indexes: `DLC_KEY`, `FCLT_ORGANIZATION_KEY`, `SPACE_UNIT_CODE`, `SPACE_UNIT_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FCLT_ORGANIZATION_KEY | 287 |
-| SPACE_UNIT_KEY | 391000 |
-| SPACE_UNIT_CODE | 391000 |
-| SPACE_UNIT | null |
-| DLC_KEY | null |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FCLT_ORGANIZATION_KEY | 287 | 277 | 283 |
+| SPACE_UNIT_KEY | 391000 | 417500 | 440102 |
+| SPACE_UNIT_CODE | 391000 | 417500 | 440102 |
+| SPACE_UNIT | null | Materials Research Laboratory | D-LAB |
+| DLC_KEY | null | D_MRL | D_D-LAB |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `space_unit2`  (rows=139)
 
@@ -2990,35 +2857,31 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=139
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| SPACE_UNIT_KEY | 97500 |
-| SPACE_UNIT_CODE | 97500 |
-| SPACE_UNIT | C FOR INT STUDIE |
-| DLC_KEY | D_CIS |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| SPACE_UNIT_KEY | 97500 | 401930 | 391000 |
+| SPACE_UNIT_CODE | 97500 | 401930 | 391000 |
+| SPACE_UNIT | C FOR INT STUDIE | SCHWARZMAN COLLEGE OF COMPUTING | RSCH ADMIN SERVICES |
+| DLC_KEY | D_CIS | null | D_RAS |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `space_usage`  (rows=88)
 
 columns:
-`SPACE_USAGE_KEY` int: all distinct, 1..88, avg=44.5, median=44.5
+`SPACE_USAGE_KEY` int: all distinct, 1..88
 `SPACE_USAGE` varchar127: 50 distinct, nulls=1
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=88
 
 indexes: `SPACE_USAGE_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| SPACE_USAGE_KEY | 88 |
-| SPACE_USAGE | null |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| SPACE_USAGE_KEY | 88 | 4 | 73 |
+| SPACE_USAGE | null | E-LAB | RECEIVING AREA |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `student_degree_program`  (rows=1202)
 
@@ -3044,31 +2907,29 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=1202
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| DEGREE_CODE | SMWSW |
-| DEGREE_DESC | Master of Science (without specification of field, recommended Jointly by Massachusetts Institute of Technology and Woods Hole  |
-| DEGREE_DESC_SHORT | Master of Science (w/o spec of field, recommended Jointly by MIT-WHOI) Jointly by MIT-WHOI |
-| DEGREE_TYPE | SM |
-| DEGREE_TYPE_DESC | Master of Science |
-| DEGREE_WEIGHT | 3 |
-| FROM_TERM | 1988SP |
-| THRU_TERM | 999999 |
-| DEPARTMENT | 7 |
-| DEPT_NAME_IN_COMMENCEMENT_BK | Department of Biology |
-| SCHOOL_NAME_IN_COMMENCEMENT_BK | School of Science |
-| COURSE | 7 WM |
-| COURSE_LEVEL | G |
-| IS_DOUBLE_MAJOR | N |
-| COMMENCEMENT_BK_COURSE_ROMAN | Course VII |
-| COMMENCEMENT_BK_SEE_ALSO | S.M., Course VII |
-| DEGREE_LAST_ACTIVITY_DATE | 17-MAR-10 |
-| COURSE_LAST_ACTIVITY_DATE | 23-APR-94 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| DEGREE_CODE | SMWSW | SCDW | PHD |
+| DEGREE_DESC | Master of Science (without specification of field, recommended Jointly by Massachusetts Institute of Technology and Woods Hole  | Doctor of Science Jointly by Massachusetts Institute of Technology and Woods Hole Oceanographic Institution | Doctor of Philosophy |
+| DEGREE_DESC_SHORT | Master of Science (w/o spec of field, recommended Jointly by MIT-WHOI) Jointly by MIT-WHOI | Doctor of Science Jointly by MIT-WHOI | Doctor of Philosophy |
+| DEGREE_TYPE | SM | SCD | PHD |
+| DEGREE_TYPE_DESC | Master of Science | Doctor of Science | Doctor of Philosophy |
+| DEGREE_WEIGHT | 3 | 8 | 8 |
+| FROM_TERM | 1988SP | 000000 | 000000 |
+| THRU_TERM | 999999 | 999999 | 999999 |
+| DEPARTMENT | 7 | 12 | 4 |
+| DEPT_NAME_IN_COMMENCEMENT_BK | Department of Biology | Department of Earth, Atmospheric, and Planetary Sciences | Department of Architecture |
+| SCHOOL_NAME_IN_COMMENCEMENT_BK | School of Science | School of Science | School of Architecture and Planning |
+| COURSE | 7 WM | 12 GWD | 4 HTD |
+| COURSE_LEVEL | G | G | G |
+| IS_DOUBLE_MAJOR | N | N | N |
+| COMMENCEMENT_BK_COURSE_ROMAN | Course VII | W.H.O.I. | Course IV |
+| COMMENCEMENT_BK_SEE_ALSO | S.M., Course VII | Sc.D., W.H.O.I. | Ph.D., Course IV |
+| DEGREE_LAST_ACTIVITY_DATE | 17-MAR-10 | 27-APR-94 | 24-SEP-93 |
+| COURSE_LAST_ACTIVITY_DATE | 23-APR-94 | 31-JAN-03 | 13-JAN-16 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `student_department`  (rows=79)
 
@@ -3080,17 +2941,15 @@ columns:
 `SCHOOL_NAME` varchar127: "Engineering"=23, "Hum, Arts & Social Sciences"=17, "Non-MIT"=14, "Science"=8, "MIT, academic"=7, "Architecture and Planning"=4, "Schwarzman Coll of Comp"=2, "Sloan School of Management"=2, "Whitaker Coll of HST;  HST"=2
 
 indexes: `DEPARTMENT_CODE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| DEPARTMENT_CODE | WCD |
-| DEPARTMENT_NAME | Wellesley Double Degree Prog |
-| DEPARTMENT_FULL_NAME | WCD-Wellesley Double Degree Prog |
-| SCHOOL_CODE | Y |
-| SCHOOL_NAME | MIT, academic |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| DEPARTMENT_CODE | WCD | BE | 24 |
+| DEPARTMENT_NAME | Wellesley Double Degree Prog | Biological Engineering | Linguistics and Philosophy |
+| DEPARTMENT_FULL_NAME | WCD-Wellesley Double Degree Prog | BE-Biological Engineering | 24-Linguistics and Philosophy |
+| SCHOOL_CODE | Y | E | H |
+| SCHOOL_NAME | MIT, academic | Engineering | Hum, Arts & Social Sciences |
 
 # `student_ethnic_subgroup`  (rows=46)
 
@@ -3103,18 +2962,16 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=46
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| STUDENT_ETHNIC_SUBGROUP_KEY | 99:9901 |
-| ETHNIC_GROUP_NAME | Race/Ethnicity Unknown |
-| ETHNIC_SUBGROUP_NAME | Race/Ethnicity Unknown |
-| ETHNIC_CODE | 99 |
-| ETHNIC_SUBGROUP_CODE | 9901 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| STUDENT_ETHNIC_SUBGROUP_KEY | 99:9901 | 30:3002 | 40:4001 |
+| ETHNIC_GROUP_NAME | Race/Ethnicity Unknown | Native Hawaiian or Other Pacific Islander | Hispanic or Latino |
+| ETHNIC_SUBGROUP_NAME | Race/Ethnicity Unknown | Hawaii | Central America |
+| ETHNIC_CODE | 99 | 30 | 40 |
+| ETHNIC_SUBGROUP_CODE | 9901 | 3002 | 4001 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `subject_attribute`  (rows=104)
 
@@ -3128,19 +2985,17 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=104
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| SUBJECT_ATTRIBUTE_CODE | ZY |
-| SUBJECT_ATTRIBUTE_TYPE | A |
-| SUBJECT_ATTRIBUTE_SHORT_DESC | null |
-| SUBJECT_ATTRIBUTE_DESC | HUM-D, Anthropology/Arch |
-| SUBJECT_ATTRIBUTE_REPORT_DESC | null |
-| LAST_ACTIVITY_DATE | 09-MAY-95 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| SUBJECT_ATTRIBUTE_CODE | ZY | HA2 | WRT1 |
+| SUBJECT_ATTRIBUTE_TYPE | A | A | A |
+| SUBJECT_ATTRIBUTE_SHORT_DESC | null | Half HASS-A | Phase I |
+| SUBJECT_ATTRIBUTE_DESC | HUM-D, Anthropology/Arch | Half HASS Arts | Writing Requirement, Phase I |
+| SUBJECT_ATTRIBUTE_REPORT_DESC | null | null | null |
+| LAST_ACTIVITY_DATE | 09-MAY-95 | 20-DEC-10 | 26-APR-93 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `subject_enrollable`  (rows=10000)
 
@@ -3158,23 +3013,21 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=10000
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| TERM_CODE | 2013FA |
-| SUBJECT_ID | HAA.9587 |
-| SUBJECT_TITLE | Societies Of The World |
-| SUBJECT_TITLE_LONG | Societies Of The World |
-| MASTER_SUBJECT_ID | HAA.0000 |
-| ULT_MASTER_SUBJECT_ID | HAA.0000 |
-| CLUSTER_LIST | HAA.0000, HAA.0018, HAA.0021, HAA.0023, HAA.0025, HAA.0026, HAA.0029, HAA.0031, HAA.0033, HAA.0036, HAA.0042, HAA.0062, HAA.007 |
-| OFFER_DEPT_CODE | NIH |
-| OFFER_SCHOOL_CODE | Z |
-| SUBJECT_GROUP_ID | C90336067F566377E0440003BACE90BC |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| TERM_CODE | 2013FA | 2012SP | 2012FA |
+| SUBJECT_ID | HAA.9587 | HAA.3865 | HAA.2505 |
+| SUBJECT_TITLE | Societies Of The World | Econ 1470: Privatization | Experiments in Reading:Chekhov |
+| SUBJECT_TITLE_LONG | Societies Of The World | Econ 1470: Privatization | Experiments in Reading:Chekhov |
+| MASTER_SUBJECT_ID | HAA.0000 | HAA.0000 | HAA.0000 |
+| ULT_MASTER_SUBJECT_ID | HAA.0000 | HAA.0000 | HAA.0000 |
+| CLUSTER_LIST | HAA.0000, HAA.0018, HAA.0021, HAA.0023, HAA.0025, HAA.0026, HAA.0029, HAA.0031, HAA.0033, HAA.0036, HAA.0042, HAA.0062, HAA.007 | HAA.0000, HAA.0018, HAA.0021, HAA.0023, HAA.0025, HAA.0026, HAA.0029, HAA.0031, HAA.0033, HAA.0036, HAA.0042, HAA.0062, HAA.007 | HAA.0000, HAA.0021, HAA.0023, HAA.0025, HAA.0026, HAA.0029, HAA.0031, HAA.0033, HAA.0036, HAA.0042, HAA.0062, HAA.0071, HAA.007 |
+| OFFER_DEPT_CODE | NIH | NIH | NIH |
+| OFFER_SCHOOL_CODE | Z | Z | Z |
+| SUBJECT_GROUP_ID | C90336067F566377E0440003BACE90BC | B5FFD833D4B01D04E0440003BACE90BC | AC9102EC3F184BE9E0440003BACE90BC |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `subject_grouping`  (rows=10000)
 
@@ -3188,19 +3041,17 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=10000
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| SUBJECT_GROUPING_KEY | FF172E3F4BBA3CF8E0533D2F09126F27 |
-| TERM_CODE | 2024FA |
-| DEPARTMENT_CODE | 16 |
-| DEPARTMENT_NAME | Aeronautics and Astronautics |
-| DEPARTMENT_FULL_NAME | 16-Aeronautics and Astronautics |
-| SCHOOL_NAME | Engineering |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| SUBJECT_GROUPING_KEY | FF172E3F4BBA3CF8E0533D2F09126F27 | 86CD64958BE80327E0440003BACE90BC | DEB360EBBE5C37F7E0433D2F091292CD |
+| TERM_CODE | 2024FA | 1997SP | 2014FA |
+| DEPARTMENT_CODE | 16 | 14 | 24 |
+| DEPARTMENT_NAME | Aeronautics and Astronautics | Economics | Linguistics and Philosophy |
+| DEPARTMENT_FULL_NAME | 16-Aeronautics and Astronautics | 14-Economics | 24-Linguistics and Philosophy |
+| SCHOOL_NAME | Engineering | Hum, Arts & Social Sciences | Hum, Arts & Social Sciences |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `subject_iap_schedule`  (rows=1199)
 
@@ -3217,22 +3068,20 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "19-DEC-24"=1199
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| TERM_CODE | 2021JA |
-| SUBJECT_ID | null |
-| SESSION_NUMBER | null |
-| MEET_PLACE | Zoom/Virtually |
-| MEET_START_TIME | 1000AM |
-| MEET_END_TIME | 1200PM |
-| IAP_DAY | null |
-| IAP_DATE | 29-JAN-21 |
-| REMARKS | null |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| TERM_CODE | 2021JA | 2021JA | 2021JA |
+| SUBJECT_ID | null | null | null |
+| SESSION_NUMBER | null | null | null |
+| MEET_PLACE | Zoom/Virtually | Zoom | Virtual |
+| MEET_START_TIME | 1000AM | 0600PM | 1100AM |
+| MEET_END_TIME | 1200PM | 0730PM | 1200PM |
+| IAP_DAY | null | null | null |
+| IAP_DATE | 29-JAN-21 | 13-JAN-21 | 11-JAN-21 |
+| REMARKS | null | Headphones are helpful for virtual ringing | Live session 11-12 + asynchronous sessions . |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
 
 # `subject_offered`  (rows=10000)
 
@@ -3286,59 +3135,57 @@ columns:
 `IS_REPEATABLE_SUBJECT` varchar127: "N"=10000
 
 indexes: `COMPOSITE_SUBJECT_KEY`, `COURSE_NUMBER`, `HGN_CODE`, `MASTER_SUBJECT_ID`, `MASTER_SUBJECT_ID_SORT`, `MEET_PLACE`, `OFFER_DEPT_CODE`, `RESPONSIBLE_FACULTY_MIT_ID`, `SECTION_ID`, `SUBJECT_GROUPING_KEY`, `SUBJECT_ID`, `SUBJECT_ID_SORT`, `SUBJECT_OFFERED_SUMMARY_KEY`, `SUBJECT_SUMMARY_KEY`, `TERM_CODE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| SUBJECT_KEY | HAAS4830002014JA |
-| SUBJECT_OFFERED_SUMMARY_KEY | HAA.S4832014JA |
-| MASTER_SUBJECT_KEY | HAA00000002014JA |
-| COMPOSITE_SUBJECT_KEY | HAA.00002014JA |
-| TERM_CODE | 2014JA |
-| MASTER_COURSE_NUMBER | HAA |
-| MASTER_COURSE_NUMBER_SORT | HAA |
-| MASTER_COURSE_NUMBER_DESC | Harvard, Arts and Sciences |
-| MASTER_SUBJECT_ID | HAA.0000 |
-| MASTER_SUBJECT_ID_SORT | HAA.0000 |
-| COURSE_NUMBER | HAA |
-| COURSE_NUMBER_SORT | HAA |
-| COURSE_NUMBER_DESC | Harvard, Arts and Sciences |
-| SUBJECT_ID | HAA.S483 |
-| SUBJECT_ID_SORT | HAA.S483 |
-| SUBJECT_TITLE | ISP 483:Intell,Command &Contrl |
-| SECTION_ID | 0 |
-| IS_MASTER_SECTION | Y |
-| IS_LECTURE_SECTION | N |
-| IS_LAB_SECTION | N |
-| IS_RECITATION_SECTION | N |
-| IS_DESIGN_SECTION | N |
-| OFFER_DEPT_CODE | NIH |
-| OFFER_DEPT_NAME | Harvard Cross-Enrollment Prog |
-| OFFER_SCHOOL_NAME | Non-MIT |
-| RESPONSIBLE_FACULTY_NAME | null |
-| RESPONSIBLE_FACULTY_MIT_ID | null |
-| MEET_TIME | null |
-| MEET_PLACE | null |
-| CLUSTER_TYPE | S |
-| CLUSTER_TYPE_DESC | SWE: School-Wide Electives |
-| CLUSTER_LIST | HAA.0000, HAA.0018, HAA.0021, HAA.0023, HAA.0025, HAA.0026, HAA.0029, HAA.0031, HAA.0033, HAA.0036, HAA.0042, HAA.0062, HAA.007 |
-| HGN_CODE | H |
-| HGN_CODE_DESC | Higher level graduate program |
-| FORM_TYPE | null |
-| FORM_TYPE_DESC | null |
-| SUBJECT_ENROLLMENT_NUMBER | 0 |
-| SECTION_ENROLLMENT_NUMBER | null |
-| CLUSTER_ENROLLMENT_NUMBER | 0 |
-| EVALUATE_THIS_SUBJECT | N |
-| IS_OSE_SUBJECT | N |
-| IS_CREATED_BY_DATA_WAREHOUSE | N |
-| SUBJECT_GROUPING_KEY | E871D5B8C0BD4E1DE0433D2F0912F67C |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-| NUM_ENROLLED_STUDENTS | 0 |
-| SUBJECT_SUMMARY_KEY | HAA.S4832014JA |
-| IS_REPEATABLE_SUBJECT | N |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| SUBJECT_KEY | HAAS4830002014JA | HAA00310002008JA | HAA71070002005JA |
+| SUBJECT_OFFERED_SUMMARY_KEY | HAA.S4832014JA | HAA.00312008JA | HAA.71072005JA |
+| MASTER_SUBJECT_KEY | HAA00000002014JA | HAA00000002008JA | HAA00000002005JA |
+| COMPOSITE_SUBJECT_KEY | HAA.00002014JA | HAA.00002008JA | HAA.00002005JA |
+| TERM_CODE | 2014JA | 2008JA | 2005JA |
+| MASTER_COURSE_NUMBER | HAA | HAA | HAA |
+| MASTER_COURSE_NUMBER_SORT | HAA | HAA | HAA |
+| MASTER_COURSE_NUMBER_DESC | Harvard, Arts and Sciences | Harvard, Arts and Sciences | Harvard, Arts and Sciences |
+| MASTER_SUBJECT_ID | HAA.0000 | HAA.0000 | HAA.0000 |
+| MASTER_SUBJECT_ID_SORT | HAA.0000 | HAA.0000 | HAA.0000 |
+| COURSE_NUMBER | HAA | HAA | HAA |
+| COURSE_NUMBER_SORT | HAA | HAA | HAA |
+| COURSE_NUMBER_DESC | Harvard, Arts and Sciences | Harvard, Arts and Sciences | Harvard, Arts and Sciences |
+| SUBJECT_ID | HAA.S483 | HAA.0031 | HAA.7107 |
+| SUBJECT_ID_SORT | HAA.S483 | HAA.0031 | HAA.7107 |
+| SUBJECT_TITLE | ISP 483:Intell,Command &Contrl | Yoruba b:Intermediate Yoruba | Psych 987b:Music, Mind &Brain |
+| SECTION_ID | 0 | 0 | 0 |
+| IS_MASTER_SECTION | Y | Y | Y |
+| IS_LECTURE_SECTION | N | N | N |
+| IS_LAB_SECTION | N | N | N |
+| IS_RECITATION_SECTION | N | N | N |
+| IS_DESIGN_SECTION | N | N | N |
+| OFFER_DEPT_CODE | NIH | NIH | NIH |
+| OFFER_DEPT_NAME | Harvard Cross-Enrollment Prog | Harvard Cross-Enrollment Prog | Harvard Cross-Enrollment Prog |
+| OFFER_SCHOOL_NAME | Non-MIT | Non-MIT | Non-MIT |
+| RESPONSIBLE_FACULTY_NAME | null | null | null |
+| RESPONSIBLE_FACULTY_MIT_ID | null | null | null |
+| MEET_TIME | null | null | null |
+| MEET_PLACE | null | null | null |
+| CLUSTER_TYPE | S | S | S |
+| CLUSTER_TYPE_DESC | SWE: School-Wide Electives | SWE: School-Wide Electives | SWE: School-Wide Electives |
+| CLUSTER_LIST | HAA.0000, HAA.0018, HAA.0021, HAA.0023, HAA.0025, HAA.0026, HAA.0029, HAA.0031, HAA.0033, HAA.0036, HAA.0042, HAA.0062, HAA.007 | HAA.0000, HAA.0023, HAA.0029, HAA.0031, HAA.0042, HAA.0062, HAA.0071, HAA.0074, HAA.0090, HAA.0094, HAA.0096, HAA.0104, HAA.010 | HAA.0000, HAA.0062, HAA.0074, HAA.0090, HAA.0094, HAA.0096, HAA.0104, HAA.0105, HAA.0107, HAA.0119, HAA.0120, HAA.0121, HAA.012 |
+| HGN_CODE | H | N | N |
+| HGN_CODE_DESC | Higher level graduate program | Not for graduate credit | Not for graduate credit |
+| FORM_TYPE | null | null | null |
+| FORM_TYPE_DESC | null | null | null |
+| SUBJECT_ENROLLMENT_NUMBER | 0 | 0 | 0 |
+| SECTION_ENROLLMENT_NUMBER | null | null | null |
+| CLUSTER_ENROLLMENT_NUMBER | 0 | 0 | 0 |
+| EVALUATE_THIS_SUBJECT | N | N | N |
+| IS_OSE_SUBJECT | N | N | N |
+| IS_CREATED_BY_DATA_WAREHOUSE | N | N | N |
+| SUBJECT_GROUPING_KEY | E871D5B8C0BD4E1DE0433D2F0912F67C | 86CD649640AA0327E0440003BACE90BC | 86CD64960C370327E0440003BACE90BC |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
+| NUM_ENROLLED_STUDENTS | 0 | 0 | 0 |
+| SUBJECT_SUMMARY_KEY | HAA.S4832014JA | HAA.00312008JA | HAA.71072005JA |
+| IS_REPEATABLE_SUBJECT | N | N | N |
 
 # `subject_offered_summary`  (rows=10000)
 
@@ -3374,41 +3221,39 @@ columns:
 `SUBJECT_SUMMARY_KEY` varchar127: all distinct
 
 indexes: `COMPOSITE_SUBJECT_KEY`, `COURSE_NUMBER`, `HGN_CODE`, `MASTER_SUBJECT_ID`, `MASTER_SUBJECT_ID_SORT`, `OFFER_DEPT_CODE`, `RESPONSIBLE_FACULTY_MIT_ID`, `SUBJECT_GROUPING_KEY`, `SUBJECT_ID`, `SUBJECT_ID_SORT`, `SUBJECT_OFFERED_SUMMARY_KEY`, `SUBJECT_SUMMARY_KEY`, `TERM_CODE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| SUBJECT_OFFERED_SUMMARY_KEY | WSP.3502016FA |
-| COMPOSITE_SUBJECT_KEY | WCL.00002016FA |
-| TERM_CODE | 2016FA |
-| COURSE_NUMBER | WSP |
-| SUBJECT_ID | WSP.350 |
-| SUBJECT_ID_SORT | WSP.350 |
-| SUBJECT_TITLE | Research/Individual St |
-| MASTER_SUBJECT_ID | WCL.0000 |
-| MASTER_SUBJECT_ID_SORT | WCL.0000 |
-| CLUSTER_TYPE | S |
-| CLUSTER_TYPE_DESC | SWE: School-Wide Electives |
-| CLUSTER_LIST | WAF.225, WAF.307, WAF.319, WAN.212, WAR.100, WAR.105, WAR.108, WAR.165, WAR.203, WAR.204, WAR.208, WAR.209, WAR.211, WAR.212, W |
-| HGN_CODE | N |
-| HGN_CODE_DESC | Not for graduate credit |
-| OFFER_DEPT_CODE | NIW |
-| OFFER_DEPT_NAME | Wellesley Cross-Enrollment Pro |
-| OFFER_SCHOOL_NAME | Non-MIT |
-| RESPONSIBLE_FACULTY_NAME | null |
-| RESPONSIBLE_FACULTY_MIT_ID | null |
-| TOTAL_UNITS | 12 |
-| LECTURE_UNITS | 3 |
-| LAB_UNITS | 0 |
-| PREPARATION_UNITS | 9 |
-| SUBJECT_ENROLLMENT_NUMBER | 0 |
-| CLUSTER_ENROLLMENT_NUMBER | 1 |
-| WAREHOUSE_LOAD_DATE | 19-DEC-24 |
-| NUM_ENROLLED_STUDENTS | 0 |
-| SUBJECT_GROUPING_KEY | 20F1A4BCA3D94237E0533D2F09122E56 |
-| SUBJECT_SUMMARY_KEY | WSP.3502016FA |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| SUBJECT_OFFERED_SUMMARY_KEY | WSP.3502016FA | HAA.53462012FA | HAA.40062005SU |
+| COMPOSITE_SUBJECT_KEY | WCL.00002016FA | HAA.00002012FA | HAA.00002005SU |
+| TERM_CODE | 2016FA | 2012FA | 2005SU |
+| COURSE_NUMBER | WSP | HAA | HAA |
+| SUBJECT_ID | WSP.350 | HAA.5346 | HAA.4006 |
+| SUBJECT_ID_SORT | WSP.350 | HAA.5346 | HAA.4006 |
+| SUBJECT_TITLE | Research/Individual St | Complex Dyn and Fractal Group | The Later Wittgenstein |
+| MASTER_SUBJECT_ID | WCL.0000 | HAA.0000 | HAA.0000 |
+| MASTER_SUBJECT_ID_SORT | WCL.0000 | HAA.0000 | HAA.0000 |
+| CLUSTER_TYPE | S | S | S |
+| CLUSTER_TYPE_DESC | SWE: School-Wide Electives | SWE: School-Wide Electives | SWE: School-Wide Electives |
+| CLUSTER_LIST | WAF.225, WAF.307, WAF.319, WAN.212, WAR.100, WAR.105, WAR.108, WAR.165, WAR.203, WAR.204, WAR.208, WAR.209, WAR.211, WAR.212, W | HAA.0000, HAA.0021, HAA.0023, HAA.0025, HAA.0026, HAA.0029, HAA.0031, HAA.0033, HAA.0036, HAA.0042, HAA.0062, HAA.0071, HAA.007 | HAA.0000, HAA.0062, HAA.0074, HAA.0090, HAA.0094, HAA.0096, HAA.0104, HAA.0105, HAA.0107, HAA.0119, HAA.0120, HAA.0121, HAA.012 |
+| HGN_CODE | N | H | G |
+| HGN_CODE_DESC | Not for graduate credit | Higher level graduate program | Graduate program |
+| OFFER_DEPT_CODE | NIW | NIH | NIH |
+| OFFER_DEPT_NAME | Wellesley Cross-Enrollment Pro | Harvard Cross-Enrollment Prog | Harvard Cross-Enrollment Prog |
+| OFFER_SCHOOL_NAME | Non-MIT | Non-MIT | Non-MIT |
+| RESPONSIBLE_FACULTY_NAME | null | null | null |
+| RESPONSIBLE_FACULTY_MIT_ID | null | null | null |
+| TOTAL_UNITS | 12 | 12 | 1 |
+| LECTURE_UNITS | 3 | 0 | 0 |
+| LAB_UNITS | 0 | 12 | 1 |
+| PREPARATION_UNITS | 9 | 0 | 0 |
+| SUBJECT_ENROLLMENT_NUMBER | 0 | 0 | 0 |
+| CLUSTER_ENROLLMENT_NUMBER | 1 | 232 | 0 |
+| WAREHOUSE_LOAD_DATE | 19-DEC-24 | 19-DEC-24 | 19-DEC-24 |
+| NUM_ENROLLED_STUDENTS | 0 | 0 | 0 |
+| SUBJECT_GROUPING_KEY | 20F1A4BCA3D94237E0533D2F09122E56 | AC9102EC3F184BE9E0440003BACE90BC | 86CD649615310327E0440003BACE90BC |
+| SUBJECT_SUMMARY_KEY | WSP.3502016FA | HAA.53462012FA | HAA.40062005SU |
 
 # `subject_summary`  (rows=10000)
 
@@ -3456,58 +3301,56 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "20-DEC-24"=10000
 
 indexes: `MASTER_SUBJECT_ID`, `MASTER_SUBJECT_ID_SORT`, `SUBJECT_ID`, `SUBJECT_ID_SORT`, `SUBJECT_SUMMARY_KEY`, `TERM_CODE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| SUBJECT_SUMMARY_KEY | WGS.6452019SP |
-| TERM_CODE | 2019SP |
-| SUBJECT_ID | WGS.645 |
-| SUBJECT_ID_SORT | WGS.645 |
-| SUBJECT_TITLE | Feminist Theory |
-| SUBJECT_OR_CLUSTER | WGS.645 |
-| MASTER_SUBJECT_ID | WGS.645 |
-| MASTER_SUBJECT_ID_SORT | WGS.645 |
-| ULT_MASTER_SUBJECT_ID | WGS.645 |
-| CLUSTER_TYPE | null |
-| CLUSTER_TYPE_DESC | null |
-| CLUSTER_LIST | null |
-| DEPARTMENT_CODE | WGS |
-| DEPARTMENT_NAME | Women's and Gender Studies |
-| SCHOOL_CODE | H |
-| SCHOOL_NAME | Hum, Arts & Social Sciences |
-| TOTAL_UNITS | 12 |
-| LECTURE_UNITS | 3 |
-| LAB_UNITS | 0 |
-| PREP_UNITS | 9 |
-| DESIGN_UNITS | 0 |
-| SUBJECT_ENROLLMENT_NUMBER | 1 |
-| CLUSTER_ENROLLMENT_NUMBER | null |
-| SUBJECT_GROUP_ID | 787B7F9A984B6870E0533D2F091209C6 |
-| SUBJECT_ENROLLMENT_FIRST_WEEK | 1 |
-| CLUSTER_ENROLLMENT_FIRST_WEEK | 1 |
-| SUBJECT_ENROLLMENT_FIFTH_WEEK | 1 |
-| CLUSTER_ENROLLMENT_FIFTH_WEEK | 1 |
-| SUBJECT_ENROLLMENT_CREDIT | 1 |
-| SUBJECT_ENROLLMENT_LISTEN | 0 |
-| CLUSTER_ENROLLMENT_CREDIT | 1 |
-| CLUSTER_ENROLLMENT_LISTEN | 0 |
-| SUBJECT_ENROLLMENT_1ST_CREDIT | 1 |
-| SUBJECT_ENROLLMENT_1ST_LISTEN | 0 |
-| CLUSTER_ENROLLMENT_1ST_CREDIT | 1 |
-| CLUSTER_ENROLLMENT_1ST_LISTEN | 0 |
-| SUBJECT_ENROLLMENT_5TH_CREDIT | 1 |
-| SUBJECT_ENROLLMENT_5TH_LISTEN | 0 |
-| CLUSTER_ENROLLMENT_5TH_CREDIT | 1 |
-| CLUSTER_ENROLLMENT_5TH_LISTEN | 0 |
-| WAREHOUSE_LOAD_DATE | 20-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| SUBJECT_SUMMARY_KEY | WGS.6452019SP | 12.9801997FA | 21H.4162004SP |
+| TERM_CODE | 2019SP | 1997FA | 2004SP |
+| SUBJECT_ID | WGS.645 | 12.980 | 21H.416 |
+| SUBJECT_ID_SORT | WGS.645 |  12.980 | 21H.416 |
+| SUBJECT_TITLE | Feminist Theory | Special Problems: Meteorology | Medieval Econ Hist Compar Pers |
+| SUBJECT_OR_CLUSTER | WGS.645 | 12.980 | 14.70, 21H.416 |
+| MASTER_SUBJECT_ID | WGS.645 | 12.980 | 21H.416 |
+| MASTER_SUBJECT_ID_SORT | WGS.645 |  12.980 | 21H.416 |
+| ULT_MASTER_SUBJECT_ID | WGS.645 | 12.980 | 21H.416 |
+| CLUSTER_TYPE | null | null | J |
+| CLUSTER_TYPE_DESC | null | null | Joint subject |
+| CLUSTER_LIST | null | null | 14.70, 21H.416 |
+| DEPARTMENT_CODE | WGS | 12 | 21H |
+| DEPARTMENT_NAME | Women's and Gender Studies | Earth, Atmos & Planetary Sci | History |
+| SCHOOL_CODE | H | S | H |
+| SCHOOL_NAME | Hum, Arts & Social Sciences | Science | Hum, Arts & Social Sciences |
+| TOTAL_UNITS | 12 | 1 | 12 |
+| LECTURE_UNITS | 3 | 0 | 3 |
+| LAB_UNITS | 0 | 1 | 0 |
+| PREP_UNITS | 9 | 0 | 9 |
+| DESIGN_UNITS | 0 | 0 | 0 |
+| SUBJECT_ENROLLMENT_NUMBER | 1 | 7 | 16 |
+| CLUSTER_ENROLLMENT_NUMBER | null | null | 55 |
+| SUBJECT_GROUP_ID | 787B7F9A984B6870E0533D2F091209C6 | 86CD649583000327E0440003BACE90BC | 86CD649600970327E0440003BACE90BC |
+| SUBJECT_ENROLLMENT_FIRST_WEEK | 1 | 8 | 17 |
+| CLUSTER_ENROLLMENT_FIRST_WEEK | 1 | 8 | 71 |
+| SUBJECT_ENROLLMENT_FIFTH_WEEK | 1 | 7 | 17 |
+| CLUSTER_ENROLLMENT_FIFTH_WEEK | 1 | 7 | 62 |
+| SUBJECT_ENROLLMENT_CREDIT | 1 | 7 | 16 |
+| SUBJECT_ENROLLMENT_LISTEN | 0 | 0 | 0 |
+| CLUSTER_ENROLLMENT_CREDIT | 1 | 7 | 55 |
+| CLUSTER_ENROLLMENT_LISTEN | 0 | 0 | 0 |
+| SUBJECT_ENROLLMENT_1ST_CREDIT | 1 | 8 | 17 |
+| SUBJECT_ENROLLMENT_1ST_LISTEN | 0 | 0 | 0 |
+| CLUSTER_ENROLLMENT_1ST_CREDIT | 1 | 8 | 71 |
+| CLUSTER_ENROLLMENT_1ST_LISTEN | 0 | 0 | 0 |
+| SUBJECT_ENROLLMENT_5TH_CREDIT | 1 | 7 | 17 |
+| SUBJECT_ENROLLMENT_5TH_LISTEN | 0 | 0 | 0 |
+| CLUSTER_ENROLLMENT_5TH_CREDIT | 1 | 7 | 62 |
+| CLUSTER_ENROLLMENT_5TH_LISTEN | 0 | 0 | 0 |
+| WAREHOUSE_LOAD_DATE | 20-DEC-24 | 20-DEC-24 | 20-DEC-24 |
 
 # `time_day`  (rows=10000)
 
 columns:
-`FISCAL_PERIOD` varchar127: digits, 1026 distinct, "196904"=16, "200203"=16, "203002"=16, "195007"=15, "195011"=15, "195512"=15, "195612"=15, "196207"=15, "197004"=15, "198807"=15
+`FISCAL_PERIOD` varchar127: digits, 1026 distinct
 `FISCAL_YEAR` varchar127: digits, 86 distinct
 `FISCAL_PERIOD_DESCRIPTION` varchar127: 1026 distinct
 `CALENDAR_PERIOD` varchar127: digits, 1026 distinct
@@ -3520,31 +3363,29 @@ columns:
 `FINANCIAL_AID_YEAR` varchar127: digits, 32 distinct, nulls=6315
 `FINANCIAL_AID_YEAR_DESC` varchar127: 32 distinct, nulls=6315
 `ACADEMIC_YEAR` varchar127: digits, 80 distinct, nulls=1579
-`ACADEMIC_TERM_CODE` varchar127: 279 distinct, nulls=2742, "1951SP"=44, "1956SP"=43, "1953SP"=42, "1955SP"=42, "1984SP"=42, "1983SP"=41, "2006FA"=41, "2023FA"=41, "2029SP"=41, "1954SP"=40
+`ACADEMIC_TERM_CODE` varchar127: 279 distinct, nulls=2742
 `ACADEMIC_TERM_DESCRIPTION` varchar127: 279 distinct, nulls=2742
 
 indexes: `ACADEMIC_TERM_CODE`, `CALENDAR_DATE`, `FISCAL_PERIOD`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FISCAL_PERIOD | 203512 |
-| FISCAL_YEAR | 2035 |
-| FISCAL_PERIOD_DESCRIPTION | FY 2035 Period 12 |
-| CALENDAR_PERIOD | 203506 |
-| CALENDAR_PERIOD_DESCRIPTION | June 2035 |
-| CALENDAR_YEAR | 2035 |
-| START_DATE | 01-JUN-35 |
-| END_DATE | 30-JUN-35 |
-| CALENDAR_DATE | 26-JUN-35 |
-| DAY_OF_WEEK | Tuesday   |
-| FINANCIAL_AID_YEAR | null |
-| FINANCIAL_AID_YEAR_DESC | null |
-| ACADEMIC_YEAR | null |
-| ACADEMIC_TERM_CODE | null |
-| ACADEMIC_TERM_DESCRIPTION | null |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FISCAL_PERIOD | 203512 | 198908 | 197506 |
+| FISCAL_YEAR | 2035 | 1989 | 1975 |
+| FISCAL_PERIOD_DESCRIPTION | FY 2035 Period 12 | FY 1989 Period 8 | FY 1975 Period 6 |
+| CALENDAR_PERIOD | 203506 | 198902 | 197412 |
+| CALENDAR_PERIOD_DESCRIPTION | June 2035 | February 1989 | December 1974 |
+| CALENDAR_YEAR | 2035 | 1989 | 1974 |
+| START_DATE | 01-JUN-35 | 01-FEB-89 | 01-DEC-74 |
+| END_DATE | 30-JUN-35 | 28-FEB-89 | 31-DEC-74 |
+| CALENDAR_DATE | 26-JUN-35 | 05-FEB-89 | 04-DEC-74 |
+| DAY_OF_WEEK | Tuesday   | Sunday    | Wednesday |
+| FINANCIAL_AID_YEAR | null | null | null |
+| FINANCIAL_AID_YEAR_DESC | null | null | null |
+| ACADEMIC_YEAR | null | 1989 | 1975 |
+| ACADEMIC_TERM_CODE | null | null | 1975FA |
+| ACADEMIC_TERM_DESCRIPTION | null | null | Fall Term 1974-1975 |
 
 # `time_month`  (rows=640)
 
@@ -3555,9 +3396,9 @@ columns:
 `TIME_MONTH_KEY` varchar127: digits, all distinct
 `FISCAL_PERIOD` varchar127: digits, all distinct
 `FISCAL_PERIOD_DESCRIPTION` varchar127: all distinct
-`FISCAL_YEAR` varchar127: digits, 40 distinct, "1996"=16, "1997"=16, "1998"=16, "1999"=16, "2000"=16, "2001"=16, "2002"=16, "2003"=16, "2004"=16, "2005"=16
+`FISCAL_YEAR` varchar127: digits, 40 distinct
 `FISCAL_YEAR_QUARTER` varchar127: 160 distinct
-`FY_QUARTER_CODE` varchar127: 160 distinct, "FY1996Q4"=7, "FY1997Q4"=7, "FY1998Q4"=7, "FY1999Q4"=7, "FY2000Q4"=7, "FY2001Q4"=7, "FY2002Q4"=7, "FY2003Q4"=7, "FY2004Q4"=7, "FY2005Q4"=7
+`FY_QUARTER_CODE` varchar127: 160 distinct
 `CALENDAR_PERIOD` varchar127: all distinct
 `CALENDAR_PERIOD_DESCRIPTION` varchar127: all distinct
 `CALENDAR_YEAR` varchar127: digits, 41 distinct
@@ -3574,40 +3415,38 @@ columns:
 `FINANCIAL_AID_YEAR_DESC` varchar127: 30 distinct, nulls=165
 
 indexes: `FISCAL_PERIOD`, `FISCAL_YEAR`, `FY_QUARTER_CODE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| IS_CLOSING_PERIOD | Y |
-| FISCAL_PERIOD_SELECTOR | 203516 -- June 2035 Closing |
-| IS_CURRENT_FISCAL_YEAR | N |
-| TIME_MONTH_KEY | 203516 |
-| FISCAL_PERIOD | 203516 |
-| FISCAL_PERIOD_DESCRIPTION | FY 2035 closing period 4 |
-| FISCAL_YEAR | 2035 |
-| FISCAL_YEAR_QUARTER | FY 2035 Quarter 4 |
-| FY_QUARTER_CODE | FY2035Q4 |
-| CALENDAR_PERIOD | 203506P16 |
-| CALENDAR_PERIOD_DESCRIPTION | June 2035, fiscal period 16 |
-| CALENDAR_YEAR | 2035 |
-| START_DATE | 01-JUN-35 |
-| END_DATE | 30-JUN-35 |
-| CALENDAR_MONTH | 6 |
-| CALENDAR_MONTH_NAME | June |
-| IS_CURRENT_FISCAL_PERIOD | N |
-| IS_PREVIOUS_FISCAL_PERIOD | N |
-| ACADEMIC_YEAR | null |
-| ACADEMIC_TERM | null |
-| ACADEMIC_TERM_DESCRIPTION | null |
-| FINANCIAL_AID_YEAR | null |
-| FINANCIAL_AID_YEAR_DESC | null |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| IS_CLOSING_PERIOD | Y | N | N |
+| FISCAL_PERIOD_SELECTOR | 203516 -- June 2035 Closing | 201209 -- March 2012 | 201609 -- March 2016 |
+| IS_CURRENT_FISCAL_YEAR | N | N | N |
+| TIME_MONTH_KEY | 203516 | 201209 | 201609 |
+| FISCAL_PERIOD | 203516 | 201209 | 201609 |
+| FISCAL_PERIOD_DESCRIPTION | FY 2035 closing period 4 | FY 2012 Period 9 | FY 2016 Period 9 |
+| FISCAL_YEAR | 2035 | 2012 | 2016 |
+| FISCAL_YEAR_QUARTER | FY 2035 Quarter 4 | FY 2012 Quarter 3 | FY 2016 Quarter 3 |
+| FY_QUARTER_CODE | FY2035Q4 | FY2012Q3 | FY2016Q3 |
+| CALENDAR_PERIOD | 203506P16 | 201203 | 201603 |
+| CALENDAR_PERIOD_DESCRIPTION | June 2035, fiscal period 16 | March 2012 | March 2016 |
+| CALENDAR_YEAR | 2035 | 2012 | 2016 |
+| START_DATE | 01-JUN-35 | 01-MAR-12 | 01-MAR-16 |
+| END_DATE | 30-JUN-35 | 31-MAR-12 | 31-MAR-16 |
+| CALENDAR_MONTH | 6 | 3 | 3 |
+| CALENDAR_MONTH_NAME | June | March | March |
+| IS_CURRENT_FISCAL_PERIOD | N | N | N |
+| IS_PREVIOUS_FISCAL_PERIOD | N | N | N |
+| ACADEMIC_YEAR | null | 2012 | 2016 |
+| ACADEMIC_TERM | null | 2012SP | 2016SP |
+| ACADEMIC_TERM_DESCRIPTION | null | Spring Term 2011-2012 | Spring Term 2015-2016 |
+| FINANCIAL_AID_YEAR | null | 2012 | 2016 |
+| FINANCIAL_AID_YEAR_DESC | null | Aid Year 2011-2012 | Aid Year 2015-2016 |
 
 # `time_quarter`  (rows=144)
 
 columns:
-`FISCAL_YEAR` varchar127: digits, 36 distinct, "2000"=4, "2001"=4, "2002"=4, "2003"=4, "2004"=4, "2005"=4, "2006"=4, "2007"=4, "2008"=4, "2009"=4
+`FISCAL_YEAR` varchar127: digits, 36 distinct
 `FY_QUARTER_CODE` varchar127: all distinct
 `FY_QUARTER_NAME` varchar127: all distinct
 `CY_QUARTER_CODE` varchar127: all distinct
@@ -3629,32 +3468,30 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "20-DEC-24"=144
 
 indexes: `FISCAL_YEAR`, `FY_QUARTER_CODE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| FISCAL_YEAR | 2035 |
-| FY_QUARTER_CODE | FY2035Q4 |
-| FY_QUARTER_NAME | FY 2035 Quarter 4 |
-| CY_QUARTER_CODE | CY2035Q2 |
-| CY_QUARTER_NAME | CY 2035 Quarter 2 |
-| CALENDAR_YEAR | 2035 |
-| QUARTER_START_DATE | 01-APR-35 |
-| QUARTER_END_DATE | 30-JUN-35 |
-| QUARTER_START_FP | 203510 |
-| QUARTER_END_FP | 203512 |
-| QUARTER_CERT_OPEN | 01-JUL-35 |
-| QUARTER_CERT_EXPECTED | 31-AUG-35 |
-| QUARTER_CERT_DUE | 30-SEP-35 |
-| IS_CURRENT_QUARTER | N |
-| IS_NEXT_QUARTER | N |
-| IS_PREVIOUS_QUARTER | N |
-| IS_PAST_QUARTER | N |
-| IS_FUTURE_QUARTER | Y |
-| PAYROLL_EDACCA_CERT_SCHED_KEY | 203504 |
-| WAREHOUSE_LOAD_DATE | 20-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| FISCAL_YEAR | 2035 | 2012 | 2006 |
+| FY_QUARTER_CODE | FY2035Q4 | FY2012Q2 | FY2006Q1 |
+| FY_QUARTER_NAME | FY 2035 Quarter 4 | FY 2012 Quarter 2 | FY 2006 Quarter 1 |
+| CY_QUARTER_CODE | CY2035Q2 | CY2011Q4 | CY2005Q3 |
+| CY_QUARTER_NAME | CY 2035 Quarter 2 | CY 2011 Quarter 4 | CY 2005 Quarter 3 |
+| CALENDAR_YEAR | 2035 | 2011 | 2005 |
+| QUARTER_START_DATE | 01-APR-35 | 01-OCT-11 | 01-JUL-05 |
+| QUARTER_END_DATE | 30-JUN-35 | 31-DEC-11 | 30-SEP-05 |
+| QUARTER_START_FP | 203510 | 201204 | 200601 |
+| QUARTER_END_FP | 203512 | 201206 | 200603 |
+| QUARTER_CERT_OPEN | 01-JUL-35 | 01-JAN-12 | 01-OCT-05 |
+| QUARTER_CERT_EXPECTED | 31-AUG-35 | 29-FEB-12 | 30-NOV-05 |
+| QUARTER_CERT_DUE | 30-SEP-35 | 31-MAR-12 | 31-DEC-05 |
+| IS_CURRENT_QUARTER | N | N | N |
+| IS_NEXT_QUARTER | N | N | N |
+| IS_PREVIOUS_QUARTER | N | N | N |
+| IS_PAST_QUARTER | N | Y | Y |
+| IS_FUTURE_QUARTER | Y | N | N |
+| PAYROLL_EDACCA_CERT_SCHED_KEY | 203504 | 201202 | 200601 |
+| WAREHOUSE_LOAD_DATE | 20-DEC-24 | 20-DEC-24 | 20-DEC-24 |
 
 # `tip_detail`  (rows=10000)
 
@@ -3669,20 +3506,18 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "20-DEC-24"=10000
 
 indexes: `SUBJECT_ID`, `TERM_CODE`, `TIP_MATERIAL_KEY`, `TIP_MATERIAL_STATUS_KEY`, `TIP_SUBJECT_OFFERED_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| TIP_SUBJECT_OFFERED_KEY | WGSURG0002016SP |
-| TIP_MATERIAL_KEY | N/ACourse has no materials2016SP |
-| TIP_MATERIAL_STATUS_KEY | NM |
-| TERM_CODE | 2016SP |
-| SUBJECT_ID | WGS.URG |
-| ISBN | null |
-| RECORD_COUNT | 1 |
-| WAREHOUSE_LOAD_DATE | 20-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| TIP_SUBJECT_OFFERED_KEY | WGSURG0002016SP | 0158390002012FA | 007MTHG0002014SP |
+| TIP_MATERIAL_KEY | N/ACourse has no materials2016SP | N/ACourse has no materials2012FA | N/ACourse has no materials2014SP |
+| TIP_MATERIAL_STATUS_KEY | NM | NM | NM |
+| TERM_CODE | 2016SP | 2012FA | 2014SP |
+| SUBJECT_ID | WGS.URG | 15.839 | 7.MTHG |
+| ISBN | null | null | null |
+| RECORD_COUNT | 1 | 1 | 1 |
+| WAREHOUSE_LOAD_DATE | 20-DEC-24 | 20-DEC-24 | 20-DEC-24 |
 
 # `tip_material`  (rows=10000)
 
@@ -3701,24 +3536,22 @@ columns:
 `MATERIAL_INFO_SOURCE` varchar127: "ISBN"=5849, "COOP"=3151, "OTI"=1000
 
 indexes: `TIP_MATERIAL_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| TIP_MATERIAL_KEY | N/ACourse has no materials2025FA |
-| ISBN | null |
-| TITLE | Course Has No Materials |
-| AUTHOR | Course Has No Materials |
-| EDITION | null |
-| PUBLISHER | null |
-| YEAR | null |
-| NEW_SHELF_PRICE | 0 |
-| USED_SHELF_PRICE | 0 |
-| RENTAL_NEW_PRICE | 0 |
-| RENTAL_USED_PRICE | 0 |
-| MATERIAL_INFO_SOURCE | COOP |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| TIP_MATERIAL_KEY | N/ACourse has no materials2025FA | 9781111226619HANDBUCH ZER DEUTSCHEN(TXT,WKBK,ACCESS)5TH2013SP | 0471632651 Urban transit : operations, planning, and economics / Vukan Vuchic, Vukan R.Hoboken, N.J. :20052010SP |
+| ISBN | null | 9781111226619 | 0471632651  |
+| TITLE | Course Has No Materials | Handbuch Zer Deutschen(Txt,Wkbk,Access) | Urban transit : operations, planning, and economics / Vukan R. Vuchic. |
+| AUTHOR | Course Has No Materials | Rankin         | Vuchic, Vukan R. |
+| EDITION | null | 5th     | null |
+| PUBLISHER | null | Cengage L  | Hoboken, N.J. : John Wiley & Sons, c2005. |
+| YEAR | null | null | 2005 |
+| NEW_SHELF_PRICE | 0 | 214 | null |
+| USED_SHELF_PRICE | 0 | 161 | null |
+| RENTAL_NEW_PRICE | 0 | 0 | 0 |
+| RENTAL_USED_PRICE | 0 | 0 | 0 |
+| MATERIAL_INFO_SOURCE | COOP | COOP | OTI |
 
 # `tip_material_status`  (rows=12)
 
@@ -3729,16 +3562,14 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "20-DEC-24"=12
 
 indexes: `TIP_MATERIAL_STATUS_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| TIP_MATERIAL_STATUS_KEY | U |
-| TIP_MATERIAL_STATUS_CODE | U |
-| TIP_MATERIAL_STATUS | Unknown |
-| WAREHOUSE_LOAD_DATE | 20-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| TIP_MATERIAL_STATUS_KEY | U | NL | NB |
+| TIP_MATERIAL_STATUS_CODE | U | NL | NB |
+| TIP_MATERIAL_STATUS | Unknown | null | null |
+| WAREHOUSE_LOAD_DATE | 20-DEC-24 | 20-DEC-24 | 20-DEC-24 |
 
 # `tip_subject_offered`  (rows=10000)
 
@@ -3766,33 +3597,31 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "20-DEC-24"=10000
 
 indexes: `MASTER_SUBJECT_ID`, `MASTER_SUBJECT_ID_SORT`, `OFFER_DEPT_CODE`, `RESPONSIBLE_FACULTY_MIT_ID`, `SUBJECT_ID`, `SUBJECT_ID_SORT`, `TERM_CODE`, `TIP_SUBJECT_OFFERED_KEY`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| TIP_SUBJECT_OFFERED_KEY | WGSURG0002025SP |
-| TERM_CODE | 2025SP |
-| IS_NO_COURSE_MATERIAL | null |
-| MASTER_COURSE_NUMBER | WGS |
-| MASTER_COURSE_NUMBER_SORT | WGS |
-| MASTER_COURSE_NUMBER_DESC | Women's & Gender Studies |
-| MASTER_SUBJECT_ID | WGS.URG |
-| MASTER_SUBJECT_ID_SORT | WGS.URG |
-| COURSE_NUMBER | WGS |
-| COURSE_NUMBER_SORT | WGS |
-| COURSE_NUMBER_DESC | Women's & Gender Studies |
-| SUBJECT_ID | WGS.URG |
-| SUBJECT_ID_SORT | WGS.URG |
-| SUBJECT_TITLE | Undergraduate Research |
-| OFFER_DEPT_CODE | WGS |
-| OFFER_DEPT_NAME | Women's and Gender Studies |
-| OFFER_SCHOOL_NAME | Hum, Arts & Social Sciences |
-| RESPONSIBLE_FACULTY_NAME | Kirby, Barney |
-| RESPONSIBLE_FACULTY_MIT_ID | 934724720 |
-| NUM_ENROLLED_STUDENTS | 0 |
-| WAREHOUSE_LOAD_DATE | 20-DEC-24 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| TIP_SUBJECT_OFFERED_KEY | WGSURG0002025SP | 0083910002022FA | 0119020002017JA |
+| TERM_CODE | 2025SP | 2022FA | 2017JA |
+| IS_NO_COURSE_MATERIAL | null | null | null |
+| MASTER_COURSE_NUMBER | WGS | 8 | 11 |
+| MASTER_COURSE_NUMBER_SORT | WGS |   8 |  11 |
+| MASTER_COURSE_NUMBER_DESC | Women's & Gender Studies | Physics | Urban Studies and Planning |
+| MASTER_SUBJECT_ID | WGS.URG | 8.391 | 11.902 |
+| MASTER_SUBJECT_ID_SORT | WGS.URG | 8.391 | 11.902 |
+| COURSE_NUMBER | WGS | 8 | 11 |
+| COURSE_NUMBER_SORT | WGS |   8 |  11 |
+| COURSE_NUMBER_DESC | Women's & Gender Studies | Physics | Urban Studies and Planning |
+| SUBJECT_ID | WGS.URG | 8.391 | 11.902 |
+| SUBJECT_ID_SORT | WGS.URG |   8.391 |  11.902 |
+| SUBJECT_TITLE | Undergraduate Research | Pre-Thesis Research | Ind Study: Urban Stud & Plan |
+| OFFER_DEPT_CODE | WGS | 8 | 11 |
+| OFFER_DEPT_NAME | Women's and Gender Studies | Physics | Urban Studies and Planning |
+| OFFER_SCHOOL_NAME | Hum, Arts & Social Sciences | Science | Architecture and Planning |
+| RESPONSIBLE_FACULTY_NAME | Kirby, Barney | Moss, Ian | Graham, Olly |
+| RESPONSIBLE_FACULTY_MIT_ID | 934724720 | 928086214 | 931431942 |
+| NUM_ENROLLED_STUDENTS | 0 | 123 | 0 |
+| WAREHOUSE_LOAD_DATE | 20-DEC-24 | 20-DEC-24 | 20-DEC-24 |
 
 # `top_level_domain`  (rows=249)
 
@@ -3803,16 +3632,14 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "17-JUN-99"=248, "21-JUN-99"=1
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| TOP_LEVEL_DOMAIN_KEY | ZW |
-| TOP_LEVEL_DOMAIN | ZW |
-| TOP_LEVEL_DOMAIN_DESCRIPTION | Zimbabwe |
-| WAREHOUSE_LOAD_DATE | 17-JUN-99 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| TOP_LEVEL_DOMAIN_KEY | ZW | TC | VU |
+| TOP_LEVEL_DOMAIN | ZW | TC | VU |
+| TOP_LEVEL_DOMAIN_DESCRIPTION | Zimbabwe | Turks and Ciacos Islands | Vanuatu |
+| WAREHOUSE_LOAD_DATE | 17-JUN-99 | 17-JUN-99 | 17-JUN-99 |
 
 # `warehouse_users`  (rows=10000)
 
@@ -3834,27 +3661,25 @@ columns:
 `APPOINTMENT_TYPE` varchar127: "Primary Appointment"=9900, nulls=100
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| MIT_ID | 999999599 |
-| KRB_NAME | elisef |
-| KRB_NAME_UPPERCASE | ELISEF |
-| LAST_NAME | Floyd |
-| FIRST_NAME | Elise |
-| MIDDLE_NAME | C |
-| EMAIL_ADDRESS | elisef@gmail.business.com |
-| OFFICE_LOCATION | LL-S1-238D |
-| OFFICE_PHONE | 7278410613 |
-| UNIT_ID | 310000 |
-| UNIT_NAME | Lincoln Laboratory |
-| TITLE | null |
-| YEAR | null |
-| TYPE | EMPLOYEE |
-| APPOINTMENT_TYPE | Primary Appointment |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| MIT_ID | 999999599 | 933856818 | 960768254 |
+| KRB_NAME | elisef | cassandrat | ie |
+| KRB_NAME_UPPERCASE | ELISEF | CASSANDRAT | IE |
+| LAST_NAME | Floyd | Thornton | Everett |
+| FIRST_NAME | Elise | Cassandra | Ieuan |
+| MIDDLE_NAME | C | T | null |
+| EMAIL_ADDRESS | elisef@gmail.business.com | cassandrat@worker.com | ie@worker.com |
+| OFFICE_LOCATION | LL-S1-238D | 9-402 | 45 |
+| OFFICE_PHONE | 7278410613 | 5304875427 | 5285879750 |
+| UNIT_ID | 310000 | 035000 | 068700 |
+| UNIT_NAME | Lincoln Laboratory | Urban Studies & Planning | Lab for Information & Decision Systems |
+| TITLE | null | null | null |
+| YEAR | null | null | null |
+| TYPE | EMPLOYEE | EMPLOYEE | EMPLOYEE |
+| APPOINTMENT_TYPE | Primary Appointment | Primary Appointment | Primary Appointment |
 
 # `zip_canada`  (rows=10000)
 
@@ -3867,18 +3692,16 @@ columns:
 `WAREHOUSE_LOAD_DATE` varchar255: "25-MAY-23"=10000
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| POSTAL_CODE | A2N 1M6 |
-| CITY_NAME | Stephenville |
-| CITY_TYPE | D |
-| PROVINCE_ABBR | NL |
-| PROVINCE_NAME | Newfoundland |
-| WAREHOUSE_LOAD_DATE | 25-MAY-23 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| POSTAL_CODE | A2N 1M6 | A1V 0B1 | A1B 0L9 |
+| CITY_NAME | Stephenville | Gander | St. John's |
+| CITY_TYPE | D | D | D |
+| PROVINCE_ABBR | NL | NL | NL |
+| PROVINCE_NAME | Newfoundland | Newfoundland | Newfoundland |
+| WAREHOUSE_LOAD_DATE | 25-MAY-23 | 25-MAY-23 | 25-MAY-23 |
 
 # `zip_usa`  (rows=10000)
 
@@ -3893,20 +3716,18 @@ columns:
 `STATE_ABBR` varchar127: "PR"=3093, "NJ"=1569, "MA"=1217, "ME"=912, "VT"=910, "CT"=849, "NH"=476, "AE"=410, "NY"=371, "RI"=164, "VI"=29
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| STATE_NAME | Virgin Islands |
-| WAREHOUSE_LOAD_DATE | 25-MAY-23 |
-| ZIP_CODE | 851 |
-| ZIP_TYPE | P |
-| CITY_NAME | Kingshill |
-| CITY_TYPE | D |
-| COUNTY_NAME | Saint Croix |
-| STATE_ABBR | VI |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| STATE_NAME | Virgin Islands | Armed Forces - Europe/Africa/Canada | Connecticut |
+| WAREHOUSE_LOAD_DATE | 25-MAY-23 | 25-MAY-23 | 25-MAY-23 |
+| ZIP_CODE | 851 | 9567 | 6504 |
+| ZIP_TYPE | P | M | P |
+| CITY_NAME | Kingshill | FPO | New Haven |
+| CITY_TYPE | D | D | D |
+| COUNTY_NAME | Saint Croix | none | New Haven |
+| STATE_ABBR | VI | AE | CT |
 
 # `zpm_rooms_load`  (rows=10000)
 
@@ -3920,18 +3741,16 @@ columns:
 `ACCESS_LEVEL` varchar127: "2"=5692, "1"=1519, "0"=1458, "3"=1331
 
 indexes: `HR_ORG_UNIT_ID`, `SPACE_UNIT_CODE`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| BUILDING_ROOM | 45-398 |
-| BUILDING_COMPONENT | 45 |
-| FLOOR | 3 |
-| SPACE_USAGE | IT HLPDSK |
-| SPACE_UNIT_CODE | 401930 |
-| HR_ORG_UNIT_ID | 10005759 |
-| ACCESS_LEVEL | 1 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| BUILDING_ROOM | 45-398 | 26-450 | 37-686C |
+| BUILDING_COMPONENT | 45 | 26 | 37 |
+| FLOOR | 3 | 4 | 6 |
+| SPACE_USAGE | IT HLPDSK | STF ROOM | IT HLPDSK |
+| SPACE_UNIT_CODE | 401930 | 159900 | 159600 |
+| HR_ORG_UNIT_ID | 10005759 | 10000547 | 10000544 |
+| ACCESS_LEVEL | 1 | 2 | 2 |
 
 - Skipped 5 empty table(s): `estimated_surcharges_estonly`, `fund_center_hierarchy`, `opa_person_current`, `profit_center_group`, `subject_selector`

@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:29:09.638417Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:34:22.258750Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-_riq7ft6/stacking.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-htpy98yj/stacking.sqlite
 schema: main
 ---
 
@@ -20,18 +20,17 @@ columns:
 "target" int: 0=1446, 1=101
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | iris | Critical Heat Flux |
-| version | 3 | 3 | 5 |
-| feature | pH | variety | x_e_out [-] |
+| name | water quality 2 | oil spill | oil spill |
+| version | 3 | 1 | 5 |
+| feature | pH | f_48 | f_8 |
 | type | num | null | num |
-| drop_user | 0 | 0 | 0 |
+| drop_user | 0 | 1 | 0 |
 | drop_correlation | 0 | 0 | 0 |
-| target | 0 | 1 | 0 |
+| target | 0 | 0 | 0 |
 
 # "feature_importance"  (rows=2887)
 
@@ -43,16 +42,15 @@ columns:
 "importance" numeric: 2266 distinct, -4.7142857143..3.4285714286, avg=0.104953, median=0.0288298
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | Hospital Mortality Prediction | Hospital Mortality Prediction |
-| version | 3 | 6 | 5 |
-| step | 3 | 1 | 1 |
-| feature | pH | Blood potassium | Urea nitrogen |
-| importance | 0.106719 | 0.0310749 | 0.0530973 |
+| name | water quality 2 | survey lung cancer | oil spill |
+| version | 3 | 1 | 4 |
+| step | 3 | 2 | 3 |
+| feature | pH | FATIGUE  | f_3 |
+| importance | 0.106719 | 0.0201511 | 0.144772 |
 
 # "model"  (rows=303)
 
@@ -63,14 +61,13 @@ columns:
 "L1_model" text: "regression"=213, "tree"=90
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | concrete | smoke detection iot |
-| version | 3 | 6 | 2 |
-| step | 3 | 1 | 2 |
+| name | water quality 2 | survey lung cancer | Tunnel diode |
+| version | 3 | 3 | 2 |
+| step | 3 | 1 | 1 |
 | L1_model | tree | regression | regression |
 
 # "model_importance"  (rows=2567)
@@ -83,16 +80,15 @@ columns:
 "importance" numeric: 1897 distinct, 0..1, avg=0.118037, median=0.0485232
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | Hospital Mortality Prediction | Solar Power Generation |
-| version | 3 | 6 | 4 |
-| step | 3 | 1 | 1 |
-| model | RFCG | KERC | DTRP |
-| importance | 0.172051 | 0 | 0.00310123 |
+| name | water quality 2 | oil spill | Critical Heat Flux |
+| version | 3 | 4 | 3 |
+| step | 3 | 1 | 2 |
+| model | RFCG | LOGRS | KNRU |
+| importance | 0.172051 | 0 | 0.0147351 |
 
 # "model_score"  (rows=2872)
 
@@ -105,17 +101,16 @@ columns:
 "test_score" numeric: 568 distinct, -65597190.8646..1, avg=-48920.8, median=0.82587
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | Critical Heat Flux | PCOS |
-| version | 3 | 4 | 1 |
-| step | 3 | 2 | 2 |
-| model | Stack | RFRP | RFCE |
-| train_score | 0.766497 | 0.963784 | 1 |
-| test_score | 0.653061 | 0.77473 | 0.882682 |
+| name | water quality 2 | PCOS | Tunnel diode |
+| version | 3 | 2 | 5 |
+| step | 3 | 1 | 1 |
+| model | Stack | ABC | DTRF |
+| train_score | 0.766497 | 0.969613 | 0.959412 |
+| test_score | 0.653061 | 0.860335 | 0.865382 |
 
 # "problem"  (rows=20)
 
@@ -126,15 +121,14 @@ columns:
 "target" text: "I"=2, "target"=2, "Class"=1, "Concrete compressive strength(MPa, megapascals) "=1, "Crystal System"=1, "Dataset"=1, "Fire Alarm"=1, "LUNG_CANCER"=1, "Outcome"=1, "PCOS (Y/N)"=1, "Power Generated"=1, "Water_Quality"=1, "chf_exp [MW/m2]"=1, "is_safe"=1, "logS"=1, "outcome"=1, "quality"=1, "variety"=1
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | concrete | Pumpkin Seeds |
-| path | https://www.kaggle.com/datasets/saraharsh/water-quality | https://www.kaggle.com/datasets/prathamtripathi/regression-with-neural-networking | https://www.kaggle.com/datasets/muratkokludataset/pumpkin-seeds-dataset |
+| name | water quality 2 | concrete | survey lung cancer |
+| path | https://www.kaggle.com/datasets/saraharsh/water-quality | https://www.kaggle.com/datasets/prathamtripathi/regression-with-neural-networking | https://www.kaggle.com/datasets/mysarahmadbhat/lung-cancer |
 | type | classification | regression | classification |
-| target | Water_Quality | Concrete compressive strength(MPa, megapascals)  | Class |
+| target | Water_Quality | Concrete compressive strength(MPa, megapascals)  | LUNG_CANCER |
 
 # "solution"  (rows=101)
 
@@ -149,17 +143,16 @@ columns:
 "resampling" int: 0=75, 1=26
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | PCOS | Critical Heat Flux |
-| version | 3 | 1 | 3 |
+| name | water quality 2 | water quality | PSS3E5 |
+| version | 3 | 3 | 1 |
 | correlation | 0.75 | 0.75 | 0.75 |
 | nb_model | 5 | 5 | 5 |
-| nb_feature | 5 | 5 | 5 |
-| score | 0.7 | 0.85 | 0.7 |
+| nb_feature | 5 | 10 | 5 |
+| score | 0.7 | 0.7 | 0.55 |
 | test_size | 0.33 | 0.33 | 0.33 |
 | resampling | 0 | 0 | 0 |
 
@@ -180,9 +173,9 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | concrete | PCOS |
-| version | 3 | 6 | 3 |
-| L1_model | tree | regression | regression |
+| name | water quality 2 | Pumpkin Seeds | water quality 2 |
+| version | 3 | 3 | 1 |
+| L1_model | tree | tree | regression |
 
 # "stack_ok"  (rows=139)
 
@@ -235,10 +228,10 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | Solar Power Generation | PSS3E5 |
-| version | 2 | 3 | 5 |
-| step | 3 | 3 | 3 |
-| L1_model | regression | regression | regression |
+| name | water quality 2 | Franck-Hertz | PSS3E5 |
+| version | 2 | 4 | 3 |
+| step | 3 | 1 | 3 |
+| L1_model | regression | tree | regression |
 | status | soft | strong | strong |
 
 # "stack_ok_score"  (rows=64)
@@ -285,8 +278,8 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | survey lung cancer | smoke detection iot |
-| version | 2 | 1 | 5 |
-| score_1 | 0.785714 | 0.972414 | 0.999903 |
-| score_2 | 0.77551 | 0.972414 | 0.999758 |
-| score_3 | 0.77551 | 0.972414 | 0.999952 |
+| name | water quality 2 | Solar Power Generation | oil spill |
+| version | 2 | 7 | 1 |
+| score_1 | 0.785714 | 0.89255 | 0.965517 |
+| score_2 | 0.77551 | 0.933297 | 0.972414 |
+| score_3 | 0.77551 | 0.806622 | 0.965517 |

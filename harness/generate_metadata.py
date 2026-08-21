@@ -37,11 +37,15 @@ Never use SELECT * and every SELECT must have LIMIT 10 (LIMIT
 Write exactly one concise Markdown file at `/output/{filename}.md` with:
 1. `# Additional Metadata`
 2. `## Clarified Semantics`: only table/column meanings that are not already clear in the profile.
+   When sibling tables have overlapping names or columns, contrast their purpose, row grain,
+   coverage, and appropriate use in one bullet. Probe only ambiguous siblings; do not enumerate
+   every table or maintain a catalog of table-specific rules.
 3. `## Potential Join Strategies`: non-obvious, useful joins derived from schema-links, including
    join predicates and any cardinality/filter caveat.
 
 Use factual short bullets. Do not include SQL answers, benchmark content, or a restatement of the
-profile/schema-links. Use no more than {max_turns} agent turns. Finish only after the output file exists."""
+profile/schema-links. Report observed coverage/cardinality instead of blanket default join types or
+business filters. Use no more than {max_turns} agent turns. Finish only after the output file exists."""
 
 
 def _base_argv(max_turns: int, output_dir: Path, extra_docker: list[str]) -> list[str]:

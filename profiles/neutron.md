@@ -1,7 +1,7 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:04:19.488336Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:29:16.111066Z
 dialect: mysql
 database: neutron
 schema: neutron
@@ -76,34 +76,31 @@ columns:
 `resource_versions` varchar8191: "{"QosPolicy": "1.0"}"=123, "{"Subnet": "1.0", "Network": "1.0", "SubPort": "1.0", "SecurityGroup": "1.0", "SecurityGroupRule": "1.0", "Trunk": "1.1", "QosPolicy": "1.7", "Port": "1.1", "Log": "1.0"}"=1, nulls=5
 
 indexes: UNIQUE (`agent_type`,`host`)
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| id | ff9b1722-0846-4fdf-9c33-97d8cefcdf35 |
-| agent_type | Open vSwitch agent |
-| binary | neutron-openvswitch-agent |
-| topic |  |
-| host | spark5-69 |
-| admin_state_up | 1 |
-| created_at | 2017-12-11T17:13:05 |
-| started_at | 2022-03-09T13:07:46 |
-| heartbeat_timestamp | 2024-07-08T06:59:43 |
-| description | null |
-| configurations | {"ovs_hybrid_plug": true, "in_distributed_mode": false, "datapath_type": "system", "arp_responder_enabled": false, "tunneling_ip": "10.60.50.88/8", "vhostuser_socket_dir": "/var/run/openvswitch", "devices": 17, "ovs_capabilities": {"datapath_types": ["netdev", "system"], "iface_types": ["geneve", "gre", "internal", "ipsec_gre", "lisp", "patch", "stt", "system", "tap", "vxlan"]}, "log_agent_heartbeats": false, "l2_population": false, "tunnel_types": ["gre"], "extensions": [], "enable_distributed_routing": false, "bridge_mappings": {"trunk": "eth1-br"}} |
-| load | 0 |
-| availability_zone | null |
-| resource_versions | {"QosPolicy": "1.0"} |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| id | ff9b1722-0846-4fdf-9c33-97d8cefcdf35 | 95d2c4cd-bc12-4e03-befc-1c91fb81cdb3 | 9a60112c-0f6e-4bb1-8c49-6028b371b5f9 |
+| agent_type | Open vSwitch agent | Open vSwitch agent | Open vSwitch agent |
+| binary | neutron-openvswitch-agent | neutron-openvswitch-agent | neutron-openvswitch-agent |
+| topic |  |  |  |
+| host | spark5-69 | lumen4-89 | spark9-96 |
+| admin_state_up | 1 | 1 | 1 |
+| created_at | 2017-12-11T17:13:05 | 2017-08-03T19:12:24 | 2016-09-24T03:49:55 |
+| started_at | 2022-03-09T13:07:46 | 2018-02-05T21:40:32 | 2023-01-14T18:04:16 |
+| heartbeat_timestamp | 2024-07-08T06:59:43 | 2018-02-05T21:40:32 | 2024-07-08T06:59:38 |
+| description | null | null | null |
+| configurations | {"ovs_hybrid_plug": true, "in_distributed_mode": false, "datapath_type": "system", "arp_responder_enabled": false, "tunneling_ip": "10.60.50.88/8", "vhostuser_socket_dir": "/var/run/openvswitch", "de… | {"ovs_hybrid_plug": true, "in_distributed_mode": false, "datapath_type": "system", "arp_responder_enabled": false, "tunneling_ip": "10.47.215.156/8", "vhostuser_socket_dir": "/var/run/openvswitch", "… | {"ovs_hybrid_plug": true, "in_distributed_mode": false, "datapath_type": "system", "arp_responder_enabled": false, "tunneling_ip": "10.18.36.134/8", "vhostuser_socket_dir": "/var/run/openvswitch", "d… |
+| load | 0 | 0 | 0 |
+| availability_zone | null | null | null |
+| resource_versions | {"QosPolicy": "1.0"} | {"QosPolicy": "1.0"} | {"QosPolicy": "1.0"} |
 
 # `alembic_version_fwaas`  (rows=2)
 
 columns:
-`version_num` varchar32 NOTNULL: "458aa42b14b"=1, "4b47ea298795"=1
+`version_num` varchar32 NOTNULL
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 |
@@ -113,10 +110,9 @@ all rows:
 # `alembic_version_lbaas`  (rows=2)
 
 columns:
-`version_num` varchar32 NOTNULL: "130ebfdef43"=1, "62deca5010cd"=1
+`version_num` varchar32 NOTNULL
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 |
@@ -126,12 +122,11 @@ all rows:
 # `allowedaddresspairs`  (rows=1)
 
 columns:
-`port_id` varchar36 PK FK: uuid, unique identifier
-`mac_address` varchar32 PK: "fa:16:3e:33:7f:de"=1
-`ip_address` varchar64 PK: "10.232.210.41/8"=1
+`port_id` varchar36 PK FK
+`mac_address` varchar32 PK
+`ip_address` varchar64 PK
 
 indexes: none
-fk: `port_id`→`ports`.`id`
 
 all rows:
 | column | row 1 |
@@ -147,41 +142,36 @@ columns:
 `security_group_id` varchar36 NOTNULL FK: uuid, unique identifier
 
 indexes: `security_group_id`
-fk: `security_group_id`→`securitygroups`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| tenant_id | ffa0e5fc492e4b4290bb9e2757850411 |
-| security_group_id | 28c85503-4127-43be-b2d4-842965390d71 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| tenant_id | ffa0e5fc492e4b4290bb9e2757850411 | f06795469c3a4041b92976e17e0d74e1 | ea08d8176e314881b039271ee8168e14 |
+| security_group_id | 28c85503-4127-43be-b2d4-842965390d71 | 2c6f582f-7b70-4f26-b37b-75e4178bc84f | 6b78aa87-cfa6-4a73-9b96-c0642e00a995 |
 
 # `dnsnameservers`  (rows=65)
 
 columns:
 `address` varchar128 PK: "10.229.203.154/8"=20, "10.67.40.40/8"=19, "10.49.228.132/8"=17, "10.107.23.242/8"=6, "10.159.230.188/8"=2, "10.61.127.33/8"=1
-`subnet_id` varchar36 PK FK: uuid, 22 distinct, "36ad083d-c3cc-443f-8821-c85601c10084"=4, "4ab2d89a-536b-4ec7-a8a2-df853a5b65e3"=4, "862e31fa-ce44-4f58-95b7-9bf1193cb5c9"=4, "9d67653d-0e90-4f72-a9ab-162930b79267"=4, "0807c5b3-aa6c-4108-8884-7b4948a19178"=3, "16eaae8c-1920-4b8b-8765-f149dde8a1a6"=3, "1e360a1e-339a-4dc7-a250-28c31fcd905a"=3, "2019039a-089f-408c-b080-201a0c5cbe6f"=3, "25a309b3-7334-44b7-99b5-85a874d28475"=3, "2f08159a-e945-4ba2-a583-431d1f8078d9"=3
+`subnet_id` varchar36 PK FK: uuid, 22 distinct
 `order` int NOTNULL: 0=35, 1=14, 2=14, 3=2, 0..3
 
 indexes: `subnet_id`
-fk: `subnet_id`→`subnets`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| address | 10.67.40.40/8 |
-| subnet_id | faee7948-a17f-4e58-a557-7ea1219c3b5f |
-| order | 0 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| address | 10.67.40.40/8 | 10.229.203.154/8 | 10.229.203.154/8 |
+| subnet_id | faee7948-a17f-4e58-a557-7ea1219c3b5f | 76123b94-2ae9-40c4-a4c6-03ee98d081d9 | 388ee748-7b3d-4049-99b4-7e582937bbd4 |
+| order | 0 | 0 | 1 |
 
 # `externalnetworks`  (rows=1)
 
 columns:
-`network_id` varchar36 PK FK: uuid, unique identifier
-`is_default` int NOTNULL: 0=1
+`network_id` varchar36 PK FK
+`is_default` int NOTNULL
 
 indexes: none
-fk: `network_id`→`networks`.`id`
 
 all rows:
 | column | row 1 |
@@ -205,40 +195,37 @@ columns:
 `standard_attr_id` bigint UNIQ NOTNULL FK: unique identifier, 5825..49574
 
 indexes: `fixed_port_id`, `floating_port_id`, `tenant_id`, `router_id`, UNIQUE `standard_attr_id`
-fk: `fixed_port_id`→`ports`.`id`, `floating_port_id`→`ports`.`id`, `standard_attr_id`→`standardattributes`.`id`, `router_id`→`routers`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| tenant_id | e3fb2659584e436a832461dac02835f0 |
-| id | e34474f1-b958-4969-b073-b66c9a449ea4 |
-| floating_ip_address | 10.144.191.176/8 |
-| floating_network_id | 8ad137b5-cc2b-44c7-9db0-e4f81d978d0c |
-| floating_port_id | bf817042-61e4-4a1f-9a18-7313f52cc604 |
-| fixed_port_id | null |
-| fixed_ip_address | null |
-| router_id | null |
-| last_known_router_id | null |
-| status | DOWN |
-| standard_attr_id | 49570 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| tenant_id | e3fb2659584e436a832461dac02835f0 | e3fb2659584e436a832461dac02835f0 | e3fb2659584e436a832461dac02835f0 |
+| id | e34474f1-b958-4969-b073-b66c9a449ea4 | 84b503c0-9cf2-4155-98e5-5868703ac6f2 | 18801cc2-fb09-48fd-b6b5-2fd659fc0214 |
+| floating_ip_address | 10.144.191.176/8 | 10.37.254.28/8 | 10.133.112.19/8 |
+| floating_network_id | 8ad137b5-cc2b-44c7-9db0-e4f81d978d0c | 8ad137b5-cc2b-44c7-9db0-e4f81d978d0c | 8ad137b5-cc2b-44c7-9db0-e4f81d978d0c |
+| floating_port_id | bf817042-61e4-4a1f-9a18-7313f52cc604 | e4961a83-21c2-446b-8964-84460741fbb8 | 3b34fa75-3156-4652-be85-1e53574c0b52 |
+| fixed_port_id | null | null | null |
+| fixed_ip_address | null | null | null |
+| router_id | null | null | null |
+| last_known_router_id | null | null | null |
+| status | DOWN | DOWN | DOWN |
+| standard_attr_id | 49570 | 49574 | 49566 |
 
 # `healthmonitors`  (rows=3)
 
 columns:
-`tenant_id` varchar255: "98333a1a28e746fa8c629c83a818ad57"=2, "0fe46c69adaf4d2fb01401e0dd952815"=1
-`id` varchar36 PK: uuid, unique identifier
-`type` enum NOTNULL: "HTTP"=2, "PING"=1
-`delay` int NOTNULL: 3=1, 5=1, 300=1, 3..300
-`timeout` int NOTNULL: 3=2, 2=1
-`max_retries` int NOTNULL: 3=3
-`http_method` varchar16: "GET"=3
-`url_path` varchar255: "/"=3
-`expected_codes` varchar64: "200"=2, "302"=1
-`admin_state_up` int NOTNULL: 1=3
+`tenant_id` varchar255
+`id` varchar36 PK
+`type` enum NOTNULL
+`delay` int NOTNULL
+`timeout` int NOTNULL
+`max_retries` int NOTNULL
+`http_method` varchar16
+`url_path` varchar255
+`expected_codes` varchar64
+`admin_state_up` int NOTNULL
 
 indexes: `tenant_id`
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 |
@@ -263,16 +250,14 @@ columns:
 `last_ip` varchar64 NOTNULL: 46 distinct
 
 indexes: `subnet_id`
-fk: `subnet_id`→`subnets`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| id | f2c784e3-2b56-4fca-b9d2-f5432b4fbce3 |
-| subnet_id | c8dbe01f-3465-46f8-a3b0-20436272a81a |
-| first_ip | 10.148.172.254/8 |
-| last_ip | 10.179.7.202/8 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| id | f2c784e3-2b56-4fca-b9d2-f5432b4fbce3 | c51be380-8316-4ef7-a5c9-8767fda6f9a8 | de38c287-2557-4652-ae97-f49b652a1005 |
+| subnet_id | c8dbe01f-3465-46f8-a3b0-20436272a81a | 9d67653d-0e90-4f72-a9ab-162930b79267 | 0814cd95-6c95-4669-8415-e555344bb15b |
+| first_ip | 10.148.172.254/8 | 10.150.64.113/8 | 10.40.209.248/8 |
+| last_ip | 10.179.7.202/8 | 10.103.41.89/8 | 10.13.139.247/8 |
 
 # `ipallocations`  (rows=3779)
 
@@ -283,16 +268,14 @@ columns:
 `network_id` varchar36 PK FK: uuid, 45 distinct, "0a1d0a27-cffa-4de3-92c5-9d3fd3f2e74d"=3622, "8ad137b5-cc2b-44c7-9db0-e4f81d978d0c"=39, "b3d6c27a-a9bb-4521-b5de-4d65eb7490dc"=20, "4207d69c-903d-48d3-be48-debcb46b3241"=7, "18b03960-577f-49a4-be38-aafb4e05f3f3"=5, "259e350d-9ea5-4dc5-8a1c-4ab7deef9eec"=5, "82caefaf-7420-4122-80c4-92e46e9fd658"=5, "c9e8f307-e1d5-4c06-b464-ef5370ca1d6d"=5, "38bfcc47-5f4d-46c8-9596-fb3a69f64e1e"=4, "5ec0b65f-6115-4525-8093-a8ce01707624"=4
 
 indexes: `network_id`, `port_id`, `subnet_id`
-fk: `subnet_id`→`subnets`.`id`, `port_id`→`ports`.`id`, `network_id`→`networks`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| port_id | 44283b5e-1502-436a-be73-caf0d33ab36d |
-| ip_address | track |
-| subnet_id | 76123b94-2ae9-40c4-a4c6-03ee98d081d9 |
-| network_id | 0a1d0a27-cffa-4de3-92c5-9d3fd3f2e74d |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| port_id | 44283b5e-1502-436a-be73-caf0d33ab36d | da52bd7b-d78c-4473-b41b-e2db442a6527 | 1faebf18-f840-4410-90b6-ff3456093747 |
+| ip_address | track | 10.225.199.210/8 | 10.150.185.91/8 |
+| subnet_id | 76123b94-2ae9-40c4-a4c6-03ee98d081d9 | 76123b94-2ae9-40c4-a4c6-03ee98d081d9 | 76123b94-2ae9-40c4-a4c6-03ee98d081d9 |
+| network_id | 0a1d0a27-cffa-4de3-92c5-9d3fd3f2e74d | 0a1d0a27-cffa-4de3-92c5-9d3fd3f2e74d | 0a1d0a27-cffa-4de3-92c5-9d3fd3f2e74d |
 
 # `ipavailabilityranges`  (rows=184)
 
@@ -302,35 +285,32 @@ columns:
 `last_ip` varchar64 PK: 181 distinct, "10.128.178.118/8"=3, "10.8.222.32/8"=2, "10.0.114.247/8"=1, "10.101.177.172/8"=1, "10.103.105.29/8"=1, "10.103.41.89/8"=1, "10.104.153.88/8"=1, "10.106.196.208/8"=1, "10.107.244.154/8"=1, "10.11.159.85/8"=1
 
 indexes: UNIQUE (`first_ip`,`allocation_pool_id`), UNIQUE (`last_ip`,`allocation_pool_id`)
-fk: `allocation_pool_id`→`ipallocationpools`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| allocation_pool_id | f2c784e3-2b56-4fca-b9d2-f5432b4fbce3 |
-| first_ip | 10.58.155.83/8 |
-| last_ip | 10.179.7.202/8 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| allocation_pool_id | f2c784e3-2b56-4fca-b9d2-f5432b4fbce3 | 455ff839-68cc-497c-80cb-aec8ddd623a8 | 455ff839-68cc-497c-80cb-aec8ddd623a8 |
+| first_ip | 10.58.155.83/8 | 10.98.239.58/8 | 10.8.89.251/8 |
+| last_ip | 10.179.7.202/8 | 10.156.231.207/8 | 10.8.89.251/8 |
 
 # `lbaas_listeners`  (rows=5)
 
 columns:
-`tenant_id` varchar255: "bfd50153a2e9476f93e33e30e922cd06"=3, "98333a1a28e746fa8c629c83a818ad57"=2
-`id` varchar36 PK: uuid, unique identifier
-`name` varchar255: "alpha_tivizxmrkokbssycgdut_0"=1, "arrow_qiwshhdpzmujcbjyihwd_0"=1, "flare_agkeptezowlzkavlvbwe_0"=1, "grav_inimyemtwhpmxlsuowhe_0"=1, "pulse_nmjefdcfpqavsgrbhwfg_0"=1
-`description` varchar255: all NULL
-`protocol` enum NOTNULL: "TCP"=5
-`protocol_port` int NOTNULL: 80=3, 70=1, 443=1, 70..443
-`connection_limit` int: -1=5
-`loadbalancer_id` varchar36 FK: uuid, unique identifier
-`default_pool_id` varchar36 FK: uuid, unique identifier
-`admin_state_up` int NOTNULL: 1=5
-`provisioning_status` varchar16 NOTNULL: "ACTIVE"=5
-`operating_status` varchar16 NOTNULL: "ONLINE"=5
-`default_tls_container_id` varchar128: all NULL
+`tenant_id` varchar255
+`id` varchar36 PK
+`name` varchar255
+`description` varchar255
+`protocol` enum NOTNULL
+`protocol_port` int NOTNULL
+`connection_limit` int
+`loadbalancer_id` varchar36 FK
+`default_pool_id` varchar36 FK
+`admin_state_up` int NOTNULL
+`provisioning_status` varchar16 NOTNULL
+`operating_status` varchar16 NOTNULL
+`default_tls_container_id` varchar128
 
 indexes: `tenant_id`, `default_pool_id`, UNIQUE (`loadbalancer_id`,`protocol_port`)
-fk: `loadbalancer_id`→`lbaas_loadbalancers`.`id`, `default_pool_id`→`lbaas_pools`.`id`
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 |
@@ -352,14 +332,13 @@ all rows:
 # `lbaas_loadbalancer_statistics`  (rows=6)
 
 columns:
-`loadbalancer_id` varchar36 PK FK: uuid, unique identifier
-`bytes_in` bigint NOTNULL: 0=1, 21472=1, 2692581=1, 2933704=1, 3125949=1, 3716370=1, 0..3716370
-`bytes_out` bigint NOTNULL: 0=6
-`active_connections` bigint NOTNULL: 0=6
-`total_connections` bigint NOTNULL: 0=1, 386=1, 14349=1, 14698=1, 15628=1, 20412=1, 0..20412
+`loadbalancer_id` varchar36 PK FK
+`bytes_in` bigint NOTNULL
+`bytes_out` bigint NOTNULL
+`active_connections` bigint NOTNULL
+`total_connections` bigint NOTNULL
 
 indexes: none
-fk: `loadbalancer_id`→`lbaas_loadbalancers`.`id`
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 |
@@ -373,11 +352,10 @@ all rows:
 # `lbaas_loadbalanceragentbindings`  (rows=6)
 
 columns:
-`loadbalancer_id` varchar36 PK FK: uuid, unique identifier
-`agent_id` varchar36 NOTNULL FK: "f5e7202b-3276-4f9c-8d95-68e3688836db"=6
+`loadbalancer_id` varchar36 PK FK
+`agent_id` varchar36 NOTNULL FK
 
 indexes: `agent_id`
-fk: `agent_id`→`agents`.`id`, `loadbalancer_id`→`lbaas_loadbalancers`.`id`
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 |
@@ -388,20 +366,19 @@ all rows:
 # `lbaas_loadbalancers`  (rows=6)
 
 columns:
-`tenant_id` varchar255: "bfd50153a2e9476f93e33e30e922cd06"=4, "98333a1a28e746fa8c629c83a818ad57"=2
-`id` varchar36 PK: uuid, unique identifier
-`name` varchar255: "aurum-credo"=1, "bjuakvpbywrsmksufdmw"=1, "ether-flare"=1, "gqgxlywtlazwffeogfps"=1, "nexus-forge"=1, "wsokhmicwhimbikzygpg"=1
-`description` varchar255: ""=1, "44c601f0ed3ff090e3962cc1bc48d6e2"=1, "7320f5fc7ad77ef345055eb8080a8c14"=1, "ae23036216f4e1b8f978fc1dc7534d4e"=1, "b719b94a8f2ff66de11da5ad5a388d95"=1, "df93b65c6b85b9a7f306c05f31fbee97"=1
-`vip_port_id` varchar36 FK: uuid, unique identifier
-`vip_subnet_id` varchar36 NOTNULL: "2019039a-089f-408c-b080-201a0c5cbe6f"=3, "0807c5b3-aa6c-4108-8884-7b4948a19178"=2, "76123b94-2ae9-40c4-a4c6-03ee98d081d9"=1
-`vip_address` varchar36: "10.122.60.167/8"=1, "10.198.158.49/8"=1, "10.20.127.222/8"=1, "10.209.133.213/8"=1, "10.67.41.78/8"=1, "10.71.60.243/8"=1
-`admin_state_up` int NOTNULL: 1=6
-`provisioning_status` varchar16 NOTNULL: "ACTIVE"=6
-`operating_status` varchar16 NOTNULL: "ONLINE"=6
-`flavor_id` varchar36 FK: all NULL
+`tenant_id` varchar255
+`id` varchar36 PK
+`name` varchar255
+`description` varchar255
+`vip_port_id` varchar36 FK
+`vip_subnet_id` varchar36 NOTNULL
+`vip_address` varchar36
+`admin_state_up` int NOTNULL
+`provisioning_status` varchar16 NOTNULL
+`operating_status` varchar16 NOTNULL
+`flavor_id` varchar36 FK
 
 indexes: `flavor_id`, `vip_port_id`, `tenant_id`
-fk: `flavor_id`→`flavors`.`id`, `vip_port_id`→`ports`.`id`
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 |
@@ -434,41 +411,38 @@ columns:
 `name` varchar255: all NULL
 
 indexes: `tenant_id`, UNIQUE (`pool_id`,`address`,`protocol_port`)
-fk: `pool_id`→`lbaas_pools`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| tenant_id | bfd50153a2e9476f93e33e30e922cd06 |
-| id | f2bab0c3-e5d8-4577-9a7b-7340420dda81 |
-| pool_id | 84ed8864-e9d5-436a-b662-4b4e8d4b7893 |
-| subnet_id | 2019039a-089f-408c-b080-201a0c5cbe6f |
-| address | 10.154.119.80/8 |
-| protocol_port | 30637 |
-| weight | 1 |
-| admin_state_up | 1 |
-| provisioning_status | ACTIVE |
-| operating_status | ONLINE |
-| name | null |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| tenant_id | bfd50153a2e9476f93e33e30e922cd06 | bfd50153a2e9476f93e33e30e922cd06 | bfd50153a2e9476f93e33e30e922cd06 |
+| id | f2bab0c3-e5d8-4577-9a7b-7340420dda81 | 8d36de4e-1c5c-44ce-8157-f85311ba03d8 | 71dfbb81-4503-439c-a1b3-3fc66a9a19f6 |
+| pool_id | 84ed8864-e9d5-436a-b662-4b4e8d4b7893 | 4b1b8e0d-663b-445a-b130-b409c2f41bf0 | 4b1b8e0d-663b-445a-b130-b409c2f41bf0 |
+| subnet_id | 2019039a-089f-408c-b080-201a0c5cbe6f | 2019039a-089f-408c-b080-201a0c5cbe6f | 2019039a-089f-408c-b080-201a0c5cbe6f |
+| address | 10.154.119.80/8 | 10.154.119.80/8 | 10.111.186.226/8 |
+| protocol_port | 30637 | 31582 | 31582 |
+| weight | 1 | 1 | 1 |
+| admin_state_up | 1 | 1 | 1 |
+| provisioning_status | ACTIVE | ACTIVE | ACTIVE |
+| operating_status | ONLINE | ONLINE | ONLINE |
+| name | null | null | null |
 
 # `lbaas_pools`  (rows=5)
 
 columns:
-`tenant_id` varchar255: "bfd50153a2e9476f93e33e30e922cd06"=3, "98333a1a28e746fa8c629c83a818ad57"=2
-`id` varchar36 PK: uuid, unique identifier
-`name` varchar255: "meter_tbauczjaeoubpkmfukok_0"=1, "shift_qzvqvsbpucjgwxzxzvya_0"=1, "streak_fwxpvgiyyudtixsfcjvu_0"=1, "track_lborfddzhtpfumnepdvi_0"=1, "twist_kmfenscozwggrvxjtsxi_0"=1
-`description` varchar255: all NULL
-`protocol` enum NOTNULL: "TCP"=5
-`lb_algorithm` enum NOTNULL: "ROUND_ROBIN"=5
-`healthmonitor_id` varchar36 UNIQ FK: all NULL
-`admin_state_up` int NOTNULL: 1=5
-`provisioning_status` varchar16 NOTNULL: "ACTIVE"=5
-`operating_status` varchar16 NOTNULL: "ONLINE"=5
-`loadbalancer_id` varchar36 FK: uuid, unique identifier
+`tenant_id` varchar255
+`id` varchar36 PK
+`name` varchar255
+`description` varchar255
+`protocol` enum NOTNULL
+`lb_algorithm` enum NOTNULL
+`healthmonitor_id` varchar36 UNIQ FK
+`admin_state_up` int NOTNULL
+`provisioning_status` varchar16 NOTNULL
+`operating_status` varchar16 NOTNULL
+`loadbalancer_id` varchar36 FK
 
 indexes: UNIQUE `healthmonitor_id`, `tenant_id`, `loadbalancer_id`
-fk: `healthmonitor_id`→`lbaas_healthmonitors`.`id`, `loadbalancer_id`→`lbaas_loadbalancers`.`id`
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 |
@@ -488,18 +462,17 @@ all rows:
 # `members`  (rows=4)
 
 columns:
-`tenant_id` varchar255: "0fe46c69adaf4d2fb01401e0dd952815"=3, "daa18fdafdf04b5eac18e04aa19ee214"=1
-`id` varchar36 PK: uuid, unique identifier
-`pool_id` varchar36 NOTNULL FK: "c7d33358-67e9-407f-91b4-241f2584e242"=3, "213fccb5-6482-4c4b-b66a-06a1eb283331"=1
-`address` varchar64 NOTNULL: "10.124.243.155/8"=1, "10.132.208.137/8"=1, "10.198.253.45/8"=1, "10.241.232.133/8"=1
-`protocol_port` int NOTNULL: 443=3, 8080=1
-`weight` int NOTNULL: 1=4
-`status` varchar16 NOTNULL: "ACTIVE"=4
-`status_description` varchar255: all NULL
-`admin_state_up` int NOTNULL: 1=4
+`tenant_id` varchar255
+`id` varchar36 PK
+`pool_id` varchar36 NOTNULL FK
+`address` varchar64 NOTNULL
+`protocol_port` int NOTNULL
+`weight` int NOTNULL
+`status` varchar16 NOTNULL
+`status_description` varchar255
+`admin_state_up` int NOTNULL
 
 indexes: `tenant_id`, `pool_id`, UNIQUE (`pool_id`,`address`,`protocol_port`)
-fk: `pool_id`→`pools`.`id`
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 |
@@ -521,14 +494,12 @@ columns:
 `allocated` int NOTNULL: 0=968, 1=32
 
 indexes: `allocated`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| gre_id | 1000 |
-| allocated | 0 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| gre_id | 1000 | 717 | 718 |
+| allocated | 0 | 0 | 0 |
 
 # `ml2_gre_endpoints`  (rows=124)
 
@@ -537,14 +508,12 @@ columns:
 `host` varchar255 UNIQ: unique identifier, nulls=5
 
 indexes: UNIQUE `host`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| ip_address | 10.96.19.200/8 |
-| host | drift-69 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| ip_address | 10.96.19.200/8 | 10.75.161.66/8 | 10.254.118.207/8 |
+| host | drift-69 | beam8-22 | drift-42 |
 
 # `ml2_network_segments`  (rows=49)
 
@@ -558,19 +527,17 @@ columns:
 `segment_index` int NOTNULL: 0=49
 
 indexes: `network_id`
-fk: `network_id`→`networks`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| id | fd961fc1-c324-49bc-8f53-629f0af064d8 |
-| network_id | b4f80478-cac6-49b2-9485-8d011dc9cb53 |
-| network_type | gre |
-| physical_network | null |
-| segmentation_id | 7 |
-| is_dynamic | 0 |
-| segment_index | 0 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| id | fd961fc1-c324-49bc-8f53-629f0af064d8 | f7506aa6-0a24-4a1d-b6d8-2582ca1f8c23 | 68c31fad-ef88-47d0-99d8-ec49a03c9bf2 |
+| network_id | b4f80478-cac6-49b2-9485-8d011dc9cb53 | c9e8f307-e1d5-4c06-b464-ef5370ca1d6d | 84ba89ec-68fd-4257-80eb-a1c3a65ee594 |
+| network_type | gre | vlan | vlan |
+| physical_network | null | trunk | trunk |
+| segmentation_id | 7 | 9 | 2052 |
+| is_dynamic | 0 | 0 | 0 |
+| segment_index | 0 | 0 | 0 |
 
 # `ml2_port_binding_levels`  (rows=3692)
 
@@ -582,17 +549,15 @@ columns:
 `segment_id` varchar36 FK: uuid, 46 distinct, "40c56f51-8c44-4d82-8369-d065010ed91a"=3569, "4cee9f71-2664-48bc-99c6-904f2e5e2a4d"=18, "1626d3ed-6340-4b68-a46c-2982bab302c8"=16, "849f1332-db7a-4bae-a09e-be6f272baede"=7, "8ca8cdd2-63f2-4b18-a86b-7f9c7c8542c4"=5, "f7506aa6-0a24-4a1d-b6d8-2582ca1f8c23"=5, "69796581-1c58-403c-a21e-7579bb5b05b4"=4, "c583d60a-93ab-4a42-9ed9-4e587b1a8551"=4, "e1f1caed-fc73-438f-ad9b-ba52fed4d338"=4, "fad83f9c-fff2-4170-ba77-dcd63ecb1e88"=4
 
 indexes: `segment_id`
-fk: `port_id`→`ports`.`id`, `segment_id`→`ml2_network_segments`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| port_id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 |
-| host | forge-23 |
-| level | 0 |
-| driver | openvswitch |
-| segment_id | 40c56f51-8c44-4d82-8369-d065010ed91a |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| port_id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 | 33093db4-3456-4a1b-80ff-6e3df72d41b8 | 1f0f95d6-bcfe-41b1-9b45-d77a95a934bb |
+| host | forge-23 | flare4-57 | zeph-15 |
+| level | 0 | 0 | 0 |
+| driver | openvswitch | openvswitch | openvswitch |
+| segment_id | 40c56f51-8c44-4d82-8369-d065010ed91a | 40c56f51-8c44-4d82-8369-d065010ed91a | 40c56f51-8c44-4d82-8369-d065010ed91a |
 
 # `ml2_port_bindings`  (rows=3730)
 
@@ -605,28 +570,25 @@ columns:
 `profile` varchar4095 NOTNULL: ""=3682, "{}"=48
 
 indexes: none
-fk: `port_id`→`ports`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| port_id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 |
-| host | forge-23 |
-| vif_type | ovs |
-| vnic_type | normal |
-| vif_details | {"port_filter": true, "ovs_hybrid_plug": true} |
-| profile |  |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| port_id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 | 0c8e15a4-160d-4403-989f-decbcab4c36b | ed23c105-b31c-4f23-8e74-e809bcc1ddec |
+| host | forge-23 | galax4-70 | ether-18 |
+| vif_type | ovs | ovs | ovs |
+| vnic_type | normal | normal | normal |
+| vif_details | {"port_filter": true, "ovs_hybrid_plug": true} | {"port_filter": true, "ovs_hybrid_plug": true} | {"port_filter": true, "ovs_hybrid_plug": true} |
+| profile |  |  |  |
 
 # `ml2_vlan_allocations`  (rows=9)
 
 columns:
-`physical_network` varchar64 PK: "trunk"=9
-`vlan_id` int PK: unique identifier, 9..3000
-`allocated` int NOTNULL: 1=7, 0=2
+`physical_network` varchar64 PK
+`vlan_id` int PK
+`allocated` int NOTNULL
 
 indexes: (`physical_network`,`allocated`)
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 | row 9 |
@@ -642,14 +604,12 @@ columns:
 `dhcp_agent_id` varchar36 PK FK: "d72830f5-a71c-418d-8d47-ff23ef398336"=45
 
 indexes: `dhcp_agent_id`
-fk: `dhcp_agent_id`→`agents`.`id`, `network_id`→`networks`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| network_id | fe178706-9942-4600-9224-b2ae7c61db71 |
-| dhcp_agent_id | d72830f5-a71c-418d-8d47-ff23ef398336 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| network_id | fe178706-9942-4600-9224-b2ae7c61db71 | 7cde47d6-0ae4-4537-9120-444dc3920ff0 | a4d00c60-f005-400e-a24c-1bf8b8308f98 |
+| dhcp_agent_id | d72830f5-a71c-418d-8d47-ff23ef398336 | d72830f5-a71c-418d-8d47-ff23ef398336 | d72830f5-a71c-418d-8d47-ff23ef398336 |
 
 # `networkrbacs`  (rows=14)
 
@@ -661,17 +621,15 @@ columns:
 `action` varchar255 NOTNULL: "access_as_shared"=13, "access_as_external"=1
 
 indexes: `tenant_id`, `object_id`, UNIQUE (`action`,`object_id`,`target_tenant`)
-fk: `object_id`→`networks`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| id | f2980872-481b-497a-9281-784178e4e555 |
-| object_id | c9e8f307-e1d5-4c06-b464-ef5370ca1d6d |
-| tenant_id | 7691c9955ce1444ab366d041f5bdf33c |
-| target_tenant | c1cb7bcbcb6040c9837c35ff8501b13a |
-| action | access_as_shared |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| id | f2980872-481b-497a-9281-784178e4e555 | 8d848179-cea2-4b3a-9790-78e23b276a4c | 8558e61c-4a71-4ae9-87b4-087ca67a4902 |
+| object_id | c9e8f307-e1d5-4c06-b464-ef5370ca1d6d | 4207d69c-903d-48d3-be48-debcb46b3241 | 4207d69c-903d-48d3-be48-debcb46b3241 |
+| tenant_id | 7691c9955ce1444ab366d041f5bdf33c | 6f9adccbd03e4d2186756896957a14bf | 6f9adccbd03e4d2186756896957a14bf |
+| target_tenant | c1cb7bcbcb6040c9837c35ff8501b13a | bfd50153a2e9476f93e33e30e922cd06 | a3ccd76b29264bbe94415833015c9379 |
+| action | access_as_shared | access_as_shared | access_as_shared |
 
 # `networks`  (rows=49)
 
@@ -687,21 +645,19 @@ columns:
 `availability_zone_hints` varchar255: "[]"=21, nulls=28
 
 indexes: `tenant_id`, UNIQUE `standard_attr_id`
-fk: `standard_attr_id`→`standardattributes`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| tenant_id | 17ea94ad74b64b9d92f4888336a598c7 |
-| id | fe178706-9942-4600-9224-b2ae7c61db71 |
-| name | twist0-28 |
-| status | ACTIVE |
-| admin_state_up | 1 |
-| mtu | null |
-| vlan_transparent | null |
-| standard_attr_id | 1311 |
-| availability_zone_hints | null |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| tenant_id | 17ea94ad74b64b9d92f4888336a598c7 | 70b2507b8cc44fcb917ddfb85f5079d9 | d00c4471fe5945f69795d50f7f32981e |
+| id | fe178706-9942-4600-9224-b2ae7c61db71 | c9e8f307-e1d5-4c06-b464-ef5370ca1d6d | 92d37d16-07e5-4387-8ab0-ce4a90a998ea |
+| name | twist0-28 | proto | grav1_star |
+| status | ACTIVE | ACTIVE | ACTIVE |
+| admin_state_up | 1 | 1 | 1 |
+| mtu | null | 1500 | 8958 |
+| vlan_transparent | null | null | null |
+| standard_attr_id | 1311 | 16162 | 50203 |
+| availability_zone_hints | null | [] | [] |
 
 # `networksecuritybindings`  (rows=36)
 
@@ -710,25 +666,22 @@ columns:
 `port_security_enabled` int NOTNULL: 1=33, 0=3
 
 indexes: none
-fk: `network_id`→`networks`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| network_id | fe178706-9942-4600-9224-b2ae7c61db71 |
-| port_security_enabled | 1 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| network_id | fe178706-9942-4600-9224-b2ae7c61db71 | 4207d69c-903d-48d3-be48-debcb46b3241 | e521f9d0-a1bd-4ff4-bc81-78a60dd88fe5 |
+| port_security_enabled | 1 | 1 | 1 |
 
 # `poolmonitorassociations`  (rows=1)
 
 columns:
-`pool_id` varchar36 PK FK: uuid, unique identifier
-`monitor_id` varchar36 PK FK: uuid, unique identifier
-`status` varchar16 NOTNULL: "ACTIVE"=1
-`status_description` varchar255: all NULL
+`pool_id` varchar36 PK FK
+`monitor_id` varchar36 PK FK
+`status` varchar16 NOTNULL
+`status_description` varchar255
 
 indexes: `monitor_id`
-fk: `pool_id`→`pools`.`id`, `monitor_id`→`healthmonitors`.`id`
 
 all rows:
 | column | row 1 |
@@ -741,20 +694,19 @@ all rows:
 # `pools`  (rows=2)
 
 columns:
-`tenant_id` varchar255: unique identifier
-`id` varchar36 PK: uuid, unique identifier
-`vip_id` varchar36 FK: "fec601e1-596d-4bd6-9149-682470ece8c1"=1, nulls=1
-`name` varchar255: "spind.layer"=1, "starx"=1
-`description` varchar255: ""=1, "761fc0b85fc55ec8c4a54ed0a5830623"=1
-`subnet_id` varchar36 NOTNULL: "76123b94-2ae9-40c4-a4c6-03ee98d081d9"=2
-`protocol` enum NOTNULL: "HTTP"=1, "HTTPS"=1
-`lb_method` enum NOTNULL: "ROUND_ROBIN"=1, "LEAST_CONNECTIONS"=1
-`status` varchar16 NOTNULL: "ACTIVE"=2
-`status_description` varchar255: all NULL
-`admin_state_up` int NOTNULL: 1=2
+`tenant_id` varchar255
+`id` varchar36 PK
+`vip_id` varchar36 FK
+`name` varchar255
+`description` varchar255
+`subnet_id` varchar36 NOTNULL
+`protocol` enum NOTNULL
+`lb_method` enum NOTNULL
+`status` varchar16 NOTNULL
+`status_description` varchar255
+`admin_state_up` int NOTNULL
 
 indexes: `tenant_id`, `vip_id`
-fk: `vip_id`→`vips`.`id`
 
 all rows:
 | column | row 1 | row 2 |
@@ -774,14 +726,13 @@ all rows:
 # `poolstatisticss`  (rows=2)
 
 columns:
-`pool_id` varchar36 PK FK: uuid, unique identifier
-`bytes_in` bigint NOTNULL: 0=2
-`bytes_out` bigint NOTNULL: 0=2
-`active_connections` bigint NOTNULL: 0=2
-`total_connections` bigint NOTNULL: 0=2
+`pool_id` varchar36 PK FK
+`bytes_in` bigint NOTNULL
+`bytes_out` bigint NOTNULL
+`active_connections` bigint NOTNULL
+`total_connections` bigint NOTNULL
 
 indexes: none
-fk: `pool_id`→`pools`.`id`
 
 all rows:
 | column | row 1 | row 2 |
@@ -799,7 +750,7 @@ columns:
 `id` varchar36 PK: uuid, unique identifier
 `name` varchar255: "forge-netix7"=2, "astro-zeph4"=1, "blaze"=1, "blitz"=1, "celes-speed-grav"=1, "comet-drive9"=1, "flare"=1, "flare1-87"=1, "flick-quark-flash"=1, "glint"=1, "helio"=1, "layer"=1, "prime-helix-speed"=1, "qubit-spike8"=1, "shine-celes4"=1, "spind_sdjt-gwxw-iryg-laob-ihwd"=1, "twist-pico7"=1, "void-neon"=1, "vortx"=1, nulls=3755
 `network_id` varchar36 NOTNULL FK: uuid, 46 distinct, "0a1d0a27-cffa-4de3-92c5-9d3fd3f2e74d"=3620, "8ad137b5-cc2b-44c7-9db0-e4f81d978d0c"=39, "b3d6c27a-a9bb-4521-b5de-4d65eb7490dc"=19, "4207d69c-903d-48d3-be48-debcb46b3241"=7, "18b03960-577f-49a4-be38-aafb4e05f3f3"=5, "259e350d-9ea5-4dc5-8a1c-4ab7deef9eec"=5, "c9e8f307-e1d5-4c06-b464-ef5370ca1d6d"=5, "38bfcc47-5f4d-46c8-9596-fb3a69f64e1e"=4, "5ec0b65f-6115-4525-8093-a8ce01707624"=4, "82caefaf-7420-4122-80c4-92e46e9fd658"=4
-`mac_address` varchar32 NOTNULL: 3774 distinct, "aa:00:00:30:e4:e6"=2, "fa:16:3e:00:13:93"=1, "fa:16:3e:00:16:fc"=1, "fa:16:3e:00:28:a7"=1, "fa:16:3e:00:4f:58"=1, "fa:16:3e:00:70:ea"=1, "fa:16:3e:00:87:ae"=1, "fa:16:3e:00:94:f3"=1, "fa:16:3e:00:b8:2c"=1, "fa:16:3e:00:cb:10"=1
+`mac_address` varchar32 NOTNULL: 3774 distinct
 `admin_state_up` int NOTNULL: 1=3774, 0=1
 `status` varchar16 NOTNULL: "DOWN"=2700, "ACTIVE"=1034, ""=23, "BUILD"=18
 `device_id` varchar255 NOTNULL: 3483 distinct
@@ -808,23 +759,21 @@ columns:
 `standard_attr_id` bigint UNIQ NOTNULL FK: unique identifier, 1..65876
 
 indexes: (`network_id`,`device_owner`), (`network_id`,`mac_address`), `tenant_id`, `network_id`, UNIQUE (`network_id`,`mac_address`), UNIQUE `standard_attr_id`
-fk: `network_id`→`networks`.`id`, `standard_attr_id`→`standardattributes`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| tenant_id | 17ea94ad74b64b9d92f4888336a598c7 |
-| id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 |
-| name | null |
-| network_id | 0a1d0a27-cffa-4de3-92c5-9d3fd3f2e74d |
-| mac_address | fa:16:3e:87:d2:36 |
-| admin_state_up | 1 |
-| status | DOWN |
-| device_id | 429c0638-c9b8-465d-8516-6b5b26693f20 |
-| device_owner | compute:None |
-| dns_name | null |
-| standard_attr_id | 52214 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| tenant_id | 17ea94ad74b64b9d92f4888336a598c7 | 17ea94ad74b64b9d92f4888336a598c7 | 17ea94ad74b64b9d92f4888336a598c7 |
+| id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 | d3f11f03-d192-4b9a-b4e0-11dceb811463 | 81f8eefc-7de2-4171-b231-5f1744f5dc9f |
+| name | null | null | null |
+| network_id | 0a1d0a27-cffa-4de3-92c5-9d3fd3f2e74d | 0a1d0a27-cffa-4de3-92c5-9d3fd3f2e74d | 0a1d0a27-cffa-4de3-92c5-9d3fd3f2e74d |
+| mac_address | fa:16:3e:87:d2:36 | fa:16:3e:2b:01:05 | fa:16:3e:6b:05:3c |
+| admin_state_up | 1 | 1 | 1 |
+| status | DOWN | ACTIVE | DOWN |
+| device_id | 429c0638-c9b8-465d-8516-6b5b26693f20 | b7060bb7-d440-4335-87ab-a6de93d36878 | a17f9996-6e1e-4c21-bbc9-48ce2c7f62b6 |
+| device_owner | compute:None | compute:None | compute:None |
+| dns_name | null | null | null |
+| standard_attr_id | 52214 | 56121 | 52013 |
 
 # `portsecuritybindings`  (rows=3194)
 
@@ -833,14 +782,12 @@ columns:
 `port_security_enabled` int NOTNULL: 1=3134, 0=60
 
 indexes: none
-fk: `port_id`→`ports`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| port_id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 |
-| port_security_enabled | 1 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| port_id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 | 8d9c0961-7a62-4203-ad4f-f1b6838b5948 | 86dd183a-cf91-4c57-8536-a182ed4db5e9 |
+| port_security_enabled | 1 | 1 | 1 |
 
 # `providerresourceassociations`  (rows=38)
 
@@ -849,34 +796,30 @@ columns:
 `resource_id` varchar36 PK UNIQ: uuid, unique identifier
 
 indexes: UNIQUE `resource_id`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| provider_name | haproxy |
-| resource_id | f07300df-e29d-4f56-9315-d358fedcb2ff |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| provider_name | haproxy | haproxy | haproxy |
+| resource_id | f07300df-e29d-4f56-9315-d358fedcb2ff | c6e81aa9-ec9f-4942-b94e-1b3830b0139f | 79be7c5c-b5da-4ffc-a71f-29653c653375 |
 
 # `quotas`  (rows=1521)
 
 columns:
 `id` varchar36 PK: uuid, unique identifier
-`tenant_id` varchar255: 218 distinct, "00380ae12de643fea2ec50f14af654d3"=7, "024e1f0615724a4dbd0b595a0f399312"=7, "0494a346605a40e69507a9bf0f65e375"=7, "05001dd7e5be45ef8b1c7a54fa56c15e"=7, "05e13bdfc81c40a88f53e63ee6b48ca0"=7, "060d1fbdb3d94a22b10f4c002ce22260"=7, "0862b6bf68604444bbc2977d93f850ee"=7, "0869d84607844ffc9aa2a0a72a8cc4c0"=7, "08a5710919764215ad1b2c98dc7a8112"=7, "08f5552e94564f07a62a02c20df7e6ca"=7
+`tenant_id` varchar255: 218 distinct
 `resource` varchar255: "network"=218, "subnet"=218, "router"=217, "floatingip"=216, "port"=216, "security_group"=216, "security_group_rule"=216, "pool"=2, "rbac_policy"=2
 `limit` int: -1=711, 10=593, 0=213, 1=2, 3=1, 8=1, -1..10
 
 indexes: `tenant_id`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| id | ffb411ff-27ba-4657-9604-f446f8a76619 |
-| tenant_id | 5ff7fc0747b44990a271062cbaba0581 |
-| resource | security_group |
-| limit | -1 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| id | ffb411ff-27ba-4657-9604-f446f8a76619 | 6b830b50-a781-4f77-a211-d87f1cf7a9f8 | 0ed839fb-3175-4eb1-b7f7-1e86414c4897 |
+| tenant_id | 5ff7fc0747b44990a271062cbaba0581 | ec70e195b7ec4fb19e064b89255da292 | 485672a6ccf24cd09bdca860e85b7916 |
+| resource | security_group | router | subnet |
+| limit | -1 | 10 | 10 |
 
 # `quotausages`  (rows=810)
 
@@ -888,27 +831,24 @@ columns:
 `reserved` int NOTNULL: 0=810
 
 indexes: `resource`, `tenant_id`
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| tenant_id | ffa0e5fc492e4b4290bb9e2757850411 |
-| resource | security_group |
-| dirty | 0 |
-| in_use | 2 |
-| reserved | 0 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| tenant_id | ffa0e5fc492e4b4290bb9e2757850411 | 4ce5b212366741a79bf884561a73d3a7 | bb02e86c269945129288ac22543d2d65 |
+| resource | security_group | security_group | port |
+| dirty | 0 | 0 | 0 |
+| in_use | 2 | 8 | 1 |
+| reserved | 0 | 0 | 0 |
 
 # `reservations`  (rows=5)
 
 columns:
-`id` varchar36 PK: uuid, unique identifier
-`tenant_id` varchar255: "d3ac3958f14941cdb205e76ba43bbe49"=5
-`expiration` datetime: 2019-04-03 15:16:01=1, 2019-04-08 20:00:13=1, 2019-04-08 20:00:38=1, 2019-04-08 20:00:39=1, 2019-04-08 20:01:00=1
+`id` varchar36 PK
+`tenant_id` varchar255
+`expiration` datetime
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 |
@@ -920,12 +860,11 @@ all rows:
 # `resourcedeltas`  (rows=5)
 
 columns:
-`resource` varchar255 PK: "port"=5
-`reservation_id` varchar36 PK FK: uuid, unique identifier
-`amount` int: 1=5
+`resource` varchar255 PK
+`reservation_id` varchar36 PK FK
+`amount` int
 
 indexes: `reservation_id`
-fk: `reservation_id`→`reservations`.`id`
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 |
@@ -945,18 +884,16 @@ columns:
 `availability_zone_hints` varchar255: "[]"=16, nulls=11
 
 indexes: none
-fk: `router_id`→`routers`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| router_id | fa95b6df-6eef-49a9-a7df-753eeb99c527 |
-| distributed | 0 |
-| service_router | 0 |
-| ha | 0 |
-| ha_vr_id | 0 |
-| availability_zone_hints | [] |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| router_id | fa95b6df-6eef-49a9-a7df-753eeb99c527 | 93d59217-82e9-4e14-a893-8da557a2efcc | 611b1438-7ede-437c-864d-e25bd30c03d4 |
+| distributed | 0 | 0 | 0 |
+| service_router | 0 | 0 | 0 |
+| ha | 0 | 0 | 0 |
+| ha_vr_id | 0 | 0 | 0 |
+| availability_zone_hints | [] | [] | null |
 
 # `routerl3agentbindings`  (rows=27)
 
@@ -965,32 +902,28 @@ columns:
 `l3_agent_id` varchar36 PK FK: "f650dff7-3bb0-44a7-8626-069e2b346dcf"=27
 
 indexes: `l3_agent_id`, `router_id`
-fk: `router_id`→`routers`.`id`, `l3_agent_id`→`agents`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| router_id | fa95b6df-6eef-49a9-a7df-753eeb99c527 |
-| l3_agent_id | f650dff7-3bb0-44a7-8626-069e2b346dcf |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| router_id | fa95b6df-6eef-49a9-a7df-753eeb99c527 | 0d643319-9537-413e-ac52-3fca261c0a47 | 30029469-c5b0-49f3-9f7e-a74a592b7d82 |
+| l3_agent_id | f650dff7-3bb0-44a7-8626-069e2b346dcf | f650dff7-3bb0-44a7-8626-069e2b346dcf | f650dff7-3bb0-44a7-8626-069e2b346dcf |
 
 # `routerports`  (rows=35)
 
 columns:
-`router_id` varchar36 PK FK: uuid, 22 distinct, "0d643319-9537-413e-ac52-3fca261c0a47"=2, "40d3572b-5886-4c25-a737-feaf69fecad0"=2, "611b1438-7ede-437c-864d-e25bd30c03d4"=2, "71e9342c-dd51-4f9d-843d-892285bff645"=2, "8a4ce760-ab55-4f2f-8ec5-a2e858ce0d39"=2, "8f10910e-4827-4528-9d63-501ef1e25ffa"=2, "93d59217-82e9-4e14-a893-8da557a2efcc"=2, "9ff894ce-d884-46fd-9c47-c5fb7d6fb933"=2, "a154bb98-4a0d-4a6c-bcfa-e1afb65ce71e"=2, "ae4709ed-52bb-4b9e-adb2-3f750b45171c"=2
+`router_id` varchar36 PK FK: uuid, 22 distinct
 `port_id` varchar36 PK FK: uuid, unique identifier
 `port_type` varchar255: "network:router_interface"=20, "network:router_gateway"=15
 
 indexes: `port_id`
-fk: `router_id`→`routers`.`id`, `port_id`→`ports`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| router_id | fa95b6df-6eef-49a9-a7df-753eeb99c527 |
-| port_id | 4eba9d6b-dea1-45ac-83b4-4857ff3dabf0 |
-| port_type | network:router_interface |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| router_id | fa95b6df-6eef-49a9-a7df-753eeb99c527 | 8f10910e-4827-4528-9d63-501ef1e25ffa | ae4709ed-52bb-4b9e-adb2-3f750b45171c |
+| port_id | 4eba9d6b-dea1-45ac-83b4-4857ff3dabf0 | 2d54aa04-9d8d-4d3f-b3b4-4906aff79e96 | 08f5e69c-6ade-43db-b2a0-060ba0595d51 |
+| port_type | network:router_interface | network:router_gateway | network:router_interface |
 
 # `routers`  (rows=27)
 
@@ -1005,20 +938,18 @@ columns:
 `standard_attr_id` bigint UNIQ NOTNULL FK: unique identifier, 2039..58641
 
 indexes: `gw_port_id`, `tenant_id`, UNIQUE `standard_attr_id`
-fk: `standard_attr_id`→`standardattributes`.`id`, `gw_port_id`→`ports`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| tenant_id | bfd50153a2e9476f93e33e30e922cd06 |
-| id | fa95b6df-6eef-49a9-a7df-753eeb99c527 |
-| name | blitz |
-| status | ACTIVE |
-| admin_state_up | 1 |
-| gw_port_id | 4872b855-26cd-4083-aa98-9b339b664970 |
-| enable_snat | 1 |
-| standard_attr_id | 20998 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| tenant_id | bfd50153a2e9476f93e33e30e922cd06 | bfd50153a2e9476f93e33e30e922cd06 | bfd50153a2e9476f93e33e30e922cd06 |
+| id | fa95b6df-6eef-49a9-a7df-753eeb99c527 | a154bb98-4a0d-4a6c-bcfa-e1afb65ce71e | 8f10910e-4827-4528-9d63-501ef1e25ffa |
+| name | blitz | scope_streak | comet_delta |
+| status | ACTIVE | ACTIVE | ACTIVE |
+| admin_state_up | 1 | 1 | 1 |
+| gw_port_id | 4872b855-26cd-4083-aa98-9b339b664970 | 16c68923-8a8d-483e-96d0-dd441cab2747 | 2d54aa04-9d8d-4d3f-b3b4-4906aff79e96 |
+| enable_snat | 1 | 1 | 1 |
+| standard_attr_id | 20998 | 6016 | 24313 |
 
 # `securitygroupportbindings`  (rows=5921)
 
@@ -1027,14 +958,12 @@ columns:
 `security_group_id` varchar36 PK FK: uuid, 840 distinct, "afedef23-0032-445e-a773-e8d9ff32837f"=560, "d60ff86d-c3cf-485f-9149-0c5bec782af0"=495, "e89ea050-10bc-42e7-99a8-18b97cec2446"=356, "75770b75-1bff-4151-b97b-09754c85c63c"=345, "786ce6d8-44cb-40bc-98dd-96390b5de944"=345, "40ec5af9-3ba9-4d8c-a86c-27b90285b8e7"=230, "e5209cd6-b881-4633-b955-fdde1fefea58"=191, "ffd446f0-9e47-4200-be9f-9ebd690f67e6"=135, "3b1bc632-31c9-4331-b8e8-d9f7ea25e8f1"=120, "b78e6628-1f23-4a36-b9e6-ae0ddf2ac7dd"=113
 
 indexes: `security_group_id`
-fk: `port_id`→`ports`.`id`, `security_group_id`→`securitygroups`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| port_id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 |
-| security_group_id | e89ea050-10bc-42e7-99a8-18b97cec2446 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| port_id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 | 9db01bf1-fa4c-4dd9-a895-99c1517a5bc3 | 9fb9d09e-fd27-4488-acbd-93c9957dda6f |
+| security_group_id | e89ea050-10bc-42e7-99a8-18b97cec2446 | 4c814ff8-e362-4eb2-9c46-7c713b7c9ae6 | e89ea050-10bc-42e7-99a8-18b97cec2446 |
 
 # `securitygrouprules`  (rows=9004)
 
@@ -1052,23 +981,21 @@ columns:
 `standard_attr_id` bigint UNIQ NOTNULL FK: unique identifier, 2051..65874
 
 indexes: `tenant_id`, `remote_group_id`, `security_group_id`, UNIQUE `standard_attr_id`
-fk: `remote_group_id`→`securitygroups`.`id`, `standard_attr_id`→`standardattributes`.`id`, `security_group_id`→`securitygroups`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| tenant_id | 1140b46602e84c47838f707b060d6fd2 |
-| id | ffff1ce1-7487-4ab7-8df4-720e79740710 |
-| security_group_id | 450d2918-0e07-4111-a8af-948eedb8e1ce |
-| remote_group_id | 450d2918-0e07-4111-a8af-948eedb8e1ce |
-| direction | ingress |
-| ethertype | IPv6 |
-| protocol | null |
-| port_range_min | null |
-| port_range_max | null |
-| remote_ip_prefix | null |
-| standard_attr_id | 5383 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| tenant_id | 1140b46602e84c47838f707b060d6fd2 | 9e1029d915bf49a4a6e4dbe43eaccf41 | 7a181edd897b49718214040da2b8ad95 |
+| id | ffff1ce1-7487-4ab7-8df4-720e79740710 | 69fdcc3a-bf82-4ad9-86c7-b17a4ca2b510 | 14f754d3-27c1-4a09-8570-00ce16ad96bd |
+| security_group_id | 450d2918-0e07-4111-a8af-948eedb8e1ce | 433357b9-e9c7-4fa7-9b84-bc54353c7a89 | de863740-0ee8-4e32-aae2-9c41a3dcde86 |
+| remote_group_id | 450d2918-0e07-4111-a8af-948eedb8e1ce | 433357b9-e9c7-4fa7-9b84-bc54353c7a89 | null |
+| direction | ingress | ingress | egress |
+| ethertype | IPv6 | IPv6 | IPv4 |
+| protocol | null | null | null |
+| port_range_min | null | null | null |
+| port_range_max | null | null | null |
+| remote_ip_prefix | null | null | null |
+| standard_attr_id | 5383 | 39443 | 2338 |
 
 # `securitygroups`  (rows=1798)
 
@@ -1079,26 +1006,23 @@ columns:
 `standard_attr_id` bigint UNIQ NOTNULL FK: unique identifier, 1342..65867
 
 indexes: `tenant_id`, UNIQUE `standard_attr_id`
-fk: `standard_attr_id`→`standardattributes`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| tenant_id | 734423d02a724aca891507bb4d858975 |
-| id | fff3003f-b772-4c44-ba63-8c55367dffa0 |
-| name | aurum-xenon |
-| standard_attr_id | 2036 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| tenant_id | 734423d02a724aca891507bb4d858975 | 86b701bd3d7541aa8ee730f055725868 | 34f87362758043a98ea19c5a5e9217c9 |
+| id | fff3003f-b772-4c44-ba63-8c55367dffa0 | fbf6eb76-cc74-4afd-bd92-0a5628bdecad | 6f19937f-00c7-444e-b8b2-dcb2bebda927 |
+| name | aurum-xenon | aurum-xenon | spark-orbit-sonic |
+| standard_attr_id | 2036 | 43304 | 20617 |
 
 # `sessionpersistences`  (rows=1)
 
 columns:
-`vip_id` varchar36 PK FK: uuid, unique identifier
-`type` enum NOTNULL: "HTTP_COOKIE"=1
-`cookie_name` varchar1024: all NULL
+`vip_id` varchar36 PK FK
+`type` enum NOTNULL
+`cookie_name` varchar1024
 
 indexes: none
-fk: `vip_id`→`vips`.`id`
 
 all rows:
 | column | row 1 |
@@ -1117,27 +1041,24 @@ columns:
 `description` varchar255: 514 distinct
 
 indexes: none
-fk: none
 
 samples:
-| column | latest |
-|---|---|
-| id | 65876 |
-| resource_type | ports |
-| created_at | 2024-06-26T20:39:07 |
-| updated_at | 2024-06-26T20:40:23 |
-| description |  |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| id | 65876 | 47771 | 47776 |
+| resource_type | ports | ports | ports |
+| created_at | 2024-06-26T20:39:07 | 2019-05-13T16:13:33 | 2019-05-14T20:09:12 |
+| updated_at | 2024-06-26T20:40:23 | 2024-02-02T20:56:16 | 2024-02-02T20:56:04 |
+| description |  |  |  |
 
 # `subnetroutes`  (rows=6)
 
 columns:
-`destination` varchar64 PK: "10.169.77.216/8"=2, "10.96.5.18/8"=2, "10.100.51.19/8"=1, "10.71.29.205/8"=1
-`nexthop` varchar64 PK: "10.30.19.197/8"=2, "10.232.49.230/8"=1, "10.33.34.94/8"=1, "10.72.174.11/8"=1, "10.75.231.144/8"=1
-`subnet_id` varchar36 PK FK: "012993ae-5d73-4aad-834b-e87a31e99d48"=2, "76123b94-2ae9-40c4-a4c6-03ee98d081d9"=1, "9ce2600b-6566-4c81-9370-9b758d5f7ccc"=1, "e8da8ec5-364b-4a31-afaf-f68a206b7846"=1, "faee7948-a17f-4e58-a557-7ea1219c3b5f"=1
+`destination` varchar64 PK
+`nexthop` varchar64 PK
+`subnet_id` varchar36 PK FK
 
 indexes: `subnet_id`
-fk: `subnet_id`→`subnets`.`id`
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 |
@@ -1152,7 +1073,7 @@ columns:
 `tenant_id` varchar255: 23 distinct, "98333a1a28e746fa8c629c83a818ad57"=7, "09ad05432f914e26bc417bf58f1cb4d2"=5, "fab98a79c65a47a99d23492c39315927"=4, "17ea94ad74b64b9d92f4888336a598c7"=3, "70b2507b8cc44fcb917ddfb85f5079d9"=3, "bfd50153a2e9476f93e33e30e922cd06"=3, "d5a33464413740e19dbe588144de18d0"=3, "5f321cb6f5454443876cfbe22aa1d6d8"=2, "6f9adccbd03e4d2186756896957a14bf"=2, "939a950b58f140b695f0da6c200e805c"=2
 `id` varchar36 PK: uuid, unique identifier
 `name` varchar255: 45 distinct
-`network_id` varchar36 FK: uuid, 46 distinct, "82caefaf-7420-4122-80c4-92e46e9fd658"=2, "84ba89ec-68fd-4257-80eb-a1c3a65ee594"=2, "b3d6c27a-a9bb-4521-b5de-4d65eb7490dc"=2, "04dc6fb8-2d9e-4739-9c71-1e3dc9ab6390"=1, "05e04d8f-42ab-4610-845a-e50c515bf89a"=1, "0a1d0a27-cffa-4de3-92c5-9d3fd3f2e74d"=1, "18b03960-577f-49a4-be38-aafb4e05f3f3"=1, "1e070f88-14f2-40ba-a79d-5a4eb023d88b"=1, "259e350d-9ea5-4dc5-8a1c-4ab7deef9eec"=1, "28bdd9ff-3e79-45ac-9831-f61a8ac71ab7"=1
+`network_id` varchar36 FK: uuid, 46 distinct
 `ip_version` int NOTNULL: 4=47, 6=2
 `cidr` varchar64 NOTNULL: 40 distinct
 `gateway_ip` varchar64: 34 distinct, nulls=9
@@ -1163,43 +1084,40 @@ columns:
 `standard_attr_id` bigint UNIQ NOTNULL FK: unique identifier, 1312..59606
 
 indexes: `subnetpool_id`, `tenant_id`, `network_id`, UNIQUE `standard_attr_id`
-fk: `standard_attr_id`→`standardattributes`.`id`, `network_id`→`networks`.`id`
 
 samples:
-| column | latest |
-|---|---|
-| tenant_id | daa18fdafdf04b5eac18e04aa19ee214 |
-| id | faee7948-a17f-4e58-a557-7ea1219c3b5f |
-| name | axiom8 |
-| network_id | 84ba89ec-68fd-4257-80eb-a1c3a65ee594 |
-| ip_version | 4 |
-| cidr | 10.44.3.58/8 |
-| gateway_ip | 10.196.213.153/8 |
-| enable_dhcp | 1 |
-| ipv6_ra_mode | null |
-| ipv6_address_mode | null |
-| subnetpool_id | null |
-| standard_attr_id | 1341 |
-- random rows skipped (disabled to avoid ORDER BY RAND())
+| column | latest | sample | sample |
+|---|---|---|---|
+| tenant_id | daa18fdafdf04b5eac18e04aa19ee214 | 98333a1a28e746fa8c629c83a818ad57 | 09ad05432f914e26bc417bf58f1cb4d2 |
+| id | faee7948-a17f-4e58-a557-7ea1219c3b5f | b20e102d-9334-447d-8bfa-878485d13663 | 4ab2d89a-536b-4ec7-a8a2-df853a5b65e3 |
+| name | axiom8 | gamma3_helix | dash5 |
+| network_id | 84ba89ec-68fd-4257-80eb-a1c3a65ee594 | 2fd4865f-ed87-4b56-a1a3-8a20f3275c0d | dfdf2f92-8c4b-4a49-9641-4d5d77fa135b |
+| ip_version | 4 | 4 | 4 |
+| cidr | 10.44.3.58/8 | 10.112.136.215/8 | 10.96.238.36/8 |
+| gateway_ip | 10.196.213.153/8 | null | 10.42.84.120/8 |
+| enable_dhcp | 1 | 0 | 1 |
+| ipv6_ra_mode | null | null | null |
+| ipv6_address_mode | null | null | null |
+| subnetpool_id | null | null | null |
+| standard_attr_id | 1341 | 54184 | 1322 |
 
 # `vips`  (rows=1)
 
 columns:
-`tenant_id` varchar255: unique identifier
-`id` varchar36 PK: uuid, unique identifier
-`name` varchar255: "spind.layer"=1
-`description` varchar255: all NULL
-`port_id` varchar36 FK: uuid, unique identifier
-`protocol_port` int NOTNULL: 443=1
-`protocol` enum NOTNULL: "HTTPS"=1
-`pool_id` varchar36 UNIQ NOTNULL: uuid, unique identifier
-`status` varchar16 NOTNULL: "ACTIVE"=1
-`status_description` varchar255: all NULL
-`admin_state_up` int NOTNULL: 1=1
-`connection_limit` int: -1=1
+`tenant_id` varchar255
+`id` varchar36 PK
+`name` varchar255
+`description` varchar255
+`port_id` varchar36 FK
+`protocol_port` int NOTNULL
+`protocol` enum NOTNULL
+`pool_id` varchar36 UNIQ NOTNULL
+`status` varchar16 NOTNULL
+`status_description` varchar255
+`admin_state_up` int NOTNULL
+`connection_limit` int
 
 indexes: `tenant_id`, UNIQUE `pool_id`, `port_id`
-fk: `port_id`→`ports`.`id`
 
 all rows:
 | column | row 1 |

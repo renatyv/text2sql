@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:29:07.168729Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:34:19.755275Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-twhnvn8m/imdb_movies.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-l2bp97is/imdb_movies.sqlite
 schema: main
 ---
 
@@ -25,13 +25,12 @@ columns:
 "Unnamed: 12" text: "* movie_id"=2, "* name_id"=1, "avg_rating"=1, "director_mapping"=1, "median_rating"=1, "ratings"=1, "total_votes"=1, nulls=17
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| table | role_mapping | movie | movie |
-| column | name_id | title | id |
+| table | role_mapping | names | names |
+| column | name_id | known_for_movies | date_of_birth |
 | Unnamed: 2 | null | null | null |
 | Unnamed: 3 | null | null | null |
 | Unnamed: 4 | null | null | null |
@@ -39,10 +38,10 @@ samples:
 | Unnamed: 6 | * name_id | null | null |
 | Unnamed: 7 | null | null | null |
 | Unnamed: 8 | null | null | null |
-| Unnamed: 9 | worlwide_gross_income | * movie_id | genre |
+| Unnamed: 9 | worlwide_gross_income | name | * id |
 | Unnamed: 10 | null | null | null |
 | Unnamed: 11 | null | null | null |
-| Unnamed: 12 | * name_id | * movie_id | ratings |
+| Unnamed: 12 | * name_id | null | null |
 
 # "director_mapping"  (rows=3867)
 
@@ -51,13 +50,12 @@ columns:
 "name_id" text: 3603 distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| movie_id | tt9903716 | tt6689734 | tt6774212 |
-| name_id | nm10532693 | nm0436382 | nm3109770 |
+| movie_id | tt9903716 | tt4720702 | tt7183578 |
+| name_id | nm10532693 | nm5722382 | nm0159039 |
 
 # "genre"  (rows=14662)
 
@@ -66,13 +64,12 @@ columns:
 "genre" text: "Drama"=4285, "Comedy"=2412, "Thriller"=1484, "Action"=1289, "Horror"=1208, "Romance"=906, "Crime"=813, "Adventure"=591, "Mystery"=555, "Sci-Fi"=375, "Fantasy"=342, "Family"=302, "Others"=100
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| movie_id | tt9914286 | tt5651458 | tt8723836 |
-| genre | Family | Horror | Drama |
+| movie_id | tt9914286 | tt5322168 | tt1226837 |
+| genre | Family | Drama | Drama |
 
 # "movies"  (rows=7997)
 
@@ -88,20 +85,19 @@ columns:
 "production_company" text: 5332 distinct, nulls=528
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | tt9914286 | tt6769508 | tt6368508 |
-| title | Sokagin Çocuklari | Gangcheolbi | 29 to Life |
-| year | 2019 | 2017 | 2018 |
-| date_published | 2019-03-15T00:00:00 | 2017-12-14T00:00:00 | 2018-03-11T00:00:00 |
-| duration | 98 | 139 | 100 |
-| country | Turkey | South Korea | USA |
-| worlwide_gross_income | $ 2833 | $ 32783733 | null |
-| languages | Turkish | Korean | English |
-| production_company | Gizem Ajans | YWorks Entertainment | ACM Films |
+| id | tt9914286 | tt6471264 | tt10504928 |
+| title | Sokagin Çocuklari | Fack ju Göhte 3 | Donbass. Okraina |
+| year | 2019 | 2017 | 2019 |
+| date_published | 2019-03-15T00:00:00 | 2017-10-26T00:00:00 | 2019-06-12T00:00:00 |
+| duration | 98 | 120 | 96 |
+| country | Turkey | Germany | Russia |
+| worlwide_gross_income | $ 2833 | $ 64236772 | $ 172100 |
+| languages | Turkish | German | Russian |
+| production_company | Gizem Ajans | Constantin Film | Interfest |
 
 # "names"  (rows=25735)
 
@@ -113,16 +109,15 @@ columns:
 "known_for_movies" text: 6245 distinct, nulls=15226
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | nm9992720 | nm0757012 | nm0451126 |
-| name | McMagic Cardenas | Miki Sakai | Rustam Khamdamov |
+| id | nm9992720 | nm0781533 | nm7222062 |
+| name | McMagic Cardenas | Rhea Seehorn | Yanyong Kuruaungkoul |
 | height | null | 97 | null |
-| date_of_birth | null | 1978-02-21 | 1944-05-24 |
-| known_for_movies | tt7233828 | null | tt2386588 |
+| date_of_birth | null | null | null |
+| known_for_movies | tt7233828 | null | tt8733014 |
 
 # "ratings"  (rows=7997)
 
@@ -133,15 +128,14 @@ columns:
 "median_rating" float: 7=2235, 6=1963, 8=1021, 5=971, 4=472, 9=424, 10=345, 3=279, 2=119, 1=94, 6.5=22, 4.5=14, 5.5=12, 7.5=9, 3.5=7, 8.5=5, 2.5=4, 9.5=1, 1..10
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| movie_id | tt9914286 | tt5325492 | tt6290418 |
-| avg_rating | 7.2 | 5.8 | 5.2 |
-| total_votes | 190 | 389 | 1119 |
-| median_rating | 10 | 6 | 6 |
+| movie_id | tt9914286 | tt3338188 | tt9193612 |
+| avg_rating | 7.2 | 4.6 | 6.9 |
+| total_votes | 190 | 140 | 151 |
+| median_rating | 10 | 6 | 7 |
 
 # "role_mapping"  (rows=15615)
 
@@ -151,11 +145,10 @@ columns:
 "category" text: "actor"=9362, "actress"=6253
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| movie_id | tt9903716 | tt5420870 | tt6660238 |
-| name_id | nm7237124 | nm3012604 | nm1285162 |
-| category | actress | actor | actor |
+| movie_id | tt9903716 | tt9249432 | tt8621438 |
+| name_id | nm7237124 | nm0911976 | nm3496186 |
+| category | actress | actor | actress |

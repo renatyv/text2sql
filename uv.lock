@@ -380,7 +380,7 @@ wheels = [
 
 [[package]]
 name = "db-snooper"
-version = "0.0.32"
+version = "0.0.33"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "duckdb-engine" },
@@ -390,9 +390,9 @@ dependencies = [
     { name = "sqlalchemy" },
     { name = "sqlalchemy-bigquery" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/dd/c1/e030d74c2c1a34ef73b4ef65192dab000bbcb42b2c0ea09461925248c628/db_snooper-0.0.32.tar.gz", hash = "sha256:c2ecebc18049d4aaacb470c85700faa1c7f3b2ff5b315ae469c7e138345cc0eb", size = 123059, upload-time = "2026-08-21T12:04:34.623Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f3/07/ed96aa72a302771c9c6d6658d4d8b4ee0e1e13a50ade5767193a0dd47f2a/db_snooper-0.0.33.tar.gz", hash = "sha256:e60512079d4e08f83b6fa71c04f955c9c1931deb47fa3b62fe691442a9fd3336", size = 122418, upload-time = "2026-08-21T12:28:56.77Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/80/b9/7a8bc52553530160ea4a47dd2465ba6af987f4ddeb4b4bae2efa1aaa0d04/db_snooper-0.0.32-py3-none-any.whl", hash = "sha256:4599fc7df908adf6628bfd62ce0fa76373f36e1185edb367b4cf8d993dfde940", size = 62985, upload-time = "2026-08-21T12:04:33.237Z" },
+    { url = "https://files.pythonhosted.org/packages/04/96/f9fc9db94c7152a1446410f8cfa61a0ce0ee220ade6a5c2cfff742bf69ad/db_snooper-0.0.33-py3-none-any.whl", hash = "sha256:a7f684cee8fd75aaf2b518d225000e703ad3e1abd8fc6487c0fc0bf557907c90", size = 62894, upload-time = "2026-08-21T12:28:55.616Z" },
 ]
 
 [[package]]

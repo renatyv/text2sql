@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:26:39.601263Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:31:48.771136Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-r8tu9479/superhero.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-h5awq2eb/superhero.sqlite
 schema: main
 ---
 
@@ -21,11 +21,10 @@ schema: main
 # "alignment"  (rows=4)
 
 columns:
-"id" int PK: unique identifier, 1..4
-"alignment" text: "Bad"=1, "Good"=1, "N/A"=1, "Neutral"=1
+"id" int PK
+"alignment" text
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 |
@@ -36,11 +35,10 @@ all rows:
 # "attribute"  (rows=6)
 
 columns:
-"id" int PK: unique identifier, 1..6
-"attribute_name" text: "Combat"=1, "Durability"=1, "Intelligence"=1, "Power"=1, "Speed"=1, "Strength"=1
+"id" int PK
+"attribute_name" text
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 |
@@ -55,22 +53,20 @@ columns:
 "colour" text: all distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 35 | 11 | 6 |
-| colour | Yellow/Red | Brown/White | Blond |
+| id | 35 | 15 | 9 |
+| colour | Yellow/Red | Green/Blue | Brown |
 
 # "gender"  (rows=3)
 
 columns:
-"id" int PK: unique identifier, 1..3
-"gender" text: "Female"=1, "Male"=1, "N/A"=1
+"id" int PK
+"gender" text
 
 indexes: none
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 |
@@ -86,14 +82,13 @@ columns:
 "attribute_value" int: 20 distinct, 5..100, avg=52.4264, median=50
 
 indexes: none
-fk: "attribute_id"→"attribute"."id", "hero_id"→"superhero"."id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| hero_id | 756 | 51 | 302 |
+| hero_id | 756 | 89 | 339 |
 | attribute_id | 6 | 5 | 6 |
-| attribute_value | 100 | 25 | 35 |
+| attribute_value | 100 | 35 | 80 |
 
 # "hero_power"  (rows=5825)
 
@@ -102,13 +97,12 @@ columns:
 "power_id" int FK: 167 distinct, 1..167
 
 indexes: none
-fk: "hero_id"→"superhero"."id", "power_id"→"superpower"."id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| hero_id | 756 | 429 | 477 |
-| power_id | 132 | 26 | 6 |
+| hero_id | 756 | 277 | 144 |
+| power_id | 132 | 5 | 7 |
 
 # "publisher"  (rows=25)
 
@@ -117,13 +111,12 @@ columns:
 "publisher_name" text: all distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 25 | 5 | 1 |
-| publisher_name | Wildstorm | George Lucas |  |
+| id | 25 | 1 | 4 |
+| publisher_name | Wildstorm |  | DC Comics |
 
 # "race"  (rows=61)
 
@@ -132,13 +125,12 @@ columns:
 "race" text: all distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 61 | 36 | 9 |
-| race | Zombie | Korugaran | Bizarro |
+| id | 61 | 49 | 31 |
+| race | Zombie | Saiyan | Human-Vulcan |
 
 # "superhero"  (rows=750)
 
@@ -157,23 +149,22 @@ columns:
 "weight_kg" int: 140 distinct, nulls=64, 0..90000000, avg=144518, median=72
 
 indexes: none
-fk: "eye_colour_id"→"colour"."id", "hair_colour_id"→"colour"."id", "publisher_id"→"publisher"."id", "race_id"→"race"."id", "gender_id"→"gender"."id", "alignment_id"→"alignment"."id", "skin_colour_id"→"colour"."id"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 756 | 90 | 24 |
-| superhero_name | Zoom | Billy Kincaid | Angel |
-| full_name | Hunter Zolomon | null | Liam |
-| gender_id | 1 | 1 | 1 |
+| id | 756 | 241 | 462 |
+| superhero_name | Zoom | Ego | Meteorite |
+| full_name | Hunter Zolomon | Ego | null |
+| gender_id | 1 | 3 | 2 |
 | eye_colour_id | 23 | 1 | 1 |
 | hair_colour_id | 9 | 1 | 1 |
 | skin_colour_id | 1 | 1 | 1 |
-| race_id | 1 | 1 | 56 |
-| publisher_id | 4 | 10 | 3 |
+| race_id | 1 | 1 | 1 |
+| publisher_id | 4 | 13 | 13 |
 | alignment_id | 2 | 2 | 1 |
-| height_cm | 185 | null | 0 |
-| weight_kg | 81 | null | 0 |
+| height_cm | 185 | 0 | null |
+| weight_kg | 81 | 0 | null |
 
 # "superpower"  (rows=167)
 
@@ -182,10 +173,9 @@ columns:
 "power_name" text: all distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 167 | 102 | 161 |
-| power_name | Omniscient | Banish | Symbiote Costume |
+| id | 167 | 127 | 105 |
+| power_name | Omniscient | Magnetism | Natural Weapons |

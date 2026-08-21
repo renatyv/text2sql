@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.31
-generated_at_utc: 2026-08-20T17:28:08.576804Z
+version: 0.0.33
+generated_at_utc: 2026-08-21T12:33:20.609053Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-kyy_t57r/EntertainmentAgency.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-dcu49ckt/EntertainmentAgency.sqlite
 schema: main
 ---
 
@@ -18,20 +18,19 @@ schema: main
 # "Agents"  (rows=9)
 
 columns:
-"AgentID" int PK: unique identifier, 1..9, avg=5, median=5
-"AgtFirstName" text: "Caleb"=1, "Carol"=1, "Daffy"=1, "John"=1, "Karen"=1, "Maria"=1, "Marianne"=1, "Scott"=1, "William"=1
-"AgtLastName" text: "Viescas"=2, "Bishop"=1, "Dumbwit"=1, "Kennedy"=1, "Patterson"=1, "Smith"=1, "Thompson"=1, "Wier"=1
-"AgtStreetAddress" text: "122 Spring River Drive"=1, "1234 Main Street"=1, "16679 NE 41st Court"=1, "30301 - 166th Ave. N.E."=1, "3445 Cheyenne Road"=1, "4501 Wetland Road"=1, "66 Spring Valley Drive"=1, "667 Red River Road"=1, "908 W. Capital Way"=1
-"AgtCity" text: "Seattle"=3, "Bellevue"=2, "Redmond"=2, "Kirkland"=1, "Tacoma"=1
-"AgtState" text: "WA"=9
-"AgtZipCode" text: "98125"=3, "98006"=2, "98033"=1, "98052"=1, "98053"=1, "98413"=1
-"AgtPhoneNumber" text: "555-0037"=1, "555-1234"=1, "555-2291"=1, "555-2551"=1, "555-2571"=1, "555-2606"=1, "555-2621"=1, "555-2666"=1, "555-2681"=1
-"DateHired" date: "1997-05-15"=2, "1997-09-03"=1, "1997-11-19"=1, "1998-02-02"=1, "1998-02-05"=1, "1998-02-16"=1, "1998-03-05"=1, "2000-02-05"=1
-"Salary" numeric: 30000=2, 50=1, 22000=1, 22100=1, 24500=1, 27000=1, 33000=1, 35000=1, 50..35000
-"CommissionRate" float: 0.04=3, 0.01=1, 0.035=1, 0.045=1, 0.05=1, 0.055=1, 0.06=1, 0.01..0.06
+"AgentID" int PK
+"AgtFirstName" text
+"AgtLastName" text
+"AgtStreetAddress" text
+"AgtCity" text
+"AgtState" text
+"AgtZipCode" text
+"AgtPhoneNumber" text
+"DateHired" date
+"Salary" numeric
+"CommissionRate" float
 
 indexes: "AgtZipCode"
-fk: none
 
 all rows:
 | column | row 1 | row 2 | row 3 | row 4 | row 5 | row 6 | row 7 | row 8 | row 9 |
@@ -61,19 +60,18 @@ columns:
 "CustPhoneNumber" text: "555-0399"=1, "555-2286"=1, "555-2296"=1, "555-2496"=1, "555-2501"=1, "555-2506"=1, "555-2521"=1, "555-2556"=1, "555-2581"=1, "555-2616"=1, "555-2626"=1, "555-2671"=1, "555-2721"=1, "555-2726"=1, "555-9938"=1
 
 indexes: "CustZipCode"
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| CustomerID | 10015 | 10012 | 10007 |
-| CustFirstName | Carol | Kerry | Liz |
-| CustLastName | Viescas | Patterson | Keyser |
-| CustStreetAddress | 754 Fourth Ave | 777 Fenexet Blvd | 13920 S.E. 40th Street |
-| CustCity | Seattle | Redmond | Bellevue |
+| CustomerID | 10015 | 10003 | 10015 |
+| CustFirstName | Carol | Peter | Carol |
+| CustLastName | Viescas | Brehm | Viescas |
+| CustStreetAddress | 754 Fourth Ave | 722 Moss Bay Blvd. | 754 Fourth Ave |
+| CustCity | Seattle | Kirkland | Seattle |
 | CustState | WA | WA | WA |
-| CustZipCode | 98115 | 98052 | 98006 |
-| CustPhoneNumber | 555-2296 | 555-0399 | 555-2556 |
+| CustZipCode | 98115 | 98033 | 98115 |
+| CustPhoneNumber | 555-2296 | 555-2501 | 555-2296 |
 
 # "Engagements"  (rows=111)
 
@@ -89,37 +87,35 @@ columns:
 "EntertainerID" int FK: 1008=15, 1001=11, 1013=11, 1003=10, 1006=10, 1004=9, 1010=9, 1007=8, 1011=8, 1002=7, 1005=7, 1012=6, 1001..1013
 
 indexes: "AgentID", "CustomerID", "AgentID", "EntertainerID"
-fk: "EntertainerID"→"Entertainers"."EntertainerID", "CustomerID"→"Customers"."CustomerID", "AgentID"→"Agents"."AgentID"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| EngagementNumber | 131 | 11 | 13 |
-| StartDate | 2018-03-04 | 2017-09-16 | 2017-09-18 |
-| EndDate | 2018-03-13 | 2017-09-17 | 2017-09-21 |
-| StartTime | 15:00:00 | 18:00:00 | 20:00:00 |
-| StopTime | 17:00:00 | 00:00:00 | 23:00:00 |
-| ContractPrice | 1850 | 950 | 770 |
-| CustomerID | 10014 | 10005 | 10003 |
-| AgentID | 1 | 4 | 1 |
-| EntertainerID | 1003 | 1008 | 1006 |
+| EngagementNumber | 131 | 48 | 72 |
+| StartDate | 2018-03-04 | 2017-11-06 | 2017-12-23 |
+| EndDate | 2018-03-13 | 2017-11-07 | 2018-01-02 |
+| StartTime | 15:00:00 | 16:00:00 | 20:00:00 |
+| StopTime | 17:00:00 | 22:00:00 | 01:00:00 |
+| ContractPrice | 1850 | 950 | 875 |
+| CustomerID | 10014 | 10002 | 10012 |
+| AgentID | 1 | 1 | 4 |
+| EntertainerID | 1003 | 1007 | 1011 |
 
 # "Entertainer_Members"  (rows=40)
 
 columns:
 "EntertainerID" int PK FK: 1003=6, 1007=5, 1008=5, 1006=4, 1010=4, 1013=4, 1001=3, 1005=3, 1002=2, 1004=1, 1009=1, 1011=1, 1012=1, 1001..1013
-"MemberID" int PK FK: 25 distinct, 101..125, avg=113.4, median=114, 120=3, 121=3, 102=2, 103=2, 104=2, 105=2, 107=2, 112=2, 114=2, 117=2
+"MemberID" int PK FK: 25 distinct, 101..125, avg=113.4, median=114
 "Status" smallint: 1=27, 2=13
 
 indexes: "EntertainerID", "MemberID"
-fk: "EntertainerID"→"Entertainers"."EntertainerID", "MemberID"→"Members"."MemberID"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| EntertainerID | 1013 | 1001 | 1011 |
-| MemberID | 124 | 107 | 122 |
-| Status | 2 | 1 | 2 |
+| EntertainerID | 1013 | 1003 | 1013 |
+| MemberID | 124 | 102 | 117 |
+| Status | 2 | 1 | 1 |
 
 # "Entertainer_Styles"  (rows=32)
 
@@ -129,14 +125,13 @@ columns:
 "StyleStrength" smallint NOTNULL: 1=13, 2=12, 3=7, 1..3
 
 indexes: "EntertainerID", "StyleID"
-fk: "EntertainerID"→"Entertainers"."EntertainerID", "StyleID"→"Musical_Styles"."StyleID"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| EntertainerID | 1013 | 1002 | 1005 |
-| StyleID | 15 | 23 | 15 |
-| StyleStrength | 1 | 3 | 3 |
+| EntertainerID | 1013 | 1011 | 1009 |
+| StyleID | 15 | 14 | 21 |
+| StyleStrength | 1 | 1 | 3 |
 
 # "Entertainers"  (rows=13)
 
@@ -154,22 +149,21 @@ columns:
 "DateEntered" date: "1995-01-20"=1, "1995-05-16"=1, "1995-11-30"=1, "1996-02-14"=1, "1996-02-28"=1, "1996-04-01"=1, "1996-04-12"=1, "1997-05-12"=1, "1997-05-24"=1, "1997-07-11"=1, "1998-03-18"=1, "1998-09-13"=1, "1998-10-12"=1
 
 indexes: "EntZipCode"
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| EntertainerID | 1013 | 1010 | 1009 |
-| EntStageName | Caroline Coie Cuartet | Saturday Revue | Katherine Ehrlich |
-| EntSSN | 888-71-1123 | 888-64-1109 | 888-61-1103 |
-| EntStreetAddress | 298 Forest Lane | 3887 Easy Street | 777 Fenexet Blvd |
-| EntCity | Auburn | Seattle | Woodinville |
+| EntertainerID | 1013 | 1002 | 1008 |
+| EntStageName | Caroline Coie Cuartet | Topazz | Country Feeling |
+| EntSSN | 888-71-1123 | 888-50-1061 | 888-98-1133 |
+| EntStreetAddress | 298 Forest Lane | 16 Maple Lane | PO Box 223311 |
+| EntCity | Auburn | Auburn | Seattle |
 | EntState | WA | WA | WA |
-| EntZipCode | 98002 | 98125 | 98072 |
-| EntPhoneNumber | 555-2306 | 555-0039 | 555-0399 |
-| EntWebPage | null | www.satrevue.com | null |
-| EntEMailAddress | carolinec@willow.com | edz@coolness.com | ke@mzo.com |
-| DateEntered | 1997-07-11 | 1995-01-20 | 1998-09-13 |
+| EntZipCode | 98002 | 98002 | 98125 |
+| EntPhoneNumber | 555-2306 | 555-2591 | 555-2711 |
+| EntWebPage | null | www.topazz.com | null |
+| EntEMailAddress | carolinec@willow.com | null | null |
+| DateEntered | 1997-07-11 | 1996-02-14 | 1996-02-28 |
 
 # "Members"  (rows=25)
 
@@ -181,16 +175,15 @@ columns:
 "Gender" text: "F"=12, "M"=12, nulls=1
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| MemberID | 125 | 115 | 101 |
-| MbrFirstName | Jim | Joe | David |
-| MbrLastName | Glynn | Rosales III | Hamilton |
-| MbrPhoneNumber | 555-2531 | 555-2281 | 555-2701 |
-| Gender | null | M | M |
+| MemberID | 125 | 113 | 111 |
+| MbrFirstName | Jim | Steve | Kathryn |
+| MbrLastName | Glynn | Pundt | Patterson |
+| MbrPhoneNumber | 555-2531 | 555-9938 | 555-2651 |
+| Gender | null | M | F |
 
 # "Musical_Preferences"  (rows=36)
 
@@ -200,14 +193,13 @@ columns:
 "PreferenceSeq" smallint NOTNULL: 1=15, 2=15, 3=6, 1..3
 
 indexes: "CustomerID", "StyleID"
-fk: "CustomerID"→"Customers"."CustomerID", "StyleID"→"Musical_Styles"."StyleID"
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| CustomerID | 10015 | 10002 | 10003 |
-| StyleID | 21 | 8 | 19 |
-| PreferenceSeq | 1 | 2 | 1 |
+| CustomerID | 10015 | 10001 | 10011 |
+| StyleID | 21 | 22 | 1 |
+| PreferenceSeq | 1 | 1 | 2 |
 
 # "Musical_Styles"  (rows=25)
 
@@ -216,13 +208,12 @@ columns:
 "StyleName" text: all distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StyleID | 25 | 2 | 23 |
-| StyleName | 90's Music | 50's Music | Variety |
+| StyleID | 25 | 6 | 14 |
+| StyleName | 90's Music | Country | Chamber Music |
 
 # "ztblDays"  (rows=1096)
 
@@ -230,12 +221,11 @@ columns:
 "DateField" date PK: unique identifier
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| DateField | 2020-01-01 | 2017-04-24 | 2018-06-07 |
+| DateField | 2020-01-01 | 2019-05-25 | 2018-05-16 |
 
 # "ztblMonths"  (rows=36)
 
@@ -259,17 +249,16 @@ columns:
 "December" smallint: 0=33, 1=3
 
 indexes: UNIQUE "MonthStart", UNIQUE "MonthYear", UNIQUE "MonthEnd"
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| MonthYear | December 2019 | December 2019 | November 2018 |
-| YearNumber | 2019 | 2019 | 2018 |
-| MonthNumber | 12 | 12 | 11 |
-| MonthStart | 2019-12-01 | 2019-12-01 | 2018-11-01 |
-| MonthEnd | 2019-12-31 | 2019-12-31 | 2018-11-30 |
-| January | 0 | 0 | 0 |
+| MonthYear | December 2019 | January 2017 | January 2018 |
+| YearNumber | 2019 | 2017 | 2018 |
+| MonthNumber | 12 | 1 | 1 |
+| MonthStart | 2019-12-01 | 2017-01-01 | 2018-01-01 |
+| MonthEnd | 2019-12-31 | 2017-01-31 | 2018-01-31 |
+| January | 0 | 1 | 1 |
 | February | 0 | 0 | 0 |
 | March | 0 | 0 | 0 |
 | April | 0 | 0 | 0 |
@@ -279,8 +268,8 @@ samples:
 | August | 0 | 0 | 0 |
 | September | 0 | 0 | 0 |
 | October | 0 | 0 | 0 |
-| November | 0 | 0 | 1 |
-| December | 1 | 1 | 0 |
+| November | 0 | 0 | 0 |
+| December | 1 | 0 | 0 |
 
 # "ztblSkipLabels"  (rows=60)
 
@@ -288,12 +277,11 @@ columns:
 "LabelCount" int PK: unique identifier, 1..60, avg=30.5, median=30.5
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| LabelCount | 60 | 44 | 37 |
+| LabelCount | 60 | 34 | 27 |
 
 # "ztblWeeks"  (rows=156)
 
@@ -302,10 +290,9 @@ columns:
 "WeekEnd" date: all distinct
 
 indexes: none
-fk: none
 
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| WeekStart | 2019-12-22 | 2017-05-28 | 2017-09-17 |
-| WeekEnd | 2019-12-28 | 2017-06-03 | 2017-09-23 |
+| WeekStart | 2019-12-22 | 2017-06-04 | 2019-11-03 |
+| WeekEnd | 2019-12-28 | 2017-06-10 | 2019-11-09 |
