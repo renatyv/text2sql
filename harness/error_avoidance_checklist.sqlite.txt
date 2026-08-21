@@ -14,14 +14,18 @@ ERROR-AVOIDANCE CHECKLIST — common text-to-SQL failure modes to watch for:
    compose them explicitly (e.g. UNION ALL of the detail aggregates and the
    grand total) instead of omitting them — SQLite has no ROLLUP/CUBE.
 
-4. Row cardinality: add DISTINCT when unique rows are implied and LIMIT/TOP
-   when a bounded number of rows is requested — re-read the question for
-   "top N", "distinct", "how many".
+4. Row cardinality: add DISTINCT only when the question says distinct/unique;
+   when computing AVG/COUNT/SUM over a join, aggregate over the raw join rows
+   and do not deduplicate entities unless explicitly asked. Add LIMIT/TOP only
+   when a bounded number of rows is requested.
 
 5. Column selection: select exactly the columns the question asks for — no
    extra identifier, name, or aggregate columns. An answer with extra columns
    is WRONG even when the values are right. Compare the SELECT list
-   column-by-column against the question before committing.
+   column-by-column against the question before committing. When a question
+   pairs "how many" with a listing, return only the listed attributes via
+   SELECT DISTINCT — don't add computed count columns; prefer DISTINCT over
+   GROUP BY when no aggregate survives in the projection.
 
 6. Table selection: confirm the correct table(s) and their granularity;
    don't pick a table just because a column name matches.

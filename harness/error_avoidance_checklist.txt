@@ -4,7 +4,10 @@ ERROR-AVOIDANCE CHECKLIST — common text-to-SQL failure modes to watch for:
     a. select all requested columns;
     b. do not select any extra columns which were not explicitly requested —
        an answer with extra columns is WRONG even when the values are right;
-    c. verify names and meaning against the request
+    c. verify names and meaning against the request;
+    d. when a question pairs "how many" with a listing, return only the listed
+       attributes via SELECT DISTINCT — don't add computed count columns; prefer
+       DISTINCT over GROUP BY when no aggregate survives in the projection
 
 2. Table selection: confirm the correct table(s) and their granularity;
    don't pick a table just because a column name matches.
@@ -32,6 +35,7 @@ ERROR-AVOIDANCE CHECKLIST — common text-to-SQL failure modes to watch for:
    use the correct construct (ROLLUP / CUBE / GROUPING SETS) instead of
    omitting it.
 
-8. Row cardinality: add DISTINCT when unique rows are implied and LIMIT/TOP
-   when a bounded number of rows is requested — re-read the question for
-   "top N", "distinct", "how many".
+8. Row cardinality: add DISTINCT only when the question says distinct/unique;
+   when computing AVG/COUNT/SUM over a join, aggregate over the raw join rows
+   and do not deduplicate entities unless explicitly asked. Add LIMIT/TOP only
+   when a bounded number of rows is requested.

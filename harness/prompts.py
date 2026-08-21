@@ -49,8 +49,8 @@ Workflow:
    Before answering, check the returned rows against the question:
     - Projection: the SELECT list returns exactly the columns the question
       asks for — remove any extra id, name, or aggregate columns.
-    - Cardinality: DISTINCT where unique rows are implied; LIMIT/top-N where
-      a bounded number of rows is requested.
+    - Cardinality: DISTINCT only when the question says distinct/unique;
+      LIMIT/top-N where a bounded number of rows is requested.
     - Values: rows are non-empty; literal values (strings, dates, IDs) match
       the question or database exactly.
    Then verify the query against the error checklist. If any check changes
@@ -100,8 +100,8 @@ Workflow:
    Before answering, check the returned rows against the question:
     - Projection: the SELECT list returns exactly the columns the question
       asks for — remove any extra id, name, or aggregate columns.
-    - Cardinality: DISTINCT where unique rows are implied; LIMIT/top-N where
-      a bounded number of rows is requested.
+    - Cardinality: DISTINCT only when the question says distinct/unique;
+      LIMIT/top-N where a bounded number of rows is requested.
     - Values: rows are non-empty; literal values (strings, dates, IDs) match
       the question or database exactly.
    Then verify the query against the error checklist. If any check changes
@@ -186,7 +186,12 @@ def _target_line(engine: str, db: str) -> str:
 def _question_block(question: str, evidence: str | None) -> str:
     block = f"Natural-language question:\n\"\"\"\n{question}\n\"\"\""
     if evidence and evidence.strip():
-        block += f"\n\nExternal knowledge provided with the question:\n{evidence.strip()}"
+        block += (
+            f"\n\nExternal knowledge provided with the question:\n{evidence.strip()}\n"
+            "External knowledge is authoritative for derived metrics — reproduce "
+            "its formula exactly (operand order, sign, no ABS) as a single column; "
+            "never add label or companion columns."
+        )
     return block
 
 
