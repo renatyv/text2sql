@@ -6,9 +6,16 @@ ERROR-AVOIDANCE CHECKLIST — common text-to-SQL failure modes to watch for:
    filters in HAVING, never in WHERE.
 
 2. Aggregates & functions: pick the right aggregate for the question
-   (COUNT != SUM != AVG). For window functions, double-check PARTITION BY,
-   ORDER BY, and the ROWS/RANGE frame. Keep required math/conversion steps;
-   do not add redundant CASTs.
+   (COUNT != SUM != AVG). COUNT(condition) counts non-NULL rows, not
+   matching rows — count matches with SUM(IIF(condition, 1, 0)) or a WHERE
+   filter. Never add DISTINCT inside COUNT unless the question says
+   distinct. Before dividing integers, CAST one operand (usually the
+   numerator) to REAL — integer division silently truncates fractions.
+   When the question or its evidence supplies a formula (derived metric,
+   age, ratio), reproduce it exactly — same operands, order, and precision,
+   with no extra corrections or refinements. For window functions,
+   double-check PARTITION BY, ORDER BY, and the ROWS/RANGE frame. Keep
+   required math/conversion steps; do not add redundant CASTs.
 
 3. Subtotals/rollups: when the question asks for subtotals or a grand total,
    compose them explicitly (e.g. UNION ALL of the detail aggregates and the
@@ -21,23 +28,39 @@ ERROR-AVOIDANCE CHECKLIST — common text-to-SQL failure modes to watch for:
    dataset-specific aggregate-of-aggregates convention only when supplied as
    evidence or metadata, never as a global SQL rule.
 
-5. Column selection: select exactly the columns the question asks for — no
-   extra identifier, name, or aggregate columns. An answer with extra columns
-   is WRONG even when the values are right. Compare the SELECT list
-   column-by-column against the question before committing. When a question
-   pairs "how many" with a listing, return only the listed attributes via
-   SELECT DISTINCT — don't add computed count columns; prefer DISTINCT over
-   GROUP BY when no aggregate survives in the projection.
+5. Column selection:
+    a. select exactly the columns the question asks for — no extra identifier,
+       name, or aggregate columns; an answer with extra columns is WRONG even
+       when the values are right; compare the SELECT list column-by-column
+       against the question before committing;
+    b. when a question pairs "how many" with a listing, return only the listed
+       attributes via SELECT DISTINCT — don't add computed count columns; prefer
+       DISTINCT over GROUP BY when no aggregate survives in the projection;
+    c. a metric used only to rank or order rows ("top 3 by shortest average
+       duration") belongs in ORDER BY, not in the SELECT list;
+    d. superlatives ("the most common X", "the Y with the highest Z") return
+       the entity itself, never the count or metric value;
+    e. when the question says "rank", include the rank/position column; when
+       evidence maps a name to first/last parts, return those as separate
+       columns — never concatenate them into one.
 
 6. Table selection: confirm the correct table(s) and their granularity;
-   don't pick a table just because a column name matches.
+   don't pick a table just because a column name matches. When several tables
+   expose same-named columns, choose the one owned by the entity the question
+   asks about and disambiguate with a probe query if unsure.
 
-7. Joins: choose INNER vs LEFT JOIN from whether unmatched rows belong in the
-   answer (LEFT keeps them; INNER drops them), not from wording or parentheses.
-   Verify join conditions against the actual foreign-key relationships.
+7. Joins: choose INNER vs LEFT JOIN from whether unmatched rows belong in
+   the answer (LEFT keeps them; INNER drops them), not from wording or
+   parentheses. Verify join conditions against the actual foreign-key
+   relationships. Every joined table must contribute a requested column or
+   a required predicate — a join that contributes neither only multiplies
+   rows.
 
 8. Filters: translate every condition from the question into a predicate and
    do not silently drop any. Copy literal values (strings, dates, IDs,
    categories) exactly from the question or database. Do not invent business
-   filters such as soft-delete or latest-row predicates unless the question or
-   supplied evidence requires them.
+   filters such as soft-delete or latest-row predicates, and do not add
+   NULL/zero hygiene guards (IS NOT NULL, > 0) unless the question requires
+   them — division by zero yields NULL, not an error. If a filter yields
+   zero rows or a COUNT of 0, re-check each literal against the database
+   (SELECT DISTINCT the column) before accepting the result.

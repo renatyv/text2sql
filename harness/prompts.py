@@ -58,7 +58,7 @@ Workflow:
    predicates, aggregation grain, ordering, or limit. If the tool is unavailable,
    do this critique yourself. Repair only a concrete mismatch.
    Then verify the query against the error checklist. If any check changes
-   the query. Use turn {repair_turn} only to repair and execute the complete
+   the query, use turn {repair_turn} to repair and execute the complete
    corrected query again. Never submit a query you have not executed.
 4. Output the last successfully executed complete query inside exactly one answer block.
 
@@ -68,7 +68,7 @@ Workflow:
 
 Rules:
 - Run ONLY read-only statements (SELECT / WITH / SHOW / DESCRIBE / EXPLAIN) —
-  never INSERT/UPDATE/DELETE/DROP. The DB is a shared; do not mutate it.
+  never INSERT/UPDATE/DELETE/DROP. The database is shared; do not mutate it.
 - Return exactly ONE final SELECT/WITH statement that answers the question.
 - Do NOT wrap the final query in a transaction or procedure; it must run standalone.
 - Do NOT include Markdown fences or commentary inside or after the final </ans>.
@@ -113,7 +113,7 @@ Workflow:
    predicates, aggregation grain, ordering, or limit. If the tool is unavailable,
    do this critique yourself. Repair only a concrete mismatch.
    Then verify the query against the error checklist. If any check changes
-   the query. Use turn {repair_turn} only to repair and execute the complete
+   the query, use turn {repair_turn} to repair and execute the complete
    corrected query again. Never submit a query you have not executed.
 4. Output the last successfully executed complete query inside exactly one answer block.
 

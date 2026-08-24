@@ -72,7 +72,7 @@ class BenchmarkTests(unittest.TestCase):
     def test_validation_turns_follow_the_budget(self) -> None:
         system, _ = prompts.agent_prompts("neutron", "question", "raw", 16)
         self.assertIn("By turn 14, run the complete candidate query", system)
-        self.assertIn("Use turn 15 only to repair", system)
+        self.assertIn("use turn 15 to repair", system)
         self.assertIn("Turn 16 is reserved", system)
 
     @patch("harness.prompts._profile_for", return_value="PROFILE")
@@ -96,7 +96,7 @@ class BenchmarkTests(unittest.TestCase):
             self.assertIn("Turn 10 is reserved", system)
             self.assertIn("finish all tool use by turn 9", system)
             self.assertIn("By turn 8, run the complete candidate query", system)
-            self.assertIn("Use turn 9 only to repair", system)
+            self.assertIn("use turn 9 to repair", system)
             self.assertIn("<ans>", system)
             self.assertIn("<ans>...</ans>", user)
             self.assertIn("BEGIN SUPPLIED DATABASE CONTEXT", user)
