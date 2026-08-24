@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:34:20.431299Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:23:56.831998Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-sz0inzcx/northwind.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-r7p_uau2/northwind.sqlite
 schema: main
 ---
 
@@ -60,17 +60,17 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customerid | WOLZA | LONEP | WARTH |
-| companyname | Wolski  Zajazd | Lonesome Pine Restaurant | Wartian Herkku |
-| contactname | Zbyszek Piestrzeniewicz | Fran Wilson | Pirkko Koskitalo |
-| contacttitle | Owner | Sales Manager | Accounting Manager |
-| address | ul. Filtrowa 68 | 89 Chiaroscuro Rd. | Torikatu 38 |
-| city | Warszawa | Portland | Oulu |
-| region | null | OR | null |
-| postalcode | 01-012 | 97219 | 90110 |
-| country | Poland | USA | Finland |
-| phone | (26) 642-7012 | (503) 555-9573 | 981-443655 |
-| fax | (26) 642-7012 | (503) 555-9646 | 981-443655 |
+| customerid | WOLZA | BOLID | OTTIK |
+| companyname | Wolski  Zajazd | Bólido Comidas preparadas | Ottilies Käseladen |
+| contactname | Zbyszek Piestrzeniewicz | Martín Sommer | Henriette Pfalzheim |
+| contacttitle | Owner | Owner | Owner |
+| address | ul. Filtrowa 68 | C/ Araquil, 67 | Mehrheimerstr. 369 |
+| city | Warszawa | Madrid | Köln |
+| region | null | null | null |
+| postalcode | 01-012 | 28023 | 50739 |
+| country | Poland | Spain | Germany |
+| phone | (26) 642-7012 | (91) 555 22 82 | 0221-0644327 |
+| fax | (26) 642-7012 | (91) 555 91 99 | 0221-0765721 |
 
 # "employees"  (rows=9)
 
@@ -128,8 +128,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| employeeid | 9 | 3 | 9 |
-| territoryid | 55439 | 30346 | 55113 |
+| employeeid | 9 | 1 | 3 |
+| territoryid | 55439 | 19713 | 30346 |
 
 # "order_details"  (rows=2155)
 
@@ -145,11 +145,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| orderid | 11077 | 10748 | 10875 |
-| productid | 77 | 40 | 47 |
-| unitprice | 13 | 18.4 | 9.5 |
-| quantity | 2 | 40 | 21 |
-| discount | 0 | 0 | 0.1 |
+| orderid | 11077 | 10997 | 10730 |
+| productid | 77 | 52 | 65 |
+| unitprice | 13 | 7 | 21.05 |
+| quantity | 2 | 20 | 10 |
+| discount | 0 | 0.25 | 0.05 |
 
 # "orders"  (rows=830)
 
@@ -174,20 +174,20 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| orderid | 11077 | 10704 | 10861 |
-| customerid | RATTC | QUEEN | WHITC |
-| employeeid | 1 | 6 | 4 |
-| orderdate | 1998-05-06 | 1997-10-14 | 1998-01-30 |
-| requireddate | 1998-06-03 | 1997-11-11 | 1998-02-27 |
-| shippeddate | null | 1997-11-07 | 1998-02-17 |
-| shipvia | 2 | 1 | 2 |
-| freight | 8.53 | 4.78 | 14.93 |
-| shipname | Rattlesnake Canyon Grocery | Queen Cozinha | White Clover Markets |
-| shipaddress | 2817 Milton Dr. | Alameda dos Canàrios, 891 | 1029 - 12th Ave. S. |
-| shipcity | Albuquerque | Sao Paulo | Seattle |
-| shipregion | NM | SP | WA |
-| shippostalcode | 87110 | 05487-020 | 98124 |
-| shipcountry | USA | Brazil | USA |
+| orderid | 11077 | 10498 | 10431 |
+| customerid | RATTC | HILAA | BOTTM |
+| employeeid | 1 | 8 | 4 |
+| orderdate | 1998-05-06 | 1997-04-07 | 1997-01-30 |
+| requireddate | 1998-06-03 | 1997-05-05 | 1997-02-13 |
+| shippeddate | null | 1997-04-11 | 1997-02-07 |
+| shipvia | 2 | 2 | 2 |
+| freight | 8.53 | 29.75 | 44.17 |
+| shipname | Rattlesnake Canyon Grocery | HILARION-Abastos | Bottom-Dollar Markets |
+| shipaddress | 2817 Milton Dr. | Carrera 22 con Ave. Carlos Soublette #8-35 | 23 Tsawassen Blvd. |
+| shipcity | Albuquerque | San Cristóbal | Tsawassen |
+| shipregion | NM | Táchira | BC |
+| shippostalcode | 87110 | 5022 | T2F 8M4 |
+| shipcountry | USA | Venezuela | Canada |
 
 # "products"  (rows=77)
 
@@ -208,16 +208,16 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| productid | 77 | 61 | 59 |
-| productname | Original Frankfurter grüne Soße | Sirop d'érable | Raclette Courdavault |
-| supplierid | 12 | 29 | 28 |
-| categoryid | 2 | 2 | 4 |
-| quantityperunit | 12 boxes | 24 - 500 ml bottles | 5 kg pkg. |
-| unitprice | 13 | 28.5 | 55 |
-| unitsinstock | 32 | 113 | 79 |
+| productid | 77 | 26 | 53 |
+| productname | Original Frankfurter grüne Soße | Gumbär Gummibärchen | Perth Pasties |
+| supplierid | 12 | 11 | 24 |
+| categoryid | 2 | 3 | 6 |
+| quantityperunit | 12 boxes | 100 - 250 g bags | 48 pieces |
+| unitprice | 13 | 31.23 | 32.8 |
+| unitsinstock | 32 | 15 | 0 |
 | unitsonorder | 0 | 0 | 0 |
-| reorderlevel | 15 | 25 | 0 |
-| discontinued | 0 | 0 | 0 |
+| reorderlevel | 15 | 0 | 0 |
+| discontinued | 0 | 0 | 1 |
 
 # "region"  (rows=4)
 
@@ -270,18 +270,18 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| supplierid | 29 | 12 | 10 |
-| companyname | Forêts d'érables | Plutzer Lebensmittelgroßmärkte AG | Refrescos Americanas LTDA |
-| contactname | Chantal Goulet | Martin Bein | Carlos Diaz |
-| contacttitle | Accounting Manager | International Marketing Mgr. | Marketing Manager |
-| address | 148 rue Chasseur | Bogenallee 51 | Av. das Americanas 12.890 |
-| city | Ste-Hyacinthe | Frankfurt | Sao Paulo |
-| region | Québec | null | null |
-| postalcode | J2S 7S8 | 60439 | 5442 |
-| country | Canada | Germany | Brazil |
-| phone | (514) 555-2955 | (069) 992755 | (11) 555 4640 |
+| supplierid | 29 | 2 | 27 |
+| companyname | Forêts d'érables | New Orleans Cajun Delights | Escargots Nouveaux |
+| contactname | Chantal Goulet | Shelley Burke | Marie Delamare |
+| contacttitle | Accounting Manager | Order Administrator | Sales Manager |
+| address | 148 rue Chasseur | P.O. Box 78934 | 22, rue H. Voiron |
+| city | Ste-Hyacinthe | New Orleans | Montceau |
+| region | Québec | LA | null |
+| postalcode | J2S 7S8 | 70117 | 71300 |
+| country | Canada | USA | France |
+| phone | (514) 555-2955 | (100) 555-4822 | 85.57.00.07 |
 | fax | (514) 555-2921 | null | null |
-| homepage | null | Plutzer (on the World Wide Web)#http://www.microsoft.com/accessdev/sampleapps/plutzer.htm# | null |
+| homepage | null | #CAJUN.HTM# | null |
 
 # "territories"  (rows=53)
 
@@ -295,9 +295,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| territoryid | 98104 | 90405 | 95054 |
-| territorydescription | Seattle | Santa Monica | Santa Clara |
-| regionid | 2 | 2 | 2 |
+| territoryid | 98104 | 20852 | 48304 |
+| territorydescription | Seattle | Rockville | Bloomfield Hills |
+| regionid | 2 | 1 | 3 |
 
 # "usstates"  (rows=51)
 
@@ -312,9 +312,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| stateid | 51 | 44 | 16 |
-| statename | Wyoming | Texas | Iowa |
-| stateabbr | WY | TX | IO |
-| stateregion | west | west | midwest |
+| stateid | 51 | 9 | 45 |
+| statename | Wyoming | District of Columbia | Utah |
+| stateabbr | WY | DC | UT |
+| stateregion | west | east | west |
 
 - Skipped 2 empty table(s): "customercustomerdemo", "customerdemographics"

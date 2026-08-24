@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:33:23.181753Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:22:57.187609Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-kuz97xfl/WWE.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-f7neyduj/WWE.sqlite
 schema: main
 ---
 
@@ -18,8 +18,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 70791 | 20610 | 20577 |
-| name | EVOLVE Tag Team Titles | WWE Intercontinental Championship | WWE United States Championship |
+| id | 70791 | 7012 | 70763 |
+| name | EVOLVE Tag Team Titles | WWF European Title WWF Intercontinental Title | PROGRESS Women's Title |
 
 # "Cards"  (rows=12639)
 
@@ -39,14 +39,14 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 14344 | 13733 | 454 |
-| table_id | 3221 | 3211 | 450 |
-| location_id | 312 | 256 | 246 |
-| promotion_id | 3211 | 3211 | 230 |
-| event_date | 2023-12-29 | 2023-12-04 | 2001-09-14 |
-| event_id | 3429 | 3212 | 454 |
-| url | http://www.profightdb.com/cards/wwe/wwe-live---holiday-tour-51464.html | http://www.profightdb.com/cards/wwe/main-event-taping-50925.html | http://www.profightdb.com/cards/wwf/sunday-night-heat-164-taping-1690.html |
-| info_html | <table border="0" width="100%">  <tr>   <td align="left" height="23" width="40%">    <strong>     Date:    </strong>    <a href="/this-day-in-history/12-29-2023.html">     Fri, Dec 29th 2023    </a>… | <table border="0" width="100%">  <tr>   <td align="left" height="23" width="40%">    <strong>     Date:    </strong>    <a href="/this-day-in-history/12-04-2023.html">     Mon, Dec 4th 2023    </a>… | <table border="0" width="100%">  <tr>   <td align="left" height="23" width="40%">    <strong>     Date:    </strong>    <a href="/this-day-in-history/09-14-2001.html">     Fri, Sep 14th 2001    </a>… |
+| id | 14344 | 9171 | 8103 |
+| table_id | 3221 | 9171 | 8101 |
+| location_id | 312 | 270 | 479 |
+| promotion_id | 3211 | 3211 | 3211 |
+| event_date | 2023-12-29 | 2005-01-17 | 2009-06-30 |
+| event_id | 3429 | 238 | 7914 |
+| url | http://www.profightdb.com/cards/wwe/wwe-live---holiday-tour-51464.html | http://www.profightdb.com/cards/wwe/monday-night-raw-2428.html | http://www.profightdb.com/cards/wwe/ecw-taping-5090.html |
+| info_html | <table border="0" width="100%">  <tr>   <td align="left" height="23" width="40%">    <strong>     Date:    </strong>    <a href="/this-day-in-history/12-29-2023.html">     Fri, Dec 29th 2023    </a>… | <table border="0" width="100%">  <tr>   <td align="left" height="23" width="40%">    <strong>     Date:    </strong>    <a href="/this-day-in-history/01-17-2005.html">     Mon, Jan 17th 2005    </a>… | <table border="0" width="100%">  <tr>   <td align="left" height="23" width="40%">    <strong>     Date:    </strong>    <a href="/this-day-in-history/06-30-2009.html">     Tue, Jun 30th 2009    </a>… |
 | match_html | <table cellpadding="0" cellspacing="1" width="100%">  <tr class="head">   <th width="3%">    no.   </th>   <th colspan="3" width="50%">    match   </th>   <th width="5%">    duration   </th>   <th wi… | <table cellpadding="0" cellspacing="1" width="100%">  <tr class="head">   <th width="3%">    no.   </th>   <th colspan="3" width="50%">    match   </th>   <th width="5%">    duration   </th>   <th wi… | <table cellpadding="0" cellspacing="1" width="100%">  <tr class="head">   <th width="3%">    no.   </th>   <th colspan="3" width="50%">    match   </th>   <th width="5%">    duration   </th>   <th wi… |
 
 # "Events"  (rows=5033)
@@ -60,8 +60,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 14341 | 499 | 2454 |
-| name | Monday Night Raw - Day 1 2024 | Sunday Night Heat #157 Taping | Superstars of Wrestling Taping #253 |
+| id | 14341 | 2723 | 199 |
+| name | Monday Night Raw - Day 1 2024 | Superstars of Wrestling Taping #147 | Washington Show (May '63 #2) |
 
 # "Locations"  (rows=609)
 
@@ -74,8 +74,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 12645 | 5269 | 10850 |
-| name | Plant City, Florida | Pasay, Manila | Halle, North Rhine-Westphalia |
+| id | 12645 | 400 | 438 |
+| name | Plant City, Florida | Uniondale, New York | Baton Rouge, Louisiana |
 
 # "Match_Types"  (rows=1208)
 
@@ -88,8 +88,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 385709 | 57484 | 31864 |
-| name | referee: Stevie Turner | Oktoberfest hardcore | commentator: Sasha Banks |
+| id | 385709 | 12343 | 57696 |
+| name | referee: Stevie Turner | $10,000 challenge | scaffold (tag) |
 
 # "Matches"  (rows=≈540800)
 
@@ -133,9 +133,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 12673 | 3881 | 3351 |
+| id | 12673 | 1230 | 1530 |
 | html | <table cellpadding="0" cellspacing="1">  <tr class="head">   <th>    <a href="?order=date&amp;ppv=no&amp;type=asc" rel="nofollow">     date    </a>   </th>   <th>    <a href="?order=promotion&amp;ppv… | <table cellpadding="0" cellspacing="1">  <tr class="head">   <th>    <a href="?order=date&amp;ppv=no&amp;type=asc" rel="nofollow">     date    </a>   </th>   <th>    <a href="?order=promotion&amp;ppv… | <table cellpadding="0" cellspacing="1">  <tr class="head">   <th>    <a href="?order=date&amp;ppv=no&amp;type=asc" rel="nofollow">     date    </a>   </th>   <th>    <a href="?order=promotion&amp;ppv… |
-| url | http://www.profightdb.com/cards/nxt-cards-pg172-no-103.html?order=&type= | http://www.profightdb.com/cards/wwe-cards-pg68-no-2.html?order=&type= | http://www.profightdb.com/cards/wwe-cards-pg15-no-2.html?order=&type= |
+| url | http://www.profightdb.com/cards/nxt-cards-pg172-no-103.html?order=&type= | http://www.profightdb.com/cards/wwf-cards-pg101-no-1.html?order=&type= | http://www.profightdb.com/cards/wwf-cards-pg131-no-1.html?order=&type= |
 
 # "Wrestlers"  (rows=17182)
 
@@ -148,5 +148,5 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 1081588 | 101086 | 138832 |
-| name | Elton Prince & Grayson Waller & Kit Wilson | Jim Duggan & Scotty 2 Hotty | Denzel Dejournette & M. J. Jenkins |
+| id | 1081588 | 12834 | 102438 |
+| name | Elton Prince & Grayson Waller & Kit Wilson | Mideon & The Brooklyn Brawler | Psicosis |

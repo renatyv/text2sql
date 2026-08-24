@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:31:01.374956Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:20:27.221922Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-cosf85lh/codebase_community.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-d9ubgnvq/codebase_community.sqlite
 schema: main
 ---
 
@@ -25,10 +25,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| Id | 92240 | 37159 | 37047 |
-| UserId | 12597 | 11462 | 862 |
-| Name | Autobiographer | Supporter | Popular Question |
-| Date | 2014-09-14T02:31:28 | 2013-02-06T15:24:52 | 2013-02-05T03:11:27 |
+| Id | 92240 | 67846 | 57347 |
+| UserId | 12597 | 40620 | 5397 |
+| Name | Autobiographer | Autobiographer | Notable Question |
+| Date | 2014-09-14T02:31:28 | 2014-02-20T16:17:17 | 2013-11-07T09:17:02 |
 
 # "comments"  (rows=174285)
 
@@ -46,13 +46,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| Id | 221292 | 71156 | 63263 |
-| PostId | 115374 | 35473 | 32287 |
-| Score | 1 | 0 | 0 |
-| Text | @DilipSarwate indeed, in that case, the odds are even. | 1)I suspect, in some cases, the difference that is “different enough” is really unknown (maybe until a certain level). Would it be appropriate to make a table of [difference, significance]? Would it… | I can't know what you might intend. You can see definition of "factor analysis" by pointing on the tag (or read in Wikipedia). Does its meaning fit your case? |
-| CreationDate | 2014-09-14T02:04:27 | 2012-09-01T00:07:28 | 2012-07-14T14:35:50 |
-| UserId | 805 | null | 3277 |
-| UserDisplayName | null | user13760 | null |
+| Id | 221292 | 190412 | 101498 |
+| PostId | 115374 | 77846 | 51941 |
+| Score | 1 | 0 | 1 |
+| Text | @DilipSarwate indeed, in that case, the odds are even. | @NickCox If the models are nested, isn't looking at the change in $R^2$ equivalent to the partial F-test? | `What about an estimator which is an average over its closest k neighbors with the weights given to the neighbors decreasing with distance from the target point.` This is essentially inverse distance… |
+| CreationDate | 2014-09-14T02:04:27 | 2014-05-15T01:30:01 | 2013-03-11T20:21:37 |
+| UserId | 805 | 44451 | 1036 |
+| UserDisplayName | null | null | null |
 
 # "postHistory"  (rows=≈303155)
 
@@ -84,11 +84,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| Id | 3356789 | 102058 | 3038528 |
-| CreationDate | 2014-09-13T20:54:31 | 2010-10-27T10:02:57 | 2014-05-12T20:59:28 |
-| PostId | 115360 | 3989 | 97365 |
-| RelatedPostId | 60438 | 4017 | 9751 |
-| LinkTypeId | 1 | 1 | 3 |
+| Id | 3356789 | 1772083 | 3236567 |
+| CreationDate | 2014-09-13T20:54:31 | 2012-08-30T08:09:51 | 2014-07-24T01:54:13 |
+| PostId | 115360 | 35352 | 108928 |
+| RelatedPostId | 60438 | 18603 | 35276 |
+| LinkTypeId | 1 | 1 | 1 |
 
 # "posts"  (rows=91966)
 
@@ -120,22 +120,22 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| Id | 115378 | 44336 | 56450 |
+| Id | 115378 | 20324 | 10598 |
 | PostTypeId | 2 | 1 | 1 |
-| AcceptedAnswerId | null | 44337 | null |
-| CreaionDate | 2014-09-14T02:09:23 | 2012-11-24T16:35:57 | 2013-04-18T10:06:08 |
-| Score | 0 | 0 | 0 |
-| ViewCount | null | 758 | 71 |
-| Body | <p>Decision trees are notoriously <strong>unstable</strong>: small perturbations in the training data can produce dramatically different trees, even though these trees can, and often do, perform abou… | <p>In <code>matlab</code>, classregtree can be used to implement classification and regression trees (CART) you can find this in <a href="http://www.mathworks.co.uk/help/stats/classregtree.html" rel=… | <p>I am developing network meta-analysis BUGS model that I will use to compare  Hazard Ratios in studies that assume Box Proportional Hazard model. </p>  <p>As input I am given pairs: (log HR, its st… |
-| OwnerUserId | 7250 | 6875 | 10069 |
-| LasActivityDate | 2014-09-14T02:09:23 | 2012-11-24T16:50:58 | 2013-05-01T07:49:23 |
-| Title | null | Classification and regression trees (cart) | How to model repeated measures' results in meta-analysis? |
-| Tags | null | <classification><matlab><cart> | <meta-analysis><bugs> |
-| AnswerCount | null | 1 | 1 |
-| CommentCount | 0 | 0 | 0 |
-| FavoriteCount | null | null | null |
-| LastEditorUserId | null | 686 | null |
-| LastEditDate | null | 2012-11-24T16:46:41 | null |
+| AcceptedAnswerId | null | null | 14771 |
+| CreaionDate | 2014-09-14T02:09:23 | 2011-12-28T17:32:36 | 2011-05-10T14:19:14 |
+| Score | 0 | 1 | 7 |
+| ViewCount | null | 246 | 397 |
+| Body | <p>Decision trees are notoriously <strong>unstable</strong>: small perturbations in the training data can produce dramatically different trees, even though these trees can, and often do, perform abou… | <p>Background: I am developing a Python Statistics Framework, not because the ones out there are bad but because it will help me learn Python and Statistics. I have taken AP Stats, and read scattered… | <p>Various forms of the correlation, e.g., $r =  \\frac{\\Sigma_i x_i * y_i}{\\sigma_x  \\sigma_y}$ or $r = \\frac{\\Sigma_i (x_i-\\bar{x}) * (y_i-\\bar{y})}{\\sigma_x  \\sigma_y}$ are popular simila… |
+| OwnerUserId | 7250 | 7711 | 2728 |
+| LasActivityDate | 2014-09-14T02:09:23 | 2014-03-26T20:55:37 | 2011-08-24T19:32:05 |
+| Title | null | How do I compare multiple arbitrary predictions for a given data set? | Correlation as a likelihood measure |
+| Tags | null | <python><curve-fitting><nonparametric-bayes> | <probability><correlation><interpretation><likelihood-function> |
+| AnswerCount | null | 2 | 2 |
+| CommentCount | 0 | 1 | 2 |
+| FavoriteCount | null | null | 2 |
+| LastEditorUserId | null | 7711 | 2728 |
+| LastEditDate | null | 2011-12-29T17:04:11 | 2011-05-10T14:30:19 |
 | CommunityOwnedDate | null | null | null |
 | ParentId | 115375 | null | null |
 | ClosedDate | null | null | null |
@@ -156,11 +156,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| Id | 1869 | 419 | 1435 |
-| TagName | zero-inflated | cointegration | pymc |
-| Count | 1 | 108 | 54 |
-| ExcerptPostId | null | 69311 | 46637 |
-| WikiPostId | null | 69310 | 46636 |
+| Id | 1869 | 1380 | 1246 |
+| TagName | zero-inflated | deming-regression | big-data |
+| Count | 1 | 6 | 28 |
+| ExcerptPostId | null | null | 44122 |
+| WikiPostId | null | null | 44121 |
 
 # "users"  (rows=40325)
 
@@ -185,20 +185,20 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| Id | 55747 | 20751 | 31977 |
-| Reputation | 1 | 63 | 6 |
-| CreationDate | 2014-09-14T01:01:44 | 2013-02-12T04:43:01 | 2013-10-28T02:12:59 |
-| DisplayName | Shivam Agrawal | Rebecca | Malc |
-| LastAccessDate | 2014-09-14T01:19:04 | 2014-09-03T21:10:01 | 2014-03-15T07:13:32 |
-| WebsiteUrl | null | null | null |
-| Location | India | null | Taipei City, Taiwan |
-| AboutMe | <p>Maths Enthusiast </p>  | null | <p>I'm a French engineering student in robotics. I like control and programming stuffs.</p>  |
-| Views | 0 | 6 | 3 |
-| UpVotes | 0 | 4 | 0 |
+| Id | 55747 | 22202 | 18440 |
+| Reputation | 1 | 11 | 101 |
+| CreationDate | 2014-09-14T01:01:44 | 2013-03-19T01:01:07 | 2013-01-07T16:52:06 |
+| DisplayName | Shivam Agrawal | vitasoy | palm3D |
+| LastAccessDate | 2014-09-14T01:19:04 | 2013-03-23T01:21:43 | 2013-01-25T09:54:03 |
+| WebsiteUrl | null | null | http://domain.invalid |
+| Location | India | null | Belgium |
+| AboutMe | <p>Maths Enthusiast </p>  | null | Computer scientist |
+| Views | 0 | 16 | 0 |
+| UpVotes | 0 | 0 | 0 |
 | DownVotes | 0 | 0 | 0 |
-| AccountId | 5027354 | 2355672 | 3026038 |
-| Age | null | null | 23 |
-| ProfileImageUrl | https://lh4.googleusercontent.com/-ZsXhwVaFmiY/AAAAAAAAAAI/AAAAAAAAAqo/6UwTjH_MRIQ/photo.jpg | null | http://i.stack.imgur.com/oEaaA.jpg |
+| AccountId | 5027354 | 2512446 | 1953 |
+| Age | null | null | 32 |
+| ProfileImageUrl | https://lh4.googleusercontent.com/-ZsXhwVaFmiY/AAAAAAAAAAI/AAAAAAAAAqo/6UwTjH_MRIQ/photo.jpg | null | null |
 
 # "votes"  (rows=38930)
 
@@ -215,9 +215,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| Id | 43538 | 6991 | 12220 |
-| PostId | 10202 | 2169 | 3271 |
-| VoteTypeId | 2 | 2 | 2 |
-| CreationDate | 2011-05-01 | 2010-08-27 | 2010-10-04 |
-| UserId | null | null | null |
+| Id | 43538 | 22361 | 9037 |
+| PostId | 10202 | 4873 | 660 |
+| VoteTypeId | 2 | 2 | 5 |
+| CreationDate | 2011-05-01 | 2010-12-07 | 2010-09-12 |
+| UserId | null | null | 1253 |
 | BountyAmount | null | null | null |

@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:31:47.401329Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:21:17.230828Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-w4yu5ew3/financial.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-wm5yngwy/financial.sqlite
 schema: main
 ---
 
@@ -27,10 +27,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| account_id | 11382 | 3967 | 10656 |
-| district_id | 74 | 54 | 8 |
+| account_id | 11382 | 2468 | 758 |
+| district_id | 74 | 4 | 51 |
 | frequency | POPLATEK MESICNE | POPLATEK MESICNE | POPLATEK MESICNE |
-| date | 1995-08-20 | 1996-09-22 | 1993-05-05 |
+| date | 1995-08-20 | 1996-07-13 | 1997-12-19 |
 
 # "card"  (rows=892)
 
@@ -45,10 +45,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| card_id | 1247 | 560 | 296 |
-| disp_id | 13660 | 3577 | 1876 |
+| card_id | 1247 | 468 | 1137 |
+| disp_id | 13660 | 3023 | 11771 |
 | type | classic | classic | gold |
-| issued | 1995-06-13 | 1998-12-17 | 1995-11-13 |
+| issued | 1995-06-13 | 1995-01-30 | 1998-12-01 |
 
 # "client"  (rows=5369)
 
@@ -63,10 +63,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| client_id | 13998 | 442 | 2419 |
-| gender | F | F | F |
-| birth_date | 1953-08-12 | 1971-12-16 | 1954-06-23 |
-| district_id | 74 | 1 | 1 |
+| client_id | 13998 | 536 | 1364 |
+| gender | F | M | M |
+| birth_date | 1953-08-12 | 1939-08-25 | 1933-12-28 |
+| district_id | 74 | 47 | 1 |
 
 # "disp"  (rows=5369)
 
@@ -81,10 +81,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| disp_id | 13690 | 4563 | 3672 |
-| client_id | 13998 | 4563 | 3672 |
-| account_id | 11382 | 3785 | 3038 |
-| type | OWNER | OWNER | DISPONENT |
+| disp_id | 13690 | 3172 | 6481 |
+| client_id | 13998 | 3172 | 6481 |
+| account_id | 11382 | 2628 | 5369 |
+| type | OWNER | OWNER | OWNER |
 
 # "district"  (rows=77)
 
@@ -111,22 +111,22 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| district_id | 77 | 46 | 43 |
-| A2 | Vsetin | Nachod | Hradec Kralove |
-| A3 | north Moravia | east Bohemia | east Bohemia |
-| A4 | 148545 | 112709 | 161854 |
-| A5 | 8 | 48 | 73 |
-| A6 | 35 | 20 | 21 |
-| A7 | 12 | 7 | 6 |
-| A8 | 3 | 3 | 1 |
-| A9 | 4 | 10 | 6 |
-| A10 | 53.5 | 73.5 | 76.3 |
-| A11 | 8909 | 8369 | 9425 |
-| A12 | 4 | 1.7 | 1.7 |
-| A13 | 5.56 | 2.31 | 2.5 |
-| A14 | 113 | 117 | 125 |
-| A15 | 3460 | 2854 | 4085 |
-| A16 | 3590 | 2618 | 3891 |
+| district_id | 77 | 34 | 51 |
+| A2 | Vsetin | Chomutov | Trutnov |
+| A3 | north Moravia | north Bohemia | east Bohemia |
+| A4 | 148545 | 125236 | 121947 |
+| A5 | 8 | 28 | 37 |
+| A6 | 35 | 11 | 28 |
+| A7 | 12 | 1 | 7 |
+| A8 | 3 | 4 | 3 |
+| A9 | 4 | 5 | 11 |
+| A10 | 53.5 | 87.7 | 70.5 |
+| A11 | 8909 | 9675 | 8541 |
+| A12 | 4 | 6.4 | 2.5 |
+| A13 | 5.56 | 7.68 | 2.97 |
+| A14 | 113 | 100 | 131 |
+| A15 | 3460 | 5323 | 3496 |
+| A16 | 3590 | 5190 | 3839 |
 
 # "loan"  (rows=682)
 
@@ -144,12 +144,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| loan_id | 7308 | 5041 | 6574 |
-| account_id | 11362 | 319 | 7745 |
-| date | 1996-12-27 | 1997-07-11 | 1997-12-20 |
-| amount | 129408 | 369000 | 77544 |
-| duration | 24 | 60 | 36 |
-| payments | 5392 | 6150 | 2154 |
+| loan_id | 7308 | 6992 | 6868 |
+| account_id | 11362 | 9790 | 9208 |
+| date | 1996-12-27 | 1996-07-27 | 1998-10-12 |
+| amount | 129408 | 133968 | 82128 |
+| duration | 24 | 48 | 24 |
+| payments | 5392 | 2791 | 3422 |
 | status | A | C | C |
 
 # "order"  (rows=6471)
@@ -167,12 +167,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| order_id | 46338 | 34985 | 35011 |
-| account_id | 11362 | 3784 | 3804 |
-| bank_to | MN | IJ | WX |
-| account_to | 61540514 | 70703857 | 32746297 |
-| amount | 5392 | 1583 | 643 |
-| k_symbol | UVER | SIPO | SIPO |
+| order_id | 46338 | 39352 | 34939 |
+| account_id | 11362 | 6715 | 3755 |
+| bank_to | MN | GH | YZ |
+| account_to | 61540514 | 85509657 | 53685873 |
+| amount | 5392 | 2298.2 | 13500 |
+| k_symbol | UVER | UVER | SIPO |
 
 # "trans"  (rows=≈1056320)
 

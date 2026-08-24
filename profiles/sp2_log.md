@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:34:20.005337Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:23:56.387532Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-l629_u77/log.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-5a0llljq/log.sqlite
 schema: main
 ---
 
@@ -20,10 +20,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| session | eee2b2 | eee2b2 | 1cf768 |
-| user_id | U002 | U001 | U002 |
-| action | view | view | view |
-| stamp | 2016-01-10 13:00:00 | 2016-01-11 15:00:00 | 2016-01-04 23:00:00 |
+| session | eee2b2 | 87b575 | 2016-10-02 14:00:00 |
+| user_id | U002 | U001 | 3CEHe1 |
+| action | view | view | FGkTe9 |
+| stamp | 2016-01-10 13:00:00 | 2016-01-09 12:00:00 | /search |
 
 # "action_log"  (rows=120)
 
@@ -41,13 +41,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| session | 9afaf87c | 87b5725f | 989004ea |
-| user_id | U002 | U001 | U001 |
-| action | purchase | add_cart | purchase |
+| session | 9afaf87c | 9afaf87c | 989004ea |
+| user_id | U002 | U002 | U001 |
+| action | purchase | purchase | purchase |
 | category | drama | action | drama |
-| products | D002 | A004 | D001,D002 |
-| amount | 1000 | null | 2000 |
-| stamp | 2016-11-04 13:00:00 | 2016-11-04 12:00:00 | 2016-11-03 18:10:00 |
+| products | D002 | A005,A006 | D001,D002 |
+| amount | 1000 | 1000 | 2000 |
+| stamp | 2016-11-04 13:00:00 | 2016-11-04 15:00:00 | 2016-11-03 18:10:00 |
 
 # "action_log_with_ip"  (rows=12)
 
@@ -63,11 +63,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| session | fe05e1d8 | 1cf7678e | 111f2996 |
-| user_id | U001 | U003 | U007 |
+| session | fe05e1d8 | 3efe001c | 1QceiB |
+| user_id | U001 | U008 | U002 |
 | action | view | view | view |
-| ip | 216.58.220.238 | 210.154.149.63 | 192.168.0.23 |
-| stamp | 2016-11-04 18:00:00 | 2016-11-03 20:00:00 | 2016-11-04 21:00:00 |
+| ip | 216.58.220.238 | 192.0.0.10 | 98.139.183.24 |
+| stamp | 2016-11-04 18:00:00 | 2016-11-04 22:00:00 | 2016-11-03 19:00:00 |
 
 # "activity_log"  (rows=244)
 
@@ -84,11 +84,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| stamp | 2017-01-09 12:25:25 | 2017-01-09 12:20:10 | 2017-01-09 12:19:49 |
-| session | 87b5725f | 111f2996 | 36dd0df7 |
+| stamp | 2017-01-09 12:25:25 | 2017-01-09 12:19:11 | 2017-01-09 12:18:43 |
+| session | 87b5725f | 111f2996 | d45ec190 |
 | action | view | view | view |
 | option | page | page | detail |
-| path | / |  | /detail |
+| path | / | /search_input | /detail/ |
 | search_type |  |  |  |
 
 # "app1_mst_users"  (rows=2)
@@ -137,11 +137,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| stamp | 2016-11-04 22:00:10 | 2016-11-03 21:00:00 | 2016-11-03 20:00:00 |
-| session | 3efe001c | fe05e1d8 | 1cf7678e |
-| user_id | U008 | U004 | U003 |
+| stamp | 2016-11-04 22:00:10 | 2016-11-03 20:00:00 | 2016-11-04 22:00:00 |
+| session | 3efe001c | 1cf7678e | 3efe001c |
+| user_id | U008 | U003 | U008 |
 | action | click | click | click |
-| products | A001 | D001 | A001 |
+| products | A001 | A001 | A001 |
 
 # "form_error_log"  (rows=8)
 
@@ -179,11 +179,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| stamp | 2016-12-30 01:00:19 | 2016-12-30 00:58:50 | 2016-12-30 01:00:19 |
-| session | 9b5f320f | 9b5f320f | 9b5f320f |
+| stamp | 2016-12-30 01:00:19 | 2016-12-30 00:58:58 | 2016-12-30 00:56:08 |
+| session | 9b5f320f | b2dbcc54 | 9b5f320f |
 | action | view | view | view |
-| path | /regist/confirm | /regist/confirm | /regist/confirm |
-| status | error | error | error |
+| path | /regist/confirm | /contact/confirm | /cart/input |
+| status | error |  |  |
 
 # "invalid_action_log"  (rows=7)
 
@@ -276,11 +276,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| user_id | U030 | U001 | U027 |
-| sex | M | M | F |
-| birth_date | 1959-10-07 | 1977-06-17 | 2001-07-10 |
-| register_date | 2016-11-28 | 2016-10-01 | 2016-10-02 |
-| register_device | sp | pc | pc |
+| user_id | U030 | U016 | U017 |
+| sex | M | F | F |
+| birth_date | 1959-10-07 | 1991-09-02 | 1972-05-21 |
+| register_date | 2016-11-28 | 2016-10-01 | 2016-10-01 |
+| register_device | sp | pc | app |
 | withdraw_date | null | null | null |
 
 # "mst_users_with_card_number"  (rows=3)
@@ -344,9 +344,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| stamp | 2016-12-29 21:46:25 | 2016-12-29 21:45:59 | 2016-12-29 21:45:47 |
-| session | df6eb25d | 76c67c39 | df6eb25d |
-| action | read-100% | read-40% | view |
-| url | http://www.example.com/article?id=news731 | http://www.example.com/article?id=trend925 | http://www.example.com/article?id=news731 |
+| stamp | 2016-12-29 21:46:25 | 2016-12-29 21:45:49 | 2016-12-29 21:45:47 |
+| session | df6eb25d | 77d477cc | a80ded24 |
+| action | read-100% | read-20% | view |
+| url | http://www.example.com/article?id=news731 | http://www.example.com/article?id=it605 | http://www.example.com/article?id=trend925 |
 
 - Skipped 1 empty table(s): "action_log_with_noise"

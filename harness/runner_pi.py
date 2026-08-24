@@ -1,4 +1,4 @@
-"""Runner for agentic arms — pi headless, sql_exec tool.
+"""Runner for agentic arms — pi headless with built-ins, subagents, and sql_exec.
 
 Handles every arm with ``tools=True`` in config.ARMS (the profile and checklist
 dimensions are resolved inside prompts.agent_prompts, so this runner stays
@@ -6,12 +6,13 @@ agnostic to them).
 
 Per-question flow (plan §Anti-cheat #1):
   * fresh sandbox cwd, only the prompt (via stdin) and write-only output;
-  * built-ins off, web/fetch/search off, only `sql_exec` enabled;
+  * built-ins and the project critic subagent enabled; web/fetch/search off;
   * env-injected MySQL creds + caps so the agent never sees the repo.
 """
 from __future__ import annotations
 
 import os
+import shutil
 import subprocess
 import time
 from pathlib import Path
@@ -40,7 +41,7 @@ def _env(db_label: str, max_turns: int, engine: str = "mysql", db: str | None = 
 
 
 def _argv(append_prompt: str) -> list[str]:
-    # Anti-cheat (plan §#1–2): isolated cwd, no built-ins/web/fetch/search, no
+    # Anti-cheat (plan §#1–2): isolated cwd, no web/fetch/search, no
     # global skills/context/themes that could leak gold, --offline so pi makes no
     # startup network calls beyond the LLM endpoint.
     #
@@ -61,8 +62,9 @@ def _argv(append_prompt: str) -> list[str]:
         "--no-context-files",
         "--no-themes",
         "-e", str(config.PI_EXTENSION),
-        "--no-builtin-tools",
-        "--tools", "sql_exec",
+        "-e", str(Path(shutil.which(config.PI_BIN) or config.PI_BIN).resolve().parent.parent
+                    / "examples/extensions/subagent/index.ts"),
+        "--tools", "read,bash,edit,write,grep,find,ls,sql_exec,subagent",
         "--thinking", config.PI_THINKING,
         "--append-system-prompt", append_prompt,
         "--provider", config.DEFAULT_PROVIDER,
@@ -83,6 +85,13 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
         evidence=evidence, profile_key=profile_key,
     )
     sandbox.mkdir(parents=True, exist_ok=True)
+    agents_dir = sandbox / ".pi" / "agents"
+    agents_dir.mkdir(parents=True, exist_ok=True)
+    critic = (config.HARNESS_DIR / "pi_agents" / "critic.md").read_text(encoding="utf-8")
+    (agents_dir / "critic.md").write_text(
+        critic.replace("__CRITIC_MODEL__", f"{config.DEFAULT_PROVIDER}/{config.DEFAULT_MODEL_ID}"),
+        encoding="utf-8",
+    )
     started = time.time()
     rec: dict = {
         "arm": arm, "runner": "pi", "db_label": db_label,

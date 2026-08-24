@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:34:20.895203Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:23:57.346251Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-jo9zsd3l/school_scheduling.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-0r8ioi_u/school_scheduling.sqlite
 schema: main
 ---
 
@@ -53,9 +53,9 @@ indexes: "DepartmentID"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| CategoryID | PSY | ART | CSC |
-| CategoryDescription | Psychology | Art | Computer Science |
-| DepartmentID | 4 | 3 | 5 |
+| CategoryID | PSY | CHE | CSC |
+| CategoryDescription | Psychology | Chemistry | Computer Science |
+| DepartmentID | 4 | 2 | 5 |
 
 # "Class_Rooms"  (rows=47)
 
@@ -69,8 +69,8 @@ indexes: "BuildingCode"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ClassRoomID | 3455 | 1231 | 3345 |
-| BuildingCode | CC | LB | CC |
+| ClassRoomID | 3455 | 1525 | 1619 |
+| BuildingCode | CC | AS | AS |
 | PhoneAvailable | true | true | false |
 
 # "Classes"  (rows=147)
@@ -95,18 +95,18 @@ indexes: "ClassRoomID", "SubjectID"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ClassID | 6600 | 4184 | 5911 |
-| SubjectID | 41 | 38 | 46 |
-| ClassRoomID | 3420 | 3415 | 3445 |
-| Credits | 5 | 5 | 5 |
-| StartDate | 2018-01-15 | 2018-01-15 | 2018-01-15 |
-| StartTime | 13:00:00 | 14:00:00 | 12:00:00 |
-| Duration | 140 | 50 | 50 |
-| MondaySchedule | true | true | true |
-| TuesdaySchedule | false | true | true |
-| WednesdaySchedule | true | true | true |
-| ThursdaySchedule | false | true | true |
-| FridaySchedule | false | true | true |
+| ClassID | 6600 | 1012 | 1002 |
+| SubjectID | 41 | 14 | 12 |
+| ClassRoomID | 3420 | 1627 | 1619 |
+| Credits | 5 | 4 | 4 |
+| StartDate | 2018-01-15 | 2017-09-12 | 2017-09-11 |
+| StartTime | 13:00:00 | 13:00:00 | 15:30:00 |
+| Duration | 140 | 110 | 110 |
+| MondaySchedule | true | false | true |
+| TuesdaySchedule | false | true | false |
+| WednesdaySchedule | true | false | true |
+| ThursdaySchedule | false | true | false |
+| FridaySchedule | false | false | false |
 | SaturdaySchedule | false | false | false |
 
 # "Departments"  (rows=5)
@@ -138,8 +138,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StaffID | 98064 | 98045 | 98055 |
-| Title | Professor | Professor | Professor |
+| StaffID | 98064 | 98028 | 98053 |
+| Title | Professor | Professor | Instructor |
 | Status | Full Time | Full Time | Full Time |
 | Tenured | true | true | true |
 
@@ -154,8 +154,8 @@ indexes: "CategoryID", "StaffID"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StaffID | 98064 | 98005 | 98055 |
-| CategoryID | JRN | MUS | BUS |
+| StaffID | 98064 | 98040 | 98062 |
+| CategoryID | JRN | CSC | BUS |
 
 # "Faculty_Classes"  (rows=145)
 
@@ -168,8 +168,8 @@ indexes: "ClassID", "StaffID"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ClassID | 6600 | 2410 | 1168 |
-| StaffID | 98042 | 98013 | 98055 |
+| ClassID | 6600 | 5213 | 4825 |
+| StaffID | 98042 | 98052 | 98020 |
 
 # "Faculty_Subjects"  (rows=110)
 
@@ -183,9 +183,9 @@ indexes: "StaffID", "SubjectID"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StaffID | 98064 | 98014 | 98014 |
-| SubjectID | 41 | 15 | 39 |
-| ProficiencyRating | 8 | 9 | 9 |
+| StaffID | 98064 | 98030 | 98062 |
+| SubjectID | 41 | 14 | 4 |
+| ProficiencyRating | 8 | 10 | 8 |
 
 # "Majors"  (rows=7)
 
@@ -222,17 +222,17 @@ indexes: "StfZipCode"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StaffID | 98064 | 98014 | 98005 |
-| StfFirstName | Luke | Peter | Suzanne |
-| StfLastname | Patterson | Brehm | Viescas |
-| StfStreetAddress | 877 145th Ave SE | 722 Moss Bay Blvd. | 15127 NE 24th, #383 |
-| StfCity | Portland | Kirkland | Redmond |
-| StfState | OR | WA | WA |
-| StfZipCode | 97208 | 98033 | 98052 |
-| StfAreaCode | 503 | 425 | 425 |
-| StfPhoneNumber | 555-2316 | 555-2501 | 555-2686 |
-| Salary | 56000 | 60000 | 44000 |
-| DateHired | 1989-08-20 | 1986-07-16 | 1986-05-31 |
+| StaffID | 98064 | 98025 | 98040 |
+| StfFirstName | Luke | Carol | Jim |
+| StfLastname | Patterson | Viescas | Wilson |
+| StfStreetAddress | 877 145th Ave SE | 722 Moss Bay Blvd. | 101 NE 88th |
+| StfCity | Portland | Kirkland | Salem |
+| StfState | OR | WA | OR |
+| StfZipCode | 97208 | 98033 | 97301 |
+| StfAreaCode | 503 | 425 | 503 |
+| StfPhoneNumber | 555-2316 | 555-2576 | 555-2636 |
+| Salary | 56000 | 50000 | 50000 |
+| DateHired | 1989-08-20 | 1984-04-12 | 1987-01-13 |
 | Position | Faculty | Faculty | Faculty |
 
 # "Student_Class_Status"  (rows=3)
@@ -262,10 +262,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StudentID | 1018 | 1005 | 1013 |
-| ClassID | 5933 | 2500 | 2895 |
-| ClassStatus | 1 | 2 | 2 |
-| Grade | 0 | 80.51 | 93.19 |
+| StudentID | 1018 | 1017 | 1015 |
+| ClassID | 5933 | 1000 | 4183 |
+| ClassStatus | 1 | 2 | 1 |
+| Grade | 0 | 69.46 | 0 |
 
 # "Students"  (rows=19)
 
@@ -287,17 +287,17 @@ indexes: "StudAreaCode", "StudMajor", "StudZipCode"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StudentID | 1019 | 1001 | 1007 |
-| StudFirstName | Daffy | Kerry | Elizabeth |
-| StudLastName | Dumbwit | Patterson | Hallmark |
-| StudStreetAddress | 4567 NE 32nd Ct | 9877 Hacienda Drive | Route 2, Box 203B |
-| StudCity | Bellevue | San Antonio | Marysville |
-| StudState | WA | TX | WA |
-| StudZipCode | 98002 | 78284 | 98271 |
-| StudAreaCode | 425 | 210 | 253 |
-| StudPhoneNumber | 555-9872 | 555-2706 | 555-2521 |
-| StudGPA | 0 | 74.465 | 87.65 |
-| StudMajor | null | 1 | 7 |
+| StudentID | 1019 | 1009 | 1007 |
+| StudFirstName | Daffy | Karen | Elizabeth |
+| StudLastName | Dumbwit | Smith | Hallmark |
+| StudStreetAddress | 4567 NE 32nd Ct | 30301 - 166th Ave. N.E. | Route 2, Box 203B |
+| StudCity | Bellevue | Eugene | Marysville |
+| StudState | WA | OR | WA |
+| StudZipCode | 98002 | 97401 | 98271 |
+| StudAreaCode | 425 | 541 | 253 |
+| StudPhoneNumber | 555-9872 | 555-2551 | 555-2521 |
+| StudGPA | 0 | 80 | 87.65 |
+| StudMajor | null | 2 | 7 |
 
 # "Subjects"  (rows=56)
 
@@ -314,9 +314,9 @@ indexes: "CategoryID", "SubjectPreReq"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| SubjectID | 56 | 16 | 55 |
-| CategoryID | POL | ART | POL |
-| SubjectCode | POL 213 | ART 251 | POL 102 |
-| SubjectName | Women and Politics | Art History | American Government |
-| SubjectPreReq | null | null | null |
-| SubjectDescription | Introduction to concepts of power and policy issues as they relate to women. Theoretical, historical and empirical studies of women's participation in social and political movements nationally and in… | Surveys major forms of visual expression from the Paleolithic, Egyptian, Mesopotamian, Greek, Roman, and Early Christian periods. Includes painting, sculpture, architecture, lectures, slides, and rea… | Origin and development of the U.S. government. Covers the stucture and function of Congress, the Presidency and courts as well as civil liberties, political behavior and political parties. |
+| SubjectID | 56 | 8 | 4 |
+| CategoryID | POL | BUS | ACC |
+| SubjectCode | POL 213 | BUS 151 | ACC 251 |
+| SubjectName | Women and Politics | Introduction to Entrepreneurship | Intermediate Accounting |
+| SubjectPreReq | null | null | ACC 220 |
+| SubjectDescription | Introduction to concepts of power and policy issues as they relate to women. Theoretical, historical and empirical studies of women's participation in social and political movements nationally and in… | Overview of the entrepreneurial process, examination of the marketplace, and discussion of successful business strategies. Product selection, selling and marketing strategies. Sources of information… | In-depth review of financial accounting principles. Emphasizes the conceptual framework of accounting, revenue and expense recognition. Accounts Receivable, Depreciation, and Amortization, etc. Prere… |

@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:32:01.058608Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:21:32.544778Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-2wxeb2if/California_Traffic_Collision.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-09tye19l/California_Traffic_Collision.sqlite
 schema: main
 ---
 
@@ -18,7 +18,7 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| case_id | 9.9e+18 | 5.2e+06 | 6.7e+06 |
+| case_id | 9.9e+18 | 9e+07 | 8.2e+06 |
 | db_year | 2018 | 2021 | 2021 |
 
 # "collisions"  (rows=94243)
@@ -105,24 +105,24 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| case_id | 9.9e+18 | 6e+06 | 1.8e+06 |
-| jurisdiction | 9870 | 9860 | 9670 |
-| officer_id | 16011 | 011402 | 13317 |
-| reporting_district | 0 | null | null |
-| chp_shift | 0600 thru 1359 | 0600 thru 1359 | 1400 thru 2159 |
-| population | unincorporated | unincorporated | 50000 to 100000 |
-| county_city_location | 3600 | 3600 | 3003 |
-| county_location | san bernardino | san bernardino | orange |
+| case_id | 9.9e+18 | 9e+07 | 4.5e+06 |
+| jurisdiction | 9870 | 9340 | 1942 |
+| officer_id | 16011 | 021316 | 23685 |
+| reporting_district | 0 | null | 374 |
+| chp_shift | 0600 thru 1359 | 0600 thru 1359 | not chp |
+| population | unincorporated | 100000 to 250000 | >250000 |
+| county_city_location | 3600 | 4314 | 1942 |
+| county_location | san bernardino | santa clara | los angeles |
 | special_condition | null | 0 | 0 |
-| beat_type | chp state highway | chp county roadarea | chp state highway |
-| chp_beat_type | state route | county road area | state route |
+| beat_type | chp state highway | chp county roadline | not chp |
+| chp_beat_type | state route | county road line | not chp |
 | city_division_lapd | null | null | null |
-| chp_beat_class | chp primary | chp other | chp other |
-| beat_number | 031 | 002 | 091 |
-| primary_road | RT 62 | STATE ST | RT 91 |
-| secondary_road | JUNIPER RD | KERN ST | STANTON AV |
-| distance | 267 | 580 | 200 |
-| direction | east | south | west |
+| chp_beat_class | chp primary | chp other | not chp |
+| beat_number | 031 | 520 | null |
+| primary_road | RT 62 | SAN TOMAS EXPY S/B | RODEO RD |
+| secondary_road | JUNIPER RD | EL CAMINO REAL | COLISEUM ST |
+| distance | 267 | 200 | 500 |
+| direction | east | north | west |
 | intersection | 0 | 0 | 0 |
 | weather_1 | clear | clear | clear |
 | weather_2 | null | null | null |
@@ -136,50 +136,50 @@ samples:
 | location_type | highway | null | null |
 | ramp_intersection | highway | null | null |
 | side_of_highway | eastbound | null | null |
-| tow_away | 1 | 1 | 1 |
+| tow_away | 1 | 0 | 0 |
 | collision_severity | property damage only | property damage only | pain |
 | killed_victims | 0 | 0 | 0 |
-| injured_victims | 0 | 0 | 3 |
-| party_count | 2 | 1 | 2 |
+| injured_victims | 0 | 0 | 1 |
+| party_count | 2 | 2 | 2 |
 | primary_collision_factor | vehicle code violation | vehicle code violation | vehicle code violation |
 | pcf_violation_code | vehicle | null | null |
-| pcf_violation_category | automobile right of way | speeding | improper turning |
-| pcf_violation | 21801 | 22350 | 22107 |
+| pcf_violation_category | automobile right of way | speeding | null |
+| pcf_violation | 21801 | 22350 | null |
 | pcf_violation_subsection | A | null | null |
-| hit_and_run | not hit and run | misdemeanor | not hit and run |
-| type_of_collision | broadside | hit object | sideswipe |
-| motor_vehicle_involved_with | other motor vehicle | fixed object | parked motor vehicle |
+| hit_and_run | not hit and run | not hit and run | not hit and run |
+| type_of_collision | broadside | rear end | hit object |
+| motor_vehicle_involved_with | other motor vehicle | other motor vehicle | other object |
 | pedestrian_action | no pedestrian involved | no pedestrian involved | no pedestrian involved |
 | road_surface | dry | dry | dry |
 | road_condition_1 | normal | normal | normal |
 | road_condition_2 | null | null | null |
 | lighting | daylight | daylight | daylight |
-| control_device | none | functioning | none |
+| control_device | none | none | none |
 | chp_road_type | 0 | 0 | 0 |
 | pedestrian_collision | 0 | 0 | 0 |
-| bicycle_collision | 0 | 0 | 0 |
+| bicycle_collision | 0 | 0 | 1 |
 | motorcycle_collision | 0 | 0 | 0 |
 | truck_collision | 0 | 0 | 0 |
 | not_private_property | 1 | 1 | 1 |
 | alcohol_involved | null | null | null |
-| statewide_vehicle_type_at_fault | passenger car | passenger car | passenger car |
-| chp_vehicle_type_at_fault | passenger car, station | passenger car, station | passenger car, station |
+| statewide_vehicle_type_at_fault | passenger car | passenger car | null |
+| chp_vehicle_type_at_fault | passenger car, station | passenger car, station | null |
 | severe_injury_count | 0 | 0 | 0 |
 | other_visible_injury_count | 0 | 0 | 0 |
-| complaint_of_pain_injury_count | 0 | 0 | 3 |
+| complaint_of_pain_injury_count | 0 | 0 | 1 |
 | pedestrian_killed_count | 0 | 0 | 0 |
 | pedestrian_injured_count | 0 | 0 | 0 |
 | bicyclist_killed_count | 0 | 0 | 0 |
-| bicyclist_injured_count | 0 | 0 | 0 |
+| bicyclist_injured_count | 0 | 0 | 1 |
 | motorcyclist_killed_count | 0 | 0 | 0 |
 | motorcyclist_injured_count | 0 | 0 | 0 |
 | primary_ramp | null | null | null |
 | secondary_ramp | null | null | null |
-| latitude | null | 34.1553 | null |
-| longitude | null | -117.335 | null |
-| collision_date | 2001-11-06 | 2013-01-15 | 2004-09-07 |
-| collision_time | 10:00:00 | 13:45:00 | 16:15:00 |
-| process_date | 2002-04-04 | 2014-06-23 | 2005-03-22 |
+| latitude | null | 37.3547 | null |
+| longitude | null | -121.969 | null |
+| collision_date | 2001-11-06 | 2016-09-07 | 2009-09-28 |
+| collision_time | 10:00:00 | 07:50:00 | 15:00:00 |
+| process_date | 2002-04-04 | 2016-09-14 | 2010-05-24 |
 
 # "parties"  (rows=186692)
 
@@ -222,19 +222,19 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 16432232 | 7167746 | 1867493 |
-| case_id | 9.9e+18 | 8.9e+06 | 5.2e+06 |
-| party_number | 2 | 1 | 1 |
+| id | 16432232 | 8035623 | 646229 |
+| case_id | 9.9e+18 | 9e+07 | 3.9e+06 |
+| party_number | 2 | 2 | 2 |
 | party_type | driver | driver | driver |
-| at_fault | 0 | 1 | 1 |
-| party_sex | male | male | null |
-| party_age | 20 | 31 | null |
-| party_sobriety | had not been drinking | had not been drinking | impairment unknown |
-| party_drug_physical | null | null | G |
-| direction_of_travel | south | west | null |
-| party_safety_equipment_1 | lap/shoulder harness used | air bag not deployed | null |
-| party_safety_equipment_2 | null | lap/shoulder harness used | null |
-| financial_responsibility | proof of insurance obtained | no proof of insurance obtained | null |
+| at_fault | 0 | 0 | 0 |
+| party_sex | male | female | male |
+| party_age | 20 | 18 | 50 |
+| party_sobriety | had not been drinking | had not been drinking | had not been drinking |
+| party_drug_physical | null | null | null |
+| direction_of_travel | south | south | south |
+| party_safety_equipment_1 | lap/shoulder harness used | air bag not deployed | air bag not deployed |
+| party_safety_equipment_2 | null | lap/shoulder harness used | lap/shoulder harness used |
+| financial_responsibility | proof of insurance obtained | proof of insurance obtained | proof of insurance obtained |
 | hazardous_materials | null | null | null |
 | cellphone_in_use | null | 0 | 0 |
 | cellphone_use_type | no cellphone/unknown | cellphone not in use | cellphone not in use |
@@ -246,14 +246,14 @@ samples:
 | other_associate_factor_1 | none apparent | none apparent | none apparent |
 | other_associate_factor_2 | null | null | null |
 | party_number_killed | 0 | 0 | 0 |
-| party_number_injured | 0 | 0 | 0 |
-| movement_preceding_collision | slowing/stopping | proceeding straight | proceeding straight |
-| vehicle_year | 2001 | 2002 | null |
-| vehicle_make | ford | mercedes-benz | null |
-| statewide_vehicle_type | pickup or panel truck | passenger car | null |
-| chp_vehicle_type_towing | pickups & panels | passenger car, station | null |
+| party_number_injured | 0 | 1 | 1 |
+| movement_preceding_collision | slowing/stopping | stopped | stopped |
+| vehicle_year | 2001 | 2003 | 1998 |
+| vehicle_make | ford | toyota | jeep |
+| statewide_vehicle_type | pickup or panel truck | passenger car | passenger car |
+| chp_vehicle_type_towing | pickups & panels | sport utility vehicle | sport utility vehicle |
 | chp_vehicle_type_towed | 00 | null | 00 |
-| party_race | null | asian | null |
+| party_race | null | asian | white |
 
 # "victims"  (rows=96393)
 
@@ -275,14 +275,14 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 8817516 | 1604644 | 2510391 |
-| case_id | 9.9e+18 | 1.6e+06 | 6.7e+06 |
-| party_number | 2 | 1 | 2 |
+| id | 8817516 | 3490804 | 3336778 |
+| case_id | 9.9e+18 | 3.4e+06 | 3.2e+06 |
+| party_number | 2 | 1 | 1 |
 | victim_role | non-injured party | passenger | driver |
-| victim_sex | male | male | female |
-| victim_age | 26 | 9 | 30 |
-| victim_degree_of_injury | no injury | no injury | complaint of pain |
-| victim_seating_position | passenger seat 3 | passenger seat 6 | driver |
-| victim_safety_equipment_1 | lap/shoulder harness used | air bag not deployed | air bag deployed |
+| victim_sex | male | female | male |
+| victim_age | 26 | 82 | 64 |
+| victim_degree_of_injury | no injury | no injury | severe injury |
+| victim_seating_position | passenger seat 3 | passenger seat 3 | driver |
+| victim_safety_equipment_1 | lap/shoulder harness used | not required | air bag not deployed |
 | victim_safety_equipment_2 | null | lap/shoulder harness used | lap/shoulder harness used |
 | victim_ejected | not ejected | not ejected | not ejected |

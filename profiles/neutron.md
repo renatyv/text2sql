@@ -1,7 +1,7 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:29:16.111066Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:04:27.752405Z
 dialect: mysql
 database: neutron
 schema: neutron
@@ -80,17 +80,17 @@ indexes: UNIQUE (`agent_type`,`host`)
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | ff9b1722-0846-4fdf-9c33-97d8cefcdf35 | 95d2c4cd-bc12-4e03-befc-1c91fb81cdb3 | 9a60112c-0f6e-4bb1-8c49-6028b371b5f9 |
+| id | ff9b1722-0846-4fdf-9c33-97d8cefcdf35 | ef8f86b7-dc70-41ed-9c9b-80b0945d501a | 50218173-3ea7-4499-b4c9-3d545810f488 |
 | agent_type | Open vSwitch agent | Open vSwitch agent | Open vSwitch agent |
 | binary | neutron-openvswitch-agent | neutron-openvswitch-agent | neutron-openvswitch-agent |
 | topic |  |  |  |
-| host | spark5-69 | lumen4-89 | spark9-96 |
+| host | spark5-69 | flash4-74 | xenon5-10 |
 | admin_state_up | 1 | 1 | 1 |
-| created_at | 2017-12-11T17:13:05 | 2017-08-03T19:12:24 | 2016-09-24T03:49:55 |
-| started_at | 2022-03-09T13:07:46 | 2018-02-05T21:40:32 | 2023-01-14T18:04:16 |
-| heartbeat_timestamp | 2024-07-08T06:59:43 | 2018-02-05T21:40:32 | 2024-07-08T06:59:38 |
+| created_at | 2017-12-11T17:13:05 | 2014-12-04T15:46:31 | 2018-02-05T21:08:19 |
+| started_at | 2022-03-09T13:07:46 | 2017-11-30T11:46:08 | 2022-07-16T13:01:53 |
+| heartbeat_timestamp | 2024-07-08T06:59:43 | 2017-12-11T15:42:49 | 2022-08-05T15:27:40 |
 | description | null | null | null |
-| configurations | {"ovs_hybrid_plug": true, "in_distributed_mode": false, "datapath_type": "system", "arp_responder_enabled": false, "tunneling_ip": "10.60.50.88/8", "vhostuser_socket_dir": "/var/run/openvswitch", "de… | {"ovs_hybrid_plug": true, "in_distributed_mode": false, "datapath_type": "system", "arp_responder_enabled": false, "tunneling_ip": "10.47.215.156/8", "vhostuser_socket_dir": "/var/run/openvswitch", "… | {"ovs_hybrid_plug": true, "in_distributed_mode": false, "datapath_type": "system", "arp_responder_enabled": false, "tunneling_ip": "10.18.36.134/8", "vhostuser_socket_dir": "/var/run/openvswitch", "d… |
+| configurations | {"ovs_hybrid_plug": true, "in_distributed_mode": false, "datapath_type": "system", "arp_responder_enabled": false, "tunneling_ip": "10.60.50.88/8", "vhostuser_socket_dir": "/var/run/openvswitch", "de… | {"ovs_hybrid_plug": true, "in_distributed_mode": false, "datapath_type": "system", "arp_responder_enabled": false, "tunneling_ip": "10.43.41.123/8", "vhostuser_socket_dir": "/var/run/openvswitch", "d… | {"ovs_hybrid_plug": true, "in_distributed_mode": false, "datapath_type": "system", "arp_responder_enabled": false, "tunneling_ip": "10.47.215.156/8", "vhostuser_socket_dir": "/var/run/openvswitch", "… |
 | load | 0 | 0 | 0 |
 | availability_zone | null | null | null |
 | resource_versions | {"QosPolicy": "1.0"} | {"QosPolicy": "1.0"} | {"QosPolicy": "1.0"} |
@@ -146,8 +146,8 @@ indexes: `security_group_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| tenant_id | ffa0e5fc492e4b4290bb9e2757850411 | f06795469c3a4041b92976e17e0d74e1 | ea08d8176e314881b039271ee8168e14 |
-| security_group_id | 28c85503-4127-43be-b2d4-842965390d71 | 2c6f582f-7b70-4f26-b37b-75e4178bc84f | 6b78aa87-cfa6-4a73-9b96-c0642e00a995 |
+| tenant_id | ffa0e5fc492e4b4290bb9e2757850411 | 22198a26210d4204978593a6c1a4cfdb | 7f8fbdfe72704ac4b6c99a29f31bed87 |
+| security_group_id | 28c85503-4127-43be-b2d4-842965390d71 | aa6083c9-17f0-4670-9375-87c69eb8a96f | 89ae18ac-cf2d-46ae-a678-a93ee5ad9f56 |
 
 # `dnsnameservers`  (rows=65)
 
@@ -161,9 +161,9 @@ indexes: `subnet_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| address | 10.67.40.40/8 | 10.229.203.154/8 | 10.229.203.154/8 |
-| subnet_id | faee7948-a17f-4e58-a557-7ea1219c3b5f | 76123b94-2ae9-40c4-a4c6-03ee98d081d9 | 388ee748-7b3d-4049-99b4-7e582937bbd4 |
-| order | 0 | 0 | 1 |
+| address | 10.67.40.40/8 | 10.67.40.40/8 | 10.67.40.40/8 |
+| subnet_id | faee7948-a17f-4e58-a557-7ea1219c3b5f | 25a309b3-7334-44b7-99b5-85a874d28475 | 862e31fa-ce44-4f58-95b7-9bf1193cb5c9 |
+| order | 0 | 0 | 0 |
 
 # `externalnetworks`  (rows=1)
 
@@ -199,17 +199,17 @@ indexes: `fixed_port_id`, `floating_port_id`, `tenant_id`, `router_id`, UNIQUE `
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| tenant_id | e3fb2659584e436a832461dac02835f0 | e3fb2659584e436a832461dac02835f0 | e3fb2659584e436a832461dac02835f0 |
-| id | e34474f1-b958-4969-b073-b66c9a449ea4 | 84b503c0-9cf2-4155-98e5-5868703ac6f2 | 18801cc2-fb09-48fd-b6b5-2fd659fc0214 |
-| floating_ip_address | 10.144.191.176/8 | 10.37.254.28/8 | 10.133.112.19/8 |
+| tenant_id | e3fb2659584e436a832461dac02835f0 | e3fb2659584e436a832461dac02835f0 | bfd50153a2e9476f93e33e30e922cd06 |
+| id | e34474f1-b958-4969-b073-b66c9a449ea4 | 84b503c0-9cf2-4155-98e5-5868703ac6f2 | d189e6ab-4e60-4876-99f3-d9b2f5d75803 |
+| floating_ip_address | 10.144.191.176/8 | 10.37.254.28/8 | 10.136.216.22/8 |
 | floating_network_id | 8ad137b5-cc2b-44c7-9db0-e4f81d978d0c | 8ad137b5-cc2b-44c7-9db0-e4f81d978d0c | 8ad137b5-cc2b-44c7-9db0-e4f81d978d0c |
-| floating_port_id | bf817042-61e4-4a1f-9a18-7313f52cc604 | e4961a83-21c2-446b-8964-84460741fbb8 | 3b34fa75-3156-4652-be85-1e53574c0b52 |
-| fixed_port_id | null | null | null |
-| fixed_ip_address | null | null | null |
-| router_id | null | null | null |
+| floating_port_id | bf817042-61e4-4a1f-9a18-7313f52cc604 | e4961a83-21c2-446b-8964-84460741fbb8 | a9ccabcf-c298-4997-9dd1-2851b26c8b68 |
+| fixed_port_id | null | null | 39f05ecd-f829-4643-8c9b-e82eebc255ba |
+| fixed_ip_address | null | null | 10.209.133.213/8 |
+| router_id | null | null | fa95b6df-6eef-49a9-a7df-753eeb99c527 |
 | last_known_router_id | null | null | null |
-| status | DOWN | DOWN | DOWN |
-| standard_attr_id | 49570 | 49574 | 49566 |
+| status | DOWN | DOWN | ACTIVE |
+| standard_attr_id | 49570 | 49574 | 21352 |
 
 # `healthmonitors`  (rows=3)
 
@@ -254,10 +254,10 @@ indexes: `subnet_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | f2c784e3-2b56-4fca-b9d2-f5432b4fbce3 | c51be380-8316-4ef7-a5c9-8767fda6f9a8 | de38c287-2557-4652-ae97-f49b652a1005 |
-| subnet_id | c8dbe01f-3465-46f8-a3b0-20436272a81a | 9d67653d-0e90-4f72-a9ab-162930b79267 | 0814cd95-6c95-4669-8415-e555344bb15b |
-| first_ip | 10.148.172.254/8 | 10.150.64.113/8 | 10.40.209.248/8 |
-| last_ip | 10.179.7.202/8 | 10.103.41.89/8 | 10.13.139.247/8 |
+| id | f2c784e3-2b56-4fca-b9d2-f5432b4fbce3 | 32206cb1-51e5-43e3-85b5-b4a9498f4ba0 | c16562ef-a48d-4189-a672-7ae1129203e7 |
+| subnet_id | c8dbe01f-3465-46f8-a3b0-20436272a81a | 26a23140-1cb7-4ccd-b2d7-50611eb82663 | 9a5dbe03-34ac-4c93-89b8-cd16bb198697 |
+| first_ip | 10.148.172.254/8 | 10.89.22.204/8 | 10.30.33.48/8 |
+| last_ip | 10.179.7.202/8 | 10.91.230.4/8 | 10.20.2.132/8 |
 
 # `ipallocations`  (rows=3779)
 
@@ -272,8 +272,8 @@ indexes: `network_id`, `port_id`, `subnet_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| port_id | 44283b5e-1502-436a-be73-caf0d33ab36d | da52bd7b-d78c-4473-b41b-e2db442a6527 | 1faebf18-f840-4410-90b6-ff3456093747 |
-| ip_address | track | 10.225.199.210/8 | 10.150.185.91/8 |
+| port_id | 44283b5e-1502-436a-be73-caf0d33ab36d | 2daa6cd5-7e85-46f2-9f87-d525aeb0a1a3 | 339efd58-eee9-4e80-8b17-8a6fe87ca2f9 |
+| ip_address | track | 10.216.253.165/8 | 10.20.223.125/8 |
 | subnet_id | 76123b94-2ae9-40c4-a4c6-03ee98d081d9 | 76123b94-2ae9-40c4-a4c6-03ee98d081d9 | 76123b94-2ae9-40c4-a4c6-03ee98d081d9 |
 | network_id | 0a1d0a27-cffa-4de3-92c5-9d3fd3f2e74d | 0a1d0a27-cffa-4de3-92c5-9d3fd3f2e74d | 0a1d0a27-cffa-4de3-92c5-9d3fd3f2e74d |
 
@@ -290,8 +290,8 @@ samples:
 | column | latest | sample | sample |
 |---|---|---|---|
 | allocation_pool_id | f2c784e3-2b56-4fca-b9d2-f5432b4fbce3 | 455ff839-68cc-497c-80cb-aec8ddd623a8 | 455ff839-68cc-497c-80cb-aec8ddd623a8 |
-| first_ip | 10.58.155.83/8 | 10.98.239.58/8 | 10.8.89.251/8 |
-| last_ip | 10.179.7.202/8 | 10.156.231.207/8 | 10.8.89.251/8 |
+| first_ip | 10.58.155.83/8 | 10.255.13.100/8 | 10.36.210.233/8 |
+| last_ip | 10.179.7.202/8 | 10.23.232.17/8 | 10.38.9.67/8 |
 
 # `lbaas_listeners`  (rows=5)
 
@@ -415,12 +415,12 @@ indexes: `tenant_id`, UNIQUE (`pool_id`,`address`,`protocol_port`)
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| tenant_id | bfd50153a2e9476f93e33e30e922cd06 | bfd50153a2e9476f93e33e30e922cd06 | bfd50153a2e9476f93e33e30e922cd06 |
-| id | f2bab0c3-e5d8-4577-9a7b-7340420dda81 | 8d36de4e-1c5c-44ce-8157-f85311ba03d8 | 71dfbb81-4503-439c-a1b3-3fc66a9a19f6 |
-| pool_id | 84ed8864-e9d5-436a-b662-4b4e8d4b7893 | 4b1b8e0d-663b-445a-b130-b409c2f41bf0 | 4b1b8e0d-663b-445a-b130-b409c2f41bf0 |
-| subnet_id | 2019039a-089f-408c-b080-201a0c5cbe6f | 2019039a-089f-408c-b080-201a0c5cbe6f | 2019039a-089f-408c-b080-201a0c5cbe6f |
-| address | 10.154.119.80/8 | 10.154.119.80/8 | 10.111.186.226/8 |
-| protocol_port | 30637 | 31582 | 31582 |
+| tenant_id | bfd50153a2e9476f93e33e30e922cd06 | 98333a1a28e746fa8c629c83a818ad57 | 98333a1a28e746fa8c629c83a818ad57 |
+| id | f2bab0c3-e5d8-4577-9a7b-7340420dda81 | 14d172d4-801b-4fbe-a394-3375acbd93ca | 231b2eed-a101-4337-80aa-00ec0164f2a0 |
+| pool_id | 84ed8864-e9d5-436a-b662-4b4e8d4b7893 | 03c2ef39-04ca-4652-a26e-e790cb7db5ce | 465bd555-a001-461a-9aed-41405a2a8bdb |
+| subnet_id | 2019039a-089f-408c-b080-201a0c5cbe6f | 0807c5b3-aa6c-4108-8884-7b4948a19178 | 0807c5b3-aa6c-4108-8884-7b4948a19178 |
+| address | 10.154.119.80/8 | 10.16.112.58/8 | 10.6.159.91/8 |
+| protocol_port | 30637 | 31042 | 31154 |
 | weight | 1 | 1 | 1 |
 | admin_state_up | 1 | 1 | 1 |
 | provisioning_status | ACTIVE | ACTIVE | ACTIVE |
@@ -498,7 +498,7 @@ indexes: `allocated`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| gre_id | 1000 | 717 | 718 |
+| gre_id | 1000 | 942 | 943 |
 | allocated | 0 | 0 | 0 |
 
 # `ml2_gre_endpoints`  (rows=124)
@@ -512,8 +512,8 @@ indexes: UNIQUE `host`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ip_address | 10.96.19.200/8 | 10.75.161.66/8 | 10.254.118.207/8 |
-| host | drift-69 | beam8-22 | drift-42 |
+| ip_address | 10.96.19.200/8 | 10.91.128.139/8 | 10.0.125.196/8 |
+| host | drift-69 | null | null |
 
 # `ml2_network_segments`  (rows=49)
 
@@ -531,11 +531,11 @@ indexes: `network_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | fd961fc1-c324-49bc-8f53-629f0af064d8 | f7506aa6-0a24-4a1d-b6d8-2582ca1f8c23 | 68c31fad-ef88-47d0-99d8-ec49a03c9bf2 |
-| network_id | b4f80478-cac6-49b2-9485-8d011dc9cb53 | c9e8f307-e1d5-4c06-b464-ef5370ca1d6d | 84ba89ec-68fd-4257-80eb-a1c3a65ee594 |
-| network_type | gre | vlan | vlan |
-| physical_network | null | trunk | trunk |
-| segmentation_id | 7 | 9 | 2052 |
+| id | fd961fc1-c324-49bc-8f53-629f0af064d8 | ea0f417c-0c81-461b-a705-81ad4d2e62b0 | c583d60a-93ab-4a42-9ed9-4e587b1a8551 |
+| network_id | b4f80478-cac6-49b2-9485-8d011dc9cb53 | 04dc6fb8-2d9e-4739-9c71-1e3dc9ab6390 | 18b03960-577f-49a4-be38-aafb4e05f3f3 |
+| network_type | gre | gre | gre |
+| physical_network | null | null | null |
+| segmentation_id | 7 | 40 | 104 |
 | is_dynamic | 0 | 0 | 0 |
 | segment_index | 0 | 0 | 0 |
 
@@ -553,8 +553,8 @@ indexes: `segment_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| port_id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 | 33093db4-3456-4a1b-80ff-6e3df72d41b8 | 1f0f95d6-bcfe-41b1-9b45-d77a95a934bb |
-| host | forge-23 | flare4-57 | zeph-15 |
+| port_id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 | aae859c9-1e74-4ba5-b79f-8912a363ae5e | 89fbbbe1-3947-4097-aee6-fcc1b9e5571f |
+| host | forge-23 | nexis-43 | nexus-51 |
 | level | 0 | 0 | 0 |
 | driver | openvswitch | openvswitch | openvswitch |
 | segment_id | 40c56f51-8c44-4d82-8369-d065010ed91a | 40c56f51-8c44-4d82-8369-d065010ed91a | 40c56f51-8c44-4d82-8369-d065010ed91a |
@@ -574,8 +574,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| port_id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 | 0c8e15a4-160d-4403-989f-decbcab4c36b | ed23c105-b31c-4f23-8e74-e809bcc1ddec |
-| host | forge-23 | galax4-70 | ether-18 |
+| port_id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 | 3d9d5c0c-c9de-460d-9975-f46bbbb3bf64 | b42baff3-dbb7-45e1-99f9-4db649c8f6e3 |
+| host | forge-23 | forge-23 | gamut-16 |
 | vif_type | ovs | ovs | ovs |
 | vnic_type | normal | normal | normal |
 | vif_details | {"port_filter": true, "ovs_hybrid_plug": true} | {"port_filter": true, "ovs_hybrid_plug": true} | {"port_filter": true, "ovs_hybrid_plug": true} |
@@ -608,7 +608,7 @@ indexes: `dhcp_agent_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| network_id | fe178706-9942-4600-9224-b2ae7c61db71 | 7cde47d6-0ae4-4537-9120-444dc3920ff0 | a4d00c60-f005-400e-a24c-1bf8b8308f98 |
+| network_id | fe178706-9942-4600-9224-b2ae7c61db71 | b0c35168-dd4a-43db-9eaf-40f72529d8c8 | 4207d69c-903d-48d3-be48-debcb46b3241 |
 | dhcp_agent_id | d72830f5-a71c-418d-8d47-ff23ef398336 | d72830f5-a71c-418d-8d47-ff23ef398336 | d72830f5-a71c-418d-8d47-ff23ef398336 |
 
 # `networkrbacs`  (rows=14)
@@ -625,10 +625,10 @@ indexes: `tenant_id`, `object_id`, UNIQUE (`action`,`object_id`,`target_tenant`)
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | f2980872-481b-497a-9281-784178e4e555 | 8d848179-cea2-4b3a-9790-78e23b276a4c | 8558e61c-4a71-4ae9-87b4-087ca67a4902 |
+| id | f2980872-481b-497a-9281-784178e4e555 | 8d848179-cea2-4b3a-9790-78e23b276a4c | 57051f7f-91ae-4d62-b98e-08041ae25928 |
 | object_id | c9e8f307-e1d5-4c06-b464-ef5370ca1d6d | 4207d69c-903d-48d3-be48-debcb46b3241 | 4207d69c-903d-48d3-be48-debcb46b3241 |
 | tenant_id | 7691c9955ce1444ab366d041f5bdf33c | 6f9adccbd03e4d2186756896957a14bf | 6f9adccbd03e4d2186756896957a14bf |
-| target_tenant | c1cb7bcbcb6040c9837c35ff8501b13a | bfd50153a2e9476f93e33e30e922cd06 | a3ccd76b29264bbe94415833015c9379 |
+| target_tenant | c1cb7bcbcb6040c9837c35ff8501b13a | bfd50153a2e9476f93e33e30e922cd06 | 41875d895b664602869cdab371081dc3 |
 | action | access_as_shared | access_as_shared | access_as_shared |
 
 # `networks`  (rows=49)
@@ -649,15 +649,15 @@ indexes: `tenant_id`, UNIQUE `standard_attr_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| tenant_id | 17ea94ad74b64b9d92f4888336a598c7 | 70b2507b8cc44fcb917ddfb85f5079d9 | d00c4471fe5945f69795d50f7f32981e |
-| id | fe178706-9942-4600-9224-b2ae7c61db71 | c9e8f307-e1d5-4c06-b464-ef5370ca1d6d | 92d37d16-07e5-4387-8ab0-ce4a90a998ea |
-| name | twist0-28 | proto | grav1_star |
+| tenant_id | 17ea94ad74b64b9d92f4888336a598c7 | 98333a1a28e746fa8c629c83a818ad57 | ef0ebc28b4e54d1b818821b2fd5e7511 |
+| id | fe178706-9942-4600-9224-b2ae7c61db71 | 2fd4865f-ed87-4b56-a1a3-8a20f3275c0d | d1419216-65f6-4bba-bd77-f35850328822 |
+| name | twist0-28 | gamma3_helix | plasm8-93 |
 | status | ACTIVE | ACTIVE | ACTIVE |
 | admin_state_up | 1 | 1 | 1 |
-| mtu | null | 1500 | 8958 |
+| mtu | null | 8958 | 0 |
 | vlan_transparent | null | null | null |
-| standard_attr_id | 1311 | 16162 | 50203 |
-| availability_zone_hints | null | [] | [] |
+| standard_attr_id | 1311 | 54183 | 1304 |
+| availability_zone_hints | null | [] | null |
 
 # `networksecuritybindings`  (rows=36)
 
@@ -670,8 +670,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| network_id | fe178706-9942-4600-9224-b2ae7c61db71 | 4207d69c-903d-48d3-be48-debcb46b3241 | e521f9d0-a1bd-4ff4-bc81-78a60dd88fe5 |
-| port_security_enabled | 1 | 1 | 1 |
+| network_id | fe178706-9942-4600-9224-b2ae7c61db71 | 5ec0b65f-6115-4525-8093-a8ce01707624 | c9e8f307-e1d5-4c06-b464-ef5370ca1d6d |
+| port_security_enabled | 1 | 1 | 0 |
 
 # `poolmonitorassociations`  (rows=1)
 
@@ -763,17 +763,17 @@ indexes: (`network_id`,`device_owner`), (`network_id`,`mac_address`), `tenant_id
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| tenant_id | 17ea94ad74b64b9d92f4888336a598c7 | 17ea94ad74b64b9d92f4888336a598c7 | 17ea94ad74b64b9d92f4888336a598c7 |
-| id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 | d3f11f03-d192-4b9a-b4e0-11dceb811463 | 81f8eefc-7de2-4171-b231-5f1744f5dc9f |
+| tenant_id | 17ea94ad74b64b9d92f4888336a598c7 | 190ad02e1faa494a8ab7153c6d2e56c1 | 17ea94ad74b64b9d92f4888336a598c7 |
+| id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 | 97a87c72-9670-44f5-b273-b686009fdca4 | 740a66f7-985f-4abe-97ba-b2e140b7bc5f |
 | name | null | null | null |
 | network_id | 0a1d0a27-cffa-4de3-92c5-9d3fd3f2e74d | 0a1d0a27-cffa-4de3-92c5-9d3fd3f2e74d | 0a1d0a27-cffa-4de3-92c5-9d3fd3f2e74d |
-| mac_address | fa:16:3e:87:d2:36 | fa:16:3e:2b:01:05 | fa:16:3e:6b:05:3c |
+| mac_address | fa:16:3e:87:d2:36 | fa:16:3e:d1:8d:59 | fa:16:3e:18:4f:0b |
 | admin_state_up | 1 | 1 | 1 |
-| status | DOWN | ACTIVE | DOWN |
-| device_id | 429c0638-c9b8-465d-8516-6b5b26693f20 | b7060bb7-d440-4335-87ab-a6de93d36878 | a17f9996-6e1e-4c21-bbc9-48ce2c7f62b6 |
-| device_owner | compute:None | compute:None | compute:None |
+| status | DOWN | ACTIVE | ACTIVE |
+| device_id | 429c0638-c9b8-465d-8516-6b5b26693f20 | cd2d1b2c-aca9-44a0-8b41-a737dad178c6 | daac82da-ed6b-432b-a062-201e7e9181bc |
+| device_owner | compute:None | compute:nova | compute:None |
 | dns_name | null | null | null |
-| standard_attr_id | 52214 | 56121 | 52013 |
+| standard_attr_id | 52214 | 65408 | 56139 |
 
 # `portsecuritybindings`  (rows=3194)
 
@@ -786,7 +786,7 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| port_id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 | 8d9c0961-7a62-4203-ad4f-f1b6838b5948 | 86dd183a-cf91-4c57-8536-a182ed4db5e9 |
+| port_id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 | a9584655-42e9-4be3-a9c7-70cbb15c3db5 | d5ca0d36-f2f1-459b-ae69-6779e3da5c63 |
 | port_security_enabled | 1 | 1 | 1 |
 
 # `providerresourceassociations`  (rows=38)
@@ -801,7 +801,7 @@ samples:
 | column | latest | sample | sample |
 |---|---|---|---|
 | provider_name | haproxy | haproxy | haproxy |
-| resource_id | f07300df-e29d-4f56-9315-d358fedcb2ff | c6e81aa9-ec9f-4942-b94e-1b3830b0139f | 79be7c5c-b5da-4ffc-a71f-29653c653375 |
+| resource_id | f07300df-e29d-4f56-9315-d358fedcb2ff | 3995ac2a-8013-4bf3-8eb2-3fe47d824621 | 70c1dd6a-1752-42a8-b1a5-7d6db5e4c36d |
 
 # `quotas`  (rows=1521)
 
@@ -816,10 +816,10 @@ indexes: `tenant_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | ffb411ff-27ba-4657-9604-f446f8a76619 | 6b830b50-a781-4f77-a211-d87f1cf7a9f8 | 0ed839fb-3175-4eb1-b7f7-1e86414c4897 |
-| tenant_id | 5ff7fc0747b44990a271062cbaba0581 | ec70e195b7ec4fb19e064b89255da292 | 485672a6ccf24cd09bdca860e85b7916 |
-| resource | security_group | router | subnet |
-| limit | -1 | 10 | 10 |
+| id | ffb411ff-27ba-4657-9604-f446f8a76619 | 9ad8fbee-c891-4ed6-b695-2f2cf0b4c57b | b9c382df-bb31-4a8d-8358-0a55830cc35a |
+| tenant_id | 5ff7fc0747b44990a271062cbaba0581 | a632c7327bec4f86b7fa93b1c93f3dab | 66bb3791b211443c9bc39c0a392420bc |
+| resource | security_group | security_group_rule | router |
+| limit | -1 | -1 | 10 |
 
 # `quotausages`  (rows=810)
 
@@ -835,10 +835,10 @@ indexes: `resource`, `tenant_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| tenant_id | ffa0e5fc492e4b4290bb9e2757850411 | 4ce5b212366741a79bf884561a73d3a7 | bb02e86c269945129288ac22543d2d65 |
-| resource | security_group | security_group | port |
+| tenant_id | ffa0e5fc492e4b4290bb9e2757850411 | f0ae1d7c6f7b4417b2c9c4c82933ebd5 | cdb8fd3639134748aaa55cad3c4a1366 |
+| resource | security_group | port | security_group |
 | dirty | 0 | 0 | 0 |
-| in_use | 2 | 8 | 1 |
+| in_use | 2 | 2 | 6 |
 | reserved | 0 | 0 | 0 |
 
 # `reservations`  (rows=5)
@@ -888,12 +888,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| router_id | fa95b6df-6eef-49a9-a7df-753eeb99c527 | 93d59217-82e9-4e14-a893-8da557a2efcc | 611b1438-7ede-437c-864d-e25bd30c03d4 |
+| router_id | fa95b6df-6eef-49a9-a7df-753eeb99c527 | 71e9342c-dd51-4f9d-843d-892285bff645 | 30029469-c5b0-49f3-9f7e-a74a592b7d82 |
 | distributed | 0 | 0 | 0 |
 | service_router | 0 | 0 | 0 |
 | ha | 0 | 0 | 0 |
 | ha_vr_id | 0 | 0 | 0 |
-| availability_zone_hints | [] | [] | null |
+| availability_zone_hints | [] | [] | [] |
 
 # `routerl3agentbindings`  (rows=27)
 
@@ -906,7 +906,7 @@ indexes: `l3_agent_id`, `router_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| router_id | fa95b6df-6eef-49a9-a7df-753eeb99c527 | 0d643319-9537-413e-ac52-3fca261c0a47 | 30029469-c5b0-49f3-9f7e-a74a592b7d82 |
+| router_id | fa95b6df-6eef-49a9-a7df-753eeb99c527 | e0082509-7e89-4959-bf0c-b8c8b2acf639 | a154bb98-4a0d-4a6c-bcfa-e1afb65ce71e |
 | l3_agent_id | f650dff7-3bb0-44a7-8626-069e2b346dcf | f650dff7-3bb0-44a7-8626-069e2b346dcf | f650dff7-3bb0-44a7-8626-069e2b346dcf |
 
 # `routerports`  (rows=35)
@@ -921,9 +921,9 @@ indexes: `port_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| router_id | fa95b6df-6eef-49a9-a7df-753eeb99c527 | 8f10910e-4827-4528-9d63-501ef1e25ffa | ae4709ed-52bb-4b9e-adb2-3f750b45171c |
-| port_id | 4eba9d6b-dea1-45ac-83b4-4857ff3dabf0 | 2d54aa04-9d8d-4d3f-b3b4-4906aff79e96 | 08f5e69c-6ade-43db-b2a0-060ba0595d51 |
-| port_type | network:router_interface | network:router_gateway | network:router_interface |
+| router_id | fa95b6df-6eef-49a9-a7df-753eeb99c527 | 76f35845-0279-4b3f-93a7-f9ef40922a1a | e10a8573-7b74-4a21-b9ce-eaf66bf58279 |
+| port_id | 4eba9d6b-dea1-45ac-83b4-4857ff3dabf0 | 45ef9b25-dd08-47b3-a8ef-dd895e7527d4 | 65daa76d-d899-4518-8ed0-7d1bcd4c243c |
+| port_type | network:router_interface | network:router_gateway | network:router_gateway |
 
 # `routers`  (rows=27)
 
@@ -942,14 +942,14 @@ indexes: `gw_port_id`, `tenant_id`, UNIQUE `standard_attr_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| tenant_id | bfd50153a2e9476f93e33e30e922cd06 | bfd50153a2e9476f93e33e30e922cd06 | bfd50153a2e9476f93e33e30e922cd06 |
-| id | fa95b6df-6eef-49a9-a7df-753eeb99c527 | a154bb98-4a0d-4a6c-bcfa-e1afb65ce71e | 8f10910e-4827-4528-9d63-501ef1e25ffa |
-| name | blitz | scope_streak | comet_delta |
+| tenant_id | bfd50153a2e9476f93e33e30e922cd06 | 98333a1a28e746fa8c629c83a818ad57 | 09ad05432f914e26bc417bf58f1cb4d2 |
+| id | fa95b6df-6eef-49a9-a7df-753eeb99c527 | 9ff894ce-d884-46fd-9c47-c5fb7d6fb933 | 611b1438-7ede-437c-864d-e25bd30c03d4 |
+| name | blitz | blitz | shine_flare |
 | status | ACTIVE | ACTIVE | ACTIVE |
 | admin_state_up | 1 | 1 | 1 |
-| gw_port_id | 4872b855-26cd-4083-aa98-9b339b664970 | 16c68923-8a8d-483e-96d0-dd441cab2747 | 2d54aa04-9d8d-4d3f-b3b4-4906aff79e96 |
+| gw_port_id | 4872b855-26cd-4083-aa98-9b339b664970 | 7d292552-5b81-4545-99c9-650dcd4c0185 | 49acce02-7758-4227-add2-6245101d65f0 |
 | enable_snat | 1 | 1 | 1 |
-| standard_attr_id | 20998 | 6016 | 24313 |
+| standard_attr_id | 20998 | 21147 | 2041 |
 
 # `securitygroupportbindings`  (rows=5921)
 
@@ -962,8 +962,8 @@ indexes: `security_group_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| port_id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 | 9db01bf1-fa4c-4dd9-a895-99c1517a5bc3 | 9fb9d09e-fd27-4488-acbd-93c9957dda6f |
-| security_group_id | e89ea050-10bc-42e7-99a8-18b97cec2446 | 4c814ff8-e362-4eb2-9c46-7c713b7c9ae6 | e89ea050-10bc-42e7-99a8-18b97cec2446 |
+| port_id | ffe46d1d-3e9c-44f6-89c4-ad61eb5902d4 | 13dd8945-535e-4b80-b1d5-89d19a8570a0 | 6e53dda9-1b3f-4014-9ae1-06a344e7181b |
+| security_group_id | e89ea050-10bc-42e7-99a8-18b97cec2446 | e5209cd6-b881-4633-b955-fdde1fefea58 | d60ff86d-c3cf-485f-9149-0c5bec782af0 |
 
 # `securitygrouprules`  (rows=9004)
 
@@ -985,17 +985,17 @@ indexes: `tenant_id`, `remote_group_id`, `security_group_id`, UNIQUE `standard_a
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| tenant_id | 1140b46602e84c47838f707b060d6fd2 | 9e1029d915bf49a4a6e4dbe43eaccf41 | 7a181edd897b49718214040da2b8ad95 |
-| id | ffff1ce1-7487-4ab7-8df4-720e79740710 | 69fdcc3a-bf82-4ad9-86c7-b17a4ca2b510 | 14f754d3-27c1-4a09-8570-00ce16ad96bd |
-| security_group_id | 450d2918-0e07-4111-a8af-948eedb8e1ce | 433357b9-e9c7-4fa7-9b84-bc54353c7a89 | de863740-0ee8-4e32-aae2-9c41a3dcde86 |
-| remote_group_id | 450d2918-0e07-4111-a8af-948eedb8e1ce | 433357b9-e9c7-4fa7-9b84-bc54353c7a89 | null |
-| direction | ingress | ingress | egress |
-| ethertype | IPv6 | IPv6 | IPv4 |
+| tenant_id | 1140b46602e84c47838f707b060d6fd2 | e6ef0f87a97247bda8cd853a782a60ff | 3cfac786b36a4bb18f523f6be739ae71 |
+| id | ffff1ce1-7487-4ab7-8df4-720e79740710 | 0daa9546-cea5-44d5-bac6-e5f58b4ed017 | bf77a1d4-b46f-4c9a-8135-c52c0175ca56 |
+| security_group_id | 450d2918-0e07-4111-a8af-948eedb8e1ce | 15eaf535-ce57-481f-bec6-7181ee0b00da | 7a1c9cc4-d27c-408a-8aa8-cac94978150b |
+| remote_group_id | 450d2918-0e07-4111-a8af-948eedb8e1ce | null | 7a1c9cc4-d27c-408a-8aa8-cac94978150b |
+| direction | ingress | egress | ingress |
+| ethertype | IPv6 | IPv4 | IPv4 |
 | protocol | null | null | null |
 | port_range_min | null | null | null |
 | port_range_max | null | null | null |
 | remote_ip_prefix | null | null | null |
-| standard_attr_id | 5383 | 39443 | 2338 |
+| standard_attr_id | 5383 | 2219 | 9361 |
 
 # `securitygroups`  (rows=1798)
 
@@ -1010,10 +1010,10 @@ indexes: `tenant_id`, UNIQUE `standard_attr_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| tenant_id | 734423d02a724aca891507bb4d858975 | 86b701bd3d7541aa8ee730f055725868 | 34f87362758043a98ea19c5a5e9217c9 |
-| id | fff3003f-b772-4c44-ba63-8c55367dffa0 | fbf6eb76-cc74-4afd-bd92-0a5628bdecad | 6f19937f-00c7-444e-b8b2-dcb2bebda927 |
-| name | aurum-xenon | aurum-xenon | spark-orbit-sonic |
-| standard_attr_id | 2036 | 43304 | 20617 |
+| tenant_id | 734423d02a724aca891507bb4d858975 | 85b928765b6e4d07acf811833a763de4 | 9640284013ec4518812fd016846f8da9 |
+| id | fff3003f-b772-4c44-ba63-8c55367dffa0 | 2dc0f7c6-9753-4df3-8242-aa6b4cdd32d5 | daaca2c2-4516-4aae-be1b-0e10ba995051 |
+| name | aurum-xenon | qubit_shine_track | aurum-xenon |
+| standard_attr_id | 2036 | 1468 | 1933 |
 
 # `sessionpersistences`  (rows=1)
 
@@ -1045,10 +1045,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 65876 | 47771 | 47776 |
+| id | 65876 | 10683 | 11001 |
 | resource_type | ports | ports | ports |
-| created_at | 2024-06-26T20:39:07 | 2019-05-13T16:13:33 | 2019-05-14T20:09:12 |
-| updated_at | 2024-06-26T20:40:23 | 2024-02-02T20:56:16 | 2024-02-02T20:56:04 |
+| created_at | 2024-06-26T20:39:07 | 2017-02-04T18:51:46 | 2017-02-04T21:49:25 |
+| updated_at | 2024-06-26T20:40:23 | 2024-02-02T20:55:19 | 2017-02-04T21:49:26 |
 | description |  |  |  |
 
 # `subnetroutes`  (rows=6)
@@ -1088,18 +1088,18 @@ indexes: `subnetpool_id`, `tenant_id`, `network_id`, UNIQUE `standard_attr_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| tenant_id | daa18fdafdf04b5eac18e04aa19ee214 | 98333a1a28e746fa8c629c83a818ad57 | 09ad05432f914e26bc417bf58f1cb4d2 |
-| id | faee7948-a17f-4e58-a557-7ea1219c3b5f | b20e102d-9334-447d-8bfa-878485d13663 | 4ab2d89a-536b-4ec7-a8a2-df853a5b65e3 |
-| name | axiom8 | gamma3_helix | dash5 |
-| network_id | 84ba89ec-68fd-4257-80eb-a1c3a65ee594 | 2fd4865f-ed87-4b56-a1a3-8a20f3275c0d | dfdf2f92-8c4b-4a49-9641-4d5d77fa135b |
+| tenant_id | daa18fdafdf04b5eac18e04aa19ee214 | d5a33464413740e19dbe588144de18d0 | 70b2507b8cc44fcb917ddfb85f5079d9 |
+| id | faee7948-a17f-4e58-a557-7ea1219c3b5f | 890e8f54-c93f-4f2c-9e63-5a1b3d70d9d6 | 16eaae8c-1920-4b8b-8765-f149dde8a1a6 |
+| name | axiom8 | galax-phase | dash_spark |
+| network_id | 84ba89ec-68fd-4257-80eb-a1c3a65ee594 | 99d2d7a0-3a92-4f0d-8e2f-917201477f8b | c9e8f307-e1d5-4c06-b464-ef5370ca1d6d |
 | ip_version | 4 | 4 | 4 |
-| cidr | 10.44.3.58/8 | 10.112.136.215/8 | 10.96.238.36/8 |
-| gateway_ip | 10.196.213.153/8 | null | 10.42.84.120/8 |
-| enable_dhcp | 1 | 0 | 1 |
+| cidr | 10.44.3.58/8 | 10.82.4.115/8 | 10.49.195.222/8 |
+| gateway_ip | 10.196.213.153/8 | 10.77.211.184/8 | 10.107.243.218/8 |
+| enable_dhcp | 1 | 1 | 0 |
 | ipv6_ra_mode | null | null | null |
 | ipv6_address_mode | null | null | null |
 | subnetpool_id | null | null | null |
-| standard_attr_id | 1341 | 54184 | 1322 |
+| standard_attr_id | 1341 | 1329 | 16172 |
 
 # `vips`  (rows=1)
 

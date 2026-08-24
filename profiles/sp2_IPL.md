@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:33:20.760035Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:22:54.721803Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-f_8p_4ay/IPL.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-7b5_stdo/IPL.sqlite
 schema: main
 ---
 
@@ -26,16 +26,16 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| match_id | 981024 | 335998 | 548363 |
-| over_id | 20 | 16 | 12 |
-| ball_id | 6 | 3 | 1 |
-| innings_no | 2 | 2 | 1 |
-| team_batting | 2 | 3 | 10 |
-| team_bowling | 11 | 1 | 5 |
-| striker_batting_position | 9 | 2 | 3 |
-| striker | 140 | 18 | 46 |
-| non_striker | 369 | 20 | 330 |
-| bowler | 299 | 84 | 192 |
+| match_id | 981024 | 829824 | 734000 |
+| over_id | 20 | 1 | 9 |
+| ball_id | 6 | 1 | 2 |
+| innings_no | 2 | 2 | 2 |
+| team_batting | 2 | 5 | 3 |
+| team_bowling | 11 | 2 | 7 |
+| striker_batting_position | 9 | 1 | 4 |
+| striker | 140 | 85 | 303 |
+| non_striker | 369 | 32 | 147 |
+| bowler | 299 | 378 | 50 |
 
 # "batsman_scored"  (rows=131259)
 
@@ -51,11 +51,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| match_id | 981024 | 335991 | 548313 |
-| over_id | 20 | 9 | 17 |
-| ball_id | 6 | 4 | 2 |
+| match_id | 981024 | 501228 | 335989 |
+| over_id | 20 | 3 | 3 |
+| ball_id | 6 | 3 | 3 |
 | runs_scored | 4 | 0 | 0 |
-| innings_no | 2 | 1 | 1 |
+| innings_no | 2 | 2 | 2 |
 
 # "extra_runs"  (rows=7349)
 
@@ -72,12 +72,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| match_id | 981024 | 501276 | 548318 |
-| over_id | 20 | 4 | 9 |
-| ball_id | 4 | 6 | 7 |
-| extra_type | legbyes | legbyes | wides |
+| match_id | 981024 | 392204 | 501275 |
+| over_id | 20 | 8 | 9 |
+| ball_id | 4 | 2 | 5 |
+| extra_type | legbyes | byes | wides |
 | extra_runs | 1 | 1 | 1 |
-| innings_no | 2 | 1 | 2 |
+| innings_no | 2 | 2 | 1 |
 
 # "match"  (rows=567)
 
@@ -101,19 +101,19 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| match_id | 981024 | 734022 | 598007 |
-| team_1 | 2 | 5 | 3 |
-| team_2 | 11 | 7 | 7 |
-| match_date | 2016-05-29 | 2014-05-19 | 2013-04-06 |
-| season_id | 9 | 7 | 6 |
-| venue | M Chinnaswamy Stadium | Sardar Patel Stadium Motera | MA Chidambaram Stadium Chepauk |
-| toss_winner | 11 | 7 | 7 |
-| toss_decision | bat | bat | bat |
-| win_type | runs | runs | runs |
-| win_margin | 8 | 25 | 9 |
+| match_id | 981024 | 548312 | 548361 |
+| team_1 | 2 | 1 | 2 |
+| team_2 | 11 | 6 | 8 |
+| match_date | 2016-05-29 | 2012-04-05 | 2012-05-06 |
+| season_id | 9 | 5 | 5 |
+| venue | M Chinnaswamy Stadium | Eden Gardens | M Chinnaswamy Stadium |
+| toss_winner | 11 | 6 | 2 |
+| toss_decision | bat | field | field |
+| win_type | runs | wickets | wickets |
+| win_margin | 8 | 8 | 5 |
 | outcome_type | Result | Result | Result |
-| match_winner | 11 | 7 | 7 |
-| man_of_the_match | 385 | 19 | 221 |
+| match_winner | 11 | 6 | 2 |
+| man_of_the_match | 385 | 29 | 110 |
 
 # "player"  (rows=468)
 
@@ -130,11 +130,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| player_id | 469 | 151 | 135 |
-| player_name | T Mishra | L Balaji | TM Dilshan |
-| dob | 1986-12-22 | 1981-09-27 | 1976-10-14 |
-| batting_hand | Right-hand bat | Right-hand bat | Right-hand bat |
-| bowling_skill | Right-arm fast-medium | Right-arm medium-fast | Right-arm offbreak |
+| player_id | 469 | 134 | 121 |
+| player_name | T Mishra | U Kaul | M Muralitharan |
+| dob | 1986-12-22 | 1987-12-02 | 1972-04-17 |
+| batting_hand | Right-hand bat | Left-hand bat | Right-hand bat |
+| bowling_skill | Right-arm fast-medium | Right-arm medium | Right-arm offbreak |
 | country_name | India | India | Sri Lanka |
 
 # "player_match"  (rows=12495)
@@ -150,10 +150,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| match_id | 981024 | 501219 | 392214 |
-| player_id | 460 | 89 | 97 |
+| match_id | 981024 | 548350 | 501233 |
+| player_id | 460 | 199 | 324 |
 | role | Player | Player | Player |
-| team_id | 11 | 1 | 8 |
+| team_id | 11 | 6 | 3 |
 
 # "team"  (rows=12)
 
@@ -166,8 +166,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| team_id | 13 | 13 | 5 |
-| name | Gujarat Lions | Gujarat Lions | Rajasthan Royals |
+| team_id | 13 | 3 | 8 |
+| name | Gujarat Lions | Chennai Super Kings | Deccan Chargers |
 
 # "wicket_taken"  (rows=6618)
 
@@ -184,9 +184,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| match_id | 981024 | 981004 | 829714 |
-| over_id | 20 | 12 | 11 |
-| ball_id | 3 | 4 | 6 |
-| player_out | 434 | 110 | 255 |
-| kind_out | run out | bowled | caught |
+| match_id | 981024 | 336026 | 419151 |
+| over_id | 20 | 7 | 20 |
+| ball_id | 3 | 4 | 7 |
+| player_out | 434 | 5 | 154 |
+| kind_out | run out | caught | run out |
 | innings_no | 2 | 1 | 1 |

@@ -52,6 +52,11 @@ Workflow:
       LIMIT/top-N where a bounded number of rows is requested.
     - Values: rows are non-empty; literal values (strings, dates, IDs) match
       the question or database exactly.
+   Then use the `subagent` tool with agent `critic`, project scope, and project
+   confirmation disabled. Give it the question, evidence, candidate SQL, and
+   observed result; ask it to disprove the projection, cardinality, joins,
+   predicates, aggregation grain, ordering, or limit. If the tool is unavailable,
+   do this critique yourself. Repair only a concrete mismatch.
    Then verify the query against the error checklist. If any check changes
    the query. Use turn {repair_turn} only to repair and execute the complete
    corrected query again. Never submit a query you have not executed.
@@ -102,6 +107,11 @@ Workflow:
       LIMIT/top-N where a bounded number of rows is requested.
     - Values: rows are non-empty; literal values (strings, dates, IDs) match
       the question or database exactly.
+   Then use the `subagent` tool with agent `critic`, project scope, and project
+   confirmation disabled. Give it the question, evidence, candidate SQL, and
+   observed result; ask it to disprove the projection, cardinality, joins,
+   predicates, aggregation grain, ordering, or limit. If the tool is unavailable,
+   do this critique yourself. Repair only a concrete mismatch.
    Then verify the query against the error checklist. If any check changes
    the query. Use turn {repair_turn} only to repair and execute the complete
    corrected query again. Never submit a query you have not executed.

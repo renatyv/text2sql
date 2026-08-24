@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:33:20.609053Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:22:54.551346Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-dcu49ckt/EntertainmentAgency.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-pjb_723i/EntertainmentAgency.sqlite
 schema: main
 ---
 
@@ -64,14 +64,14 @@ indexes: "CustZipCode"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| CustomerID | 10015 | 10003 | 10015 |
-| CustFirstName | Carol | Peter | Carol |
-| CustLastName | Viescas | Brehm | Viescas |
-| CustStreetAddress | 754 Fourth Ave | 722 Moss Bay Blvd. | 754 Fourth Ave |
-| CustCity | Seattle | Kirkland | Seattle |
+| CustomerID | 10015 | 10014 | 10004 |
+| CustFirstName | Carol | Mark | Dean |
+| CustLastName | Viescas | Rosales | McCrae |
+| CustStreetAddress | 754 Fourth Ave | 323 Advocate Lane | 4110 Old Redmond Rd. |
+| CustCity | Seattle | Bellevue | Redmond |
 | CustState | WA | WA | WA |
-| CustZipCode | 98115 | 98033 | 98115 |
-| CustPhoneNumber | 555-2296 | 555-2501 | 555-2296 |
+| CustZipCode | 98115 | 98006 | 98052 |
+| CustPhoneNumber | 555-2296 | 555-2286 | 555-2506 |
 
 # "Engagements"  (rows=111)
 
@@ -91,15 +91,15 @@ indexes: "AgentID", "CustomerID", "AgentID", "EntertainerID"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| EngagementNumber | 131 | 48 | 72 |
-| StartDate | 2018-03-04 | 2017-11-06 | 2017-12-23 |
-| EndDate | 2018-03-13 | 2017-11-07 | 2018-01-02 |
-| StartTime | 15:00:00 | 16:00:00 | 20:00:00 |
-| StopTime | 17:00:00 | 22:00:00 | 01:00:00 |
-| ContractPrice | 1850 | 950 | 875 |
-| CustomerID | 10014 | 10002 | 10012 |
-| AgentID | 1 | 1 | 4 |
-| EntertainerID | 1003 | 1007 | 1011 |
+| EngagementNumber | 131 | 17 | 26 |
+| StartDate | 2018-03-04 | 2017-09-30 | 2017-10-10 |
+| EndDate | 2018-03-13 | 2017-10-03 | 2017-10-15 |
+| StartTime | 15:00:00 | 18:00:00 | 17:00:00 |
+| StopTime | 17:00:00 | 20:00:00 | 22:00:00 |
+| ContractPrice | 1850 | 530 | 950 |
+| CustomerID | 10014 | 10002 | 10001 |
+| AgentID | 1 | 8 | 6 |
+| EntertainerID | 1003 | 1010 | 1002 |
 
 # "Entertainer_Members"  (rows=40)
 
@@ -113,8 +113,8 @@ indexes: "EntertainerID", "MemberID"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| EntertainerID | 1013 | 1003 | 1013 |
-| MemberID | 124 | 102 | 117 |
+| EntertainerID | 1013 | 1008 | 1003 |
+| MemberID | 124 | 111 | 102 |
 | Status | 2 | 1 | 1 |
 
 # "Entertainer_Styles"  (rows=32)
@@ -129,9 +129,9 @@ indexes: "EntertainerID", "StyleID"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| EntertainerID | 1013 | 1011 | 1009 |
-| StyleID | 15 | 14 | 21 |
-| StyleStrength | 1 | 1 | 3 |
+| EntertainerID | 1013 | 1010 | 1003 |
+| StyleID | 15 | 22 | 8 |
+| StyleStrength | 1 | 1 | 2 |
 
 # "Entertainers"  (rows=13)
 
@@ -153,17 +153,17 @@ indexes: "EntZipCode"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| EntertainerID | 1013 | 1002 | 1008 |
-| EntStageName | Caroline Coie Cuartet | Topazz | Country Feeling |
-| EntSSN | 888-71-1123 | 888-50-1061 | 888-98-1133 |
-| EntStreetAddress | 298 Forest Lane | 16 Maple Lane | PO Box 223311 |
-| EntCity | Auburn | Auburn | Seattle |
+| EntertainerID | 1013 | 1002 | 1006 |
+| EntStageName | Caroline Coie Cuartet | Topazz | Modern Dance |
+| EntSSN | 888-71-1123 | 888-50-1061 | 888-66-1085 |
+| EntStreetAddress | 298 Forest Lane | 16 Maple Lane | Route 2, Box 203B |
+| EntCity | Auburn | Auburn | Woodinville |
 | EntState | WA | WA | WA |
-| EntZipCode | 98002 | 98002 | 98125 |
-| EntPhoneNumber | 555-2306 | 555-2591 | 555-2711 |
-| EntWebPage | null | www.topazz.com | null |
-| EntEMailAddress | carolinec@willow.com | null | null |
-| DateEntered | 1997-07-11 | 1996-02-14 | 1996-02-28 |
+| EntZipCode | 98002 | 98002 | 98072 |
+| EntPhoneNumber | 555-2306 | 555-2591 | 555-2631 |
+| EntWebPage | null | www.topazz.com | www.moderndance.com |
+| EntEMailAddress | carolinec@willow.com | null | mikeh@moderndance.com |
+| DateEntered | 1997-07-11 | 1996-02-14 | 1995-05-16 |
 
 # "Members"  (rows=25)
 
@@ -179,11 +179,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| MemberID | 125 | 113 | 111 |
-| MbrFirstName | Jim | Steve | Kathryn |
-| MbrLastName | Glynn | Pundt | Patterson |
-| MbrPhoneNumber | 555-2531 | 555-9938 | 555-2651 |
-| Gender | null | M | F |
+| MemberID | 125 | 116 | 103 |
+| MbrFirstName | Jim | Angel | Gary |
+| MbrLastName | Glynn | Kennedy | Hallmark |
+| MbrPhoneNumber | 555-2531 | 555-2311 | 555-2676 |
+| Gender | null | M | M |
 
 # "Musical_Preferences"  (rows=36)
 
@@ -197,9 +197,9 @@ indexes: "CustomerID", "StyleID"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| CustomerID | 10015 | 10001 | 10011 |
-| StyleID | 21 | 22 | 1 |
-| PreferenceSeq | 1 | 1 | 2 |
+| CustomerID | 10015 | 10014 | 10007 |
+| StyleID | 21 | 5 | 8 |
+| PreferenceSeq | 1 | 3 | 1 |
 
 # "Musical_Styles"  (rows=25)
 
@@ -212,8 +212,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StyleID | 25 | 6 | 14 |
-| StyleName | 90's Music | Country | Chamber Music |
+| StyleID | 25 | 12 | 25 |
+| StyleName | 90's Music | Elvis | 90's Music |
 
 # "ztblDays"  (rows=1096)
 
@@ -225,7 +225,7 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| DateField | 2020-01-01 | 2019-05-25 | 2018-05-16 |
+| DateField | 2020-01-01 | 2018-02-11 | 2018-05-08 |
 
 # "ztblMonths"  (rows=36)
 
@@ -253,12 +253,12 @@ indexes: UNIQUE "MonthStart", UNIQUE "MonthYear", UNIQUE "MonthEnd"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| MonthYear | December 2019 | January 2017 | January 2018 |
-| YearNumber | 2019 | 2017 | 2018 |
-| MonthNumber | 12 | 1 | 1 |
-| MonthStart | 2019-12-01 | 2017-01-01 | 2018-01-01 |
-| MonthEnd | 2019-12-31 | 2017-01-31 | 2018-01-31 |
-| January | 0 | 1 | 1 |
+| MonthYear | December 2019 | October 2018 | December 2019 |
+| YearNumber | 2019 | 2018 | 2019 |
+| MonthNumber | 12 | 10 | 12 |
+| MonthStart | 2019-12-01 | 2018-10-01 | 2019-12-01 |
+| MonthEnd | 2019-12-31 | 2018-10-31 | 2019-12-31 |
+| January | 0 | 0 | 0 |
 | February | 0 | 0 | 0 |
 | March | 0 | 0 | 0 |
 | April | 0 | 0 | 0 |
@@ -267,9 +267,9 @@ samples:
 | July | 0 | 0 | 0 |
 | August | 0 | 0 | 0 |
 | September | 0 | 0 | 0 |
-| October | 0 | 0 | 0 |
+| October | 0 | 1 | 0 |
 | November | 0 | 0 | 0 |
-| December | 1 | 0 | 0 |
+| December | 1 | 0 | 1 |
 
 # "ztblSkipLabels"  (rows=60)
 
@@ -281,7 +281,7 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| LabelCount | 60 | 34 | 27 |
+| LabelCount | 60 | 30 | 34 |
 
 # "ztblWeeks"  (rows=156)
 
@@ -294,5 +294,5 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| WeekStart | 2019-12-22 | 2017-06-04 | 2019-11-03 |
-| WeekEnd | 2019-12-28 | 2017-06-10 | 2019-11-09 |
+| WeekStart | 2019-12-22 | 2019-05-19 | 2018-04-15 |
+| WeekEnd | 2019-12-28 | 2019-05-25 | 2018-04-21 |

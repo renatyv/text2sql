@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:34:20.266704Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:23:56.665225Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-mkwsg_as/music.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-iknew0hp/music.sqlite
 schema: main
 ---
 
@@ -31,9 +31,9 @@ indexes: "ArtistId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| AlbumId | 347 | 159 | 317 |
-| Title | Koyaanisqatsi (Soundtrack from the Motion Picture) | Minas | Mozart Gala: Famous Arias |
-| ArtistId | 275 | 42 | 249 |
+| AlbumId | 347 | 188 | 115 |
+| Title | Koyaanisqatsi (Soundtrack from the Motion Picture) | Green | Sex Machine |
+| ArtistId | 275 | 124 | 91 |
 
 # "Artist"  (rows=275)
 
@@ -46,8 +46,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ArtistId | 275 | 184 | 200 |
-| Name | Philip Glass Ensemble | Rodox | The Posies |
+| ArtistId | 275 | 83 | 234 |
+| Name | Philip Glass Ensemble | Falamansa | Orchestra of The Age of Enlightenment |
 
 # "Customer"  (rows=59)
 
@@ -71,19 +71,19 @@ indexes: "SupportRepId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| CustomerId | 59 | 27 | 37 |
-| FirstName | Puja | Patrick | Fynn |
-| LastName | Srivastava | Gray | Zimmermann |
-| Company | null | null | null |
-| Address | 3,Raj Bhavan Road | 1033 N Park Ave | Berger Straße 10 |
-| City | Bangalore | Tucson | Frankfurt |
-| State | null | AZ | null |
-| Country | India | USA | Germany |
-| PostalCode | 560001 | 85719 | 60316 |
-| Phone | +91 080 22289999 | +1 (520) 622-4200 | +49 069 40598889 |
-| Fax | null | null | null |
-| Email | puja_srivastava@yahoo.in | patrick.gray@aol.com | fzimmermann@yahoo.de |
-| SupportRepId | 3 | 4 | 3 |
+| CustomerId | 59 | 1 | 42 |
+| FirstName | Puja | Luís | Wyatt |
+| LastName | Srivastava | Gonçalves | Girard |
+| Company | null | Embraer - Empresa Brasileira de Aeronáutica S.A. | null |
+| Address | 3,Raj Bhavan Road | Av. Brigadeiro Faria Lima, 2170 | 9, Place Louis Barthou |
+| City | Bangalore | São José dos Campos | Bordeaux |
+| State | null | SP | null |
+| Country | India | Brazil | France |
+| PostalCode | 560001 | 12227-000 | 33000 |
+| Phone | +91 080 22289999 | +55 (12) 3923-5555 | +33 05 56 96 96 96 |
+| Fax | null | +55 (12) 3923-5566 | null |
+| Email | puja_srivastava@yahoo.in | luisg@embraer.com.br | wyatt.girard@yahoo.fr |
+| SupportRepId | 3 | 3 | 3 |
 
 # "Employee"  (rows=8)
 
@@ -136,8 +136,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| GenreId | 25 | 24 | 13 |
-| Name | Opera | Classical | Heavy Metal |
+| GenreId | 25 | 24 | 12 |
+| Name | Opera | Classical | Easy Listening |
 
 # "Invoice"  (rows=412)
 
@@ -157,15 +157,15 @@ indexes: "CustomerId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| InvoiceId | 412 | 379 | 232 |
-| CustomerId | 58 | 48 | 17 |
-| InvoiceDate | 2013-12-22T00:00:00 | 2013-08-02T00:00:00 | 2011-10-21T00:00:00 |
-| BillingAddress | 12,Community Centre | Lijnbaansgracht 120bg | 1 Microsoft Way |
-| BillingCity | Delhi | Amsterdam | Redmond |
-| BillingState | null | VV | WA |
-| BillingCountry | India | Netherlands | USA |
-| BillingPostalCode | 110017 | 1016 | 98052-8300 |
-| Total | 1.99 | 1.98 | 1.98 |
+| InvoiceId | 412 | 338 | 25 |
+| CustomerId | 58 | 58 | 10 |
+| InvoiceDate | 2013-12-22T00:00:00 | 2013-01-29T00:00:00 | 2009-04-09T00:00:00 |
+| BillingAddress | 12,Community Centre | 12,Community Centre | Rua Dr. Falcão Filho, 155 |
+| BillingCity | Delhi | Delhi | São Paulo |
+| BillingState | null | null | SP |
+| BillingCountry | India | India | Brazil |
+| BillingPostalCode | 110017 | 110017 | 01007-010 |
+| Total | 1.99 | 3.96 | 8.91 |
 
 # "InvoiceLine"  (rows=2240)
 
@@ -181,9 +181,9 @@ indexes: "InvoiceId", "TrackId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| InvoiceLineId | 2240 | 2008 | 1360 |
-| InvoiceId | 412 | 369 | 250 |
-| TrackId | 3177 | 1744 | 1285 |
+| InvoiceLineId | 2240 | 195 | 1924 |
+| InvoiceId | 412 | 37 | 355 |
+| TrackId | 3177 | 1170 | 1208 |
 | UnitPrice | 1.99 | 0.99 | 0.99 |
 | Quantity | 1 | 1 | 1 |
 
@@ -212,8 +212,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| PlaylistId | 18 | 11 | 18 |
-| Name | On-The-Go 1 | Brazilian Music | On-The-Go 1 |
+| PlaylistId | 18 | 7 | 4 |
+| Name | On-The-Go 1 | Movies | Audiobooks |
 
 # "PlaylistTrack"  (rows=8715)
 
@@ -226,8 +226,8 @@ indexes: "TrackId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| PlaylistId | 18 | 8 | 8 |
-| TrackId | 597 | 920 | 584 |
+| PlaylistId | 18 | 5 | 5 |
+| TrackId | 597 | 182 | 1679 |
 
 # "Track"  (rows=3503)
 
@@ -247,12 +247,12 @@ indexes: "AlbumId", "GenreId", "MediaTypeId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| TrackId | 3503 | 3274 | 206 |
-| Name | Koyaanisqatsi | God | Prenda Minha |
-| AlbumId | 347 | 255 | 21 |
-| MediaTypeId | 2 | 2 | 1 |
-| GenreId | 10 | 9 | 7 |
-| Composer | Philip Glass | null | Tradicional |
-| Milliseconds | 206005 | 260410 | 99369 |
-| Bytes | 3305164 | 4221135 | 3225364 |
+| TrackId | 3503 | 2341 | 2093 |
+| Name | Koyaanisqatsi | Bê-a-Bá | Bark at the Moon |
+| AlbumId | 347 | 191 | 170 |
+| MediaTypeId | 2 | 1 | 2 |
+| GenreId | 10 | 4 | 1 |
+| Composer | Philip Glass | Rodolfo | O. Osbourne |
+| Milliseconds | 206005 | 249051 | 257252 |
+| Bytes | 3305164 | 8130636 | 4601224 |
 | UnitPrice | 0.99 | 0.99 | 0.99 |

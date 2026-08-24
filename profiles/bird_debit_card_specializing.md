@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:31:08.199655Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:20:34.609403Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-y7bt2fk7/debit_card_specializing.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-zmf8sx1_/debit_card_specializing.sqlite
 schema: main
 ---
 
@@ -23,8 +23,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| CustomerID | 53314 | 48741 | 13469 |
-| Segment | SME | SME | SME |
+| CustomerID | 53314 | 52055 | 32164 |
+| Segment | SME | SME | LAM |
 | Currency | CZK | CZK | CZK |
 
 # "gasstations"  (rows=5716)
@@ -40,10 +40,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| GasStationID | 5772 | 2855 | 1115 |
-| ChainID | 16 | 3 | 3 |
+| GasStationID | 5772 | 1858 | 936 |
+| ChainID | 16 | 3 | 33 |
 | Country | CZE | CZE | CZE |
-| Segment | Other | Other | Other |
+| Segment | Other | Other | Premium |
 
 # "products"  (rows=591)
 
@@ -56,8 +56,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ProductID | 630 | 543 | 348 |
-| Description | CCS Carnet Pronájem HW (Manual) | Premium | Služ.col.dek |
+| ProductID | 630 | 450 | 29 |
+| Description | CCS Carnet Pronájem HW (Manual) | Vydání karty  | Ekol.paliva |
 
 # "transactions_1k"  (rows=1000)
 
@@ -77,15 +77,15 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| TransactionID | 1000 | 264 | 461 |
-| Date | 2012-08-25 | 2012-08-24 | 2012-08-24 |
-| Time | 12:45:00 | 09:50:00 | 18:24:00 |
-| CustomerID | 25986 | 3367 | 48079 |
-| CardID | 655214 | 33446 | 642389 |
-| GasStationID | 3899 | 5043 | 1386 |
-| ProductID | 2 | 341 | 5 |
-| Amount | 38 | 1 | 5 |
-| Price | 870.93 | 7 | 114.74 |
+| TransactionID | 1000 | 823 | 15 |
+| Date | 2012-08-25 | 2012-08-25 | 2012-08-24 |
+| Time | 12:45:00 | 13:25:00 | 09:36:00 |
+| CustomerID | 25986 | 22994 | 14728 |
+| CardID | 655214 | 654107 | 570199 |
+| GasStationID | 3899 | 1248 | 967 |
+| ProductID | 2 | 15 | 7 |
+| Amount | 38 | 0 | 0 |
+| Price | 870.93 | 38.69 | 60.48 |
 
 # "yearmonth"  (rows=≈383282)
 

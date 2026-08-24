@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:33:24.957849Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:22:58.933713Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-nd96cff5/chinook.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-3cyyjw2e/chinook.sqlite
 schema: main
 ---
 
@@ -31,9 +31,9 @@ indexes: "ArtistId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| AlbumId | 347 | 122 | 307 |
-| Title | Koyaanisqatsi (Soundtrack from the Motion Picture) | Jorge Ben Jor 25 Anos | Adams, John: The Chairman Dances |
-| ArtistId | 275 | 46 | 242 |
+| AlbumId | 347 | 340 | 139 |
+| Title | Koyaanisqatsi (Soundtrack from the Motion Picture) | Liszt - 12 Études D'Execution Transcendante | A TempestadeTempestade Ou O Livro Dos Dias |
+| ArtistId | 275 | 269 | 99 |
 
 # "artists"  (rows=275)
 
@@ -46,8 +46,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ArtistId | 275 | 145 | 113 |
-| Name | Philip Glass Ensemble | Tim Maia | Os Paralamas Do Sucesso |
+| ArtistId | 275 | 82 | 94 |
+| Name | Philip Glass Ensemble | Faith No More | Jimi Hendrix |
 
 # "customers"  (rows=59)
 
@@ -71,18 +71,18 @@ indexes: "SupportRepId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| CustomerId | 59 | 22 | 12 |
-| FirstName | Puja | Heather | Roberto |
-| LastName | Srivastava | Leacock | Almeida |
+| CustomerId | 59 | 40 | 12 |
+| FirstName | Puja | Dominique | Roberto |
+| LastName | Srivastava | Lefebvre | Almeida |
 | Company | null | null | Riotur |
-| Address | 3,Raj Bhavan Road | 120 S Orange Ave | Praça Pio X, 119 |
-| City | Bangalore | Orlando | Rio de Janeiro |
-| State | null | FL | RJ |
-| Country | India | USA | Brazil |
-| PostalCode | 560001 | 32801 | 20040-020 |
-| Phone | +91 080 22289999 | +1 (407) 999-7788 | +55 (21) 2271-7000 |
+| Address | 3,Raj Bhavan Road | 8, Rue Hanovre | Praça Pio X, 119 |
+| City | Bangalore | Paris | Rio de Janeiro |
+| State | null | null | RJ |
+| Country | India | France | Brazil |
+| PostalCode | 560001 | 75002 | 20040-020 |
+| Phone | +91 080 22289999 | +33 01 47 42 71 71 | +55 (21) 2271-7000 |
 | Fax | null | null | +55 (21) 2271-7070 |
-| Email | puja_srivastava@yahoo.in | hleacock@gmail.com | roberto.almeida@riotur.gov.br |
+| Email | puja_srivastava@yahoo.in | dominiquelefebvre@gmail.com | roberto.almeida@riotur.gov.br |
 | SupportRepId | 3 | 4 | 3 |
 
 # "employees"  (rows=8)
@@ -136,8 +136,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| GenreId | 25 | 1 | 17 |
-| Name | Opera | Rock | Hip Hop/Rap |
+| GenreId | 25 | 17 | 12 |
+| Name | Opera | Hip Hop/Rap | Easy Listening |
 
 # "invoice_items"  (rows=2240)
 
@@ -153,10 +153,10 @@ indexes: "InvoiceId", "TrackId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| InvoiceLineId | 2240 | 1207 | 392 |
-| InvoiceId | 412 | 222 | 73 |
-| TrackId | 3177 | 348 | 2356 |
-| UnitPrice | 1.99 | 0.99 | 0.99 |
+| InvoiceLineId | 2240 | 244 | 2198 |
+| InvoiceId | 412 | 46 | 404 |
+| TrackId | 3177 | 1452 | 2904 |
+| UnitPrice | 1.99 | 0.99 | 1.99 |
 | Quantity | 1 | 1 | 1 |
 
 # "invoices"  (rows=412)
@@ -177,15 +177,15 @@ indexes: "CustomerId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| InvoiceId | 412 | 112 | 138 |
-| CustomerId | 58 | 18 | 37 |
-| InvoiceDate | 2013-12-22T00:00:00 | 2010-05-12T00:00:00 | 2010-08-23T00:00:00 |
-| BillingAddress | 12,Community Centre | 627 Broadway | Berger Straße 10 |
-| BillingCity | Delhi | New York | Frankfurt |
-| BillingState | null | NY | null |
-| BillingCountry | India | USA | Germany |
-| BillingPostalCode | 110017 | 10012-2612 | 60316 |
-| Total | 1.99 | 1.98 | 13.86 |
+| InvoiceId | 412 | 406 | 122 |
+| CustomerId | 58 | 21 | 5 |
+| InvoiceDate | 2013-12-22T00:00:00 | 2013-12-04T00:00:00 | 2010-06-14T00:00:00 |
+| BillingAddress | 12,Community Centre | 801 W 4th Street | Klanova 9/506 |
+| BillingCity | Delhi | Reno | Prague |
+| BillingState | null | NV | null |
+| BillingCountry | India | USA | Czech Republic |
+| BillingPostalCode | 110017 | 89503 | 14700 |
+| Total | 1.99 | 1.98 | 5.94 |
 
 # "media_types"  (rows=5)
 
@@ -212,8 +212,8 @@ indexes: "TrackId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| PlaylistId | 18 | 8 | 5 |
-| TrackId | 597 | 2656 | 2498 |
+| PlaylistId | 18 | 1 | 1 |
+| TrackId | 597 | 1326 | 315 |
 
 # "playlists"  (rows=18)
 
@@ -226,8 +226,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| PlaylistId | 18 | 8 | 1 |
-| Name | On-The-Go 1 | Music | Music |
+| PlaylistId | 18 | 12 | 1 |
+| Name | On-The-Go 1 | Classical | Music |
 
 # "tracks"  (rows=3503)
 
@@ -247,12 +247,12 @@ indexes: "AlbumId", "GenreId", "MediaTypeId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| TrackId | 3503 | 1392 | 1118 |
-| Name | Koyaanisqatsi | Run to the Hills | Palco |
-| AlbumId | 347 | 112 | 73 |
+| TrackId | 3503 | 2794 | 3097 |
+| Name | Koyaanisqatsi | 32 Dentes | Once |
+| AlbumId | 347 | 224 | 245 |
 | MediaTypeId | 2 | 1 | 1 |
-| GenreId | 10 | 3 | 7 |
-| Composer | Philip Glass | Steve Harris | Gilberto Gil |
-| Milliseconds | 206005 | 228884 | 270550 |
-| Bytes | 3305164 | 3209124 | 9049901 |
+| GenreId | 10 | 4 | 1 |
+| Composer | Philip Glass | Titãs | Van Halen |
+| Milliseconds | 206005 | 184946 | 462837 |
+| Bytes | 3305164 | 6157904 | 15378082 |
 | UnitPrice | 0.99 | 0.99 | 0.99 |

@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:31:57.614331Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:21:28.846771Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-bfztb5hu/BowlingLeague.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-rw94_61t/BowlingLeague.sqlite
 schema: main
 ---
 
@@ -31,12 +31,12 @@ indexes: "BowlerID", ("MatchID","GameNumber")
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| MatchID | 56 | 32 | 26 |
+| MatchID | 56 | 6 | 39 |
 | GameNumber | 3 | 1 | 1 |
-| BowlerID | 32 | 29 | 7 |
-| RawScore | 148 | 151 | 190 |
-| HandiCapScore | 200 | 198 | 220 |
-| WonGame | true | true | true |
+| BowlerID | 32 | 5 | 12 |
+| RawScore | 148 | 164 | 145 |
+| HandiCapScore | 200 | 211 | 196 |
+| WonGame | true | true | false |
 
 # "Bowlers"  (rows=34)
 
@@ -61,20 +61,20 @@ indexes: "BowlerLastName", "TeamID"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| BowlerID | 34 | 9 | 13 |
-| BowlerLastName | Patterson | Black | Hallmark |
-| BowlerFirstName | Maria | Alastair | Elizabeth |
+| BowlerID | 34 | 10 | 8 |
+| BowlerLastName | Patterson | Cunningham | Viescas |
+| BowlerFirstName | Maria | David | Stephanie |
 | BowlerMiddleInit | null | null | null |
-| BowlerAddress | 16 Maple Lane | 4726 - 11th Ave. N.E. | Route 2, Box 203B |
-| BowlerCity | Auburn | Seattle | Woodinville |
+| BowlerAddress | 16 Maple Lane | 4110 Old Redmond Rd. | 16679 NE 42nd Court |
+| BowlerCity | Auburn | Redmond | Redmond |
 | BowlerState | WA | WA | WA |
-| BowlerZip | 98002 | 98105 | 98072 |
-| BowlerPhoneNumber | (206) 555-3487 | (206) 555-1189 | (206) 555-8990 |
-| TeamID | 7 | 3 | 4 |
-| BowlerTotalPins | 0 | 5874 | 5928 |
+| BowlerZip | 98002 | 98052 | 98052 |
+| BowlerPhoneNumber | (206) 555-3487 | (206) 555-8122 | (206) 882-8878 |
+| TeamID | 7 | 3 | 2 |
+| BowlerTotalPins | 0 | 6184 | 5558 |
 | BowlerGamesBowled | 0 | 39 | 39 |
-| BowlerCurrentAverage | 0 | 151 | 152 |
-| BowlerCurrentHcp | 0 | 44 | 43 |
+| BowlerCurrentAverage | 0 | 159 | 143 |
+| BowlerCurrentHcp | 0 | 37 | 51 |
 
 # "Match_Games"  (rows=168)
 
@@ -88,9 +88,9 @@ indexes: "WinningTeamID", "MatchID"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| MatchID | 56 | 6 | 16 |
-| GameNumber | 3 | 3 | 3 |
-| WinningTeamID | 8 | 4 | 4 |
+| MatchID | 56 | 55 | 42 |
+| GameNumber | 3 | 1 | 1 |
+| WinningTeamID | 8 | 6 | 2 |
 
 # "Teams"  (rows=10)
 
@@ -120,9 +120,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| TourneyID | 20 | 1 | 2 |
-| TourneyDate | 2018-08-16 | 2017-09-04 | 2017-09-11 |
-| TourneyLocation | Totem Lanes | Red Rooster Lanes | Thunderbird Lanes |
+| TourneyID | 20 | 19 | 17 |
+| TourneyDate | 2018-08-16 | 2018-08-09 | 2018-07-26 |
+| TourneyLocation | Totem Lanes | Imperial Lanes | Bolero Lanes |
 
 # "Tourney_Matches"  (rows=57)
 
@@ -138,11 +138,11 @@ indexes: "OddLaneTeamID", "EvenLaneTeamID", "TourneyID"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| MatchID | 57 | 2 | 31 |
-| TourneyID | 11 | 1 | 8 |
-| Lanes | 19-20 | 03-04 | 25-26 |
-| OddLaneTeamID | 10 | 3 | 7 |
-| EvenLaneTeamID | 9 | 4 | 5 |
+| MatchID | 57 | 23 | 8 |
+| TourneyID | 11 | 6 | 2 |
+| Lanes | 19-20 | 09-10 | 27-28 |
+| OddLaneTeamID | 10 | 2 | 8 |
+| EvenLaneTeamID | 9 | 8 | 6 |
 
 # "WAZips"  (rows=523)
 
@@ -156,8 +156,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ZIP | 99403 | 98662 | 98845 |
-| City | Clarkston | Vancouver | Palisades |
+| ZIP | 99403 | 98564 | 99153 |
+| City | Clarkston | Mossyrock | Metaline Falls |
 | State | WA | WA | WA |
 
 - Skipped 4 empty table(s): "Bowler_Scores_Archive", "Match_Games_Archive", "Tournaments_Archive", "Tourney_Matches_Archive"

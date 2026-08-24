@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:32:11.812616Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:21:44.218692Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-3_cohins/Db-IMDB.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-tddvw4eh/Db-IMDB.sqlite
 schema: main
 ---
 
@@ -19,9 +19,9 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 33 | 17 | 3 |
-| Name | Georgia | Japan | Australia |
-| CID | 33 | 17 | 3 |
+| index | 33 | 6 | 24 |
+| Name | Georgia | Canada | South Africa |
+| CID | 33 | 6 | 24 |
 
 # "Genre"  (rows=328)
 
@@ -35,9 +35,9 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 327 | 16 | 137 |
-| Name | Drama, Mystery, Sci-Fi             | Comedy, Drama             | Drama, Musical             |
-| GID | 327 | 16 | 137 |
+| index | 327 | 132 | 184 |
+| Name | Drama, Mystery, Sci-Fi             | Adventure, Drama, Romance             | Adventure, Romance             |
+| GID | 327 | 132 | 184 |
 
 # "Language"  (rows=32)
 
@@ -51,9 +51,9 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 31 | 5 | 2 |
-| Name | Georgian | Mandarin | Hindi |
-| LAID | 31 | 5 | 2 |
+| index | 31 | 5 | 23 |
+| Name | Georgian | Mandarin | Sanskrit |
+| LAID | 31 | 5 | 23 |
 
 # "Location"  (rows=559)
 
@@ -67,9 +67,9 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 558 | 95 | 239 |
-| Name | Aftab Studio, India | Stansted Airport - Bassingbourn Rd, Stansted CM24 1QW, London, England, UK | Annapoorna Studios, Hyderabad, Telangana, India |
-| LID | 558 | 95 | 239 |
+| index | 558 | 236 | 538 |
+| Name | Aftab Studio, India | Mohan Studios, Mumbai, Maharashtra, India | Ye Olde Cheshire Cheese, Fleet Street, London, UK |
+| LID | 558 | 236 | 538 |
 
 # "M_Cast"  (rows=82837)
 
@@ -84,10 +84,10 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 82836 | 39854 | 59725 |
-| MID | tt0375890 | tt0060104 | tt0079584 |
-| PID |  nm0438467 |  nm0348467 |  nm0025630 |
-| ID | 82836 | 39854 | 59725 |
+| index | 82836 | 30533 | 43668 |
+| MID | tt0375890 | tt0371735 | tt0148706 |
+| PID |  nm0438467 |  nm0451379 |  nm1677538 |
+| ID | 82836 | 30533 | 43668 |
 
 # "M_Country"  (rows=3475)
 
@@ -102,10 +102,10 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 3474 | 2140 | 3323 |
-| MID | tt0375890 | tt0116407 | tt0827202 |
+| index | 3474 | 59 | 786 |
+| MID | tt0375890 | tt7720922 | tt0121989 |
 | CID | 2 | 2 | 2 |
-| ID | 3474 | 2140 | 3323 |
+| ID | 3474 | 59 | 786 |
 
 # "M_Director"  (rows=3475)
 
@@ -120,10 +120,10 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 3474 | 2723 | 856 |
-| MID | tt0375890 | tt0178203 | tt2073070 |
-| PID | nm1421793 | nm0695162 | nm0223606 |
-| ID | 3474 | 2723 | 856 |
+| index | 3474 | 773 | 870 |
+| MID | tt0375890 | tt0084667 | tt2633598 |
+| PID | nm1421793 | nm0802693 | nm2219430 |
+| ID | 3474 | 773 | 870 |
 
 # "M_Genre"  (rows=3475)
 
@@ -138,10 +138,10 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 3474 | 2864 | 442 |
-| MID | tt0375890 | tt0154653 | tt8581230 |
-| GID | 46 | 5 | 19 |
-| ID | 3474 | 2864 | 442 |
+| index | 3474 | 1143 | 2940 |
+| MID | tt0375890 | tt2571140 | tt0121659 |
+| GID | 46 | 112 | 10 |
+| ID | 3474 | 1143 | 2940 |
 
 # "M_Language"  (rows=3475)
 
@@ -156,10 +156,10 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 3474 | 1726 | 1538 |
-| MID | tt0375890 | tt0057568 | tt5162476 |
+| index | 3474 | 3274 | 27 |
+| MID | tt0375890 | tt5049906 | tt5474036 |
 | LAID | 2 | 2 | 2 |
-| ID | 3474 | 1726 | 1538 |
+| ID | 3474 | 3274 | 27 |
 
 # "M_Location"  (rows=3475)
 
@@ -174,10 +174,10 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 3474 | 188 | 2019 |
-| MID | tt0375890 | tt0367110 | tt0187109 |
-| LID | 7 | 102 | null |
-| ID | 3474 | 188 | 2019 |
+| index | 3474 | 1120 | 3184 |
+| MID | tt0375890 | tt3776484 | tt0361515 |
+| LID | 7 | 115 | 297 |
+| ID | 3474 | 1120 | 3184 |
 
 # "M_Producer"  (rows=11751)
 
@@ -192,10 +192,10 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 11750 | 8459 | 3145 |
-| MID | tt0375890 | tt0290685 | tt5207116 |
-| PID |  nm1421793 |  nm2528195 |  nm5712184 |
-| ID | 11750 | 8459 | 3145 |
+| index | 11750 | 10242 | 4737 |
+| MID | tt0375890 | tt0094958 | tt0433425 |
+| PID |  nm1421793 |  nm0451211 |  nm1663638 |
+| ID | 11750 | 10242 | 4737 |
 
 # "Movie"  (rows=3475)
 
@@ -212,12 +212,12 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 3474 | 247 | 2587 |
-| MID | tt0375890 | tt2283748 | tt2032530 |
-| title | Kanoon | OMG: Oh My God! | Shabri |
-| year | 1994 | 2012 | 2011 |
-| rating | 3.2 | 8.2 | 5.8 |
-| num_votes | 103 | 41975 | 116 |
+| index | 3474 | 342 | 2463 |
+| MID | tt0375890 | tt7142506 | tt6189880 |
+| title | Kanoon | Sir | Alif |
+| year | 1994 | I 2018 | I 2017 |
+| rating | 3.2 | 7 | 6.7 |
+| num_votes | 103 | 146 | 116 |
 
 # "Person"  (rows=38285)
 
@@ -232,7 +232,7 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 38284 | 9040 | 20191 |
-| PID | nm1421793 | nm4445339 | nm4701038 |
-| Name | Sushma Shiromani |  Lawrie D'Couza |  Ashraf Patel |
+| index | 38284 | 9068 | 28896 |
+| PID | nm1421793 | nm0202111 | nm1783471 |
+| Name | Sushma Shiromani |  Master Farzaan Dastoor |  Mahendra Singh |
 | Gender | Female | Male | Male |

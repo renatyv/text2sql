@@ -9,7 +9,8 @@ Replaces runner_pi.py as the default agentic runner. Per-question flow (plan
   * the container lives on the `beaver-sandbox` internal network (no internet
     route); its only egress is the allow-list proxy (openrouter.ai) and MySQL
     (beaver-mysql:3306), so the correct answer cannot leak via the internet;
-  * pi gets the purpose-built sql_exec tool under the SELECT-only DB account;
+  * pi gets its built-in tools, subagents, and the purpose-built sql_exec tool
+    under the SELECT-only DB account;
     other agents use their built-in tools and the installed MySQL/Python utilities;
   * turn_guard.ts reserves the last turn for final SQL.
 
@@ -106,8 +107,7 @@ def _agent_argv(agent: str, system_prompt: str, user_prompt: str, max_turns: int
             f"{system_prompt}\n\n{user_prompt}",
         ]
     # pi is the default and the only runner with custom lifecycle extensions.
-    # Keep its tool surface to sql_exec: it is compact and supports parallel
-    # lookups in one turn. The SELECT-only database account enforces safety.
+    # The SELECT-only database account and ephemeral container enforce safety.
     return [
         "-p",
         "--mode", "json",
@@ -120,8 +120,8 @@ def _agent_argv(agent: str, system_prompt: str, user_prompt: str, max_turns: int
         "--no-themes",
         "-e", "/extensions/sql_exec.ts",
         "-e", "/extensions/turn_guard.ts",
-        "--no-builtin-tools",
-        "--tools", "sql_exec",
+        "-e", "/usr/local/lib/node_modules/@earendil-works/pi-coding-agent/examples/extensions/subagent/index.ts",
+        "--tools", "read,bash,edit,write,grep,find,ls,sql_exec,subagent",
         "--thinking", config.PI_THINKING,
         "--append-system-prompt", system_prompt,
         "--provider", config.DEFAULT_PROVIDER,
@@ -229,6 +229,13 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
         "arm": arm, "runner": f"container:{agent}", "db_label": db_label,
         "max_turns": max_turns, "sandbox": str(sandbox), "container": True,
     }
+    agents_dir = sandbox / ".pi" / "agents"
+    agents_dir.mkdir(parents=True, exist_ok=True)
+    critic = (config.HARNESS_DIR / "pi_agents" / "critic.md").read_text(encoding="utf-8")
+    (agents_dir / "critic.md").write_text(
+        critic.replace("__CRITIC_MODEL__", f"{config.DEFAULT_PROVIDER}/{config.CONTAINER_AGENT_MODEL}"),
+        encoding="utf-8",
+    )
 
     if not network.is_ready():
         rec["error"] = ("agent network not ready — call harness.network.setup() "
@@ -247,6 +254,7 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
         "-v", f"{(config.openrouter_models_path() if agent == 'pi' else config.HARNESS_DIR / 'openrouter_models.json')}:/home/node/.pi/agent/models.json:ro",
         "-v", f"{config.HARNESS_DIR / 'codex_config.toml'}:/home/node/.codex/config.toml:ro",
         "-v", f"{config.HARNESS_DIR / 'opencode.json'}:/config/opencode.json:ro",
+        "-v", f"{agents_dir}:/workspace/.pi/agents:ro",
     ]
     if engine == "sqlite":
         host_dir = config.databases_dir_for(db_label).resolve()

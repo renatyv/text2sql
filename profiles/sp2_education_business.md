@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:34:14.436776Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:23:50.460427Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-e5u76und/education_business.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-w9urnezm/education_business.sqlite
 schema: main
 ---
 
@@ -22,12 +22,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 4343 | 407 | 1718 |
-| CompanyName | vPhrase | Bestintown Analytics | Freelancer |
-| JobTitle | Machine Learning Engineer | Data Scientist | Data Scientist |
-| SalariesReported | 1 | 1 | 1 |
-| Location | Mumbai | Bangalore | New Delhi |
-| Salary | ₹9,39,843/yr | ₹23,616/mo | ₹10,31,658/yr |
+| index | 4343 | 170 | 3332 |
+| CompanyName | vPhrase | Zoom Video Communications | TTEC |
+| JobTitle | Machine Learning Engineer | Data Scientist | Data Engineer |
+| SalariesReported | 1 | 2 | 2 |
+| Location | Mumbai | Bangalore | Hyderabad |
+| Salary | ₹9,39,843/yr | ₹28,39,076/yr | ₹12,51,502/yr |
 
 # "StaffHours"  (rows=236)
 
@@ -42,10 +42,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StaffMember | Z | T | L |
-| EventDate | 2013-03-09 | 2013-03-02 | 2013-02-14 |
-| EventTime | 11:45 | 15:20 | 15:25 |
-| EventType | Enter | Exit | Exit |
+| StaffMember | Z | S | I |
+| EventDate | 2013-03-09 | 2013-02-08 | 2013-02-21 |
+| EventTime | 11:45 | 09:40 | 08:50 |
+| EventType | Enter | Enter | Enter |
 
 # "hardware_dim_customer"  (rows=209)
 
@@ -63,13 +63,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customer_code | 90027207 | 90015144 | 90004065 |
-| customer | Amazon  | Sound | Neptune |
+| customer_code | 90027207 | 90022073 | 90005159 |
+| customer | Amazon  | Control | Expression |
 | platform | E-Commerce | Brick & Mortar | Brick & Mortar |
 | channel | Retailer | Retailer | Retailer |
-| market | Brazil | Norway | Japan |
-| sub_zone | LATAM | NE | ROA |
-| region | LATAM | EU | APAC |
+| market | Brazil | USA | Pakistan |
+| sub_zone | LATAM | null | ROA |
+| region | LATAM | null | APAC |
 
 # "hardware_dim_product"  (rows=397)
 
@@ -86,12 +86,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_code | A7321160303 | A5318110106 | A0821150502 |
-| division | N & S | PC | P & A |
-| segment | Networking | Notebook | Peripherals |
-| category | Wi fi extender | Gaming Laptop | Graphic Card |
-| product | AQ Wi Power Dx3 | AQ Gamer 1 | AQ Marquee P3 |
-| variant | Premium | Plus Black | Plus 1 |
+| product_code | A7321160303 | A7018160402 | A5621110403 |
+| division | N & S | N & S | PC |
+| segment | Networking | Storage | Notebook |
+| category | Wi fi extender | USB Flash Drives | Gaming Laptop |
+| product | AQ Wi Power Dx3 | AQ Ultra Dual 3.0 | AQ Smash 1 |
+| variant | Premium | Plus | Standard Black |
 
 # "hardware_fact_gross_price"  (rows=579)
 
@@ -105,9 +105,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_code | A7321160303 | A0321150302 | A5318110102 |
-| fiscal_year | 2021 | 2021 | 2020 |
-| gross_price | 42.8483 | 27.1027 | 527.01 |
+| product_code | A7321160303 | A4721110704 | A4520110505 |
+| fiscal_year | 2021 | 2021 | 2021 |
+| gross_price | 42.8483 | 380.215 | 325.216 |
 
 # "hardware_fact_manufacturing_cost"  (rows=579)
 
@@ -121,9 +121,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_code | A7321160303 | A2918150102 | A4218110206 |
-| cost_year | 2021 | 2020 | 2021 |
-| manufacturing_cost | 12.9502 | 2.2299 | 73.7165 |
+| product_code | A7321160303 | A4419110401 | A0721150401 |
+| cost_year | 2021 | 2021 | 2021 |
+| manufacturing_cost | 12.9502 | 84.1379 | 11.5709 |
 
 # "hardware_fact_pre_invoice_deductions"  (rows=418)
 
@@ -137,9 +137,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customer_code | 90027207 | 90011189 | 90012034 |
-| fiscal_year | 2021 | 2020 | 2021 |
-| pre_invoice_discount_pct | 0.2772 | 0.2054 | 0.2195 |
+| customer_code | 90027207 | 70010048 | 70008170 |
+| fiscal_year | 2021 | 2021 | 2021 |
+| pre_invoice_discount_pct | 0.2772 | 0.2205 | 0.1817 |
 
 # "hardware_fact_sales_monthly"  (rows=≈971631)
 
@@ -181,9 +181,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| OfferNo | 9876 | 9876 | 5678 |
-| StdNo | 901234567 | 678901234 | 123456789 |
-| EnrGrade | 4 | 3.3 | 3.2 |
+| OfferNo | 9876 | 5678 | 9876 |
+| StdNo | 901234567 | 567890123 | 456789012 |
+| EnrGrade | 4 | 2.6 | 3.4 |
 
 # "university_faculty"  (rows=8)
 
@@ -234,13 +234,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| OfferNo | 9876 | 1234 | 5555 |
-| CourseNo | IS460 | IS320 | FIN300 |
-| OffTerm | SPRING | FALL | WINTER |
-| OffYear | 2010 | 2009 | 2010 |
-| OffLocation | BLM307 | BLM302 | BLM207 |
-| OffTime | 1:30 PM | 10:30 AM | 8:30 AM |
-| FacNo | 6.5e+08 | 9.9e+07 | 7.7e+08 |
+| OfferNo | 9876 | 5555 | 3333 |
+| CourseNo | IS460 | FIN300 | IS320 |
+| OffTerm | SPRING | WINTER | SPRING |
+| OffYear | 2010 | 2010 | 2010 |
+| OffLocation | BLM307 | BLM207 | BLM214 |
+| OffTime | 1:30 PM | 8:30 AM | 8:30 AM |
+| FacNo | 6.5e+08 | 7.7e+08 | 9.9e+07 |
 | OffDays | TTH | MW | MW |
 
 # "university_student"  (rows=11)
@@ -261,15 +261,15 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StdNo | 901234567 | 901234567 | 890123456 |
-| StdFirstName | WILLIAM | WILLIAM | LUKE |
-| StdLastName | PILGRIM | PILGRIM | BRAZZI |
-| StdCity | BOTHELL | BOTHELL | SEATTLE |
+| StdNo | 901234567 | 345678901 | 456789012 |
+| StdFirstName | WILLIAM | WALLY | JOE |
+| StdLastName | PILGRIM | KENDALL | ESTRADA |
+| StdCity | BOTHELL | SEATTLE | SEATTLE |
 | StdState | WA | WA | WA |
-| StdZip | 98113-1885 | 98113-1885 | 98116-0021 |
-| StdMajor | IS | IS | IS |
-| StdClass | SO | SO | SR |
-| StdGPA | 3.8 | 3.8 | 2.2 |
+| StdZip | 98113-1885 | 98123-1141 | 98121-2333 |
+| StdMajor | IS | IS | FIN |
+| StdClass | SO | SR | SR |
+| StdGPA | 3.8 | 2.8 | 3.2 |
 
 # "web_accounts"  (rows=351)
 
@@ -287,13 +287,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 4501 | 3961 | 1771 |
-| name | SpartanNash | Sonic Automotive | Morgan Stanley |
-| website | www.spartannash.com | www.sonicautomotive.com | www.morganstanley.com |
-| lat | 45.5557 | 34.0457 | 40.7604 |
-| long | -122.657 | -118.249 | -73.9823 |
-| primary_poc | Jewell Likes | Keena Caffrey | Elvia Snipes |
-| sales_rep_id | 321970 | 321960 | 321700 |
+| id | 4501 | 2171 | 3751 |
+| name | SpartanNash | Northrop Grumman | Global Partners |
+| website | www.spartannash.com | www.northropgrumman.com | www.globalp.com |
+| lat | 45.5557 | 41.8785 | 34.0556 |
+| long | -122.657 | -87.6309 | -118.251 |
+| primary_poc | Jewell Likes | Nannette Costa | Jordan Fils |
+| sales_rep_id | 321970 | 321730 | 321950 |
 
 # "web_events"  (rows=9073)
 
@@ -308,10 +308,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 9073 | 5955 | 5106 |
-| account_id | 4501 | 2051 | 1531 |
-| occurred_at | 2016-05-30T00:46:53.000Z | 2016-09-27T10:11:52.000Z | 2015-10-10T13:09:35.000Z |
-| channel | organic | direct | adwords |
+| id | 9073 | 6374 | 5174 |
+| account_id | 4501 | 2381 | 1571 |
+| occurred_at | 2016-05-30T00:46:53.000Z | 2015-03-12T11:43:23.000Z | 2015-06-05T03:05:07.000Z |
+| channel | organic | facebook | organic |
 
 # "web_orders"  (rows=6912)
 
@@ -333,17 +333,17 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 6912 | 2644 | 32 |
-| account_id | 4501 | 2981 | 1051 |
-| occurred_at | 2016-12-21T13:30:42.000Z | 2016-10-31T05:31:18.000Z | 2016-11-30T07:31:16.000Z |
-| standard_qty | 61 | 90 | 490 |
-| gloss_qty | 150 | 26 | 18 |
-| poster_qty | 52 | 13 | 0 |
-| total | 263 | 129 | 508 |
-| standard_amt_usd | 304.39 | 449.1 | 2445.1 |
-| gloss_amt_usd | 1123.5 | 194.74 | 134.82 |
-| poster_amt_usd | 422.24 | 105.56 | 0 |
-| total_amt_usd | 1850.13 | 749.4 | 2579.92 |
+| id | 6912 | 3782 | 1762 |
+| account_id | 4501 | 4101 | 2341 |
+| occurred_at | 2016-12-21T13:30:42.000Z | 2016-11-14T06:30:10.000Z | 2016-08-28T23:33:30.000Z |
+| standard_qty | 61 | 513 | 442 |
+| gloss_qty | 150 | 4 | 29 |
+| poster_qty | 52 | 23 | 22 |
+| total | 263 | 540 | 493 |
+| standard_amt_usd | 304.39 | 2559.87 | 2205.58 |
+| gloss_amt_usd | 1123.5 | 29.96 | 217.21 |
+| poster_amt_usd | 422.24 | 186.76 | 178.64 |
+| total_amt_usd | 1850.13 | 2776.59 | 2601.43 |
 
 # "web_region"  (rows=4)
 
@@ -371,6 +371,6 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 321990 | 321600 | 321680 |
-| name | Dawna Agnew | Ernestine Pickron | Elna Condello |
-| region_id | 4 | 1 | 1 |
+| id | 321990 | 321820 | 321710 |
+| name | Dawna Agnew | Dorotha Seawell | Sherlene Wetherington |
+| region_id | 4 | 3 | 2 |

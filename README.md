@@ -22,10 +22,12 @@ The agentic arms run in a fresh, unprivileged Docker/OrbStack container for ever
 
 - `raw` — agent + MySQL CLI.
 - `profile` — raw access + frozen db-snooper profile.
+- `links` — raw access + schema links.
+- `profile_links` — raw access + frozen db-snooper profile + schema links.
 - `metadata` — raw access + aggregated metadata.
 - `profile_metadata` — raw access + both artifacts.
 
-All four arms use the same agent, prompt instructions, error-avoidance checklist, tools, model, and caps; only the supplied context differs. The default model and caps live in [`harness/config.py`](harness/config.py). The fixed evaluation budget is ten turns and 600 seconds per question. Exhausting either budget counts as an incorrect answer; only transient provider/API failures are retried.
+All arms use the same agent, prompt instructions, error-avoidance checklist, tools, model, and caps; only the supplied context differs. The default model and caps live in [`harness/config.py`](harness/config.py). The fixed evaluation budget is ten turns and 600 seconds per question. Exhausting either budget counts as an incorrect answer; only transient provider/API failures are retried.
 
 ## Isolation model
 

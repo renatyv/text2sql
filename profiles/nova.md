@@ -1,7 +1,7 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:29:21.629608Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:04:32.359791Z
 dialect: mysql
 database: nova
 schema: nova
@@ -37,13 +37,13 @@ indexes: `aggregate_id`, UNIQUE (`host`,`aggregate_id`,`deleted`)
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-05-06T16:14:41 | 2016-08-03T13:50:10 | 2016-08-03T13:50:12 |
-| updated_at | null | null | null |
-| deleted_at | null | null | null |
-| id | 1251 | 418 | 419 |
-| host | forge-23 | grav9-5 | delta-67 |
-| aggregate_id | 2 | 11 | 9 |
-| deleted | 0 | 0 | 0 |
+| created_at | 2024-05-06T16:14:41 | null | null |
+| updated_at | null | 2017-08-04T16:36:52 | 2017-08-04T16:36:52 |
+| deleted_at | null | 2017-08-04T16:36:52 | 2017-08-04T16:36:52 |
+| id | 1251 | 59 | 60 |
+| host | forge-23 | radar1-79 | forge3-2 |
+| aggregate_id | 2 | 1 | 1 |
+| deleted | 0 | 1 | 1 |
 
 # `aggregate_metadata`  (rows=38)
 
@@ -62,13 +62,13 @@ indexes: `aggregate_id`, `key`, UNIQUE (`aggregate_id`,`key`,`deleted`)
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2019-12-23T20:23:43 | 2013-08-08T18:27:50 | 2013-08-08T18:45:28 |
+| created_at | 2019-12-23T20:23:43 | 2019-12-23T19:48:50 | 2019-12-23T20:23:33 |
 | updated_at | null | null | null |
 | deleted_at | null | null | null |
-| id | 42 | 3 | 4 |
-| aggregate_id | 20 | 2 | 3 |
-| key | cpu_allocation_ratio | overcommit | availability_zone |
-| value | 8.0 | default | nova |
+| id | 42 | 36 | 37 |
+| aggregate_id | 20 | 20 | 21 |
+| key | cpu_allocation_ratio | generation | ram_allocation_ratio |
+| value | 8.0 | 3 | 3.5 |
 | deleted | 0 | 0 | 0 |
 
 # `aggregates`  (rows=21)
@@ -87,76 +87,76 @@ indexes: `uuid`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2019-12-23T19:47:47 | 2013-08-08T18:45:11 | 2014-02-07T18:00:23 |
+| created_at | 2019-12-23T19:47:47 | 2014-02-07T18:00:36 | 2014-05-20T20:36:08 |
 | updated_at | null | 2016-10-13T15:03:15 | 2016-10-13T15:03:15 |
 | deleted_at | null | null | null |
-| id | 21 | 3 | 4 |
-| name | align-track | aurum | shift-6b-15 |
+| id | 21 | 5 | 6 |
+| name | align-track | proto4 | aurum |
 | deleted | 0 | 0 | 0 |
-| uuid | 7ecfc17d-efad-4d26-a2d2-cc1b9a032a0c | a2475632-4dca-41b9-b102-a28966002418 | ae39debd-2ba7-4ac5-ab22-432669532571 |
+| uuid | 7ecfc17d-efad-4d26-a2d2-cc1b9a032a0c | bfdb2a6d-bba0-4fc4-8030-b3544843480e | 0cf382be-16ff-4622-b83c-5183bc990b1b |
 
-# `all_instances`
+# `all_instances`  (rows=717814)
 
 ```sql
 CREATE VIEW nova.all_instances AS select `nova`.`instances`.`created_at` AS `created_at`,`nova`.`instances`.`updated_at` AS `updated_at`,`nova`.`instances`.`deleted_at` AS `deleted_at`,`nova`.`instances`.`id` AS `id`,`nova`.`instances`.`internal_id` AS `internal_id`,`nova`.`instances`.`user_id` AS `user_id`,`nova`.`instances`.`project_id` AS `project_id`,`nova`.`instances`.`image_ref` AS `image_ref`,`nova`.`instances`.`kernel_id` AS `kernel_id`,`nova`.`instances`.`ramdisk_id` AS `ramdisk_id`,`nova`.`instances`.`launch_index` AS `launch_index`,`nova`.`instances`.`key_name` AS `key_name`,`nova`.`instances`.`key_data` AS `key_data`,`nova`.`instances`.`power_state` AS `power_state`,`nova`.`instances`.`vm_state` AS `vm_state`,`nova`.`instances`.`memory_mb` AS `memory_mb`,`nova`.`instances`.`vcpus` AS `vcpus`,`nova`.`instances`.`hostname` AS `hostname`,`nova`.`instances`.`host` AS `host`,`nova`.`instances`.`user_data` AS `user_data`,`nova`.`instances`.`reservation_id` AS `reservation_id`,`nova`.`instances`.`scheduled_at` AS `scheduled_at`,`nova`.`instances`.`launched_at` AS `launched_at`,`nova`.`instances`.`terminated_at` AS `terminated_at`,`nova`.`instances`.`display_name` AS `display_name`,`nova`.`instances`.`display_description` AS `display_description`,`nova`.`instances`.`availability_zone` AS `availability_zone`,`nova`.`instances`.`locked` AS `locked`,`nova`.`instances`.`os_type` AS `os_type`,`nova`.`instances`.`launched_on` AS `launched_on`,`nova`.`instances`.`instance_type_id` AS `instance_type_id`,`nova`.`instances`.`vm_mode` AS `vm_mode`,`nova`.`instances`.`uuid` AS `uuid`,`nova`.`instances`.`architecture` AS `architecture`,`nova`.`instances`.`root_device_name` AS `root_device_name`,`nova`.`instances`.`access_ip_v4` AS `access_ip_v4`,`nova`.`instances`.`access_ip_v6` AS `access_ip_v6`,`nova`.`instances`.`config_drive` AS `config_drive`,`nova`.`instances`.`task_state` AS `task_state`,`nova`.`instances`.`default_ephemeral_device` AS `default_ephemeral_device`,`nova`.`instances`.`default_swap_device` AS `default_swap_device`,`nova`.`instances`.`progress` AS `progress`,`nova`.`instances`.`auto_disk_config` AS `auto_disk_config`,`nova`.`instances`.`shutdown_terminate` AS `shutdown_terminate`,`nova`.`instances`.`disable_terminate` AS `disable_terminate`,`nova`.`instances`.`root_gb` AS `root_gb`,`nova`.`instances`.`ephemeral_gb` AS `ephemeral_gb`,`nova`.`instances`.`cell_name` AS `cell_name`,`nova`.`instances`.`node` AS `node`,`nova`.`instances`.`deleted` AS `deleted`,`nova`.`instances`.`locked_by` AS `locked_by`,`nova`.`instances`.`cleaned` AS `cleaned`,`nova`.`instances`.`ephemeral_key_uuid` AS `ephemeral_key_uuid` from `nova`.`instances` union select `nova`.`shadow_instances`.`created_at` AS `created_at`,`nova`.`shadow_instances`.`updated_at` AS `updated_at`,`nova`.`shadow_instances`.`deleted_at` AS `deleted_at`,`nova`.`shadow_instances`.`id` AS `id`,`nova`.`shadow_instances`.`internal_id` AS `internal_id`,`nova`.`shadow_instances`.`user_id` AS `user_id`,`nova`.`shadow_instances`.`project_id` AS `project_id`,`nova`.`shadow_instances`.`image_ref` AS `image_ref`,`nova`.`shadow_instances`.`kernel_id` AS `kernel_id`,`nova`.`shadow_instances`.`ramdisk_id` AS `ramdisk_id`,`nova`.`shadow_instances`.`launch_index` AS `launch_index`,`nova`.`shadow_instances`.`key_name` AS `key_name`,`nova`.`shadow_instances`.`key_data` AS `key_data`,`nova`.`shadow_instances`.`power_state` AS `power_state`,`nova`.`shadow_instances`.`vm_state` AS `vm_state`,`nova`.`shadow_instances`.`memory_mb` AS `memory_mb`,`nova`.`shadow_instances`.`vcpus` AS `vcpus`,`nova`.`shadow_instances`.`hostname` AS `hostname`,`nova`.`shadow_instances`.`host` AS `host`,`nova`.`shadow_instances`.`user_data` AS `user_data`,`nova`.`shadow_instances`.`reservation_id` AS `reservation_id`,`nova`.`shadow_instances`.`scheduled_at` AS `scheduled_at`,`nova`.`shadow_instances`.`launched_at` AS `launched_at`,`nova`.`shadow_instances`.`terminated_at` AS `terminated_at`,`nova`.`shadow_instances`.`display_name` AS `display_name`,`nova`.`shadow_instances`.`display_description` AS `display_description`,`nova`.`shadow_instances`.`availability_zone` AS `availability_zone`,`nova`.`shadow_instances`.`locked` AS `locked`,`nova`.`shadow_instances`.`os_type` AS `os_type`,`nova`.`shadow_instances`.`launched_on` AS `launched_on`,`nova`.`shadow_instances`.`instance_type_id` AS `instance_type_id`,`nova`.`shadow_instances`.`vm_mode` AS `vm_mode`,`nova`.`shadow_instances`.`uuid` AS `uuid`,`nova`.`shadow_instances`.`architecture` AS `architecture`,`nova`.`shadow_instances`.`root_device_name` AS `root_device_name`,`nova`.`shadow_instances`.`access_ip_v4` AS `access_ip_v4`,`nova`.`shadow_instances`.`access_ip_v6` AS `access_ip_v6`,`nova`.`shadow_instances`.`config_drive` AS `config_drive`,`nova`.`shadow_instances`.`task_state` AS `task_state`,`nova`.`shadow_instances`.`default_ephemeral_device` AS `default_ephemeral_device`,`nova`.`shadow_instances`.`default_swap_device` AS `default_swap_device`,`nova`.`shadow_instances`.`progress` AS `progress`,`nova`.`shadow_instances`.`auto_disk_config` AS `auto_disk_config`,`nova`.`shadow_instances`.`shutdown_terminate` AS `shutdown_terminate`,`nova`.`shadow_instances`.`disable_terminate` AS `disable_terminate`,`nova`.`shadow_instances`.`root_gb` AS `root_gb`,`nova`.`shadow_instances`.`ephemeral_gb` AS `ephemeral_gb`,`nova`.`shadow_instances`.`cell_name` AS `cell_name`,`nova`.`shadow_instances`.`node` AS `node`,`nova`.`shadow_instances`.`deleted` AS `deleted`,`nova`.`shadow_instances`.`locked_by` AS `locked_by`,`nova`.`shadow_instances`.`cleaned` AS `cleaned`,`nova`.`shadow_instances`.`ephemeral_key_uuid` AS `ephemeral_key_uuid` from `nova`.`shadow_instances`;
 ```
 
 columns:
-`created_at` datetime
-`updated_at` datetime
-`deleted_at` datetime
-`id` int
-`internal_id` int
-`user_id` varchar255
-`project_id` varchar255
-`image_ref` varchar255
-`kernel_id` varchar255
-`ramdisk_id` varchar255
-`launch_index` int
-`key_name` varchar255
-`key_data` mediumtext
-`power_state` int
-`vm_state` varchar255
-`memory_mb` int
-`vcpus` int
-`hostname` varchar255
-`host` varchar255
-`user_data` mediumtext
-`reservation_id` varchar255
-`scheduled_at` datetime
-`launched_at` datetime
-`terminated_at` datetime
-`display_name` varchar255
-`display_description` varchar255
-`availability_zone` varchar255
-`locked` int
-`os_type` varchar255
-`launched_on` mediumtext
-`instance_type_id` int
-`vm_mode` varchar255
-`uuid` varchar36
-`architecture` varchar255
-`root_device_name` varchar255
-`access_ip_v4` varchar39
-`access_ip_v6` varchar39
-`config_drive` varchar255
-`task_state` varchar255
-`default_ephemeral_device` varchar255
-`default_swap_device` varchar255
-`progress` int
-`auto_disk_config` int
-`shutdown_terminate` int
-`disable_terminate` int
-`root_gb` int
-`ephemeral_gb` int
-`cell_name` varchar255
-`node` varchar255
-`deleted` int
-`locked_by` varchar5
-`cleaned` int
-`ephemeral_key_uuid` varchar36
+`created_at` datetime: profile metrics skipped
+`updated_at` datetime: nulls=84
+`deleted_at` datetime: nulls=1485
+`id` int: 1..749387
+`internal_id` int: all NULL
+`user_id` varchar255: profile metrics skipped
+`project_id` varchar255: profile metrics skipped
+`image_ref` varchar255: uuid, nulls=4110
+`kernel_id` varchar255: uuid, nulls=717695
+`ramdisk_id` varchar255: uuid, nulls=717695
+`launch_index` int: 0..511, avg=2.7386
+`key_name` varchar255: nulls=33056
+`key_data` mediumtext: nulls=33061
+`power_state` int: 0..5, avg=0.7548
+`vm_state` varchar255: profile metrics skipped
+`memory_mb` int: 1..98304, avg=4388.6399
+`vcpus` int: 1..88, avg=2.4029
+`hostname` varchar255: profile metrics skipped
+`host` varchar255: profile metrics skipped
+`user_data` mediumtext: nulls=369424
+`reservation_id` varchar255: profile metrics skipped
+`scheduled_at` datetime: nulls=320813
+`launched_at` datetime: nulls=173685
+`terminated_at` datetime: nulls=142458
+`display_name` varchar255: profile metrics skipped
+`display_description` varchar255: nulls=434542
+`availability_zone` varchar255: nulls=685490
+`locked` int: 0..1, avg=0
+`os_type` varchar255: all NULL
+`launched_on` mediumtext: nulls=143559
+`instance_type_id` int: 1..196
+`vm_mode` varchar255: all NULL
+`uuid` varchar36: uuid
+`architecture` varchar255: nulls=717620
+`root_device_name` varchar255: nulls=147834
+`access_ip_v4` varchar39: all NULL
+`access_ip_v6` varchar39: all NULL
+`config_drive` varchar255: bool-like, nulls=717415
+`task_state` varchar255: nulls=575126
+`default_ephemeral_device` varchar255: nulls=409056
+`default_swap_device` varchar255: nulls=717260
+`progress` int: 0..0, avg=0
+`auto_disk_config` int: nulls=481255, 0..1, avg=0.0039
+`shutdown_terminate` int: 0..1, avg=0.0269
+`disable_terminate` int: 0..0, avg=0
+`root_gb` int: 0..100, avg=12.5595
+`ephemeral_gb` int: 0..360, avg=24.3553
+`cell_name` varchar255: all NULL
+`node` varchar255: nulls=472155
+`deleted` int: 0..749385, avg=359838.7599
+`locked_by` varchar5: nulls=717800
+`cleaned` int: 0..1, avg=0.9926
+`ephemeral_key_uuid` varchar36: all NULL
 
-- skipped (row count query timeout > 10s)
+- latest rows skipped (query timeout > 10s); random rows skipped (native table sampling is unavailable for views)
 
 # `block_device_mapping`  (rows=16798)
 
@@ -187,26 +187,26 @@ indexes: (`instance_uuid`,`device_name`), `instance_uuid`, (`instance_uuid`,`vol
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-06-28T01:25:36 | 2015-03-26T22:59:52 | 2015-03-27T12:55:49 |
-| updated_at | 2024-06-28T01:25:42 | 2015-03-26T22:59:56 | 2022-03-03T14:57:31 |
-| deleted_at | 2024-06-28T01:37:05 | null | null |
-| id | 281398 | 97002 | 98925 |
-| device_name | /dev/vdb | /dev/vda | /dev/vdb |
-| delete_on_termination | 0 | 1 | 0 |
+| created_at | 2024-06-28T01:25:36 | 2015-04-14T15:27:05 | 2015-04-14T15:52:52 |
+| updated_at | 2024-06-28T01:25:42 | 2015-04-14T15:27:07 | 2015-04-14T15:52:58 |
+| deleted_at | 2024-06-28T01:37:05 | 2022-08-16T14:33:30 | null |
+| id | 281398 | 123050 | 123145 |
+| device_name | /dev/vdb | /dev/vda | /dev/vda |
+| delete_on_termination | 0 | 1 | 1 |
 | snapshot_id | null | null | null |
-| volume_id | 7308377b-f688-4246-936b-5bd08a204982 | null | c49d8bb9-477f-4fcc-9ef3-7e2929216de1 |
+| volume_id | 7308377b-f688-4246-936b-5bd08a204982 | null | null |
 | volume_size | 5 | null | null |
 | no_device | null | null | null |
-| connection_info | {"driver_volume_type": "rbd", "connector": {"initiator": "iqn10.132.246.102/8-10.121.122.184/8org.debian:01:75848bb568e8", "ip": "10.165.53.177/8", "platform": "x86_64", "host": "cosmo3-23", "os_type… | null | {"driver_volume_type": "rbd", "connector": {"initiator": "iqn10.132.246.102/8-10.121.122.184/8org.debian:01:e320a063e48a", "ip": "10.64.114.161/8", "platform": "x86_64", "host": "drive-59", "os_type"… |
-| instance_uuid | 7fe281b6-5744-41ca-9f94-9d6f516b4e8b | 10899691-0664-4dad-a0bd-ee8294e9c762 | 10899691-0664-4dad-a0bd-ee8294e9c762 |
-| deleted | 281398 | 0 | 0 |
-| source_type | volume | image | volume |
-| destination_type | volume | local | volume |
+| connection_info | {"driver_volume_type": "rbd", "connector": {"initiator": "iqn10.132.246.102/8-10.121.122.184/8org.debian:01:75848bb568e8", "ip": "10.165.53.177/8", "platform": "x86_64", "host": "cosmo3-23", "os_type… | null | null |
+| instance_uuid | 7fe281b6-5744-41ca-9f94-9d6f516b4e8b | d9ddf3f4-7749-42a7-98fd-30ca51c5371d | 259bf0b8-8821-46f8-945e-5f24ea559ffd |
+| deleted | 281398 | 123050 | 0 |
+| source_type | volume | image | image |
+| destination_type | volume | local | local |
 | guest_format | null | null | null |
 | device_type | null | disk | disk |
-| disk_bus | null | null | virtio |
-| boot_index | null | 0 | null |
-| image_id | null | 7afc541a-014a-4668-8ebb-b30e64419704 | null |
+| disk_bus | null | null | null |
+| boot_index | null | 0 | 0 |
+| image_id | null | 297a9c1d-75b4-4744-b7e9-47c8a25eab10 | 2a0b1112-7f39-43e6-9a29-5e82dd62713a |
 
 # `certificates`  (rows=127)
 
@@ -225,13 +225,13 @@ indexes: (`project_id`,`deleted`), (`user_id`,`deleted`)
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2014-12-30T18:36:51 | 2014-04-23T21:46:17 | 2014-04-23T21:46:23 |
+| created_at | 2014-12-30T18:36:51 | 2014-04-23T21:45:40 | 2014-04-23T21:46:04 |
 | updated_at | null | null | null |
 | deleted_at | null | null | null |
-| id | 127 | 101 | 102 |
+| id | 127 | 99 | 100 |
 | user_id | a1ef823458d24a68955fec6f3d390019 | 6360caf9aaaa436c8deee7dbf094f726 | 6360caf9aaaa436c8deee7dbf094f726 |
 | project_id | bfd50153a2e9476f93e33e30e922cd06 | 3008a142e9524f7295b06ea811908f93 | 3008a142e9524f7295b06ea811908f93 |
-| file_name | /var/lib/nova/CA/newcerts/8B.pem | /var/lib/nova/CA/newcerts/74.pem | /var/lib/nova/CA/newcerts/75.pem |
+| file_name | /var/lib/nova/CA/newcerts/8B.pem | /var/lib/nova/CA/newcerts/72.pem | /var/lib/nova/CA/newcerts/73.pem |
 | deleted | 0 | 0 | 0 |
 
 # `compute_nodes`  (rows=139)
@@ -276,38 +276,38 @@ indexes: UNIQUE (`host`,`hypervisor_hostname`,`deleted`)
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2019-01-09T18:22:21 | 2012-07-12T18:18:00 | 2012-07-12T18:18:11 |
-| updated_at | 2019-01-09T18:22:21 | 2017-08-04T20:19:55 | 2017-08-04T20:20:21 |
-| deleted_at | null | 2017-08-04T20:25:29 | 2017-08-04T20:25:33 |
-| id | 149 | 24 | 25 |
-| service_id | null | 55 | 58 |
-| vcpus | 32 | 24 | 24 |
-| memory_mb | 128893 | 48292 | 48292 |
-| local_gb | 642559 | 379868 | 379868 |
+| created_at | 2019-01-09T18:22:21 | 2014-05-22T19:46:04 | 2014-05-22T19:47:20 |
+| updated_at | 2019-01-09T18:22:21 | 2018-02-15T16:10:14 | 2018-02-15T16:10:33 |
+| deleted_at | null | 2018-11-05T19:07:44 | 2018-11-05T19:07:39 |
+| id | 149 | 72 | 73 |
+| service_id | null | 156 | 157 |
+| vcpus | 32 | 32 | 32 |
+| memory_mb | 128893 | 193404 | 193404 |
+| local_gb | 642559 | 510717 | 510717 |
 | vcpus_used | 0 | 0 | 0 |
 | memory_mb_used | 512 | 512 | 512 |
 | local_gb_used | 0 | 0 | 0 |
 | hypervisor_type | QEMU | QEMU | QEMU |
 | hypervisor_version | 2005000 | 2005000 | 2005000 |
-| cpu_info | {"vendor": "Intel", "model": "Broadwell", "arch": "x86_64", "features": ["smap", "avx", "clflush", "sep", "rtm", "vme", "dtes64", "invpcid", "tsc", "fsgsbase", "xsave", "pge", "vmx", "erms", "xtpr",… | {"vendor": "Intel", "model": "Westmere", "arch": "x86_64", "features": ["pge", "clflush", "sep", "syscall", "vme", "dtes64", "msr", "vmx", "xtpr", "cmov", "ssse3", "est", "pat", "monitor", "smx", "pb… | {"vendor": "Intel", "model": "Westmere", "arch": "x86_64", "features": ["pge", "clflush", "sep", "syscall", "vme", "dtes64", "msr", "vmx", "xtpr", "cmov", "ssse3", "est", "pat", "monitor", "smx", "pb… |
-| disk_available_least | 364779 | 188525 | 188525 |
+| cpu_info | {"vendor": "Intel", "model": "Broadwell", "arch": "x86_64", "features": ["smap", "avx", "clflush", "sep", "rtm", "vme", "dtes64", "invpcid", "tsc", "fsgsbase", "xsave", "pge", "vmx", "erms", "xtpr",… | {"vendor": "Intel", "model": "SandyBridge", "arch": "x86_64", "features": ["pge", "avx", "clflush", "sep", "syscall", "vme", "dtes64", "msr", "xsave", "vmx", "xtpr", "cmov", "ssse3", "est", "pat", "m… | {"vendor": "Intel", "model": "SandyBridge", "arch": "x86_64", "features": ["pge", "avx", "clflush", "sep", "syscall", "vme", "dtes64", "msr", "xsave", "vmx", "xtpr", "cmov", "ssse3", "est", "pat", "m… |
+| disk_available_least | 364779 | 281505 | 281506 |
 | free_ram_mb | 0 | 0 | 0 |
-| free_disk_gb | 642559 | 379868 | 379868 |
+| free_disk_gb | 642559 | 510717 | 510717 |
 | current_workload | 0 | 0 | 0 |
 | running_vms | 0 | 0 | 0 |
-| hypervisor_hostname | cubic-10.yahoo.ca.com | flick7-81.yahoo.ca.com | point9-36.yahoo.ca.com |
-| deleted | 0 | 24 | 25 |
-| host_ip | 10.76.186.207/8 | 10.215.222.75/8 | 10.44.247.104/8 |
+| hypervisor_hostname | cubic-10.yahoo.ca.com | space1-89.yahoo.ca.com | layer-86.yahoo.ca.com |
+| deleted | 0 | 72 | 73 |
+| host_ip | 10.76.186.207/8 | 10.39.218.201/8 | 10.190.70.80/8 |
 | supported_instances | [["alpha", "qemu", "hvm"], ["armv7l", "qemu", "hvm"], ["aarch64", "qemu", "hvm"], ["cris", "qemu", "hvm"], ["i686", "qemu", "hvm"], ["i686", "kvm", "hvm"], ["lm32", "qemu", "hvm"], ["m68k", "qemu", "… | [["alpha", "qemu", "hvm"], ["armv7l", "qemu", "hvm"], ["aarch64", "qemu", "hvm"], ["cris", "qemu", "hvm"], ["i686", "qemu", "hvm"], ["i686", "kvm", "hvm"], ["lm32", "qemu", "hvm"], ["m68k", "qemu", "… | [["alpha", "qemu", "hvm"], ["armv7l", "qemu", "hvm"], ["aarch64", "qemu", "hvm"], ["cris", "qemu", "hvm"], ["i686", "qemu", "hvm"], ["i686", "kvm", "hvm"], ["lm32", "qemu", "hvm"], ["m68k", "qemu", "… |
 | pci_stats | {"nova_object.version": "1.1", "nova_object.changes": ["objects"], "nova_object.name": "PciDevicePoolList", "nova_object.data": {"objects": [{"nova_object.version": "1.1", "nova_object.changes": ["co… | {"nova_object.version": "1.1", "nova_object.changes": ["objects"], "nova_object.name": "PciDevicePoolList", "nova_object.data": {"objects": []}, "nova_object.namespace": "nova"} | {"nova_object.version": "1.1", "nova_object.changes": ["objects"], "nova_object.name": "PciDevicePoolList", "nova_object.data": {"objects": []}, "nova_object.namespace": "nova"} |
 | metrics | [] | [] | [] |
 | extra_resources | null | null | null |
 | stats | {} | {} | {} |
 | numa_topology | {"nova_object.version": "1.2", "nova_object.changes": ["cells"], "nova_object.name": "NUMATopology", "nova_object.data": {"cells": [{"nova_object.version": "1.2", "nova_object.changes": ["cpu_usage",… | {"nova_object.version": "1.2", "nova_object.changes": ["cells"], "nova_object.name": "NUMATopology", "nova_object.data": {"cells": [{"nova_object.version": "1.2", "nova_object.changes": ["cpu_usage",… | {"nova_object.version": "1.2", "nova_object.changes": ["cells"], "nova_object.name": "NUMATopology", "nova_object.data": {"cells": [{"nova_object.version": "1.2", "nova_object.changes": ["cpu_usage",… |
-| host | cubic-10 | flick7-81 | point9-36 |
+| host | cubic-10 | space1-89 | layer-86 |
 | ram_allocation_ratio | 0 | 0 | 0 |
 | cpu_allocation_ratio | 0 | 0 | 0 |
-| uuid | 5b0b8cb5-84e6-4cdf-9721-dffb37549727 | 504d7939-3b75-41f0-bc04-7bb2d70b9922 | 9cb1b0d5-f8c0-4f6a-bb50-f0dc692a3fe1 |
+| uuid | 5b0b8cb5-84e6-4cdf-9721-dffb37549727 | 2bf4cbfa-a204-4547-ba1d-b0b7cf6dadf6 | ab410fe7-cb83-4af9-9a51-84683283ee3b |
 | disk_allocation_ratio | 0 | 0 | 0 |
 
 # `fixed_ips`  (rows=63724)
@@ -332,11 +332,11 @@ indexes: `address`, (`address`,`reserved`,`network_id`,`deleted`), (`address`,`d
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2012-09-07T13:52:47 | 2012-09-07T13:52:17 | 2012-09-07T13:52:17 |
+| created_at | 2012-09-07T13:52:47 | 2012-09-07T13:52:15 | 2012-09-07T13:52:15 |
 | updated_at | null | null | null |
 | deleted_at | null | null | null |
-| id | 66304 | 8201 | 8202 |
-| address | 10.223.191.20/8 | 10.66.226.223/8 | 10.199.74.232/8 |
+| id | 66304 | 4112 | 4113 |
+| address | 10.223.191.20/8 | 10.54.219.186/8 | 10.216.219.141/8 |
 | network_id | 1 | 1 | 1 |
 | allocated | 0 | 0 | 0 |
 | leased | 0 | 0 | 0 |
@@ -367,11 +367,11 @@ indexes: `fixed_ip_id`, `host`, (`pool`,`deleted`,`fixed_ip_id`,`project_id`), `
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2012-07-05T19:22:43 | 2012-07-05T19:20:18 | 2012-07-05T19:20:18 |
+| created_at | 2012-07-05T19:22:43 | 2012-07-05T19:19:21 | 2012-07-05T19:19:21 |
 | updated_at | null | null | null |
 | deleted_at | null | null | null |
-| id | 8190 | 2437 | 2438 |
-| address | 10.13.139.247/8 | 10.113.172.78/8 | 10.182.126.59/8 |
+| id | 8190 | 181 | 182 |
+| address | 10.13.139.247/8 | 10.138.193.17/8 | 10.87.207.158/8 |
 | fixed_ip_id | null | null | null |
 | project_id | null | null | null |
 | host | null | null | null |
@@ -402,16 +402,16 @@ indexes: `instance_uuid`, `request_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-07-05T20:28:18 | 2015-04-14T15:27:05 | 2015-04-14T15:52:52 |
+| created_at | 2024-07-05T20:28:18 | 2016-06-17T00:26:29 | 2016-06-17T00:37:42 |
 | updated_at | null | null | null |
 | deleted_at | null | null | null |
-| id | 650157 | 303760 | 303947 |
-| action | stop | create | create |
-| instance_uuid | 81606363-89ce-4172-93ff-63d26cdbd0b1 | d9ddf3f4-7749-42a7-98fd-30ca51c5371d | 259bf0b8-8821-46f8-945e-5f24ea559ffd |
-| request_id | req-6b9be970-4f72-48b2-ad39-a545b9506c41 | req-675c2c14-1508-4e5c-b656-5b5a000c1814 | req-30189732-8132-4de8-bc8d-ee5fb588333e |
-| user_id | 16d15017af6749c89af3cb547a3a28ff | ed22eaa324ea4dff812c57a199d3abd4 | 60900fd50a3e41e5a4d1ed926873b3c1 |
-| project_id | a5c6a169183342b989557bb95c7b8e0b | 09ad05432f914e26bc417bf58f1cb4d2 | ed80597767a44325a850904c41bb006f |
-| start_time | 2024-07-05T20:28:17 | 2015-04-14T15:27:04 | 2015-04-14T15:52:52 |
+| id | 650157 | 499575 | 499576 |
+| action | stop | reboot | stop |
+| instance_uuid | 81606363-89ce-4172-93ff-63d26cdbd0b1 | 6b1e60c3-898a-4526-8bd3-e80c5128ea88 | 6b1e60c3-898a-4526-8bd3-e80c5128ea88 |
+| request_id | req-6b9be970-4f72-48b2-ad39-a545b9506c41 | req-c2c0886e-236a-44bd-94aa-a56325abfeca | req-2a149a2a-5e68-4d0b-a589-031cbcaa32ed |
+| user_id | 16d15017af6749c89af3cb547a3a28ff | d77a44110635476796a1cfbb631f155a | null |
+| project_id | a5c6a169183342b989557bb95c7b8e0b | fc1b446cad9e4849a41f9160664e3781 | null |
+| start_time | 2024-07-05T20:28:17 | 2016-06-17T00:26:28 | 2016-06-17T00:37:41 |
 | finish_time | null | null | null |
 | message | null | null | null |
 | deleted | 0 | 0 | 0 |
@@ -438,14 +438,14 @@ indexes: `action_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-07-05T20:28:18 | 2021-06-01T15:40:41 | 2021-06-01T15:40:54 |
-| updated_at | 2024-07-05T20:28:25 | 2021-06-01T15:41:34 | 2021-06-01T15:43:08 |
+| created_at | 2024-07-05T20:28:18 | 2015-03-03T14:59:29 | 2015-03-04T21:15:27 |
+| updated_at | 2024-07-05T20:28:25 | 2015-03-03T14:59:48 | 2015-03-04T21:15:36 |
 | deleted_at | null | null | null |
-| id | 795647 | 775884 | 775885 |
-| event | compute_stop_instance | compute_reboot_instance | compute_reboot_instance |
-| action_id | 650157 | 635178 | 635179 |
-| start_time | 2024-07-05T20:28:18 | 2021-06-01T15:40:41 | 2021-06-01T15:40:54 |
-| finish_time | 2024-07-05T20:28:25 | 2021-06-01T15:41:34 | 2021-06-01T15:43:08 |
+| id | 795647 | 308012 | 316182 |
+| event | compute_stop_instance | compute__do_build_and_run_instance | compute_reboot_instance |
+| action_id | 650157 | 197162 | 204782 |
+| start_time | 2024-07-05T20:28:18 | 2015-03-03T14:59:29 | 2015-03-04T21:15:27 |
+| finish_time | 2024-07-05T20:28:25 | 2015-03-03T14:59:48 | 2015-03-04T21:15:36 |
 | result | Success | Success | Success |
 | traceback | null | null | null |
 | deleted | 0 | 0 | 0 |
@@ -472,15 +472,15 @@ indexes: `instance_uuid`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-06-26T20:39:03 | 2016-04-26T00:55:04 | 2016-04-26T13:39:18 |
-| updated_at | 2024-06-26T20:40:27 | 2023-01-30T21:39:53 | 2019-12-02T16:14:57 |
-| deleted_at | null | 2023-01-30T21:39:53 | 2019-12-02T16:14:57 |
-| deleted | 0 | 163008 | 163024 |
-| id | 218599 | 163008 | 163024 |
-| instance_uuid | 88ae78e8-3331-40bc-b294-95d446a1dfab | f2c70ec2-b7ce-4839-b885-af7289677447 | 996ba1b7-2e4d-4097-9cea-12649d933dc0 |
+| created_at | 2024-06-26T20:39:03 | 2016-09-16T18:12:55 | 2016-09-17T17:36:18 |
+| updated_at | 2024-06-26T20:40:27 | 2022-09-01T14:48:48 | 2023-01-15T20:08:28 |
+| deleted_at | null | null | null |
+| deleted | 0 | 0 | 0 |
+| id | 218599 | 174996 | 175004 |
+| instance_uuid | 88ae78e8-3331-40bc-b294-95d446a1dfab | c759ce3b-5053-4b39-b474-c385b68e2ce2 | 6ca45308-1502-4e8b-8583-4be5fd8b7e63 |
 | numa_topology | null | null | null |
 | pci_requests | [] | [] | [] |
-| flavor | {"new": null, "old": null, "cur": {"nova_object.version": "1.1", "nova_object.changes": ["extra_specs"], "nova_object.name": "Flavor", "nova_object.data": {"disabled": false, "root_gb": 32, "name": "… | {"new": null, "old": null, "cur": {"nova_object.version": "1.1", "nova_object.changes": ["extra_specs"], "nova_object.name": "Flavor", "nova_object.data": {"disabled": false, "root_gb": 16, "name": "… | {"new": null, "old": null, "cur": {"nova_object.version": "1.1", "nova_object.changes": ["extra_specs"], "nova_object.name": "Flavor", "nova_object.data": {"disabled": false, "root_gb": 32, "name": "… |
+| flavor | {"new": null, "old": null, "cur": {"nova_object.version": "1.1", "nova_object.changes": ["extra_specs"], "nova_object.name": "Flavor", "nova_object.data": {"disabled": false, "root_gb": 32, "name": "… | {"new": null, "old": null, "cur": {"nova_object.version": "1.1", "nova_object.changes": ["extra_specs"], "nova_object.name": "Flavor", "nova_object.data": {"disabled": false, "root_gb": 16, "name": "… | {"new": null, "old": null, "cur": {"nova_object.version": "1.1", "nova_object.changes": ["extra_specs"], "nova_object.name": "Flavor", "nova_object.data": {"disabled": false, "root_gb": 16, "name": "… |
 | vcpu_model | {"nova_object.version": "1.0", "nova_object.changes": ["vendor", "features", "model", "topology", "arch", "match", "mode"], "nova_object.name": "VirtCPUModel", "nova_object.data": {"vendor": null, "f… | {"nova_object.version": "1.0", "nova_object.changes": ["vendor", "features", "model", "topology", "arch", "match", "mode"], "nova_object.name": "VirtCPUModel", "nova_object.data": {"vendor": null, "f… | {"nova_object.version": "1.0", "nova_object.changes": ["vendor", "features", "model", "topology", "arch", "match", "mode"], "nova_object.name": "VirtCPUModel", "nova_object.data": {"vendor": null, "f… |
 | migration_context | null | null | null |
 
@@ -503,16 +503,16 @@ indexes: `host`, (`instance_uuid`,`deleted`,`created_at`)
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-06-22T20:00:45 | 2015-01-30T00:25:51 | 2015-01-30T00:33:32 |
+| created_at | 2024-06-22T20:00:45 | 2024-01-30T05:52:28 | 2024-01-30T05:52:28 |
 | updated_at | null | null | null |
-| deleted_at | 2024-06-22T20:00:59 | null | null |
-| id | 209903 | 188835 | 188839 |
-| instance_uuid | 80ad4b7a-d2ff-46d2-b5e9-e88a357b6d74 | 800fa56e-f61d-46b5-afec-ba1f073ca262 | 3e29d76b-3a1a-44fc-b8b9-7e5165e55344 |
-| code | 500 | 500 | 500 |
-| message | 5ad43fc335ae8814d8ebe3345626860a | 3ea4a6e519104d95c1476281d625bb53 | 3ea4a6e519104d95c1476281d625bb53 |
-| details | fb2141c5c0978bee9f87d0e1a0b4fe39 | 3b6b8cde5e8fd3f9ce499e9dd2bd78ba | 3b6b8cde5e8fd3f9ce499e9dd2bd78ba |
-| host | cosmo3-23 | space0-77 | space0-77 |
-| deleted | 209903 | 0 | 0 |
+| deleted_at | 2024-06-22T20:00:59 | 2024-01-30T05:56:36 | 2024-01-30T05:56:36 |
+| id | 209903 | 209776 | 209777 |
+| instance_uuid | 80ad4b7a-d2ff-46d2-b5e9-e88a357b6d74 | ae8f7558-22fc-4b57-aac6-d2a2df6bb0e2 | ae8f7558-22fc-4b57-aac6-d2a2df6bb0e2 |
+| code | 500 | 400 | 400 |
+| message | 5ad43fc335ae8814d8ebe3345626860a | b994d987f044d07734a259e5582f0dcf | 63dade7fe94555e5478e9ecf7d9e6283 |
+| details | fb2141c5c0978bee9f87d0e1a0b4fe39 | null | null |
+| host | cosmo3-23 | beam8-22 | beam8-22 |
+| deleted | 209903 | 209776 | 209777 |
 
 # `instance_group_member`  (rows=4085)
 
@@ -530,13 +530,13 @@ indexes: `group_id`, `instance_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-05-06T17:00:37 | 2019-05-17T22:05:09 | 2019-05-17T22:05:25 |
+| created_at | 2024-05-06T17:00:37 | 2021-01-25T21:04:33 | 2021-01-25T21:04:34 |
 | updated_at | null | null | null |
-| deleted_at | null | 2019-05-22T15:45:00 | 2019-05-22T15:44:27 |
-| deleted | 0 | 2040 | 2041 |
-| id | 4169 | 2040 | 2041 |
-| instance_id | fe849f1d-bfa7-4b76-95fb-37e5b83920cf | 5b189a74-ab06-48f4-a3c6-7aac0f1a35f6 | 0824d1a8-3274-442a-88b7-7548d407bc0a |
-| group_id | 216 | 70 | 70 |
+| deleted_at | null | 2021-05-01T20:47:26 | 2021-05-01T20:47:13 |
+| deleted | 0 | 3235 | 3236 |
+| id | 4169 | 3235 | 3236 |
+| instance_id | fe849f1d-bfa7-4b76-95fb-37e5b83920cf | 56f780bc-3e78-4ad5-b7d7-828c33308f85 | 7e0ef99b-c025-4219-82a1-c3271513d35c |
+| group_id | 216 | 129 | 129 |
 
 # `instance_group_policy`  (rows=228)
 
@@ -554,13 +554,13 @@ indexes: `group_id`, `policy`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2023-10-01T15:36:55 | 2019-12-23T20:15:15 | 2019-12-23T20:41:39 |
+| created_at | 2023-10-01T15:36:55 | 2020-04-11T17:18:48 | 2020-04-11T17:18:49 |
 | updated_at | null | null | null |
-| deleted_at | 2024-01-20T18:06:45 | 2019-12-23T20:41:26 | 2019-12-23T20:58:21 |
-| deleted | 230 | 87 | 88 |
-| id | 230 | 87 | 88 |
+| deleted_at | 2024-01-20T18:06:45 | 2020-05-30T03:49:02 | 2020-05-30T03:49:02 |
+| deleted | 230 | 125 | 126 |
+| id | 230 | 125 | 126 |
 | policy | anti-affinity | anti-affinity | anti-affinity |
-| group_id | 230 | 87 | 88 |
+| group_id | 230 | 125 | 126 |
 
 # `instance_groups`  (rows=230)
 
@@ -580,15 +580,15 @@ indexes: UNIQUE (`uuid`,`deleted`)
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2023-10-01T15:36:55 | 2019-12-23T21:01:46 | 2019-12-23T21:01:46 |
+| created_at | 2023-10-01T15:36:55 | 2023-06-16T23:17:40 | 2023-06-17T19:04:29 |
 | updated_at | null | null | null |
-| deleted_at | 2024-01-20T18:06:45 | 2020-01-31T18:56:17 | 2020-01-31T18:56:17 |
-| deleted | 230 | 91 | 92 |
-| id | 230 | 91 | 92 |
-| user_id | 77047e1a20db46b2b8d8daebb9e39fe8 | a1ef823458d24a68955fec6f3d390019 | a1ef823458d24a68955fec6f3d390019 |
-| project_id | 5b92ec1146d04f9091ab48b6cdba3eff | 17ea94ad74b64b9d92f4888336a598c7 | 17ea94ad74b64b9d92f4888336a598c7 |
-| uuid | 6857e997-f7b1-437c-b63b-2b93227f454d | 3d86cb11-87bc-4a4b-a545-11c51583c1e8 | 186bcb1a-71db-4b15-87ee-986a15284329 |
-| name | alpha4-glyph | array_lyric | scope-speed |
+| deleted_at | 2024-01-20T18:06:45 | 2023-06-16T23:39:53 | 2023-06-17T23:12:16 |
+| deleted | 230 | 199 | 200 |
+| id | 230 | 199 | 200 |
+| user_id | 77047e1a20db46b2b8d8daebb9e39fe8 | 77047e1a20db46b2b8d8daebb9e39fe8 | 77047e1a20db46b2b8d8daebb9e39fe8 |
+| project_id | 5b92ec1146d04f9091ab48b6cdba3eff | 5b92ec1146d04f9091ab48b6cdba3eff | 5b92ec1146d04f9091ab48b6cdba3eff |
+| uuid | 6857e997-f7b1-437c-b63b-2b93227f454d | 9e14e1d7-bee5-4ce0-8551-5db1757e18cb | 8967d2e5-6329-4ee5-9935-dcaaa712f6df |
+| name | alpha4-glyph | alpha4-glyph | alpha4-glyph |
 
 # `instance_id_mappings`  (rows=277653)
 
@@ -605,11 +605,11 @@ indexes: `uuid`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-06-26T20:39:03 | 2013-10-25T08:00:58 | 2013-10-25T08:01:05 |
+| created_at | 2024-06-26T20:39:03 | 2015-04-17T01:25:44 | 2015-04-17T01:25:45 |
 | updated_at | null | null | null |
 | deleted_at | null | null | null |
-| id | 749369 | 468599 | 468600 |
-| uuid | 88ae78e8-3331-40bc-b294-95d446a1dfab | 252006bc-b386-43f6-965e-7a252f353989 | caf323a7-64d7-47d7-8e79-5de2151bb62e |
+| id | 749369 | 614704 | 614705 |
+| uuid | 88ae78e8-3331-40bc-b294-95d446a1dfab | 4acc1573-6476-4b74-a41a-0de3d5e13267 | 895a2d20-857b-4f3a-948c-de23ae491510 |
 | deleted | 0 | 0 | 0 |
 
 # `instance_info_caches`  (rows=7226)
@@ -628,13 +628,13 @@ indexes: UNIQUE `instance_uuid`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-06-26T20:39:03 | 2015-12-08T18:44:02 | 2015-12-10T21:37:14 |
-| updated_at | 2024-07-08T06:17:59 | 2022-01-07T03:10:43 | 2023-01-30T21:39:09 |
-| deleted_at | null | 2022-01-07T03:10:46 | 2023-01-30T21:39:11 |
-| id | 749459 | 662304 | 662458 |
+| created_at | 2024-06-26T20:39:03 | 2016-01-11T21:55:46 | 2016-01-12T20:53:18 |
+| updated_at | 2024-07-08T06:17:59 | 2020-02-03T16:00:45 | 2023-06-20T16:56:07 |
+| deleted_at | null | 2020-02-03T16:00:49 | 2023-06-20T16:56:08 |
+| id | 749459 | 684706 | 688704 |
 | network_info | [{"profile": {}, "ovs_interfaceid": "0639c4ce-dc51-4d07-baa5-109c5db4a609", "preserve_on_delete": false, "network": {"bridge": "br-int", "subnets": [{"ips": [{"meta": {}, "version": 4, "type": "fixed… | [] | [] |
-| instance_uuid | 88ae78e8-3331-40bc-b294-95d446a1dfab | d211e7d6-2633-4911-b28f-cdd99080637c | ae1d5d9f-5bb8-4d68-92b2-f59d6ab26f09 |
-| deleted | 0 | 662304 | 662458 |
+| instance_uuid | 88ae78e8-3331-40bc-b294-95d446a1dfab | 3ec0f293-879d-456b-89f9-c6a418a33c1f | b2aaddc9-ea16-48c8-8bd7-3ab0a837f436 |
+| deleted | 0 | 684706 | 688704 |
 
 # `instance_metadata`  (rows=36)
 
@@ -653,14 +653,14 @@ indexes: `instance_uuid`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-06-26T20:39:03 | 2024-06-22T21:18:45 | 2024-06-22T21:50:31 |
+| created_at | 2024-06-26T20:39:03 | 2023-03-27T18:46:52 | 2023-03-27T19:07:38 |
 | updated_at | null | null | null |
-| deleted_at | null | 2024-06-22T21:50:27 | 2024-06-22T22:24:14 |
-| id | 573 | 564 | 565 |
-| key | csail | csail | csail |
-| value | true | true | true |
-| instance_uuid | 88ae78e8-3331-40bc-b294-95d446a1dfab | 48168058-8572-4056-a7a8-f0bc9529bd68 | d53d7ba2-5f50-4acc-aaf4-a8156f06c007 |
-| deleted | 0 | 564 | 565 |
+| deleted_at | null | 2023-04-18T16:34:16 | 2023-04-18T16:34:17 |
+| id | 573 | 549 | 550 |
+| key | csail | hostname | hostname |
+| value | true | testy-mcansibleface-2 | testy-mcansibleface-3 |
+| instance_uuid | 88ae78e8-3331-40bc-b294-95d446a1dfab | be0d62b5-bdc4-47b4-9e67-3189e5ddecdd | 4a6031cc-7b44-4e64-bd2a-09970e4715dc |
+| deleted | 0 | 549 | 550 |
 
 # `instance_system_metadata`  (rows=76723)
 
@@ -679,13 +679,13 @@ indexes: `instance_uuid`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-06-26T20:39:03 | 2015-04-12T16:44:11 | 2015-04-12T16:44:11 |
-| updated_at | null | 2015-04-12T18:12:27 | null |
+| created_at | 2024-06-26T20:39:03 | 2015-03-15T04:52:21 | 2015-03-15T04:52:21 |
+| updated_at | null | null | null |
 | deleted_at | null | null | null |
-| id | 12281805 | 10011524 | 10011534 |
-| instance_uuid | 88ae78e8-3331-40bc-b294-95d446a1dfab | 71ec2046-927c-40a8-ac1f-2c6cf73af5b1 | 71ec2046-927c-40a8-ac1f-2c6cf73af5b1 |
-| key | image_base_image_ref | image_min_disk | image_container_format |
-| value | null | netix_theta | glint-shine |
+| id | 12281805 | 9475851 | 9475852 |
+| instance_uuid | 88ae78e8-3331-40bc-b294-95d446a1dfab | af938383-e6ff-4444-9f3b-3f6bcb118840 | af938383-e6ff-4444-9f3b-3f6bcb118840 |
+| key | image_base_image_ref | image_instance_type_root_gb | image_clean_attempts |
+| value | null | axiom-lumen | comet-star-gamma |
 | deleted | 0 | 0 | 0 |
 
 # `instance_type_extra_specs`  (rows=135)
@@ -705,14 +705,14 @@ indexes: (`instance_type_id`,`key`), UNIQUE (`instance_type_id`,`key`,`deleted`)
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-02-23T14:18:22 | 2023-01-06T18:32:59 | 2023-06-16T15:33:50 |
+| created_at | 2024-02-23T14:18:22 | 2014-02-14T19:18:54 | 2014-02-14T19:41:29 |
 | updated_at | null | null | null |
-| deleted_at | null | 2023-01-10T20:24:20 | null |
-| id | 188 | 184 | 185 |
-| instance_type_id | 196 | 192 | 193 |
-| key | generation | RT | tig |
-| value | 5 | 200553 | true |
-| deleted | 0 | 184 | 0 |
+| deleted_at | null | null | null |
+| id | 188 | 74 | 75 |
+| instance_type_id | 196 | 104 | 105 |
+| key | generation | test | test |
+| value | 5 | true | true |
+| deleted | 0 | 0 | 0 |
 
 # `instance_type_projects`  (rows=232)
 
@@ -730,12 +730,12 @@ indexes: `instance_type_id`, UNIQUE (`instance_type_id`,`project_id`,`deleted`)
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-02-23T14:18:22 | 2014-02-14T19:41:29 | 2014-02-14T19:41:30 |
+| created_at | 2024-02-23T14:18:22 | 2015-08-17T18:41:58 | 2015-08-17T18:41:58 |
 | updated_at | null | null | null |
 | deleted_at | null | null | null |
-| id | 352 | 70 | 71 |
-| instance_type_id | 196 | 105 | 105 |
-| project_id | ccf2065a88074df09526d5dd5c361845 | 6f9adccbd03e4d2186756896957a14bf | 98333a1a28e746fa8c629c83a818ad57 |
+| id | 352 | 198 | 199 |
+| instance_type_id | 196 | 150 | 150 |
+| project_id | ccf2065a88074df09526d5dd5c361845 | 7691c9955ce1444ab366d041f5bdf33c | 98333a1a28e746fa8c629c83a818ad57 |
 | deleted | 0 | 0 | 0 |
 
 # `instance_types`  (rows=190)
@@ -763,22 +763,22 @@ indexes: UNIQUE (`flavorid`,`deleted`), UNIQUE (`name`,`deleted`)
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-02-23T14:18:22 | 2013-08-08T20:16:48 | 2013-08-08T20:16:48 |
-| updated_at | null | 2018-09-24T16:17:09 | 2014-04-27T20:03:33 |
-| deleted_at | null | 2018-09-24T16:17:09 | 2014-04-27T20:03:33 |
-| name | axiom.0mover | ether.vortex | spire.xenon_drive |
-| id | 196 | 53 | 54 |
-| memory_mb | 90112 | 16384 | 24576 |
-| vcpus | 88 | 8 | 12 |
+| created_at | 2024-02-23T14:18:22 | null | null |
+| updated_at | null | null | null |
+| deleted_at | null | 2013-08-08T17:48:04 | 2013-08-08T17:48:04 |
+| name | axiom.0mover | light.comet_spark | vortx.warp_quark |
+| id | 196 | 4 | 5 |
+| memory_mb | 90112 | 16384 | 2048 |
+| vcpus | 88 | 8 | 1 |
 | swap | 0 | 0 | 0 |
 | vcpu_weight | null | null | null |
-| flavorid | d20eaff8-d13b-44de-a65f-2cbe9a42ff8c | c25191c0-6366-4936-ac4d-4810c31f1e79 | bd48d209-4cdf-4fdd-a950-ea1b6adcb567 |
+| flavorid | d20eaff8-d13b-44de-a65f-2cbe9a42ff8c | 5 | 2 |
 | rxtx_factor | 1 | 1 | 1 |
-| root_gb | 32 | 32 | 32 |
-| ephemeral_gb | 0 | 0 | 0 |
+| root_gb | 32 | 10 | 10 |
+| ephemeral_gb | 0 | 160 | 20 |
 | disabled | 0 | 0 | 0 |
-| is_public | 0 | 0 | 0 |
-| deleted | 0 | 53 | 54 |
+| is_public | 0 | 1 | 1 |
+| deleted | 0 | 4 | 5 |
 
 # `instances`  (rows=7922)
 
@@ -842,56 +842,56 @@ indexes: (`deleted`,`created_at`), (`host`,`deleted`,`cleaned`), (`host`,`node`,
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-06-26T20:39:03 | 2017-02-06T00:58:43 | 2017-02-07T19:01:17 |
-| updated_at | 2024-06-26T20:40:27 | 2022-06-24T16:09:14 | 2020-01-31T16:19:37 |
-| deleted_at | null | null | 2020-01-31T16:19:37 |
-| id | 749387 | 711548 | 712457 |
+| created_at | 2024-06-26T20:39:03 | 2015-11-30T18:07:56 | 2015-11-30T18:20:40 |
+| updated_at | 2024-06-26T20:40:27 | 2023-01-30T21:37:19 | 2022-01-07T03:21:28 |
+| deleted_at | null | 2023-01-30T21:37:19 | 2022-01-07T03:21:28 |
+| id | 749387 | 654620 | 654624 |
 | internal_id | null | null | null |
-| user_id | 64f64393530d486da6d548710ca2990c | 80475a37a3a54b05ac83c5c58e637561 | 7d67c0b4832c4331b98a8dd7a2d18da7 |
-| project_id | b3c6072810a24f67a7ac48e49a960e51 | fc1b446cad9e4849a41f9160664e3781 | daa18fdafdf04b5eac18e04aa19ee214 |
-| image_ref | null | null | null |
+| user_id | 64f64393530d486da6d548710ca2990c | 191e0364cec940478bd34b390c090475 | 4e4f5c1f38554dd6b3f750ee6b9ca9d2 |
+| project_id | b3c6072810a24f67a7ac48e49a960e51 | 967bfd447eba40c78fd293143c77b6b1 | e3fb2659584e436a832461dac02835f0 |
+| image_ref | null | 91dac2d5-1d0c-4b68-8182-e122e1050d55 | cb0375e6-d4b8-481f-8cf8-17898a67b1f3 |
 | kernel_id | null | null | null |
 | ramdisk_id | null | null | null |
 | launch_index | 0 | 0 | 0 |
-| key_name | null | null | beam_mqbl-hjvm-aosk-xedw-amqv |
-| key_data | null | null | 219e8b4bd727341b07b1be043ccf4708 |
+| key_name | null | star | null |
+| key_data | null | 4578dcff6d4a0cee82e35668fe7c897b | null |
 | power_state | 1 | 4 | 0 |
-| vm_state | active | shelved_offloaded | deleted |
-| memory_mb | 4096 | 32768 | 512 |
-| vcpus | 2 | 16 | 1 |
-| hostname | lumen-comet-axis | pulse | flick-star-strat |
-| host | cosmo3-23 |  | blaze8-12 |
-| user_data | replaced_user_data.749387 | replaced_user_data.711548 | replaced_user_data.712457 |
-| reservation_id | r-as21013g | r-7i4wv88y | r-brjs0r5w |
+| vm_state | active | deleted | deleted |
+| memory_mb | 4096 | 4096 | 8192 |
+| vcpus | 2 | 8 | 4 |
+| hostname | lumen-comet-axis | galax-zeph | grav-astro |
+| host | cosmo3-23 |  | spark-75 |
+| user_data | replaced_user_data.749387 | replaced_user_data.654620 | replaced_user_data.654624 |
+| reservation_id | r-as21013g | r-gfvilgoz | r-hseeosjb |
 | scheduled_at | null | null | null |
-| launched_at | 2024-06-26T20:40:24 | 2017-02-06T00:59:00 | 2017-02-07T19:01:41 |
-| terminated_at | null | null | 2020-01-31T16:19:36 |
-| display_name | lumen-comet-axis | pulse | flick-star-strat |
-| display_description | lumen-comet-axis | pulse | flick-star-strat |
-| availability_zone | null | flare3 | flare3 |
+| launched_at | 2024-06-26T20:40:24 | 2015-12-02T15:52:39 | 2018-12-26T18:26:36 |
+| terminated_at | null | 2023-01-30T21:37:19 | 2022-01-07T03:21:36 |
+| display_name | lumen-comet-axis | beam-delta | grav-astro |
+| display_description | lumen-comet-axis | beam-delta | grav-astro |
+| availability_zone | null | flare3 | null |
 | locked | 0 | 0 | 0 |
 | os_type | null | null | null |
-| launched_on | cosmo3-23 | galax4-70 | spark9-53 |
-| instance_type_id | 72 | 76 | 57 |
+| launched_on | cosmo3-23 | shine2-89 | celes-18 |
+| instance_type_id | 72 | 60 | 135 |
 | vm_mode | null | null | null |
-| uuid | 88ae78e8-3331-40bc-b294-95d446a1dfab | d3c0c3f3-1007-46b8-98c6-1d9bdcedafad | ca765c9a-5445-41e8-b414-084b30f00c66 |
+| uuid | 88ae78e8-3331-40bc-b294-95d446a1dfab | cdb05996-ce74-4947-ae98-dda92f600e5a | 4265edc5-99aa-4a4d-8bdb-4fe302855fb6 |
 | architecture | null | null | null |
 | root_device_name | /dev/vda | /dev/vda | /dev/vda |
 | access_ip_v4 | null | null | null |
 | access_ip_v6 | null | null | null |
-| config_drive | null | null | null |
+| config_drive | null | null | True |
 | task_state | null | null | null |
 | default_ephemeral_device | null | null | null |
 | default_swap_device | null | null | null |
 | progress | 0 | 0 | 0 |
-| auto_disk_config | 0 | 0 | 0 |
+| auto_disk_config | 0 | 1 | 0 |
 | shutdown_terminate | 0 | 0 | 0 |
 | disable_terminate | 0 | 0 | 0 |
-| root_gb | 32 | 32 | 10 |
+| root_gb | 32 | 10 | 16 |
 | ephemeral_gb | 0 | 0 | 0 |
 | cell_name | null | null | null |
-| node | cosmo3-23.yahoo.ca.com | null | blaze8-12.yahoo.ca.com |
-| deleted | 0 | 0 | 712457 |
+| node | cosmo3-23.yahoo.ca.com | null | spark-75.yahoo.ca.com |
+| deleted | 0 | 654620 | 654624 |
 | locked_by | null | null | null |
 | cleaned | 0 | 1 | 1 |
 | ephemeral_key_uuid | null | null | null |
@@ -915,15 +915,15 @@ indexes: UNIQUE (`user_id`,`name`,`deleted`)
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-06-24T16:09:39 | 2015-11-06T02:47:24 | 2015-11-06T23:07:33 |
+| created_at | 2024-06-24T16:09:39 | 2018-05-09T17:36:44 | 2018-05-16T03:56:12 |
 | updated_at | null | null | null |
-| deleted_at | null | null | null |
-| id | 3391 | 948 | 952 |
-| name | plasm_helio.433cosmo | neon_spark.997drive | point_spind.936solar |
-| user_id | 7a6e4676819c4cd2bce6ae812f0fc6e9 | f059b52c4f06400e835b26bff866aa2b | b80007bb9c3f403d9cd2b04f02c825b1 |
-| fingerprint | 63:f0:c8:48:3e:eb:d6:32:e6:f9:04:8c:a4:83:a5:e8 | 30:08:ca:49:53:54:67:5b:2a:12:f0:bb:2f:ef:87:82 | 22:47:77:56:e9:5f:75:af:5e:23:54:ab:35:70:e6:6e |
-| public_key | xenon_twist.315alpha | flux_meter.245lyric | drive_flash.456spind |
-| deleted | 0 | 0 | 0 |
+| deleted_at | null | 2018-05-09T18:33:00 | 2018-05-16T03:56:36 |
+| id | 3391 | 2147 | 2148 |
+| name | plasm_helio.433cosmo | beam_spike.681netix | quark_lyric.322celes |
+| user_id | 7a6e4676819c4cd2bce6ae812f0fc6e9 | 1de0d5702f1d49bfb9242dfb9572a207 | c34278f44087498fbc5fc662c63e491e |
+| fingerprint | 63:f0:c8:48:3e:eb:d6:32:e6:f9:04:8c:a4:83:a5:e8 | d2:12:49:e8:9f:48:f5:69:77:fa:b5:a3:25:e7:9b:0a | 9d:93:c6:b6:1f:f9:54:09:7d:1e:d8:4e:26:ea:1a:06 |
+| public_key | xenon_twist.315alpha | flare_spire.366vortex | helix_speed.18pivot |
+| deleted | 0 | 2147 | 2148 |
 | type | ssh | ssh | ssh |
 
 # `migrate_version`  (rows=1)
@@ -1045,23 +1045,23 @@ indexes: (`compute_node_id`,`deleted`), (`compute_node_id`,`parent_addr`,`delete
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2019-01-09T18:22:22 | 2016-10-18T18:01:36 | 2019-01-09T18:22:21 |
-| updated_at | null | 2019-01-09T17:51:12 | null |
+| created_at | 2019-01-09T18:22:22 | 2016-10-18T18:01:35 | 2016-10-18T18:01:35 |
+| updated_at | null | 2019-01-09T17:51:12 | 2019-01-09T17:51:12 |
 | deleted_at | null | null | null |
 | deleted | 0 | 0 | 0 |
-| id | 24 | 16 | 17 |
-| compute_node_id | 149 | 90 | 149 |
-| address | 0000:43:32.0 | 0000:43:32.0 | 0000:64:31.0 |
+| id | 24 | 13 | 14 |
+| compute_node_id | 149 | 90 | 90 |
+| address | 0000:43:32.0 | 0000:04:56.0 | 0000:93:95.0 |
 | product_id | 102d | 102d | 102d |
 | vendor_id | 10de | 10de | 10de |
 | dev_type | type-PCI | type-PCI | type-PCI |
-| dev_id | pci_0000_88_00_0 | pci_0000_88_00_0 | pci_0000_04_00_0 |
+| dev_id | pci_0000_88_00_0 | pci_0000_83_00_0 | pci_0000_84_00_0 |
 | label | label_10de_102d | label_10de_102d | label_10de_102d |
 | status | available | available | available |
 | extra_info | {} | {} | {} |
 | instance_uuid | null | null | null |
 | request_id | null | null | null |
-| numa_node | 1 | 1 | 0 |
+| numa_node | 1 | 1 | 1 |
 | parent_addr | null | null | null |
 
 # `quota_classes`  (rows=13)
@@ -1084,10 +1084,10 @@ samples:
 | created_at | 2017-07-07T15:19:43 | 2017-07-07T15:19:43 | 2017-07-07T15:19:43 |
 | updated_at | null | null | null |
 | deleted_at | null | null | null |
-| id | 13 | 12 | 13 |
+| id | 13 | 11 | 12 |
 | class_name | default | default | default |
-| resource | server_group_members | security_group_rules | server_group_members |
-| hard_limit | 32 | 32 | 32 |
+| resource | server_group_members | security_groups | security_group_rules |
+| hard_limit | 32 | 64 | 32 |
 | deleted | 0 | 0 | 0 |
 
 # `quota_usages`  (rows=3619)
@@ -1110,17 +1110,17 @@ indexes: `project_id`, (`user_id`,`deleted`)
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-06-18T15:09:07 | 2012-11-14T20:02:30 | 2012-11-14T20:18:58 |
-| updated_at | 2024-06-18T15:09:07 | 2014-01-10T13:53:42 | 2014-01-10T13:53:42 |
+| created_at | 2024-06-18T15:09:07 | 2014-01-18T15:57:48 | 2014-01-18T17:03:29 |
+| updated_at | 2024-06-18T15:09:07 | 2015-10-30T15:52:26 | 2014-02-07T16:36:56 |
 | deleted_at | null | null | null |
-| id | 3852 | 32 | 46 |
-| project_id | 5e35676c2c6947f29e1402b31c5b87a7 | 0d16687ae70645678cbe037065831a32 | 6f5103a9ae434375a92a1de24a19ca56 |
-| resource | cores | floating_ips | floating_ips |
-| in_use | 2 | 1 | 25 |
+| id | 3852 | 212 | 213 |
+| project_id | 5e35676c2c6947f29e1402b31c5b87a7 | 3008a142e9524f7295b06ea811908f93 | fb790702ec7d4fcb96ec14d0daa575f8 |
+| resource | cores | cores | instances |
+| in_use | 2 | 0 | 0 |
 | reserved | 0 | 0 | 0 |
 | until_refresh | null | null | null |
 | deleted | 0 | 0 | 0 |
-| user_id | 3a1ff089c33740358d0ce80cc5f801f9 | null | null |
+| user_id | 3a1ff089c33740358d0ce80cc5f801f9 | 59a5934524c54089af8f35bed2ea7eaa | 5cdf075359cf48a582b0b2c41b4957ca |
 
 # `quotas`  (rows=3579)
 
@@ -1139,13 +1139,13 @@ indexes: UNIQUE (`project_id`,`resource`,`deleted`)
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 6259 | 5189 | 5190 |
-| created_at | 2024-06-17T15:53:29 | 2020-06-18T20:38:28 | 2020-06-18T20:38:28 |
-| updated_at | null | null | null |
+| id | 6259 | 422 | 423 |
+| created_at | 2024-06-17T15:53:29 | 2014-04-15T19:57:06 | 2014-04-15T19:57:06 |
+| updated_at | null | 2015-09-14T18:53:20 | 2015-09-14T18:53:20 |
 | deleted_at | null | null | null |
-| project_id | 7b3609decd234ec2852503d64e334e3f | 322d4717bb5841e5a5aa92968c1a0b9a | 322d4717bb5841e5a5aa92968c1a0b9a |
-| resource | cores | ram | cores |
-| hard_limit | 8 | 16384 | 8 |
+| project_id | 7b3609decd234ec2852503d64e334e3f | 578e020880f7452d95f6059dee14b335 | 578e020880f7452d95f6059dee14b335 |
+| resource | cores | instances | injected_files |
+| hard_limit | 8 | 128 | 5 |
 | deleted | 0 | 0 | 0 |
 
 # `reservations`  (rows=42003)
@@ -1169,17 +1169,17 @@ indexes: `project_id`, (`user_id`,`deleted`), (`deleted`,`expire`), `uuid`, `usa
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-06-26T20:39:03 | 2020-02-13T16:01:06 | 2020-02-13T16:01:06 |
+| created_at | 2024-06-26T20:39:03 | 2020-02-19T18:09:04 | 2020-02-19T18:09:04 |
 | updated_at | null | null | null |
-| deleted_at | 2024-06-26T20:39:05 | 2020-02-13T16:01:06 | 2020-02-13T16:01:06 |
-| id | 1656702 | 1619249 | 1619250 |
-| uuid | 73ad8ef0-ffde-4057-a571-adbde829e0ee | 36dfbed7-9b3c-4fc8-8399-78c39de215f8 | 111c9a82-eb62-47ec-a525-f34ea10fa921 |
-| usage_id | 2546 | 163 | 164 |
-| project_id | b3c6072810a24f67a7ac48e49a960e51 | 98333a1a28e746fa8c629c83a818ad57 | 98333a1a28e746fa8c629c83a818ad57 |
+| deleted_at | 2024-06-26T20:39:05 | 2020-02-19T18:09:10 | 2020-02-19T18:09:10 |
+| id | 1656702 | 1620497 | 1620498 |
+| uuid | 73ad8ef0-ffde-4057-a571-adbde829e0ee | cd787265-e547-45a2-ba65-5ac916c09909 | cae49d66-ca4d-493e-bb06-526cf0f79cc8 |
+| usage_id | 2546 | 169 | 170 |
+| project_id | b3c6072810a24f67a7ac48e49a960e51 | 17ea94ad74b64b9d92f4888336a598c7 | 17ea94ad74b64b9d92f4888336a598c7 |
 | resource | cores | ram | cores |
-| delta | 2 | 1024 | 2 |
-| expire | 2024-06-27T20:39:03 | 2020-02-14T16:01:06 | 2020-02-14T16:01:06 |
-| deleted | 1656702 | 1619249 | 1619250 |
+| delta | 2 | -8192 | -16 |
+| expire | 2024-06-27T20:39:03 | 2020-02-20T18:09:04 | 2020-02-20T18:09:04 |
+| deleted | 1656702 | 1620497 | 1620498 |
 | user_id | 64f64393530d486da6d548710ca2990c | a1ef823458d24a68955fec6f3d390019 | a1ef823458d24a68955fec6f3d390019 |
 
 # `s3_images`  (rows=2419)
@@ -1197,11 +1197,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-06-24T16:43:06 | 2020-01-09T15:16:17 | 2020-01-09T15:55:37 |
+| created_at | 2024-06-24T16:43:06 | 2015-07-15T20:36:18 | 2015-07-15T22:00:44 |
 | updated_at | null | null | null |
 | deleted_at | null | null | null |
-| id | 2497 | 2084 | 2085 |
-| uuid | 754667d2-7f09-4958-a2bf-505d410a99e5 | 70ec0b82-f83c-490e-b76c-20150a3b73a7 | e8a11c95-2e14-41d3-b9fa-6ab4bc22c15f |
+| id | 2497 | 969 | 970 |
+| uuid | 754667d2-7f09-4958-a2bf-505d410a99e5 | 4ec4e0f0-72ba-4356-aec1-97244c481d8d | d4d5cd38-59d5-46b3-b42b-751c216fe231 |
 | deleted | 0 | 0 | 0 |
 
 # `security_group_rules`  (rows=152)
@@ -1224,15 +1224,15 @@ indexes: `group_id`, `parent_group_id`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2013-07-23T02:51:26 | 2013-03-22T18:33:27 | 2013-03-22T18:46:03 |
+| created_at | 2013-07-23T02:51:26 | 2013-01-23T00:36:18 | 2013-02-06T16:07:43 |
 | updated_at | null | null | null |
 | deleted_at | null | null | null |
-| id | 192 | 104 | 105 |
-| parent_group_id | 64 | 55 | 55 |
+| id | 192 | 63 | 65 |
+| parent_group_id | 64 | 44 | 47 |
 | protocol | tcp | tcp | tcp |
-| from_port | 1 | 8080 | 1 |
-| to_port | 65535 | 8080 | 65535 |
-| cidr | 10.71.29.205/8 | 10.71.29.205/8 | 10.227.134.94/8 |
+| from_port | 1 | 22 | 22 |
+| to_port | 65535 | 22 | 22 |
+| cidr | 10.71.29.205/8 | 10.71.29.205/8 | 10.71.29.205/8 |
 | group_id | null | null | null |
 | deleted | 0 | 0 | 0 |
 
@@ -1254,14 +1254,14 @@ indexes: UNIQUE (`project_id`,`name`,`deleted`)
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2024-06-17T21:06:37 | 2014-06-19T18:31:27 | 2014-06-20T17:43:42 |
+| created_at | 2024-06-17T21:06:37 | 2017-06-14T16:36:04 | 2017-06-15T06:32:59 |
 | updated_at | null | null | null |
 | deleted_at | null | null | null |
-| id | 621 | 100 | 101 |
+| id | 621 | 347 | 348 |
 | name | aurum-xenon | aurum-xenon | aurum-xenon |
 | description | c21f969b5f03d33d43e04f8f136e7682 | c21f969b5f03d33d43e04f8f136e7682 | c21f969b5f03d33d43e04f8f136e7682 |
-| user_id | 7a6e4676819c4cd2bce6ae812f0fc6e9 | 37c682c752e74e89a5a12b35a3e962a9 | 5c467be0707545338c91fc00d5a9914c |
-| project_id | 5e35676c2c6947f29e1402b31c5b87a7 | 08a5710919764215ad1b2c98dc7a8112 | e54b2b9458b14d5d84cd7f76c541cd56 |
+| user_id | 7a6e4676819c4cd2bce6ae812f0fc6e9 | 98c98c0016fc4d3096780f378f2f4453 | edd799156c4d49b6a60231ce456b4daf |
+| project_id | 5e35676c2c6947f29e1402b31c5b87a7 | 2b0612b677df42b59f7ff08c9753365e | 07c9e0afeeb648d3830ba68ca84f595e |
 | deleted | 0 | 0 | 0 |
 
 # `services`  (rows=149)
@@ -1287,18 +1287,18 @@ indexes: UNIQUE (`host`,`binary`,`deleted`), UNIQUE (`host`,`topic`,`deleted`)
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2019-01-09T18:22:20 | 2017-01-09T20:48:32 | 2017-07-05T20:43:34 |
-| updated_at | 2019-01-09T18:22:30 | 2024-07-08T07:00:05 | 2017-07-06T16:12:12 |
-| deleted_at | null | null | 2017-07-06T18:22:52 |
-| id | 336 | 303 | 304 |
-| host | cubic-10 | prime5-78 | credo-streak |
-| binary | nova-compute | nova-compute | nova-conductor |
-| topic | compute | compute | conductor |
-| report_count | 1 | 23508919 | 5919 |
-| disabled | 1 | 0 | 0 |
-| deleted | 0 | 0 | 304 |
-| disabled_reason | AUTO: Connection to libvirt lost: 0 | null | null |
-| last_seen_up | 2019-01-09T18:22:27 | 2024-07-08T07:00:05 | 2017-07-06T16:12:12 |
+| created_at | 2019-01-09T18:22:20 | 2013-03-29T18:08:19 | 2014-02-06T19:23:20 |
+| updated_at | 2019-01-09T18:22:30 | 2017-08-04T20:20:32 | 2018-02-08T14:46:08 |
+| deleted_at | null | 2017-08-04T20:27:29 | 2018-11-05T19:08:00 |
+| id | 336 | 131 | 135 |
+| host | cubic-10 | starx0-27 | delta-67 |
+| binary | nova-compute | nova-compute | nova-compute |
+| topic | compute | compute | compute |
+| report_count | 1 | 13497283 | 12457289 |
+| disabled | 1 | 1 | 0 |
+| deleted | 0 | 131 | 135 |
+| disabled_reason | AUTO: Connection to libvirt lost: 0 | AUTO: Connection to libvirt lost: 0 | null |
+| last_seen_up | 2019-01-09T18:22:27 | 2017-08-04T20:20:30 | 2018-02-08T14:46:08 |
 | forced_down | 0 | 0 | 0 |
 | version | 9 | 9 | 9 |
 
@@ -1318,13 +1318,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2017-07-13T20:23:43 | 2016-09-28T18:43:53 | 2016-09-28T18:43:59 |
+| created_at | 2017-07-13T20:23:43 | 2013-08-08T18:43:29 | 2013-08-08T18:43:30 |
 | updated_at | null | null | null |
-| deleted_at | 2017-07-15T04:21:47 | 2016-09-28T18:44:09 | 2016-09-28T23:32:27 |
-| id | 742 | 649 | 651 |
-| host | grav9-5 | starx0-27 | orbit-49 |
+| deleted_at | 2017-07-15T04:21:47 | 2014-02-08T01:11:36 | 2014-02-08T01:11:36 |
+| id | 742 | 111 | 112 |
+| host | grav9-5 | meter-74 | grav6-70 |
 | aggregate_id | 18 | 2 | 2 |
-| deleted | 742 | 649 | 651 |
+| deleted | 742 | 111 | 112 |
 
 # `shadow_aggregate_metadata`  (rows=4)
 
@@ -1381,26 +1381,26 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2019-11-08T16:45:47 | 2015-12-08T03:36:42 | 2015-12-08T03:37:05 |
-| updated_at | 2019-11-08T16:45:49 | 2015-12-08T03:36:51 | 2015-12-08T03:37:06 |
-| deleted_at | 2019-11-08T16:49:58 | 2015-12-08T03:47:32 | 2015-12-08T03:53:39 |
-| id | 263628 | 181150 | 181152 |
+| created_at | 2019-11-08T16:45:47 | 2014-07-29T02:07:48 | 2014-07-29T02:08:20 |
+| updated_at | 2019-11-08T16:45:49 | 2014-07-29T02:07:51 | 2014-07-29T02:08:22 |
+| deleted_at | 2019-11-08T16:49:58 | 2014-07-29T05:29:59 | 2014-07-29T05:30:05 |
+| id | 263628 | 24251 | 24252 |
 | device_name | /dev/vda | /dev/vda | /dev/vda |
 | delete_on_termination | 1 | 1 | 1 |
 | snapshot_id | null | null | null |
 | volume_id | null | null | null |
 | volume_size | null | null | null |
-| no_device | 0 | 0 | 0 |
+| no_device | 0 | null | null |
 | connection_info | null | null | null |
-| instance_uuid | 25a90600-fabf-44d2-b14c-72b7004411c8 | b447e821-6207-45d6-9839-bf8f526cd055 | 98069d26-a460-49dd-a62f-a6112b6ddf47 |
-| deleted | 263628 | 181150 | 181152 |
+| instance_uuid | 25a90600-fabf-44d2-b14c-72b7004411c8 | fbd341ef-9076-4a31-9b6c-7ad336663401 | 532cba24-35e1-4c19-b974-c8fff2e6d813 |
+| deleted | 263628 | 24251 | 24252 |
 | source_type | image | image | image |
 | destination_type | local | local | local |
 | guest_format | null | null | null |
 | device_type | disk | disk | disk |
 | disk_bus | null | null | null |
 | boot_index | 0 | 0 | 0 |
-| image_id | 0a4641df-191f-44d7-b79b-13d26e7c5218 | 42784945-58cb-4951-a23d-8ca5bc617257 | 42784945-58cb-4951-a23d-8ca5bc617257 |
+| image_id | 0a4641df-191f-44d7-b79b-13d26e7c5218 | 44b7d6d5-a205-4cc0-ba0f-4ed9b9a5ce00 | 44b7d6d5-a205-4cc0-ba0f-4ed9b9a5ce00 |
 
 # `shadow_compute_nodes`  (rows=3)
 
@@ -1501,17 +1501,17 @@ samples:
 | column | latest | sample | sample |
 |---|---|---|---|
 | created_at | 2012-09-07T13:52:14 | 2012-09-07T13:52:14 | 2012-09-07T13:52:14 |
-| updated_at | 2013-09-17T02:45:25 | 2013-09-17T02:38:11 | 2013-09-17T02:42:54 |
+| updated_at | 2013-09-17T02:45:25 | 2013-09-17T02:42:59 | 2013-09-17T02:42:59 |
 | deleted_at | null | null | null |
-| id | 1338 | 1239 | 1246 |
-| address | 10.26.198.227/8 | 10.112.224.229/8 | 10.253.100.135/8 |
+| id | 1338 | 1293 | 1305 |
+| address | 10.26.198.227/8 | 10.136.20.110/8 | 10.165.8.116/8 |
 | network_id | 1 | 1 | 1 |
 | allocated | 1 | 0 | 0 |
 | leased | 1 | 0 | 0 |
 | reserved | 0 | 0 | 0 |
 | virtual_interface_id | 414194 | null | null |
 | host | null | null | null |
-| instance_uuid | 6154483e-317a-43bc-9563-cd945f59a242 | cd2a5fe7-bf41-445f-9469-a0228f1186d9 | 72f6e07f-c9a0-44c9-8a59-d8864aa1563b |
+| instance_uuid | 6154483e-317a-43bc-9563-cd945f59a242 | d249089d-51c5-4c38-9cba-051dc9693381 | 557b97b9-4d92-4846-9b47-7b5103fa239d |
 | deleted | 0 | 0 | 0 |
 
 # `shadow_instance_actions`  (rows=523265)
@@ -1536,16 +1536,16 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2019-11-08T16:49:50 | 2018-02-02T21:43:56 | 2018-02-02T21:43:57 |
+| created_at | 2019-11-08T16:49:50 | 2018-07-02T22:28:15 | 2018-07-02T22:28:18 |
 | updated_at | null | null | null |
 | deleted_at | null | null | null |
-| id | 600508 | 559462 | 559463 |
+| id | 600508 | 579347 | 579348 |
 | action | delete | delete | delete |
-| instance_uuid | 25a90600-fabf-44d2-b14c-72b7004411c8 | 130fd43b-15d1-4160-be1a-59f2f9a15134 | 452a5c87-462f-445e-b389-e598dd681944 |
-| request_id | req-56139ae9-20dc-4c93-a28b-d0b4f32fb85d | req-f6b2d561-f3b8-4ddb-b236-5805d99e2da2 | req-e95f23cf-4320-4b9b-9db3-53c3b293fbf7 |
-| user_id | a1ef823458d24a68955fec6f3d390019 | 9b62fba091b644f6aaa57e79492a8d24 | 9b62fba091b644f6aaa57e79492a8d24 |
-| project_id | bfd50153a2e9476f93e33e30e922cd06 | 4e7e31906cfd496b82a9ea5d2edb8dab | 4e7e31906cfd496b82a9ea5d2edb8dab |
-| start_time | 2019-11-08T16:49:49 | 2018-02-02T21:43:56 | 2018-02-02T21:43:56 |
+| instance_uuid | 25a90600-fabf-44d2-b14c-72b7004411c8 | 05d21e74-0309-4644-a03a-af78ca829b51 | 10738913-537a-42bd-bf96-1374092ebabf |
+| request_id | req-56139ae9-20dc-4c93-a28b-d0b4f32fb85d | req-fc77cd8e-e3e3-40d8-9edf-8cbf42b425d0 | req-85d3e526-6b09-4d32-81d1-17ed46cd5989 |
+| user_id | a1ef823458d24a68955fec6f3d390019 | 0881c8820abe46cb8b7454f78c8e21d0 | 0881c8820abe46cb8b7454f78c8e21d0 |
+| project_id | bfd50153a2e9476f93e33e30e922cd06 | d3ac3958f14941cdb205e76ba43bbe49 | d3ac3958f14941cdb205e76ba43bbe49 |
+| start_time | 2019-11-08T16:49:49 | 2018-07-02T22:28:14 | 2018-07-02T22:28:17 |
 | finish_time | null | null | null |
 | message | null | null | null |
 | deleted | 0 | 0 | 0 |
@@ -1572,17 +1572,17 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2019-11-08T16:49:50 | 2014-04-27T04:43:05 | 2014-04-27T04:45:15 |
-| updated_at | 2019-11-08T16:49:59 | 2017-07-19T16:28:30 | 2017-07-19T16:28:30 |
+| created_at | 2019-11-08T16:49:50 | 2016-01-10T02:50:37 | 2016-01-10T02:50:39 |
+| updated_at | 2019-11-08T16:49:59 | 2017-07-19T16:35:46 | 2017-07-19T16:35:46 |
 | deleted_at | null | null | null |
-| id | 737363 | 117680 | 117681 |
-| event | compute_terminate_instance | compute_stop_instance | schedule |
-| action_id | 600508 | 77767 | 77768 |
-| start_time | 2019-11-08T16:49:50 | 2014-04-27T04:43:05 | 2014-04-27T04:45:15 |
-| finish_time | 2019-11-08T16:49:59 | 2014-04-27T04:43:06 | 2014-04-27T04:45:15 |
+| id | 737363 | 581338 | 581340 |
+| event | compute_terminate_instance | compute_terminate_instance | compute_terminate_instance |
+| action_id | 600508 | 459264 | 459294 |
+| start_time | 2019-11-08T16:49:50 | 2016-01-10T02:50:37 | 2016-01-10T02:50:39 |
+| finish_time | 2019-11-08T16:49:59 | 2016-01-10T02:51:22 | 2016-01-10T02:51:21 |
 | result | Success | Success | Success |
 | traceback | null | null | null |
-| deleted | 0 | 117680 | 117681 |
+| deleted | 0 | 581338 | 581340 |
 | host | null | null | null |
 | details | null | null | null |
 
@@ -1606,12 +1606,12 @@ indexes: `instance_uuid`
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2019-11-08T16:45:47 | 2015-02-28T23:57:39 | 2015-02-28T23:58:07 |
-| updated_at | 2019-11-08T16:49:58 | 2015-02-28T23:57:53 | 2015-02-28T23:58:45 |
-| deleted_at | 2019-11-08T16:49:58 | 2015-03-01T01:57:46 | 2015-03-01T00:12:41 |
-| deleted | 211264 | 9978 | 9979 |
-| id | 211264 | 9978 | 9979 |
-| instance_uuid | 25a90600-fabf-44d2-b14c-72b7004411c8 | 7d5b4091-7699-413d-a7c4-b0559f544633 | 14b63eaa-2a78-4495-98fa-5251c500e417 |
+| created_at | 2019-11-08T16:45:47 | 2015-04-17T07:25:48 | 2015-04-17T07:26:00 |
+| updated_at | 2019-11-08T16:49:58 | 2015-04-17T07:26:19 | 2015-04-17T07:26:27 |
+| deleted_at | 2019-11-08T16:49:58 | 2015-04-17T07:40:35 | 2015-04-17T07:54:20 |
+| deleted | 211264 | 84518 | 84519 |
+| id | 211264 | 84518 | 84519 |
+| instance_uuid | 25a90600-fabf-44d2-b14c-72b7004411c8 | 7036fdd5-bb36-4330-8cf0-112621b9934a | ad76228f-7a3c-41c3-b4f4-a0d710df5c88 |
 | numa_topology | null | null | null |
 | pci_requests | [] | [] | [] |
 | flavor | {"new": null, "old": null, "cur": {"nova_object.version": "1.1", "nova_object.changes": ["extra_specs"], "nova_object.name": "Flavor", "nova_object.data": {"disabled": false, "root_gb": 10, "name": "… | null | null |
@@ -1637,16 +1637,16 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2019-11-07T16:55:40 | 2013-06-10T19:56:22 | 2013-06-10T20:06:35 |
+| created_at | 2019-11-07T16:55:40 | 2013-07-03T09:51:04 | 2013-07-03T09:51:15 |
 | updated_at | null | null | null |
-| deleted_at | 2019-11-07T18:28:41 | 2013-06-10T19:56:28 | 2013-06-10T20:06:41 |
-| id | 204828 | 101785 | 101786 |
-| instance_uuid | fe6c2d4d-d26d-4816-80cf-6baf2989203b | 2b064d0b-0772-4301-829a-3052db43573b | 604d458c-6b5b-4228-8d92-d83d410e6da0 |
+| deleted_at | 2019-11-07T18:28:41 | 2013-07-03T09:51:09 | 2013-07-03T09:51:21 |
+| id | 204828 | 134418 | 134419 |
+| instance_uuid | fe6c2d4d-d26d-4816-80cf-6baf2989203b | fa2b82a7-87e2-40d9-a77c-dfa1ea7cf466 | d786b150-b819-4b0d-af96-5f40c92b6b33 |
 | code | 500 | 500 | 500 |
 | message | 22c323b0493531e2b749b9918d7483da | 2f0ffe5e898249e3506367ee07ce4835 | 2f0ffe5e898249e3506367ee07ce4835 |
 | details | 1d7bcac64380dd31e129a1fd15e3f795 | ee9f89f55405ff6ada25fefabe558dda | ee9f89f55405ff6ada25fefabe558dda |
 | host | gamut-16 |  |  |
-| deleted | 204828 | 405520 | 405521 |
+| deleted | 204828 | 439319 | 439320 |
 
 # `shadow_instance_group_member`  (rows=84)
 
@@ -1664,12 +1664,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2017-07-11T16:14:30 | 2017-05-22T19:16:49 | 2017-05-22T19:16:49 |
+| created_at | 2017-07-11T16:14:30 | 2017-07-06T22:36:30 | 2017-07-06T22:41:16 |
 | updated_at | null | null | null |
-| deleted_at | 2017-07-11T16:15:13 | 2017-06-28T13:40:22 | 2017-05-22T19:35:47 |
-| deleted | 332 | 279 | 280 |
-| id | 332 | 279 | 280 |
-| instance_id | 9e7d58a9-2fae-45c3-b94f-68839d0fee21 | aafcc2df-4310-4734-bf67-784cf4e24e70 | 3a974cd3-76d1-429c-b95a-d338784ea5ab |
+| deleted_at | 2017-07-11T16:15:13 | 2017-07-06T23:12:29 | 2017-07-06T23:18:13 |
+| deleted | 332 | 306 | 307 |
+| id | 332 | 306 | 307 |
+| instance_id | 9e7d58a9-2fae-45c3-b94f-68839d0fee21 | 7e1077d1-f7ec-4ec9-9bb4-f5ede5c4fae5 | 6a2804cf-55e4-483b-a521-36e6b303398e |
 | group_id | 14 | 11 | 11 |
 
 # `shadow_instance_group_policy`  (rows=2)
@@ -1712,13 +1712,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2019-11-08T16:45:47 | 2013-06-06T17:00:19 | 2013-08-14T15:55:48 |
-| updated_at | 2019-11-08T16:49:58 | 2013-06-06T17:32:55 | 2013-08-14T15:56:43 |
-| deleted_at | 2019-11-08T16:49:58 | 2013-08-08T11:04:14 | 2013-08-15T18:12:53 |
-| id | 742114 | 403240 | 446931 |
-| network_info | [] | [{"network": {"bridge": "br100", "subnets": [{"ips": [{"meta": {}, "version": 4, "type": "fixed", "floating_ips": [{"meta": {}, "version": 4, "type": "floating", "address": "10.177.24.130/8"}], "addr… | [{"ovs_interfaceid": "66012388-3a60-4b25-a765-24fb74834484", "network": {"bridge": "br-int", "subnets": [{"ips": [{"meta": {}, "version": 4, "type": "fixed", "floating_ips": [], "address": "10.158.13… |
-| instance_uuid | 25a90600-fabf-44d2-b14c-72b7004411c8 | f8b4d22c-852b-4cf9-a331-3d9a87415778 | e1791a6f-237a-49f8-bf06-13132a9e1051 |
-| deleted | 742114 | 1 | 446931 |
+| created_at | 2019-11-08T16:45:47 | 2012-10-15T20:50:44 | 2012-10-15T20:50:44 |
+| updated_at | 2019-11-08T16:49:58 | 2012-10-15T20:51:00 | 2012-10-15T20:58:30 |
+| deleted_at | 2019-11-08T16:49:58 | 2012-10-22T11:23:39 | 2012-10-22T11:23:39 |
+| id | 742114 | 27683 | 27684 |
+| network_info | [] | [{"network": {"bridge": "br100", "subnets": [{"ips": [{"meta": {}, "version": 4, "type": "fixed", "floating_ips": [], "address": "10.22.215.7/8"}], "version": 4, "meta": {"dhcp_server": "10.129.224.2… | [{"network": {"bridge": "br100", "subnets": [{"ips": [{"meta": {}, "version": 4, "type": "fixed", "floating_ips": [], "address": "10.129.1.10/8"}], "version": 4, "meta": {"dhcp_server": "10.129.224.2… |
+| instance_uuid | 25a90600-fabf-44d2-b14c-72b7004411c8 | cfdf0510-2a9e-4034-a0a5-820b22c5331e | e2e6c114-6803-4eac-9fd6-221b30e8d7fd |
+| deleted | 742114 | 27683 | 27684 |
 
 # `shadow_instance_metadata`  (rows=1554)
 
@@ -1737,14 +1737,14 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2019-05-25T02:48:30 | 2019-05-17T22:05:55 | 2019-05-17T22:06:02 |
+| created_at | 2019-05-25T02:48:30 | 2019-05-17T22:05:42 | 2019-05-17T22:05:45 |
 | updated_at | null | null | null |
-| deleted_at | 2019-05-27T05:30:33 | 2019-05-22T15:45:02 | 2019-05-22T15:44:07 |
-| id | 2028 | 1613 | 1614 |
+| deleted_at | 2019-05-27T05:30:33 | 2019-05-22T15:44:31 | 2019-05-22T15:44:52 |
+| id | 2028 | 1605 | 1606 |
 | key | role | flight | role |
 | value | theta_point | spark_spind | theta_point |
-| instance_uuid | 626ca30f-656f-4763-9de8-6927e9c23171 | 9e8cef0c-4786-4a7b-a087-ce16fdd5ba9c | 9ff44ea4-597a-489a-bde2-7a8159aef19a |
-| deleted | 2028 | 1613 | 1614 |
+| instance_uuid | 626ca30f-656f-4763-9de8-6927e9c23171 | a2be2f37-b1cf-4f16-9dc1-d9c964df9de1 | 9dc5d901-37b1-41dc-ae8b-409537e75da8 |
+| deleted | 2028 | 1605 | 1606 |
 
 # `shadow_instance_system_metadata`  (rows=4879813)
 
@@ -1763,13 +1763,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2019-11-08T16:49:56 | 2016-01-11T23:58:40 | 2016-01-11T23:58:40 |
+| created_at | 2019-11-08T16:49:56 | 2015-04-22T13:35:39 | 2015-04-22T13:35:39 |
 | updated_at | null | null | null |
 | deleted_at | 2019-11-08T16:49:58 | null | null |
-| id | 12204053 | 11521992 | 11521994 |
-| instance_uuid | 25a90600-fabf-44d2-b14c-72b7004411c8 | d02cfefb-a8f8-491b-9a19-3660f110cfa3 | d02cfefb-a8f8-491b-9a19-3660f110cfa3 |
-| key | clean_attempts | image_network_allocated | image_user_id |
-| value | comet-star-gamma | dash-flux | scope-0 |
+| id | 12204053 | 10760170 | 10760171 |
+| instance_uuid | 25a90600-fabf-44d2-b14c-72b7004411c8 | 57135b9b-c7ff-4d92-af57-846cf02fc9ed | 57135b9b-c7ff-4d92-af57-846cf02fc9ed |
+| key | clean_attempts | instance_type_vcpu_weight | instance_type_root_gb |
+| value | comet-star-gamma | null | phase |
 | deleted | 12204053 | 0 | 0 |
 
 # `shadow_instance_type_extra_specs`  (rows=53)
@@ -1814,13 +1814,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2015-12-17T16:58:14 | 2014-07-11T17:54:29 | 2014-07-11T17:55:01 |
+| created_at | 2015-12-17T16:58:14 | 2015-04-10T15:34:30 | 2015-04-10T15:38:38 |
 | updated_at | null | null | null |
-| deleted_at | 2015-12-17T17:06:10 | 2014-10-14T15:01:35 | 2014-10-14T15:01:35 |
-| id | 220 | 129 | 130 |
-| instance_type_id | 152 | 127 | 127 |
-| project_id | tig | 6f9adccbd03e4d2186756896957a14bf | 98333a1a28e746fa8c629c83a818ad57 |
-| deleted | 220 | 129 | 130 |
+| deleted_at | 2015-12-17T17:06:10 | 2015-04-10T15:34:56 | 2015-04-10T15:39:53 |
+| id | 220 | 167 | 169 |
+| instance_type_id | 152 | 138 | 138 |
+| project_id | tig | tig | 7691c9955ce1444ab366d041f5bdf33c |
+| deleted | 220 | 167 | 169 |
 
 # `shadow_instances`  (rows=709892)
 
@@ -1884,56 +1884,56 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2019-05-25T02:48:07 | 2014-05-09T04:53:25 | 2014-05-09T04:53:25 |
-| updated_at | 2019-05-27T05:29:18 | 2014-05-12T19:28:33 | 2014-05-12T19:28:44 |
-| deleted_at | 2019-05-27T05:29:18 | 2014-05-12T19:28:33 | 2014-05-12T19:28:44 |
-| id | 741069 | 492482 | 492483 |
+| created_at | 2019-05-25T02:48:07 | 2012-11-20T05:41:59 | 2012-11-20T05:42:00 |
+| updated_at | 2019-05-27T05:29:18 | 2012-11-20T05:50:18 | 2012-11-20T06:00:11 |
+| deleted_at | 2019-05-27T05:29:18 | 2012-11-20T05:50:50 | 2012-11-20T06:00:33 |
+| id | 741069 | 180075 | 180076 |
 | internal_id | null | null | null |
-| user_id | a1ef823458d24a68955fec6f3d390019 | 9dcb774774424482b74b473dcba0fbfc | 9dcb774774424482b74b473dcba0fbfc |
+| user_id | a1ef823458d24a68955fec6f3d390019 | c8490ee0863345f6919b5c63540efca1 | c8490ee0863345f6919b5c63540efca1 |
 | project_id | 17ea94ad74b64b9d92f4888336a598c7 | 3008a142e9524f7295b06ea811908f93 | 3008a142e9524f7295b06ea811908f93 |
-| image_ref | d74d6560-3a34-4ae6-bd89-ec4dc354b922 | 85433fe9-02a7-4728-91af-92097abef520 | 85433fe9-02a7-4728-91af-92097abef520 |
+| image_ref | d74d6560-3a34-4ae6-bd89-ec4dc354b922 | 52a1451b-8311-4be2-b148-c7ee578a78eb | 52a1451b-8311-4be2-b148-c7ee578a78eb |
 | kernel_id | null | null | null |
 | ramdisk_id | null | null | null |
-| launch_index | 0 | 23 | 24 |
-| key_name | null | shine_ebfl-rylx-gqns-uirz-ylqy | shine_ebfl-rylx-gqns-uirz-ylqy |
-| key_data | null | 10350653f5be01fd19bb0c0117b77c05 | 10350653f5be01fd19bb0c0117b77c05 |
+| launch_index | 0 | 0 | 0 |
+| key_name | null | flare_cvgr-feyl-nuws-tenn-pwyt | flare_cvgr-feyl-nuws-tenn-pwyt |
+| key_data | null | 73e6cd4cbdc667c8e27bcf089ffda82a | 73e6cd4cbdc667c8e27bcf089ffda82a |
 | power_state | 0 | 1 | 1 |
 | vm_state | deleted | deleted | deleted |
-| memory_mb | 4096 | 12288 | 12288 |
-| vcpus | 8 | 12 | 12 |
-| hostname | helix | spind-aurum | mover8-48 |
-| host | beam8-22 | glint-54 | shine8-39 |
-| user_data | 557863e33d149078ec6e1a03e609495d | 0d91e45356d96c3e247881f8ab57de3d | 0d91e45356d96c3e247881f8ab57de3d |
-| reservation_id | r-92gre1nf | r-q9qu6may | r-q9qu6may |
-| scheduled_at | null | 2014-05-09T04:53:33 | 2014-05-09T04:53:33 |
-| launched_at | 2019-05-25T02:48:59 | 2014-05-09T05:03:35 | 2014-05-09T05:02:52 |
-| terminated_at | 2019-05-27T05:29:29 | 2014-05-12T19:28:33 | 2014-05-12T19:28:44 |
-| display_name | helix | 10.59.66.169/8 | 10.42.117.16/8 |
+| memory_mb | 4096 | 2048 | 2048 |
+| vcpus | 8 | 1 | 1 |
+| hostname | helix | arrow2-66 | nexis-beam-drift |
+| host | beam8-22 | space7-54 | space7-54 |
+| user_data | 557863e33d149078ec6e1a03e609495d | 668b9e9165bc740a9b75aa174d4620db | 967a421a32ad6998c5d8bbc1776e5275 |
+| reservation_id | r-92gre1nf | r-jsnxb87g | r-f09wk6qr |
+| scheduled_at | null | 2012-11-20T05:42:11 | 2012-11-20T05:42:11 |
+| launched_at | 2019-05-25T02:48:59 | 2012-11-20T05:43:18 | 2012-11-20T05:43:11 |
+| terminated_at | 2019-05-27T05:29:29 | 2012-11-20T05:50:18 | 2012-11-20T06:00:11 |
+| display_name | helix | 10.49.197.142/8 | 10.215.227.7/8 |
 | display_description | helix | null | null |
 | availability_zone | null | null | null |
 | locked | 0 | 0 | 0 |
 | os_type | null | null | null |
-| launched_on | beam8-22 | glint-54 | shine8-39 |
-| instance_type_id | 60 | 68 | 68 |
+| launched_on | beam8-22 | space7-54 | space7-54 |
+| instance_type_id | 60 | 5 | 5 |
 | vm_mode | null | null | null |
-| uuid | 5381e77a-b474-4f22-8729-3fdf0bfbcd18 | aeb89895-e5a6-4bfc-8baf-8c13ff897314 | 86e0d3b6-d4d9-486f-8de1-f14156a322a2 |
+| uuid | 5381e77a-b474-4f22-8729-3fdf0bfbcd18 | 1e6dd5ba-da07-4670-8ca3-9bfccaabf7cd | 3b799e2d-753c-4308-a861-686216e637a4 |
 | architecture | null | null | null |
 | root_device_name | /dev/vda | /dev/vda | /dev/vda |
 | access_ip_v4 | null | null | null |
 | access_ip_v6 | null | null | null |
 | config_drive | null | null | null |
 | task_state | null | null | null |
-| default_ephemeral_device | null | null | null |
+| default_ephemeral_device | null | /dev/vdb | /dev/vdb |
 | default_swap_device | null | null | null |
 | progress | 0 | 0 | 0 |
-| auto_disk_config | 0 | 0 | 0 |
+| auto_disk_config | 0 | null | null |
 | shutdown_terminate | 0 | 0 | 0 |
 | disable_terminate | 0 | 0 | 0 |
-| root_gb | 10 | 16 | 16 |
-| ephemeral_gb | 0 | 0 | 0 |
+| root_gb | 10 | 10 | 10 |
+| ephemeral_gb | 0 | 20 | 20 |
 | cell_name | null | null | null |
-| node | beam8-22.yahoo.ca.com | glint-54.yahoo.ca.com | shine8-39.yahoo.ca.com |
-| deleted | 741069 | 492482 | 492483 |
+| node | beam8-22.yahoo.ca.com | null | null |
+| deleted | 741069 | 180075 | 180076 |
 | locked_by | null | null | null |
 | cleaned | 1 | 1 | 1 |
 | ephemeral_key_uuid | null | null | null |
@@ -1957,15 +1957,15 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2013-07-29T21:03:17 | 2012-11-15T12:53:59 | 2012-11-21T19:24:51 |
-| updated_at | 2013-07-29T21:03:34 | 2012-11-15T12:54:35 | 2012-11-21T19:25:54 |
-| deleted_at | 2013-07-29T21:03:34 | 2012-11-15T12:54:35 | 2012-11-21T19:25:54 |
-| id | 151 | 42 | 47 |
-| name | axiom-dash | flash-mover | novae_whzc-kmeq-lnoj-laaw-wbbc |
-| user_id | e754f357f72c43ad9301478cb2ccf3aa | e3f1737afea442579268ce61d723efc6 | 337a59a5314944168bde3fc24bf3385c |
-| fingerprint | b1:9f:70:51:7f:b3:bd:7d:28:8d:cc:9d:ff:1a:10:71 | e7:4c:d2:03:fb:c8:17:ce:a2:60:16:6b:99:09:3d:6b | 6e:d4:00:c0:8c:a2:12:ce:d1:08:b0:86:7a:10:96:d7 |
-| public_key | 63b3992a6ad94ee9a0c224d89dbd150e | 6898389b727b557eefcf9ce468db75b1 | 3303622fb5a6815240d15fc359eeb893 |
-| deleted | 151 | 42 | 47 |
+| created_at | 2013-07-29T21:03:17 | 2012-08-09T16:36:18 | 2012-08-09T16:44:56 |
+| updated_at | 2013-07-29T21:03:34 | 2012-08-09T16:43:56 | 2012-08-09T17:02:19 |
+| deleted_at | 2013-07-29T21:03:34 | 2012-08-09T16:43:56 | 2012-08-09T17:02:19 |
+| id | 151 | 14 | 15 |
+| name | axiom-dash | plane-scope | warp-warp |
+| user_id | e754f357f72c43ad9301478cb2ccf3aa | be851dce01da4b3ebbe8149bdb59527c | be851dce01da4b3ebbe8149bdb59527c |
+| fingerprint | b1:9f:70:51:7f:b3:bd:7d:28:8d:cc:9d:ff:1a:10:71 | 8f:9d:b1:10:0a:50:5f:5f:96:dd:b5:ff:4f:48:39:12 | c8:b8:25:1d:27:06:c2:bf:83:98:56:de:d4:6a:aa:7e |
+| public_key | 63b3992a6ad94ee9a0c224d89dbd150e | 053d107a5c8a90529ab0e0dfbb49cf91 | faabcce7cd2ec2163dffa6b243e662cd |
+| deleted | 151 | 14 | 15 |
 | type | ssh | ssh | ssh |
 
 # `shadow_migrations`  (rows=2112)
@@ -1999,19 +1999,19 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2019-08-13T19:01:58 | 2016-04-02T20:56:21 | 2016-04-06T17:15:55 |
-| updated_at | 2019-08-13T19:02:31 | 2016-04-02T20:56:52 | 2016-04-06T17:18:57 |
+| created_at | 2019-08-13T19:01:58 | 2016-09-28T00:34:45 | 2016-09-28T13:12:30 |
+| updated_at | 2019-08-13T19:02:31 | 2016-09-28T14:36:17 | 2016-11-26T03:39:08 |
 | deleted_at | null | null | null |
-| id | 4386 | 784 | 785 |
-| source_compute | prime3-77 | starx9-30 | track9-16 |
-| dest_compute | cosmo3-23 | delta-67 | align-79 |
-| dest_host | 10.165.53.177/8 | 10.111.244.250/8 | 10.236.133.139/8 |
-| status | confirmed | confirmed | confirmed |
-| instance_uuid | 19ae8899-9ed9-4880-bb19-f9e3a22354af | 68af891e-89b7-4c57-a3fd-535291cabdb1 | eb3cf255-b53f-4ee2-bba2-e3e973e09f73 |
-| old_instance_type_id | 66 | 139 | 109 |
-| new_instance_type_id | 73 | 150 | 58 |
-| source_node | prime3-77.yahoo.ca.com | starx9-30.yahoo.ca.com | track9-16.yahoo.ca.com |
-| dest_node | cosmo3-23.yahoo.ca.com | delta-67.yahoo.ca.com | align-79.yahoo.ca.com |
+| id | 4386 | 1007 | 1009 |
+| source_compute | prime3-77 | starx0-27 | flare7-39 |
+| dest_compute | cosmo3-23 | star-76 | zeph-15 |
+| dest_host | 10.165.53.177/8 | 10.79.217.241/8 | 10.176.178.91/8 |
+| status | confirmed | confirmed | confirming |
+| instance_uuid | 19ae8899-9ed9-4880-bb19-f9e3a22354af | 594816a6-cc6b-4ae2-ae0f-244e124f0785 | 4ef1868c-5440-4799-8743-8d719e5f2d80 |
+| old_instance_type_id | 66 | 71 | 80 |
+| new_instance_type_id | 73 | 71 | 80 |
+| source_node | prime3-77.yahoo.ca.com | starx0-27.yahoo.ca.com | flare7-39.yahoo.ca.com |
+| dest_node | cosmo3-23.yahoo.ca.com | star-76.yahoo.ca.com | zeph-15.yahoo.ca.com |
 | deleted | 0 | 0 | 0 |
 | migration_type | resize | null | null |
 | hidden | 0 | 0 | 0 |
@@ -2089,18 +2089,18 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2019-11-08T18:16:30 | 2015-11-21T02:22:45 | 2015-11-21T02:22:45 |
+| created_at | 2019-11-08T18:16:30 | 2014-07-24T01:09:04 | 2014-07-24T01:09:09 |
 | updated_at | null | null | null |
-| deleted_at | 2019-11-08T18:16:31 | 2015-11-21T02:22:49 | 2015-11-21T02:22:49 |
-| id | 1614699 | 1092744 | 1092745 |
-| uuid | 7912a75e-ca94-42ed-9867-a1b451d02ac7 | 27b4ad5d-d7d5-4d58-8d98-ac0bd0dd21e7 | 2d532bc2-95f3-4048-9758-afebda0eaf31 |
-| usage_id | 2879 | 1102 | 1103 |
-| project_id | da4266d0e4f24017b0dc114ea64ad422 | 70b2507b8cc44fcb917ddfb85f5079d9 | 70b2507b8cc44fcb917ddfb85f5079d9 |
-| resource | ram | ram | cores |
-| delta | 65536 | 1024 | 1 |
-| expire | 2019-11-09T18:16:30 | 2015-11-22T02:22:44 | 2015-11-22T02:22:44 |
-| deleted | 1614699 | 1092744 | 1092745 |
-| user_id | 38fe63ea602f4200aa85186291d39df1 | ada9fad8c2394152af079258d13ca201 | ada9fad8c2394152af079258d13ca201 |
+| deleted_at | 2019-11-08T18:16:31 | 2014-07-24T01:09:08 | 2014-07-24T01:09:09 |
+| id | 1614699 | 274400 | 274401 |
+| uuid | 7912a75e-ca94-42ed-9867-a1b451d02ac7 | a03a8938-600e-4f4f-a391-c9750a5568e3 | 6f5419a4-e11f-403c-aa4d-00005e6aca59 |
+| usage_id | 2879 | 245 | 243 |
+| project_id | da4266d0e4f24017b0dc114ea64ad422 | 3008a142e9524f7295b06ea811908f93 | 3008a142e9524f7295b06ea811908f93 |
+| resource | ram | cores | instances |
+| delta | 65536 | -4 | 1 |
+| expire | 2019-11-09T18:16:30 | 2014-07-25T01:09:04 | 2014-07-25T01:09:09 |
+| deleted | 1614699 | 274400 | 274401 |
+| user_id | 38fe63ea602f4200aa85186291d39df1 | 0df639d1cf6a48f7b9ddf6cf68772ca8 | 0df639d1cf6a48f7b9ddf6cf68772ca8 |
 
 # `shadow_security_group_rules`  (rows=40)
 
@@ -2122,17 +2122,17 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2013-06-12T22:05:18 | 2013-04-11T21:33:24 | 2013-05-16T06:41:58 |
-| updated_at | 2013-06-12T22:06:40 | 2013-04-11T21:33:39 | 2013-05-16T06:49:19 |
-| deleted_at | 2013-06-12T22:06:40 | 2013-04-11T21:33:39 | 2013-05-16T06:49:19 |
-| id | 187 | 121 | 150 |
-| parent_group_id | 66 | 58 | 63 |
+| created_at | 2013-06-12T22:05:18 | 2012-11-08T00:00:46 | 2012-11-29T17:23:59 |
+| updated_at | 2013-06-12T22:06:40 | 2012-11-08T00:01:32 | 2012-11-29T17:24:19 |
+| deleted_at | 2013-06-12T22:06:40 | 2012-11-08T00:01:32 | 2013-01-23T01:35:49 |
+| id | 187 | 39 | 53 |
+| parent_group_id | 66 | 22 | 39 |
 | protocol | tcp | tcp | tcp |
-| from_port | 446 | 22 | 9000 |
-| to_port | 446 | 22 | 10000 |
-| cidr | 10.71.29.205/8 | null | 10.216.18.158/8 |
-| group_id | null | 58 | null |
-| deleted | 187 | 121 | 150 |
+| from_port | 446 | 8080 | 123 |
+| to_port | 446 | 8080 | 456 |
+| cidr | 10.71.29.205/8 | null | null |
+| group_id | null | 22 | 39 |
+| deleted | 187 | 39 | 53 |
 
 # `shadow_services`  (rows=110)
 
@@ -2157,16 +2157,16 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2016-08-11T15:47:19 | 2013-02-13T14:07:22 | 2013-02-13T14:08:13 |
-| updated_at | 2016-08-11T15:57:05 | 2014-12-11T20:35:22 | 2015-11-21T14:57:21 |
-| deleted_at | 2016-08-11T15:58:28 | 2016-01-21T16:56:46 | 2016-01-21T16:56:48 |
-| id | 242 | 105 | 106 |
-| host | blaze-shift | spire6-6-1 | forge-15 |
-| binary | nova-conductor | nova-compute | nova-compute |
-| topic | conductor | compute | compute |
-| report_count | 59 | 5356451 | 8648106 |
+| created_at | 2016-08-11T15:47:19 | 2015-11-23T20:13:11 | 2015-11-23T20:50:26 |
+| updated_at | 2016-08-11T15:57:05 | 2015-11-23T20:18:45 | 2015-11-30T21:45:33 |
+| deleted_at | 2016-08-11T15:58:28 | 2016-01-21T16:53:05 | 2016-01-21T16:53:07 |
+| id | 242 | 182 | 186 |
+| host | blaze-shift | twist-light-flux | flick-shine-flare |
+| binary | nova-conductor | nova-conductor | nova-conductor |
+| topic | conductor | conductor | conductor |
+| report_count | 59 | 18 | 60738 |
 | disabled | 0 | 0 | 0 |
-| deleted | 242 | 105 | 106 |
+| deleted | 242 | 182 | 186 |
 | disabled_reason | null | null | null |
 | last_seen_up | null | null | null |
 | forced_down | 0 | 0 | 0 |
@@ -2228,15 +2228,15 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2013-09-17T02:44:27 | 2012-11-03T18:24:55 | 2012-11-03T18:28:19 |
+| created_at | 2013-09-17T02:44:27 | 2013-04-21T10:27:39 | 2013-04-29T17:33:31 |
 | updated_at | null | null | null |
-| deleted_at | null | 2012-11-03T18:23:33 | 2012-11-03T18:25:41 |
-| id | 414194 | 111941 | 111958 |
-| address | m1:c2:w7:oq:s5:sn | q9:q0:h2:uq:8o:p8 | j7:jt:z4:lv:4b:5m |
+| deleted_at | null | 2013-08-08T11:04:14 | 2013-04-29T17:42:50 |
+| id | 414194 | 389156 | 395382 |
+| address | m1:c2:w7:oq:s5:sn | i6:pb:y4:5s:xq:gu | 72:21:23:ce:6s:vt |
 | network_id | 1 | 1 | 1 |
-| uuid | 19495c14-0877-43c3-95db-af103f6d47a6 | 67e6597e-5101-48c5-8c21-be0538f5df97 | c9ce8a8c-f114-42b9-a9aa-33b7b78eb7c5 |
-| instance_uuid | 6154483e-317a-43bc-9563-cd945f59a242 | 17271c75-32d2-4430-a88a-f3761a332b2d | b0e90394-efea-4eba-b7c9-176bdb7983c4 |
-| deleted | 0 | 83122 | 83124 |
+| uuid | 19495c14-0877-43c3-95db-af103f6d47a6 | 14df6261-1aa6-4cbe-888c-02c5e8f5f4e2 | 6f49c5d3-1248-4252-afe5-0aa4d648ef43 |
+| instance_uuid | 6154483e-317a-43bc-9563-cd945f59a242 | d2ca4501-0406-4a7f-b097-b913c35080f9 | 11eaca2f-70b3-49c7-ab1c-71a28f6d5f8c |
+| deleted | 0 | 1 | 357436 |
 
 # `snapshot_id_mappings`  (rows=1)
 
@@ -2313,11 +2313,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| created_at | 2014-12-08T21:45:04 | null | null |
+| created_at | 2014-12-08T21:45:04 | 2014-12-08T21:45:02 | 2014-12-08T21:45:02 |
 | updated_at | null | null | null |
 | deleted_at | null | null | null |
-| id | 65 | 18 | 19 |
-| uuid | a62fdf5f-b89d-472e-aab3-8c0bf393c905 | fb035f13-20be-4d72-8a72-1e242849ccd5 | bcf9e549-76b4-4285-8276-93ae1ad28ed6 |
+| id | 65 | 56 | 57 |
+| uuid | a62fdf5f-b89d-472e-aab3-8c0bf393c905 | 32f005b0-4c4f-4b51-a6fb-357995e0f2d5 | a4762995-60fc-4eaf-959a-fe76efada723 |
 | deleted | 0 | 0 | 0 |
 
 - Skipped 45 empty table(s): `agent_builds`, `allocations`, `bw_usage_cache`, `cells`, `console_pools`, `consoles`, `dns_domains`, `inventories`, `project_user_quotas`, `provider_fw_rules`, `resource_provider_aggregates`, `resource_providers`, `security_group_default_rules`, `security_group_instance_association`, `shadow_agent_builds`, `shadow_aggregates`, `shadow_bw_usage_cache`, `shadow_cells`, `shadow_certificates`, `shadow_console_pools`, `shadow_consoles`, `shadow_dns_domains`, `shadow_floating_ips`, `shadow_instance_groups`, `shadow_instance_id_mappings`, `shadow_instance_types`, `shadow_migrate_version`, `shadow_networks`, `shadow_project_user_quotas`, `shadow_provider_fw_rules`, `shadow_quota_classes`, `shadow_quota_usages`, `shadow_quotas`, `shadow_s3_images`, `shadow_security_group_default_rules`, `shadow_security_group_instance_association`, `shadow_security_groups`, `shadow_snapshot_id_mappings`, `shadow_task_log`, `shadow_volume_id_mappings`, `shadow_volume_usage_cache`, `tags`, `task_log`, `virtual_interfaces`, `volume_usage_cache`

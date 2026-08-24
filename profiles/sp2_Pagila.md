@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:33:21.773570Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:22:55.720882Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-xw_7i7of/Pagila.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-37m3dsog/Pagila.sqlite
 schema: main
 ---
 
@@ -35,10 +35,10 @@ indexes: "last_name"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| actor_id | 200 | 135 | 185 |
-| first_name | THORA | RITA | MICHAEL |
-| last_name | TEMPLE | REYNOLDS | BOLGER |
-| last_update | 2021-03-06T15:52:00 | 2021-03-06T15:52:00 | 2021-03-06T15:52:00 |
+| actor_id | 200 | 181 | 61 |
+| first_name | THORA | MATTHEW | CHRISTIAN |
+| last_name | TEMPLE | CARREY | NEESON |
+| last_update | 2021-03-06T15:52:00 | 2021-03-06T15:52:00 | 2021-03-06T15:51:59 |
 
 # "address"  (rows=603)
 
@@ -57,14 +57,14 @@ indexes: "city_id"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| address_id | 605 | 402 | 420 |
-| address | 1325 Fukuyama Street | 616 Hagonoy Avenue | 992 Klerksdorp Loop |
+| address_id | 605 | 588 | 119 |
+| address | 1325 Fukuyama Street | 966 Asuncin Way | 1107 Nakhon Sawan Avenue |
 | address2 | null | null | null |
 | district |   |   |   |
-| city_id | 537 | 39 | 23 |
-| postal_code | 27107 | 46043 | 33711 |
+| city_id | 537 | 212 | 365 |
+| postal_code | 27107 | 62703 | 75149 |
 | phone |   |   |   |
-| last_update | 2021-03-06T15:51:59 | 2021-03-06T15:51:57 | 2021-03-06T15:51:57 |
+| last_update | 2021-03-06T15:51:59 | 2021-03-06T15:51:58 | 2021-03-06T15:51:55 |
 
 # "category"  (rows=16)
 
@@ -78,8 +78,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| category_id | 16 | 9 | 11 |
-| name | Travel | Foreign | Horror |
+| category_id | 16 | 9 | 12 |
+| name | Travel | Foreign | Music |
 | last_update | 2021-03-06T15:52:00 | 2021-03-06T15:52:00 | 2021-03-06T15:52:00 |
 
 # "city"  (rows=600)
@@ -95,10 +95,10 @@ indexes: "country_id"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| city_id | 600 | 241 | 58 |
-| city | Ziguinchor | Jining | Batman |
-| country_id | 83 | 23 | 97 |
-| last_update | 2021-03-06T15:51:54 | 2021-03-06T15:51:51 | 2021-03-06T15:51:50 |
+| city_id | 600 | 415 | 499 |
+| city | Ziguinchor | Probolinggo | Sterling Heights |
+| country_id | 83 | 45 | 103 |
+| last_update | 2021-03-06T15:51:54 | 2021-03-06T15:51:52 | 2021-03-06T15:51:53 |
 
 # "country"  (rows=109)
 
@@ -112,8 +112,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| country_id | 109 | 4 | 69 |
-| country | Zambia | Angola | Nigeria |
+| country_id | 109 | 5 | 16 |
+| country | Zambia | Anguilla | Brunei |
 | last_update | 2021-03-06T15:51:49 | 2021-03-06T15:51:49 | 2021-03-06T15:51:49 |
 
 # "customer"  (rows=599)
@@ -134,15 +134,15 @@ indexes: "address_id", "store_id", "last_name"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customer_id | 599 | 560 | 172 |
-| store_id | 2 | 1 | 1 |
-| first_name | AUSTIN | JORDAN | BERNICE |
-| last_name | CINTRON | ARCHULETA | WILLIS |
-| email | AUSTIN.CINTRON@sakilacustomer.org | JORDAN.ARCHULETA@sakilacustomer.org | BERNICE.WILLIS@sakilacustomer.org |
-| address_id | 605 | 566 | 176 |
+| customer_id | 599 | 409 | 559 |
+| store_id | 2 | 2 | 2 |
+| first_name | AUSTIN | RODNEY | EVERETT |
+| last_name | CINTRON | MOELLER | BANDA |
+| email | AUSTIN.CINTRON@sakilacustomer.org | RODNEY.MOELLER@sakilacustomer.org | EVERETT.BANDA@sakilacustomer.org |
+| address_id | 605 | 414 | 565 |
 | active | 1 | 1 | 1 |
-| create_date | 2006-02-14T22:04:37 | 2006-02-14T22:04:37 | 2006-02-14T22:04:36 |
-| last_update | 2021-03-06T15:53:41 | 2021-03-06T15:53:40 | 2021-03-06T15:53:37 |
+| create_date | 2006-02-14T22:04:37 | 2006-02-14T22:04:37 | 2006-02-14T22:04:37 |
+| last_update | 2021-03-06T15:53:41 | 2021-03-06T15:53:39 | 2021-03-06T15:53:40 |
 
 # "customer_list"  (rows=599)
 
@@ -176,15 +176,15 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ID | 599 | 317 | 584 |
-| name | AUSTIN CINTRON | EDWARD BAUGH | SALVADOR TEEL |
-| address | 1325 Fukuyama Street | 1359 Zhoushan Parkway | 247 Jining Parkway |
-| zip_code | 27107 | 29763 | 53446 |
+| ID | 599 | 95 | 533 |
+| name | AUSTIN CINTRON | PAULA BRYANT | JESSIE MILAM |
+| address | 1325 Fukuyama Street | 1697 Tanauan Lane | 1332 Gaziantep Lane |
+| zip_code | 27107 | 22870 | 22813 |
 | phone |   |   |   |
-| city | Tieli | Trshavn | Banjul |
-| country | China | Faroe Islands | Gambia |
+| city | Tieli | Pathankot | Binzhou |
+| country | China | India | China |
 | notes | active | active | active |
-| SID | 2 | 2 | 2 |
+| SID | 2 | 2 | 1 |
 
 # "film"  (rows=1000)
 
@@ -208,19 +208,19 @@ indexes: "language_id", "original_language_id"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| film_id | 1000 | 606 | 308 |
-| title | ZORRO ARK | MUMMY CREATURES | FERRIS MOTHER |
-| description | A Intrepid Panorama of a Mad Scientist And a Boy who must Redeem a Boy in A Monastery | A Fateful Character Study of a Crocodile And a Monkey who must Meet a Dentist in Australia | A Touching Display of a Frisbee And a Frisbee who must Kill a Girl in The Gulf of Mexico |
+| film_id | 1000 | 253 | 396 |
+| title | ZORRO ARK | DRIFTER COMMANDMENTS | HANGING DEEP |
+| description | A Intrepid Panorama of a Mad Scientist And a Boy who must Redeem a Boy in A Monastery | A Epic Reflection of a Womanizer And a Squirrel who must Discover a Husband in A Jet Boat | A Action-Packed Yarn of a Boat And a Crocodile who must Build a Monkey in Berlin |
 | release_year | 2006 | 2006 | 2006 |
 | language_id | 1 | 1 | 1 |
 | original_language_id | null | null | null |
-| rental_duration | 3 | 3 | 3 |
-| rental_rate | 4.99 | 0.99 | 2.99 |
-| length | 50 | 160 | 142 |
-| replacement_cost | 18.99 | 15.99 | 13.99 |
-| rating | NC-17 | NC-17 | PG |
-| special_features | Trailers,Commentaries,Behind the Scenes | Trailers,Behind the Scenes | Trailers,Deleted Scenes,Behind the Scenes |
-| last_update | 2021-03-06T15:52:08 | 2021-03-06T15:52:05 | 2021-03-06T15:52:03 |
+| rental_duration | 3 | 5 | 5 |
+| rental_rate | 4.99 | 4.99 | 4.99 |
+| length | 50 | 61 | 62 |
+| replacement_cost | 18.99 | 18.99 | 18.99 |
+| rating | NC-17 | PG-13 | G |
+| special_features | Trailers,Commentaries,Behind the Scenes | Trailers,Behind the Scenes | Trailers,Commentaries,Deleted Scenes |
+| last_update | 2021-03-06T15:52:08 | 2021-03-06T15:52:02 | 2021-03-06T15:52:03 |
 
 # "film_actor"  (rows=5462)
 
@@ -234,9 +234,9 @@ indexes: "actor_id", "film_id"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| actor_id | 200 | 84 | 67 |
-| film_id | 993 | 19 | 477 |
-| last_update | 2021-03-06T15:53:28 | 2021-03-06T15:53:02 | 2021-03-06T15:52:59 |
+| actor_id | 200 | 146 | 186 |
+| film_id | 993 | 720 | 237 |
+| last_update | 2021-03-06T15:53:28 | 2021-03-06T15:53:17 | 2021-03-06T15:53:25 |
 
 # "film_category"  (rows=1000)
 
@@ -250,9 +250,9 @@ indexes: "category_id", "film_id"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| film_id | 1000 | 51 | 384 |
-| category_id | 5 | 12 | 12 |
-| last_update | 2021-03-06T15:53:36 | 2021-03-06T15:53:28 | 2021-03-06T15:53:31 |
+| film_id | 1000 | 928 | 980 |
+| category_id | 5 | 3 | 12 |
+| last_update | 2021-03-06T15:53:36 | 2021-03-06T15:53:35 | 2021-03-06T15:53:35 |
 
 # "film_list"  (rows=5462)
 
@@ -285,14 +285,14 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| FID | 1000 | 125 | 372 |
-| title | ZORRO ARK | CASSIDY WYOMING | GRACELAND DYNAMITE |
-| description | A Intrepid Panorama of a Mad Scientist And a Boy who must Redeem a Boy in A Monastery | A Intrepid Drama of a Frisbee And a Hunter who must Kill a Secret Agent in New Orleans | A Taut Display of a Cat And a Girl who must Overcome a Database Administrator in New Orleans |
-| category | Comedy | Travel | Sports |
-| price | 4.99 | 2.99 | 4.99 |
-| length | 50 | 61 | 140 |
-| rating | NC-17 | NC-17 | R |
-| actors | NICK DEGENERES | AUDREY OLIVIER | CHRISTIAN NEESON |
+| FID | 1000 | 559 | 820 |
+| title | ZORRO ARK | MARRIED GO | SONS INTERVIEW |
+| description | A Intrepid Panorama of a Mad Scientist And a Boy who must Redeem a Boy in A Monastery | A Fanciful Story of a Womanizer And a Dog who must Face a Forensic Psychologist in The Sahara Desert | A Taut Character Study of a Explorer And a Mad Cow who must Battle a Hunter in Ancient China |
+| category | Comedy | Sci-Fi | Animation |
+| price | 4.99 | 2.99 | 2.99 |
+| length | 50 | 114 | 184 |
+| rating | NC-17 | G | NC-17 |
+| actors | NICK DEGENERES | GOLDIE BRODY | CUBA BIRCH |
 
 # "inventory"  (rows=4581)
 
@@ -307,10 +307,10 @@ indexes: "film_id", ("store_id","film_id")
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| inventory_id | 4581 | 1917 | 3962 |
-| film_id | 1000 | 417 | 863 |
-| store_id | 2 | 1 | 2 |
-| last_update | 2021-03-06T15:52:45 | 2021-03-06T15:52:23 | 2021-03-06T15:52:40 |
+| inventory_id | 4581 | 4537 | 3680 |
+| film_id | 1000 | 990 | 805 |
+| store_id | 2 | 2 | 1 |
+| last_update | 2021-03-06T15:52:45 | 2021-03-06T15:52:44 | 2021-03-06T15:52:38 |
 
 # "language"  (rows=6)
 
@@ -344,13 +344,13 @@ indexes: "customer_id", "staff_id"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| payment_id | 16049 | 13230 | 13935 |
-| customer_id | 599 | 490 | 517 |
-| staff_id | 2 | 2 | 2 |
-| rental_id | 15725 | 14761 | 12705 |
-| amount | 2.99 | 6.99 | 0.99 |
-| payment_date | 2005-08-23T11:25:00 | 2005-08-21T23:30:28 | 2005-08-18T20:44:14 |
-| last_update | 2021-03-06T15:58:09 | 2021-03-06T15:57:46 | 2021-03-06T15:57:52 |
+| payment_id | 16049 | 3547 | 9617 |
+| customer_id | 599 | 131 | 356 |
+| staff_id | 2 | 2 | 1 |
+| rental_id | 15725 | 11971 | 7758 |
+| amount | 2.99 | 0.99 | 1.99 |
+| payment_date | 2005-08-23T11:25:00 | 2005-08-17T17:53:42 | 2005-07-28T06:23:41 |
+| last_update | 2021-03-06T15:58:09 | 2021-03-06T15:56:27 | 2021-03-06T15:57:17 |
 
 # "rental"  (rows=16044)
 
@@ -368,13 +368,13 @@ indexes: "customer_id", "inventory_id", "staff_id", UNIQUE ("rental_date","inven
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| rental_id | 16049 | 2929 | 14002 |
-| rental_date | 2005-08-23T22:50:12 | 2005-06-20T04:47:39 | 2005-08-20T20:12:19 |
-| inventory_id | 2666 | 3389 | 87 |
-| customer_id | 393 | 333 | 33 |
-| return_date | 2005-08-30T01:01:12 | 2005-06-25T23:16:39 | 2005-08-23T00:23:19 |
+| rental_id | 16049 | 6543 | 2244 |
+| rental_date | 2005-08-23T22:50:12 | 2005-07-12T04:54:32 | 2005-06-18T04:46:33 |
+| inventory_id | 2666 | 2568 | 3629 |
+| customer_id | 393 | 264 | 233 |
+| return_date | 2005-08-30T01:01:12 | 2005-07-15T09:50:32 | 2005-06-20T04:28:33 |
 | staff_id | 2 | 2 | 1 |
-| last_update | 2021-03-06T15:55:57 | 2021-03-06T15:54:04 | 2021-03-06T15:55:37 |
+| last_update | 2021-03-06T15:55:57 | 2021-03-06T15:54:34 | 2021-03-06T15:53:59 |
 
 # "sales_by_film_category"  (rows=16)
 
@@ -400,8 +400,8 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| category | Travel | Horror | Foreign |
-| total_sales | 3549.64 | 3722.54 | 4270.67 |
+| category | Travel | Comedy | Travel |
+| total_sales | 3549.64 | 4383.58 | 3549.64 |
 
 # "sales_by_store"  (rows=2)
 

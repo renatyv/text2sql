@@ -466,7 +466,7 @@ def main(argv=None) -> int:
                    help="multi-database mode; e.g. neutron=100 nova=80 dw=50")
     arm_group = p.add_mutually_exclusive_group()
     arm_group.add_argument("--arms", nargs="+", choices=list(config.ARMS),
-                           help="one or more arms (default: all four)")
+                           help="one or more arms (default: all)")
     arm_group.add_argument("--arm", choices=list(config.ARMS) + ["all"],
                            help="legacy single-arm form")
     p.add_argument("--phase", default="phase0", choices=["phase0", "pilot", "main"])

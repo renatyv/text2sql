@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:34:22.258750Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:23:58.824310Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-htpy98yj/stacking.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-04_57qil/stacking.sqlite
 schema: main
 ---
 
@@ -24,11 +24,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | oil spill | oil spill |
-| version | 3 | 1 | 5 |
-| feature | pH | f_48 | f_8 |
-| type | num | null | num |
-| drop_user | 0 | 1 | 0 |
+| name | water quality 2 | diabetes | PSS3E5 |
+| version | 3 | 2 | 2 |
+| feature | pH | Glucose | fixed acidity |
+| type | num | num | num |
+| drop_user | 0 | 0 | 0 |
 | drop_correlation | 0 | 0 | 0 |
 | target | 0 | 0 | 0 |
 
@@ -46,11 +46,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | survey lung cancer | oil spill |
-| version | 3 | 1 | 4 |
-| step | 3 | 2 | 3 |
-| feature | pH | FATIGUE  | f_3 |
-| importance | 0.106719 | 0.0201511 | 0.144772 |
+| name | water quality 2 | smoke detection iot | lithium ion batteries |
+| version | 3 | 2 | 3 |
+| step | 3 | 2 | 2 |
+| feature | pH | Raw H2 | Formation Energy (eV) |
+| importance | 0.106719 | 0.000210746 | 0 |
 
 # "model"  (rows=303)
 
@@ -65,9 +65,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | survey lung cancer | Tunnel diode |
-| version | 3 | 3 | 2 |
-| step | 3 | 1 | 1 |
+| name | water quality 2 | Delaney solubility | concrete |
+| version | 3 | 1 | 6 |
+| step | 3 | 1 | 2 |
 | L1_model | tree | regression | regression |
 
 # "model_importance"  (rows=2567)
@@ -84,11 +84,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | oil spill | Critical Heat Flux |
-| version | 3 | 4 | 3 |
-| step | 3 | 1 | 2 |
-| model | RFCG | LOGRS | KNRU |
-| importance | 0.172051 | 0 | 0.0147351 |
+| name | water quality 2 | lithium ion batteries | water quality |
+| version | 3 | 2 | 1 |
+| step | 3 | 1 | 1 |
+| model | RFCG | DTCE | SGDCLL |
+| importance | 0.172051 | 0.0761024 | 0.118721 |
 
 # "model_score"  (rows=2872)
 
@@ -105,12 +105,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | PCOS | Tunnel diode |
-| version | 3 | 2 | 5 |
-| step | 3 | 1 | 1 |
-| model | Stack | ABC | DTRF |
-| train_score | 0.766497 | 0.969613 | 0.959412 |
-| test_score | 0.653061 | 0.860335 | 0.865382 |
+| name | water quality 2 | PCOS | Solar Power Generation |
+| version | 3 | 2 | 7 |
+| step | 3 | 2 | 1 |
+| model | Stack | RFCE | GPRQ |
+| train_score | 0.766497 | 1 | 0 |
+| test_score | 0.653061 | 0.882682 | 0 |
 
 # "problem"  (rows=20)
 
@@ -125,10 +125,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | concrete | survey lung cancer |
-| path | https://www.kaggle.com/datasets/saraharsh/water-quality | https://www.kaggle.com/datasets/prathamtripathi/regression-with-neural-networking | https://www.kaggle.com/datasets/mysarahmadbhat/lung-cancer |
-| type | classification | regression | classification |
-| target | Water_Quality | Concrete compressive strength(MPa, megapascals)  | LUNG_CANCER |
+| name | water quality 2 | Delaney solubility | concrete |
+| path | https://www.kaggle.com/datasets/saraharsh/water-quality | https://www.kaggle.com/datasets/prashanthbairu/delaney-solubility-with-descriptors | https://www.kaggle.com/datasets/prathamtripathi/regression-with-neural-networking |
+| type | classification | regression | regression |
+| target | Water_Quality | logS | Concrete compressive strength(MPa, megapascals)  |
 
 # "solution"  (rows=101)
 
@@ -147,14 +147,14 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | water quality | PSS3E5 |
-| version | 3 | 3 | 1 |
+| name | water quality 2 | PCOS | kindey stone urine analysis |
+| version | 3 | 2 | 3 |
 | correlation | 0.75 | 0.75 | 0.75 |
-| nb_model | 5 | 5 | 5 |
-| nb_feature | 5 | 10 | 5 |
-| score | 0.7 | 0.7 | 0.55 |
+| nb_model | 5 | 5 | 7 |
+| nb_feature | 5 | 5 | 5 |
+| score | 0.7 | 0.7 | 0.85 |
 | test_size | 0.33 | 0.33 | 0.33 |
-| resampling | 0 | 0 | 0 |
+| resampling | 0 | 0 | 1 |
 
 # "solution_ext"  (rows=101)
 
@@ -173,9 +173,9 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | Pumpkin Seeds | water quality 2 |
-| version | 3 | 3 | 1 |
-| L1_model | tree | tree | regression |
+| name | water quality 2 | kindey stone urine analysis | smoke detection iot |
+| version | 3 | 4 | 5 |
+| L1_model | tree | regression | tree |
 
 # "stack_ok"  (rows=139)
 
@@ -228,9 +228,9 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | Franck-Hertz | PSS3E5 |
-| version | 2 | 4 | 3 |
-| step | 3 | 1 | 3 |
+| name | water quality 2 | oil spill | Delaney solubility |
+| version | 2 | 5 | 1 |
+| step | 3 | 2 | 3 |
 | L1_model | regression | tree | regression |
 | status | soft | strong | strong |
 
@@ -278,8 +278,8 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| name | water quality 2 | Solar Power Generation | oil spill |
-| version | 2 | 7 | 1 |
-| score_1 | 0.785714 | 0.89255 | 0.965517 |
-| score_2 | 0.77551 | 0.933297 | 0.972414 |
-| score_3 | 0.77551 | 0.806622 | 0.965517 |
+| name | water quality 2 | Franck-Hertz | Liver disease prediction |
+| version | 2 | 3 | 2 |
+| score_1 | 0.785714 | 0.981189 | 0.812121 |
+| score_2 | 0.77551 | 0.684721 | 0.818182 |
+| score_3 | 0.77551 | 0.805571 | 0.878788 |

@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:34:18.337760Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:23:54.613738Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-z8tfe4gn/f1.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-vkcwrqe7/f1.sqlite
 schema: main
 ---
 
@@ -25,15 +25,15 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| circuit_id | 80 | 78 | 25 |
-| circuit_ref | vegas | losail | galvez |
-| name | Las Vegas Strip Street Circuit | Losail International Circuit | Autódromo Juan y Oscar Gálvez |
-| location | Las Vegas | Al Daayen | Buenos Aires |
-| country | United States | Qatar | Argentina |
-| lat | 36.1147 | 25.49 | -34.6943 |
-| lng | -115.173 | 51.4542 | -58.4593 |
-| alt | 642 | 12 | 8 |
-| url | https://en.wikipedia.org/wiki/Las_Vegas_Grand_Prix#Circuit | http://en.wikipedia.org/wiki/Losail_International_Circuit | http://en.wikipedia.org/wiki/Aut%C3%B3dromo_Oscar_Alfredo_G%C3%A1lvez |
+| circuit_id | 80 | 48 | 79 |
+| circuit_ref | vegas | mosport | miami |
+| name | Las Vegas Strip Street Circuit | Mosport International Raceway | Miami International Autodrome |
+| location | Las Vegas | Ontario | Miami |
+| country | United States | Canada | USA |
+| lat | 36.1147 | 44.0481 | 25.9581 |
+| lng | -115.173 | -78.6756 | -80.2389 |
+| alt | 642 | 332 | 0 |
+| url | https://en.wikipedia.org/wiki/Las_Vegas_Grand_Prix#Circuit | http://en.wikipedia.org/wiki/Mosport | http://en.wikipedia.org/wiki/Miami_International_Autodrome |
 
 # "circuits_ext"  (rows=77)
 
@@ -55,17 +55,17 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| circuit_id | 80 | 70 | 67 |
-| circuit_ref | vegas | red_bull_ring | pedralbes |
-| name | Las Vegas Strip Street Circuit | Red Bull Ring | Circuit de Pedralbes |
-| location | Las Vegas | Spielberg | Barcelona |
-| country | United States | Austria | Spain |
-| lat | 36.1147 | 47.2197 | 41.3903 |
-| lng | -115.173 | 14.7647 | 2.11667 |
-| alt | 642 | 678 | 85 |
-| url | https://en.wikipedia.org/wiki/Las_Vegas_Grand_Prix#Circuit | http://en.wikipedia.org/wiki/Red_Bull_Ring | http://en.wikipedia.org/wiki/Pedralbes_Circuit |
-| last_race_year | 2024 | 2024 | 1954 |
-| number_of_races | 2 | 38 | 2 |
+| circuit_id | 80 | 40 | 60 |
+| circuit_ref | vegas | zolder | riverside |
+| name | Las Vegas Strip Street Circuit | Zolder | Riverside International Raceway |
+| location | Las Vegas | Heusden-Zolder | California |
+| country | United States | Belgium | USA |
+| lat | 36.1147 | 50.9894 | 33.937 |
+| lng | -115.173 | 5.25694 | -117.273 |
+| alt | 642 | 36 | 470 |
+| url | https://en.wikipedia.org/wiki/Las_Vegas_Grand_Prix#Circuit | http://en.wikipedia.org/wiki/Zolder | http://en.wikipedia.org/wiki/Riverside_International_Raceway |
+| last_race_year | 2024 | 1984 | 1960 |
+| number_of_races | 2 | 10 | 1 |
 
 # "constructor_results"  (rows=12505)
 
@@ -81,9 +81,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| constructor_results_id | 17009 | 5765 | 4906 |
-| race_id | 1132 | 468 | 409 |
-| constructor_id | 214 | 56 | 22 |
+| constructor_results_id | 17009 | 14306 | 4334 |
+| race_id | 1132 | 855 | 373 |
+| constructor_id | 214 | 166 | 35 |
 | points | 0 | 0 | 0 |
 | status | null | null | null |
 
@@ -103,13 +103,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| constructor_standings_id | 28852 | 6026 | 20390 |
-| race_id | 1132 | 112 | 701 |
-| constructor_id | 214 | 7 | 51 |
-| points | 9 | 3 | 0 |
-| position | 8 | 8 | 9 |
-| position_text | 8 | 8 | 9 |
-| wins | 0 | 0 | 0 |
+| constructor_standings_id | 28852 | 20772 | 26769 |
+| race_id | 1132 | 681 | 972 |
+| constructor_id | 214 | 180 | 4 |
+| points | 9 | 9 | 6 |
+| position | 8 | 3 | 8 |
+| position_text | 8 | 3 | 8 |
+| wins | 0 | 1 | 0 |
 
 # "constructors"  (rows=212)
 
@@ -125,11 +125,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| constructor_id | 215 | 160 | 48 |
-| constructor_ref | rb | wetteroth | rial |
-| name | RB F1 Team | Wetteroth | Rial |
-| nationality | Italian | American | German |
-| url | http://en.wikipedia.org/wiki/RB_Formula_One_Team | http://en.wikipedia.org/wiki/Wetteroth | http://en.wikipedia.org/wiki/Rial_%28racing_team%29 |
+| constructor_id | 215 | 57 | 153 |
+| constructor_ref | rb | ensign | cisitalia |
+| name | RB F1 Team | Ensign | Cisitalia |
+| nationality | Italian | British | Italian |
+| url | http://en.wikipedia.org/wiki/RB_Formula_One_Team | http://en.wikipedia.org/wiki/Ensign_%28racing_team%29 | http://en.wikipedia.org/wiki/Cisitalia |
 
 # "constructors_ext"  (rows=212)
 
@@ -146,12 +146,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| constructor_id | 215 | 89 | 10 |
-| constructor_ref | rb | lds | force_india |
-| name | RB F1 Team | LDS | Force India |
-| nationality | Italian | South African | Indian |
-| url | http://en.wikipedia.org/wiki/RB_Formula_One_Team | http://en.wikipedia.org/wiki/LDS_(automobile) | http://en.wikipedia.org/wiki/Racing_Point_Force_India |
-| short_name | RB F1 Team | LDS | Force India |
+| constructor_id | 215 | 185 | 122 |
+| constructor_ref | rb | lds-alfa_romeo | sutton |
+| name | RB F1 Team | LDS-Alfa Romeo | Sutton |
+| nationality | Italian | South African | American |
+| url | http://en.wikipedia.org/wiki/RB_Formula_One_Team | http://en.wikipedia.org/wiki/LDS_(automobile) | http://en.wikipedia.org/wiki/Sutton_(constructor) |
+| short_name | RB F1 Team | LDS | Sutton |
 
 # "driver_standings"  (rows=34595)
 
@@ -169,13 +169,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| driver_standings_id | 72871 | 58786 | 16450 |
-| race_id | 1132 | 522 | 336 |
-| driver_id | 860 | 209 | 117 |
-| points | 6 | 0 | 71 |
-| position | 14 | 22 | 2 |
-| position_text | 14 | 22 | 2 |
-| wins | 0 | 0 | 5 |
+| driver_standings_id | 72871 | 72778 | 56852 |
+| race_id | 1132 | 1128 | 570 |
+| driver_id | 860 | 825 | 221 |
+| points | 6 | 1 | 26 |
+| position | 14 | 17 | 4 |
+| position_text | 14 | 17 | 4 |
+| wins | 0 | 0 | 0 |
 
 # "driver_standings_ext"  (rows=35012)
 
@@ -193,12 +193,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| driver_standings_id | 72871 | 53491 | 23172 |
-| race_id | 1132 | 642 | 494 |
-| driver_id | 860 | 238 | 163 |
-| points | 6 | 33 | 11 |
-| position | 14 | 2 | 8 |
-| position_text | 14 | 2 | 8 |
+| driver_standings_id | 72871 | 62122 | 45176 |
+| race_id | 1132 | 759 | 814 |
+| driver_id | 860 | 518 | 716 |
+| points | 6 | 0 | 0 |
+| position | 14 | 22 | 96 |
+| position_text | 14 | 22 | 96 |
 | wins | 0 | 0 | 0 |
 
 # "drivers"  (rows=859)
@@ -220,16 +220,16 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| driver_id | 860 | 575 | 204 |
-| driver_ref | bearman | said | paletti |
+| driver_id | 860 | 436 | 243 |
+| driver_ref | bearman | campbell-jones | stommelen |
 | number | 38 | null | null |
 | code | BEA | null | null |
-| forename | Oliver | Bob | Riccardo |
-| surname | Bearman | Said | Paletti |
-| full_name | Oliver Bearman | Bob Said | Riccardo Paletti |
-| dob | 2005-05-08 | 1932-05-05 | 1958-06-15 |
-| nationality | British | American | Italian |
-| url | http://en.wikipedia.org/wiki/Oliver_Bearman | http://en.wikipedia.org/wiki/Bob_Said | http://en.wikipedia.org/wiki/Riccardo_Paletti |
+| forename | Oliver | John | Rolf |
+| surname | Bearman | Campbell-Jones | Stommelen |
+| full_name | Oliver Bearman | John Campbell-Jones | Rolf Stommelen |
+| dob | 2005-05-08 | 1930-01-21 | 1943-07-11 |
+| nationality | British | British | German |
+| url | http://en.wikipedia.org/wiki/Oliver_Bearman | http://en.wikipedia.org/wiki/John_Campbell-Jones | http://en.wikipedia.org/wiki/Rolf_Stommelen |
 
 # "drivers_ext"  (rows=859)
 
@@ -250,16 +250,16 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| driver_id | 860 | 206 | 716 |
-| driver_ref | bearman | daly | bauer |
+| driver_id | 860 | 364 | 703 |
+| driver_ref | bearman | gurney | legat |
 | number | 38 | null | null |
-| code | BEA | DAL | BAU |
-| forename | Oliver | Derek | Erwin |
-| surname | Bearman | Daly | Bauer |
-| full_name | Oliver Bearman | Derek Daly | Erwin Bauer |
-| dob | 2005-05-08 | 1953-03-11 | 1912-07-17 |
-| nationality | British | Irish | German |
-| url | http://en.wikipedia.org/wiki/Oliver_Bearman | http://en.wikipedia.org/wiki/Derek_Daly | http://en.wikipedia.org/wiki/Erwin_Bauer |
+| code | BEA | GUR | LEG |
+| forename | Oliver | Dan | Arthur |
+| surname | Bearman | Gurney | Legat |
+| full_name | Oliver Bearman | Dan Gurney | Arthur Legat |
+| dob | 2005-05-08 | 1931-04-13 | 1898-11-01 |
+| nationality | British | American | Belgian |
+| url | http://en.wikipedia.org/wiki/Oliver_Bearman | http://en.wikipedia.org/wiki/Dan_Gurney | http://en.wikipedia.org/wiki/Arthur_Legat |
 
 # "drives"  (rows=3784)
 
@@ -278,14 +278,14 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| year | 2024 | 1991 | 1968 |
-| driver_id | 860 | 103 | 340 |
+| year | 2024 | 1959 | 1960 |
+| driver_id | 860 | 364 | 532 |
 | drive_id | 1 | 1 | 1 |
-| constructor_id | 6 | 33 | 191 |
-| first_round | 2 | 1 | 1 |
-| last_round | 2 | 2 | 1 |
+| constructor_id | 6 | 6 | 113 |
+| first_round | 2 | 4 | 3 |
+| last_round | 2 | 8 | 3 |
 | is_first_drive_of_season | 1 | 1 | 1 |
-| is_final_drive_of_season | 1 | 0 | 1 |
+| is_final_drive_of_season | 1 | 1 | 1 |
 
 # "lap_positions"  (rows=≈613112)
 
@@ -314,12 +314,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| race_id | 1131 | 873 | 1008 |
-| driver_id | 858 | 155 | 832 |
-| avg_milliseconds | 73465.3 | 124123 | 75562.2 |
-| avg_seconds | 73.4653 | 124.123 | 75.5622 |
-| stdev_milliseconds | 4993.76 | 12926.9 | 3259.35 |
-| stdev_seconds | 4.99376 | 12.9269 | 3.25935 |
+| race_id | 1131 | 1057 | 200 |
+| driver_id | 858 | 4 | 63 |
+| avg_milliseconds | 73465.3 | 157310 | 117393 |
+| avg_seconds | 73.4653 | 157.31 | 117.393 |
+| stdev_milliseconds | 4993.76 | 287361 | 0 |
+| stdev_seconds | 4.99376 | 287.361 | 0 |
 
 # "lap_times"  (rows=≈575029)
 
@@ -363,10 +363,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| constructor_ref | williams | jordan | super_aguri |
-| start_year | 2014 | 1992 | 2006 |
-| end_year | null | 1995 | 2008 |
-| primary_hex_code | #005AFF | #1563AB | #EC0011 |
+| constructor_ref | williams | hrt | force_india |
+| start_year | 2014 | 2011 | 2008 |
+| end_year | null | 2011 | 2016 |
+| primary_hex_code | #005AFF | #FF3A2E | #EB6F05 |
 
 # "pit_stops"  (rows=10990)
 
@@ -385,14 +385,14 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| race_id | 1132 | 859 | 874 |
-| driver_id | 858 | 18 | 813 |
-| stop | 2 | 3 | 2 |
-| lap | 38 | 52 | 33 |
-| time | 16:05:23 | 15:11:27 | 16:00:13 |
-| duration | 29.444 | 21.583 | 21.118 |
-| milliseconds | 29444 | 21583 | 21118 |
-| seconds | 29.444 | 21.583 | 21.118 |
+| race_id | 1132 | 952 | 970 |
+| driver_id | 858 | 826 | 20 |
+| stop | 2 | 2 | 1 |
+| lap | 38 | 25 | 2 |
+| time | 16:05:23 | 14:44:06 | 14:07:35 |
+| duration | 29.444 | 22.234 | 22.906 |
+| milliseconds | 29444 | 22234 | 22906 |
+| seconds | 29.444 | 22.234 | 22.906 |
 
 # "qualifying"  (rows=10254)
 
@@ -412,15 +412,15 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| qualify_id | 10311 | 1653 | 10055 |
-| race_id | 1132 | 177 | 1120 |
-| driver_id | 842 | 68 | 857 |
-| constructor_id | 214 | 21 | 1 |
-| number | 10 | 15 | 81 |
-| position | 20 | 20 | 3 |
-| q1 | 1:39.804 | 1:29.656 | 1:24.487 |
-| q2 | null | null | 1:24.278 |
-| q3 | null | null | 1:23.782 |
+| qualify_id | 10311 | 3900 | 1844 |
+| race_id | 1132 | 114 | 208 |
+| driver_id | 842 | 51 | 56 |
+| constructor_id | 214 | 18 | 6 |
+| number | 10 | 18 | 6 |
+| position | 20 | 19 | 14 |
+| q1 | 1:39.804 | 1:20.063 | 1:17.527 |
+| q2 | null | null | null |
+| q3 | null | null | null |
 
 # "races"  (rows=1125)
 
@@ -449,14 +449,14 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| race_id | 1144 | 499 | 701 |
-| year | 2024 | 1980 | 1965 |
-| round | 24 | 2 | 3 |
-| circuit_id | 24 | 18 | 13 |
-| name | Abu Dhabi Grand Prix | Brazilian Grand Prix | Belgian Grand Prix |
-| date | 2024-12-08 | 1980-01-27 | 1965-06-13 |
-| time | 13:00:00 | null | null |
-| url | https://en.wikipedia.org/wiki/2024_Abu_Dhabi_Grand_Prix | http://en.wikipedia.org/wiki/1980_Brazilian_Grand_Prix | http://en.wikipedia.org/wiki/1965_Belgian_Grand_Prix |
+| race_id | 1144 | 14 | 875 |
+| year | 2024 | 2009 | 2012 |
+| round | 24 | 14 | 16 |
+| circuit_id | 24 | 15 | 35 |
+| name | Abu Dhabi Grand Prix | Singapore Grand Prix | Korean Grand Prix |
+| date | 2024-12-08 | 2009-09-27 | 2012-10-14 |
+| time | 13:00:00 | 12:00:00 | 06:00:00 |
+| url | https://en.wikipedia.org/wiki/2024_Abu_Dhabi_Grand_Prix | http://en.wikipedia.org/wiki/2009_Singapore_Grand_Prix | http://en.wikipedia.org/wiki/2012_Korean_Grand_Prix |
 | fp1_date | 2024-12-06 | null | null |
 | fp1_time | 09:30:00 | null | null |
 | fp2_date | 2024-12-06 | null | null |
@@ -499,14 +499,14 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| race_id | 1144 | 458 | 1040 |
-| year | 2024 | 1983 | 2020 |
-| round | 24 | 7 | 10 |
-| circuit_id | 24 | 37 | 71 |
-| name | Abu Dhabi Grand Prix | Detroit Grand Prix | Russian Grand Prix |
-| date | 2024-12-08 | 1983-06-05 | 2020-09-27 |
-| time | 13:00:00 | null | 11:10:00 |
-| url | https://en.wikipedia.org/wiki/2024_Abu_Dhabi_Grand_Prix | http://en.wikipedia.org/wiki/1983_Detroit_Grand_Prix | http://en.wikipedia.org/wiki/2020_Russian_Grand_Prix |
+| race_id | 1144 | 1015 | 209 |
+| year | 2024 | 2019 | 1997 |
+| round | 24 | 6 | 3 |
+| circuit_id | 24 | 6 | 25 |
+| name | Abu Dhabi Grand Prix | Monaco Grand Prix | Argentine Grand Prix |
+| date | 2024-12-08 | 2019-05-26 | 1997-04-13 |
+| time | 13:00:00 | 13:10:00 | null |
+| url | https://en.wikipedia.org/wiki/2024_Abu_Dhabi_Grand_Prix | http://en.wikipedia.org/wiki/2019_Monaco_Grand_Prix | http://en.wikipedia.org/wiki/1997_Argentine_Grand_Prix |
 | fp1_date | 2024-12-06 | null | null |
 | fp1_time | 09:30:00 | null | null |
 | fp2_date | 2024-12-06 | null | null |
@@ -517,10 +517,10 @@ samples:
 | quali_time | 14:00:00 | null | null |
 | sprint_date | null | null | null |
 | sprint_time | null | null | null |
-| is_pit_data_available | 0 | 0 | 1 |
-| short_name | Abu Dhabi | Detroit Grand Prix | Russia |
+| is_pit_data_available | 0 | 1 | 0 |
+| short_name | Abu Dhabi | Monaco | Argentine Grand Prix |
 | has_sprint | 0 | 0 | 0 |
-| max_points | 26 | 9 | 26 |
+| max_points | 26 | 26 | 10 |
 
 # "results"  (rows=26519)
 
@@ -549,24 +549,24 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| result_id | 26524 | 11283 | 25475 |
-| race_id | 1132 | 474 | 1077 |
-| driver_id | 842 | 176 | 840 |
-| constructor_id | 214 | 21 | 117 |
-| number | 10 | 29 | 18 |
-| grid | 19 | 16 | 15 |
-| position | null | 5 | 10 |
-| position_text | W | 5 | 10 |
-| position_order | 20 | 5 | 10 |
-| points | 0 | 2 | 1 |
-| laps | 0 | 69 | 62 |
+| result_id | 26524 | 6353 | 20788 |
+| race_id | 1132 | 300 | 841 |
+| driver_id | 842 | 79 | 814 |
+| constructor_id | 214 | 33 | 10 |
+| number | 10 | 30 | 15 |
+| grid | 19 | 26 | 14 |
+| position | null | 17 | 10 |
+| position_text | W | 17 | 10 |
+| position_order | 20 | 17 | 10 |
+| points | 0 | 0 | 1 |
+| laps | 0 | 42 | 57 |
 | time | null | null | null |
 | milliseconds | null | null | null |
-| fastest_lap | null | null | 46 |
-| rank | 0 | null | 16 |
-| fastest_lap_time | null | null | 1:21.750 |
-| fastest_lap_speed | null | null | 216.176 |
-| status_id | 6 | 11 | 11 |
+| fastest_lap | null | null | 40 |
+| rank | 0 | null | 14 |
+| fastest_lap_time | null | null | 1:31.941 |
+| fastest_lap_speed | null | null | 207.641 |
+| status_id | 6 | 12 | 11 |
 
 # "retirements"  (rows=11568)
 
@@ -583,12 +583,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| race_id | 1132 | 143 | 529 |
-| driver_id | 847 | 49 | 211 |
-| lap | 34 | 64 | 53 |
-| position_order | 19 | 11 | 19 |
-| status_id | 34 | 10 | 5 |
-| retirement_type | Retirement (Mechanical Problem) | Retirement (Mechanical Problem) | Retirement (Mechanical Problem) |
+| race_id | 1132 | 371 | 484 |
+| driver_id | 847 | 109 | 212 |
+| lap | 34 | 28 | 23 |
+| position_order | 19 | 10 | 17 |
+| status_id | 34 | 10 | 20 |
+| retirement_type | Retirement (Mechanical Problem) | Retirement (Mechanical Problem) | Retirement (Driver Error) |
 
 # "seasons"  (rows=75)
 
@@ -601,8 +601,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| year | 2024 | 1997 | 1964 |
-| url | https://en.wikipedia.org/wiki/2024_Formula_One_World_Championship | http://en.wikipedia.org/wiki/1997_Formula_One_season | http://en.wikipedia.org/wiki/1964_Formula_One_season |
+| year | 2024 | 1958 | 1974 |
+| url | https://en.wikipedia.org/wiki/2024_Formula_One_World_Championship | http://en.wikipedia.org/wiki/1958_Formula_One_season | http://en.wikipedia.org/wiki/1974_Formula_One_season |
 
 # "short_constructor_names"  (rows=44)
 
@@ -615,8 +615,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| constructor_ref | team_lotus | de_tomaso-alfa_romeo | lotus-borgward |
-| short_name | Lotus | De Tomaso | Lotus |
+| constructor_ref | team_lotus | cooper-maserati | cooper-osca |
+| short_name | Lotus | Cooper | Cooper |
 
 # "short_grand_prix_names"  (rows=40)
 
@@ -629,8 +629,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| full_name | United States Grand Prix | Malaysian Grand Prix | Russian Grand Prix |
-| short_name | United States | Malaysia | Russia |
+| full_name | United States Grand Prix | Azerbaijan Grand Prix | Italian Grand Prix |
+| short_name | United States | Azerbaijan | Italy |
 
 # "sprint_results"  (rows=300)
 
@@ -658,21 +658,21 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| result_id | 300 | 77 | 61 |
-| race_id | 1131 | 1077 | 1077 |
-| driver_id | 855 | 842 | 830 |
-| constructor_id | 15 | 213 | 9 |
-| number | 24 | 10 | 1 |
-| grid | 19 | 17 | 1 |
-| position | 20 | 17 | 1 |
-| position_text | 20 | 17 | 1 |
-| position_order | 20 | 17 | 1 |
-| points | 0 | 0 | 8 |
-| laps | 23 | 21 | 21 |
-| time | +53.143 | +43.794 | 30:39.567 |
-| milliseconds | 1654532 | 1883361 | 1839567 |
-| fastest_lap | 6 | 18 | 14 |
-| fastest_lap_time | 1:10.613 | 1:20.599 | 1:19.154 |
+| result_id | 300 | 223 | 144 |
+| race_id | 1131 | 1118 | 1107 |
+| driver_id | 855 | 815 | 840 |
+| constructor_id | 15 | 9 | 117 |
+| number | 24 | 11 | 18 |
+| grid | 19 | 3 | 7 |
+| position | 20 | 3 | 4 |
+| position_text | 20 | 3 | 4 |
+| position_order | 20 | 3 | 4 |
+| points | 0 | 6 | 5 |
+| laps | 23 | 24 | 24 |
+| time | +53.143 | +13.617 | +29.703 |
+| milliseconds | 1654532 | 1820826 | 1856433 |
+| fastest_lap | 6 | 2 | 23 |
+| fastest_lap_time | 1:10.613 | 1:15.008 | 1:15.531 |
 | fastest_lap_speed | null | null | null |
 | status_id | 1 | 1 | 1 |
 
@@ -687,8 +687,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| status_id | 141 | 48 | 131 |
-| status | Cooling system | Fuel pump | Power Unit |
+| status_id | 141 | 87 | 19 |
+| status | Cooling system | Crankshaft | +9 Laps |
 
 # "tdr_overrides"  (rows=48)
 
@@ -704,9 +704,9 @@ samples:
 | column | latest | sample | sample |
 |---|---|---|---|
 | year | 2022 | 2009 | 2022 |
-| constructor_ref | mercedes | ferrari | mercedes |
-| driver_ref | russell | massa | russell |
-| team_driver_rank | 2 | 1 | 2 |
+| constructor_ref | mercedes | ferrari | alphatauri |
+| driver_ref | russell | raikkonen | gasly |
+| team_driver_rank | 2 | 2 | 1 |
 
 # "team_driver_ranks"  (rows=3530)
 
@@ -723,9 +723,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| year | 2024 | 1952 | 2010 |
-| constructor_id | 215 | 113 | 3 |
-| constructor_ref | rb | kurtis_kraft | williams |
-| driver_id | 852 | 592 | 22 |
-| driver_ref | tsunoda | reece | barrichello |
-| team_driver_rank | 1 | 6 | 1 |
+| year | 2024 | 2017 | 1977 |
+| constructor_id | 215 | 15 | 37 |
+| constructor_ref | rb | sauber | march |
+| driver_id | 852 | 836 | 247 |
+| driver_ref | tsunoda | wehrlein | bleekemolen |
+| team_driver_rank | 1 | 1 | 12 |

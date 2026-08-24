@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:31:51.666075Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:21:21.798452Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-4q0dck9q/Baseball.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-3efcsn2e/Baseball.sqlite
 schema: main
 ---
 
@@ -24,12 +24,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| player_id | zobribe01 | infanom01 | coopece01 |
-| year | 2013 | 2010 | 1985 |
+| player_id | zobribe01 | bonhati01 | breweto01 |
+| year | 2013 | 1943 | 1956 |
 | game_num | 0 | 0 | 0 |
-| game_id | NLS201307160 | ALS201007130 | ALS198507160 |
-| team_id | TBA | ATL | ML4 |
-| league_id | AL | NL | AL |
+| game_id | NLS201307160 | ALS194307130 | ALS195607100 |
+| team_id | TBA | NYA | BOS |
+| league_id | AL | AL | AL |
 | gp | 0 | 0 | 1 |
 | starting_pos |  |  |  |
 
@@ -63,27 +63,27 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| year | 2015 | 1990 | 1977 |
-| team_id | WAS | SFN | PIT |
-| league_id | NL | NL | NL |
-| player_id | zimmery01 | robindo01 | helmsto01 |
-| g_all | 95 | 31 | 15 |
-| gs | 92 | 25 | 0 |
-| g_batting | 95 | 31 | 15 |
-| g_defense | 93 | 26 | 0 |
-| g_p | 0 | 26 | 0 |
+| year | 2015 | 2013 | 1984 |
+| team_id | WAS | SEA | SDN |
+| league_id | NL | AL | NL |
+| player_id | zimmery01 | farquda01 | martica01 |
+| g_all | 95 | 46 | 149 |
+| gs | 92 | 0 | 140 |
+| g_batting | 95 | 2 | 149 |
+| g_defense | 93 | 46 | 142 |
+| g_p | 0 | 46 | 0 |
 | g_c | 0 | 0 | 0 |
-| g_1b | 93 | 0 | 0 |
+| g_1b | 93 | 0 | 2 |
 | g_2b | 0 | 0 | 0 |
 | g_3b | 0 | 0 | 0 |
 | g_ss | 0 | 0 | 0 |
-| g_lf | 1 | 0 | 0 |
+| g_lf | 1 | 0 | 142 |
 | g_cf | 0 | 0 | 0 |
 | g_rf | 0 | 0 | 0 |
-| g_of | 1 | 0 | 0 |
+| g_of | 1 | 0 | 142 |
 | g_dh | 0 | 0 | 0 |
-| g_ph | 3 | 5 | 15 |
-| g_pr | 0 | 0 | 0 |
+| g_ph | 3 | 0 | 6 |
+| g_pr | 0 | 0 | 1 |
 
 # "batting"  (rows=101332)
 
@@ -116,28 +116,28 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| player_id | zychto01 | bobbra01 | dohened01 |
-| year | 2015 | 1968 | 1901 |
+| player_id | zychto01 | coggiri01 | gilgu01 |
+| year | 2015 | 1972 | 1969 |
 | stint | 1 | 1 | 1 |
-| team_id | SEA | CHN | NY1 |
-| league_id | AL | NL | NL |
-| g | 13 | 7 | 13 |
-| ab | 0 | 8 | 29 |
-| r | 0 | 0 | 5 |
-| h | 0 | 1 | 10 |
-| double | 0 | 0 | 0 |
-| triple | 0 | 0 | 1 |
+| team_id | SEA | BAL | SE1 |
+| league_id | AL | AL | AL |
+| g | 13 | 16 | 92 |
+| ab | 0 | 39 | 221 |
+| r | 0 | 5 | 20 |
+| h | 0 | 13 | 49 |
+| double | 0 | 4 | 7 |
+| triple | 0 | 0 | 0 |
 | hr | 0 | 0 | 0 |
-| rbi | 0 | 0 | 1 |
-| sb | 0 | 0 | 0 |
-| cs | 0 | 0 |  |
-| bb | 0 | 1 | 2 |
-| so | 0 | 2 |  |
-| ibb | 0 | 0 |  |
+| rbi | 0 | 1 | 17 |
+| sb | 0 | 0 | 2 |
+| cs | 0 | 2 | 0 |
+| bb | 0 | 1 | 16 |
+| so | 0 | 6 | 28 |
+| ibb | 0 | 0 | 0 |
 | hbp | 0 | 0 | 0 |
-| sh | 0 | 0 | 1 |
-| sf | 0 | 0 |  |
-| g_idp | 0 | 0 |  |
+| sh | 0 | 3 | 2 |
+| sf | 0 | 0 | 2 |
+| g_idp | 0 | 0 | 5 |
 
 # "batting_postseason"  (rows=11690)
 
@@ -170,28 +170,28 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| year | 2015 | 1886 | 2014 |
-| round | WS | WS | NLDS2 |
-| player_id | zobribe01 | dalryab01 | ethiean01 |
-| team_id | KCA | CHN | LAN |
-| league_id | AL | NL | NL |
-| g | 5 | 6 | 2 |
-| ab | 23 | 21 | 4 |
-| r | 5 | 2 | 0 |
-| h | 6 | 4 | 1 |
-| double | 4 | 1 | 1 |
-| triple | 0 | 1 | 0 |
+| year | 2015 | 1922 | 1996 |
+| round | WS | WS | ALDS2 |
+| player_id | zobribe01 | duganjo01 | mclemma01 |
+| team_id | KCA | NYA | TEX |
+| league_id | AL | AL | AL |
+| g | 5 | 5 | 4 |
+| ab | 23 | 20 | 15 |
+| r | 5 | 4 | 1 |
+| h | 6 | 5 | 2 |
+| double | 4 | 1 | 0 |
+| triple | 0 | 0 | 0 |
 | hr | 0 | 0 | 0 |
-| rbi | 0 | 2 | 0 |
-| sb | 0 | 1 | 0 |
-| cs | 0 |  | 0 |
-| bb | 3 | 0 | 2 |
-| so | 2 | 5 | 1 |
+| rbi | 0 | 0 | 2 |
+| sb | 0 | 0 | 0 |
+| cs | 0 | 0 | 1 |
+| bb | 3 | 0 | 0 |
+| so | 2 | 1 | 4 |
 | ibb | 2 | 0 | 0 |
-| hbp | 0 |  | 0 |
-| sh | 0 |  | 0 |
-| sf | 0 |  | 0 |
-| g_idp | 0 |  | 0 |
+| hbp | 0 | 1 | 0 |
+| sh | 0 | 0 | 2 |
+| sf | 0 | 0 | 0 |
+| g_idp | 0 | 0 | 0 |
 
 # "college"  (rows=1207)
 
@@ -207,10 +207,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| college_id | youngst | kentst | ohsincl |
-| name_full | Youngstown State University | Kent State University | Sinclair Community College |
-| city | Youngstown | Kent | Dayton |
-| state | OH | OH | OH |
+| college_id | youngst | colbyme | whittierca |
+| name_full | Youngstown State University | Colby College | Whittier College |
+| city | Youngstown | Waterville | Whittier |
+| state | OH | ME | CA |
 | country | USA | USA | USA |
 
 # "fielding"  (rows=170526)
@@ -240,19 +240,19 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| player_id | zychto01 | etchibu01 | dejesiv02 |
-| year | 2015 | 1943 | 2015 |
+| player_id | zychto01 | rodrise01 | hernale01 |
+| year | 2015 | 2010 | 1985 |
 | stint | 1 | 1 | 1 |
-| team_id | SEA | BSN | CIN |
-| league_id | AL | NL | NL |
-| pos | P | 1B | 2B |
-| g | 13 | 6 | 20 |
-| gs |  |  |  |
-| inn_outs |  |  |  |
-| po | 0 | 41 | 25 |
-| a | 3 | 2 | 50 |
-| e | 0 | 2 | 0 |
-| dp | 0 | 7 | 9 |
+| team_id | SEA | TBA | BAL |
+| league_id | AL | AL | AL |
+| pos | P | RF | 1B |
+| g | 13 | 8 | 1 |
+| gs |  |  | 0 |
+| inn_outs |  |  | 3 |
+| po | 0 |  | 2 |
+| a | 3 |  | 0 |
+| e | 0 |  | 0 |
+| dp | 0 |  | 0 |
 | pb |  |  |  |
 | wp |  |  |  |
 | sb |  |  |  |
@@ -274,12 +274,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| player_id | zwilldu01 | andergo01 | slattmi01 |
-| year | 1916 | 1907 | 1888 |
+| player_id | zwilldu01 | jennihu01 | schumha02 |
+| year | 1916 | 1898 | 1939 |
 | stint | 1 | 1 | 1 |
-| glf | 0 | 2 | 4 |
-| gcf | 5 | 24 | 90 |
-| grf | 4 | 91 | 9 |
+| glf | 0 | 0 | 0 |
+| gcf | 5 | 0 | 1 |
+| grf | 4 | 1 | 0 |
 
 # "fielding_postseason"  (rows=12311)
 
@@ -307,23 +307,23 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| player_id | zumayjo01 | stonege02 | edmonji01 |
-| year | 2006 | 1969 | 2006 |
-| team_id | DET | ATL | SLN |
+| player_id | zumayjo01 | werbebi01 | gonzaca01 |
+| year | 2006 | 1940 | 2009 |
+| team_id | DET | CIN | COL |
 | league_id | AL | NL | NL |
-| round | WS | NLCS | WS |
-| pos | P | P | CF |
-| g | 3 | 1 | 5 |
-| gs | 0 | 0 | 5 |
-| inn_outs | 9 | 3 | 132 |
-| po | 0 | 1 | 12 |
-| a | 0 | 1 | 0 |
-| e | 1 | 0 | 0 |
-| dp | 0 | 0 | 0 |
+| round | WS | WS | NLDS2 |
+| pos | P | 3B | RF |
+| g | 3 | 7 | 1 |
+| gs | 0 | 7 | 1 |
+| inn_outs | 9 | 183 | 27 |
+| po | 0 | 9 | 1 |
+| a | 0 | 16 | 0 |
+| e | 1 | 2 | 0 |
+| dp | 0 | 3 | 0 |
 | tp | 0 | 0 | 0 |
 | pb |  |  |  |
-| sb | 0 | 0 |  |
-| cs | 0 | 0 |  |
+| sb | 0 |  |  |
+| cs | 0 |  |  |
 
 # "hall_of_fame"  (rows=4120)
 
@@ -343,13 +343,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| player_id | ziskri01 | bendech01 | youngro01 |
-| yearid | 1989 | 1945 | 1942 |
+| player_id | ziskri01 | wanerpa01 | niekrph01 |
+| yearid | 1989 | 1949 | 1997 |
 | votedby | BBWAA | BBWAA | BBWAA |
-| ballots | 447 | 247 | 233 |
-| needed | 336 | 186 | 175 |
-| votes | 0 | 40 | 44 |
-| inducted | N | N | N |
+| ballots | 447 | 153 | 473 |
+| needed | 336 | 115 | 353 |
+| votes | 0 | 73 | 380 |
+| inducted | N | N | Y |
 | category | Player | Player | Player |
 | needed_note |  |  |  |
 
@@ -371,15 +371,15 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| year | 2014 | 1958 | 2014 |
-| league_id | NL | AL | NL |
-| team_id | WAS | WS1 | CIN |
-| park_id | WAS11 | WAS09 | CIN09 |
-| span_first | 2014-04-04 | 1958-04-14 | 2014-03-31 |
-| span_last | 2014-09-28 | 1958-09-28 | 2014-09-28 |
-| games | 81 | 78 | 81 |
-| openings | 81 | 68 | 81 |
-| attendance | 2579389 | 495852 | 2476664 |
+| year | 2014 | 1911 | 1959 |
+| league_id | NL | NL | NL |
+| team_id | WAS | BSN | CHN |
+| park_id | WAS11 | BOS05 | CHI11 |
+| span_first | 2014-04-04 | 1911-04-12 | 1959-04-11 |
+| span_last | 2014-09-28 | 1911-09-14 | 1959-09-27 |
+| games | 81 | 75 | 77 |
+| openings | 81 | 25 | 70 |
+| attendance | 2579389 | 86152 | 829414 |
 
 # "manager"  (rows=3405)
 
@@ -400,16 +400,16 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| player_id | zimmedo01 | durocle01 | sharsbi99 |
-| year | 1991 | 1941 | 1886 |
-| team_id | CHN | BRO | PH4 |
-| league_id | NL | NL | AA |
-| inseason | 1 | 1 | 2 |
-| g | 37 | 157 | 41 |
-| w | 18 | 100 | 22 |
-| l | 19 | 54 | 17 |
-| rank | 4 | 1 | 6 |
-| plyr_mgr | N | Y | N |
+| player_id | zimmedo01 | showabu99 | actama99 |
+| year | 1991 | 1993 | 2012 |
+| team_id | CHN | NYA | CLE |
+| league_id | NL | AL | AL |
+| inseason | 1 | 1 | 1 |
+| g | 37 | 162 | 156 |
+| w | 18 | 88 | 65 |
+| l | 19 | 74 | 91 |
+| rank | 4 | 2 | 5 |
+| plyr_mgr | N | N | N |
 
 # "manager_award"  (rows=177)
 
@@ -426,10 +426,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| player_id | zimmedo01 | maddojo01 | bakerdu01 |
-| award_id | TSN Manager of the Year | BBWAA Manager of the year | BBWAA Manager of the year |
-| year | 1989 | 2015 | 2000 |
-| league_id | NL | NL | NL |
+| player_id | zimmedo01 | bakerdu01 | freyji99 |
+| award_id | TSN Manager of the Year | BBWAA Manager of the year | TSN Manager of the Year |
+| year | 1989 | 1997 | 1984 |
+| league_id | NL | NL | ML |
 | tie |  |  |  |
 | notes |  |  |  |
 
@@ -449,13 +449,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| award_id | Mgr of the year | Mgr of the year | Mgr of the year |
-| year | 2012 | 2000 | 1992 |
+| award_id | Mgr of the year | Mgr of the Year | Mgr of the year |
+| year | 2012 | 2015 | 1990 |
 | league_id | NL | AL | AL |
-| player_id | mathemi01 | sciosmi01 | hargrmi01 |
-| points_won | 1 | 8 | 4 |
-| points_max | 160 | 140 | 140 |
-| votes_first | 0 | 0 | 0 |
+| player_id | mathemi01 | girarjo01 | morgajo01 |
+| points_won | 1 | 12 | 28 |
+| points_max | 160 | 150 | 140 |
+| votes_first | 0 | 2 | 1 |
 
 # "manager_half"  (rows=93)
 
@@ -476,16 +476,16 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| player_id | zimmedo01 | torrejo01 | wrighha01 |
-| year | 1981 | 1981 | 1892 |
-| team_id | TEX | NYN | PHI |
+| player_id | zimmedo01 | virdobi01 | willidi02 |
+| year | 1981 | 1981 | 1981 |
+| team_id | TEX | HOU | MON |
 | league_id | AL | NL | NL |
 | inseason | 1 | 1 | 1 |
-| half | 2 | 2 | 1 |
-| g | 50 | 53 | 77 |
-| w | 24 | 24 | 46 |
-| l | 26 | 28 | 30 |
-| rank | 3 | 4 | 3 |
+| half | 2 | 2 | 2 |
+| g | 50 | 53 | 26 |
+| w | 24 | 33 | 14 |
+| l | 26 | 20 | 12 |
+| rank | 3 | 1 | 1 |
 
 # "park"  (rows=250)
 
@@ -502,11 +502,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| park_id | WOR03 | CIN03 | STL03 |
-| park_name | Worcester Driving Park Grounds | Bank Street Grounds | Sportsman's Park I |
-| park_alias |  |  |  |
-| city | Worcester | Cincinnati | St. Louis |
-| state | MA | OH | MO |
+| park_id | WOR03 | WAS08 | CIN08 |
+| park_name | Worcester Driving Park Grounds | American League Park II | Cinergy Field |
+| park_alias |  |  | Riverfront Stadium |
+| city | Worcester | Washington | Cincinnati |
+| state | MA | DC | OH |
 | country | US | US | US |
 
 # "pitching"  (rows=44139)
@@ -548,33 +548,33 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| player_id | zychto01 | rakowed01 | kreugri01 |
-| year | 2015 | 1965 | 1975 |
+| player_id | zychto01 | baneydi01 | culvege01 |
+| year | 2015 | 1974 | 1971 |
 | stint | 1 | 1 | 1 |
-| team_id | SEA | DET | BOS |
-| league_id | AL | AL | AL |
-| w | 0 | 0 | 0 |
-| l | 0 | 0 | 0 |
-| g | 13 | 6 | 2 |
-| gs | 1 | 0 | 0 |
+| team_id | SEA | CIN | HOU |
+| league_id | AL | NL | NL |
+| w | 0 | 1 | 5 |
+| l | 0 | 0 | 8 |
+| g | 13 | 22 | 59 |
+| gs | 1 | 1 | 0 |
 | cg | 0 | 0 | 0 |
 | sho | 0 | 0 | 0 |
-| sv | 0 | 0 | 0 |
-| ipouts | 55 | 40 | 12 |
-| h | 17 | 14 | 3 |
-| er | 5 | 9 | 2 |
-| hr | 1 | 2 | 0 |
-| bb | 3 | 11 | 1 |
-| so | 24 | 10 | 1 |
-| baopp | 0.239 | 0.28 | 0.2 |
-| era | 2.45 | 6.08 | 4.5 |
-| ibb | 0 | 0 | 0 |
-| wp | 1 | 1 | 0 |
-| hbp | 2 | 0 | 0 |
+| sv | 0 | 1 | 7 |
+| ipouts | 55 | 123 | 286 |
+| h | 17 | 51 | 89 |
+| er | 5 | 25 | 28 |
+| hr | 1 | 4 | 4 |
+| bb | 3 | 17 | 38 |
+| so | 24 | 12 | 57 |
+| baopp | 0.239 | 0.3 | 0.25 |
+| era | 2.45 | 5.49 | 2.64 |
+| ibb | 0 | 2 | 10 |
+| wp | 1 | 1 | 4 |
+| hbp | 2 | 0 | 2 |
 | bk | 0 | 0 | 0 |
-| bfp | 76 | 64 | 16 |
-| gf | 4 | 0 | 1 |
-| r | 6 | 11 | 2 |
+| bfp | 76 | 188 | 398 |
+| gf | 4 | 9 | 34 |
+| r | 6 | 27 | 33 |
 | sh | 0 |  |  |
 | sf | 0 |  |  |
 | g_idp |  |  |  |
@@ -618,34 +618,34 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| player_id | zumayjo01 | nelsoje01 | nomohi01 |
-| year | 2006 | 1998 | 1996 |
-| round | WS | WS | NLDS1 |
-| team_id | DET | NYA | LAN |
+| player_id | zumayjo01 | stewale01 | tesreje01 |
+| year | 2006 | 1933 | 1917 |
+| round | WS | WS | WS |
+| team_id | DET | WS1 | NY1 |
 | league_id | AL | AL | NL |
 | w | 0 | 0 | 0 |
-| l | 1 | 0 | 1 |
-| g | 3 | 3 | 1 |
-| gs | 0 | 0 | 1 |
+| l | 1 | 1 | 0 |
+| g | 3 | 1 | 1 |
+| gs | 0 | 1 | 0 |
 | cg | 0 | 0 | 0 |
 | sho | 0 | 0 | 0 |
 | sv | 0 | 0 | 0 |
-| ipouts | 9 | 7 | 11 |
-| h | 1 | 2 | 5 |
-| er | 1 | 0 | 5 |
-| hr | 0 | 0 | 1 |
-| bb | 3 | 1 | 5 |
-| so | 3 | 4 | 3 |
-| baopp | 0.09 | 0.22 | 0.33 |
-| era | 3 | 0 | 12.27 |
+| ipouts | 9 | 6 | 3 |
+| h | 1 | 6 | 0 |
+| er | 1 | 2 | 0 |
+| hr | 0 | 1 | 0 |
+| bb | 3 | 0 | 1 |
+| so | 3 | 0 | 1 |
+| baopp | 0.09 | 0.46 | 0 |
+| era | 3 | 9 | 0 |
 | ibb | 0 | 0 | 0 |
 | wp | 1 | 0 | 0 |
 | hbp | 0 | 0 | 0 |
 | bk | 0 | 0 | 0 |
-| bfp | 14 | 10 | 21 |
-| gf | 2 | 1 | 0 |
-| r | 3 | 1 | 5 |
-| sh | 0 | 0 | 1 |
+| bfp | 14 | 13 | 3 |
+| gf | 2 | 0 | 1 |
+| r | 3 | 4 | 0 |
+| sh | 0 | 0 | 0 |
 | sf | 0 | 0 | 0 |
 | g_idp | 0 | 0 | 0 |
 
@@ -682,30 +682,30 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| player_id | zychto01 | stewama01 | rasmuer01 |
-| birth_year | 1990 | 1889 | 1952 |
-| birth_month | 8 | 10 | 3 |
-| birth_day | 7 | 14 | 22 |
+| player_id | zychto01 | heilech01 | hembrhe01 |
+| birth_year | 1990 | 1872 | 1989 |
+| birth_month | 8 | 8 | 1 |
+| birth_day | 7 | 10 | 13 |
 | birth_country | USA | USA | USA |
-| birth_state | IL | TN | WI |
-| birth_city | Monee | Whitlock | Racine |
-| death_year |  | 1932 |  |
-| death_month |  | 1 |  |
-| death_day |  | 17 |  |
+| birth_state | IL | OH | SC |
+| birth_city | Monee | Cincinnati | Spartanburg |
+| death_year |  | 1940 |  |
+| death_month |  | 7 |  |
+| death_day |  | 19 |  |
 | death_country |  | USA |  |
-| death_state |  | TN |  |
-| death_city |  | Memphis |  |
-| name_first | Tony | Mark | Eric |
-| name_last | Zych | Stewart | Rasmussen |
-| name_given | Anthony Aaron | Mark | Eric Ralph |
-| weight | 190 | 180 | 205 |
-| height | 75 | 73 | 75 |
-| bats | R | L | R |
+| death_state |  | OH |  |
+| death_city |  | Cincinnati |  |
+| name_first | Tony | Chink | Heath |
+| name_last | Zych | Heileman | Hembree |
+| name_given | Anthony Aaron | John George | Richard Heath |
+| weight | 190 | 155 | 210 |
+| height | 75 | 68 | 76 |
+| bats | R | R | R |
 | throws | R | R | R |
-| debut | 2015-09-04 | 1913-10-04 | 1975-07-21 |
-| final_game | 2015-10-03 | 1913-10-04 | 1983-10-02 |
-| retro_id | zycht001 | stewm102 | rasme101 |
-| bbref_id | zychto01 | stewama01 | rasmuer01 |
+| debut | 2015-09-04 | 1901-07-08 | 2013-09-03 |
+| final_game | 2015-10-03 | 1901-07-21 | 2015-10-03 |
+| retro_id | zycht001 | heilc101 | hembh001 |
+| bbref_id | zychto01 | heilech01 | hembrhe01 |
 
 # "player_award"  (rows=6078)
 
@@ -722,12 +722,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| player_id | zitoba01 | peterga01 | spahnwa01 |
-| award_id | TSN Pitcher of the Year | TSN All-Star | TSN All-Star |
-| year | 2002 | 1964 | 1960 |
+| player_id | zitoba01 | robinfr02 | johnsra05 |
+| award_id | TSN Pitcher of the Year | TSN All-Star | World Series MVP |
+| year | 2002 | 1966 | 2001 |
 | league_id | AL | AL | ML |
-| tie |  |  |  |
-| notes |  | P | P |
+| tie |  |  | Y |
+| notes |  | OF |  |
 
 # "player_award_vote"  (rows=6795)
 
@@ -746,11 +746,11 @@ samples:
 | column | latest | sample | sample |
 |---|---|---|---|
 | award_id | Rookie of the Year | MVP | MVP |
-| year | 2015 | 1939 | 1922 |
-| league_id | NL | NL | AL |
-| player_id | syndeno01 | daviscu01 | meusebo01 |
-| points_won | 16 | 106 | 6 |
-| points_max | 150 | 336 | 64 |
+| year | 2015 | 1941 | 1948 |
+| league_id | NL | AL | AL |
+| player_id | syndeno01 | chapmsa01 | kellge01 |
+| points_won | 16 | 25 | 14 |
+| points_max | 150 | 336 | 336 |
 | votes_first | 0 | 0 | 0 |
 
 # "player_college"  (rows=17350)
@@ -765,9 +765,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| player_id | zuvelpa01 | kuczest01 | alberan01 |
-| college_id | stanford | colgate | kentucky |
-| year | 1980 | 1949 | 2006 |
+| player_id | zuvelpa01 | keaglgr01 | washbja01 |
+| college_id | stanford | monroecc | wioshkosh |
+| year | 1980 | 1992 | 1994 |
 
 # "postseason"  (rows=307)
 
@@ -787,14 +787,14 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| year | 2015 | 1942 | 1949 |
-| round | WS | WS | WS |
-| team_id_winner | KCA | SLN | NYA |
-| league_id_winner | AL | NL | AL |
-| team_id_loser | NYN | NYA | BRO |
-| league_id_loser | NL | AL | NL |
-| wins | 4 | 4 | 4 |
-| losses | 1 | 1 | 1 |
+| year | 2015 | 1989 | 2010 |
+| round | WS | WS | NLDS1 |
+| team_id_winner | KCA | OAK | PHI |
+| league_id_winner | AL | AL | NL |
+| team_id_loser | NYN | SFN | CIN |
+| league_id_loser | NL | NL | NL |
+| wins | 4 | 4 | 3 |
+| losses | 1 | 0 | 0 |
 | ties | 0 | 0 | 0 |
 
 # "salary"  (rows=25575)
@@ -811,11 +811,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| year | 2015 | 2003 | 1992 |
-| team_id | WAS | CHN | TEX |
-| league_id | NL | NL | AL |
-| player_id | zimmery01 | guthrma01 | mathete01 |
-| salary | 14000000 | 1600000 | 125000 |
+| year | 2015 | 1991 | 1992 |
+| team_id | WAS | CAL | SLN |
+| league_id | NL | AL | NL |
+| player_id | zimmery01 | finlech01 | agostju01 |
+| salary | 14000000 | 2500000 | 1666667 |
 
 # "team"  (rows=2805)
 
@@ -874,54 +874,54 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| year | 2015 | 1919 | 1998 |
-| league_id | NL | NL | AL |
-| team_id | WAS | BRO | OAK |
-| franchise_id | WSN | LAD | OAK |
-| div_id | E |  | W |
-| rank | 2 | 5 | 4 |
-| g | 162 | 141 | 162 |
-| ghome | 81 | 70 | 81 |
-| w | 83 | 69 | 74 |
-| l | 79 | 71 | 88 |
-| div_win | N |  | N |
-| wc_win | N |  | N |
+| year | 2015 | 2000 | 1984 |
+| league_id | NL | AL | AL |
+| team_id | WAS | CLE | KCA |
+| franchise_id | WSN | CLE | KCR |
+| div_id | E | C | W |
+| rank | 2 | 2 | 1 |
+| g | 162 | 162 | 162 |
+| ghome | 81 | 81 | 81 |
+| w | 83 | 90 | 84 |
+| l | 79 | 72 | 78 |
+| div_win | N | N | Y |
+| wc_win | N | N |  |
 | lg_win | N | N | N |
 | ws_win | N | N | N |
-| r | 703 | 525 | 804 |
-| ab | 5428 | 4844 | 5490 |
-| h | 1363 | 1272 | 1413 |
-| double | 265 | 167 | 295 |
-| triple | 13 | 66 | 13 |
-| hr | 177 | 25 | 149 |
-| bb | 539 | 258 | 633 |
-| so | 1344 | 405 | 1122 |
-| sb | 57 | 112 | 131 |
-| cs | 23 |  | 47 |
-| hbp | 44 |  |  |
-| sf | 51 |  |  |
-| ra | 635 | 513 | 866 |
-| er | 577 | 389 | 770 |
-| era | 3.62 | 2.73 | 4.83 |
-| cg | 4 | 98 | 12 |
-| sho | 13 | 12 | 4 |
-| sv | 41 | 1 | 39 |
-| ipouts | 4304 | 3843 | 4302 |
-| ha | 1366 | 1256 | 1555 |
-| hra | 145 | 21 | 179 |
-| bba | 364 | 292 | 529 |
-| soa | 1342 | 476 | 922 |
-| e | 90 | 218 | 141 |
-| dp | 125 | 84 | 155 |
-| fp | 0.985 | 0.96 | 0.97 |
-| name | Washington Nationals | Brooklyn Robins | Oakland Athletics |
-| park | Nationals Park | Ebbets Field | Oakland Coliseum |
-| attendance | 2619843 | 360721 | 1232343 |
-| bpf | 102 | 103 | 96 |
-| ppf | 99 | 103 | 97 |
-| team_id_br | WSN | BRO | OAK |
-| team_id_lahman45 | MON | BRO | OAK |
-| team_id_retro | WAS | BRO | OAK |
+| r | 703 | 950 | 673 |
+| ab | 5428 | 5683 | 5543 |
+| h | 1363 | 1639 | 1487 |
+| double | 265 | 310 | 269 |
+| triple | 13 | 30 | 52 |
+| hr | 177 | 221 | 117 |
+| bb | 539 | 685 | 400 |
+| so | 1344 | 1057 | 832 |
+| sb | 57 | 113 | 106 |
+| cs | 23 | 34 | 64 |
+| hbp | 44 | 51 |  |
+| sf | 51 | 52 |  |
+| ra | 635 | 816 | 686 |
+| er | 577 | 775 | 629 |
+| era | 3.62 | 4.84 | 3.92 |
+| cg | 4 | 6 | 18 |
+| sho | 13 | 5 | 9 |
+| sv | 41 | 34 | 50 |
+| ipouts | 4304 | 4327 | 4332 |
+| ha | 1366 | 1511 | 1426 |
+| hra | 145 | 173 | 136 |
+| bba | 364 | 666 | 433 |
+| soa | 1342 | 1213 | 724 |
+| e | 90 | 72 | 129 |
+| dp | 125 | 147 | 157 |
+| fp | 0.985 | 0.988 | 0.98 |
+| name | Washington Nationals | Cleveland Indians | Kansas City Royals |
+| park | Nationals Park | Jacobs Field | Royals Stadium |
+| attendance | 2619843 | 3456278 | 1810018 |
+| bpf | 102 | 101 | 100 |
+| ppf | 99 | 100 | 101 |
+| team_id_br | WSN | CLE | KCR |
+| team_id_lahman45 | MON | CLE | KCA |
+| team_id_retro | WAS | CLE | KCA |
 
 # "team_franchise"  (rows=120)
 
@@ -936,9 +936,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| franchise_id | WST | CIN | FLA |
-| franchise_name | Washington Statesmen | Cincinnati Reds | Florida Marlins |
-| active | N | Y | Y |
+| franchise_id | WST | PBS | LAD |
+| franchise_name | Washington Statesmen | Pittsburgh Rebels | Los Angeles Dodgers |
+| active | N | N | Y |
 | na_assoc |  |  |  |
 
 # "team_half"  (rows=52)
@@ -961,12 +961,12 @@ samples:
 | column | latest | sample | sample |
 |---|---|---|---|
 | year | 1981 | 1981 | 1981 |
-| league_id | NL | NL | AL |
-| team_id | SLN | MON | TOR |
-| half | 2 | 1 | 2 |
-| div_id | E | E | E |
+| league_id | NL | AL | NL |
+| team_id | SLN | KCA | ATL |
+| half | 2 | 2 | 2 |
+| div_id | E | W | W |
 | div_win | N | N | N |
-| rank | 2 | 3 | 6 |
-| g | 52 | 55 | 48 |
-| w | 29 | 30 | 21 |
-| l | 23 | 25 | 27 |
+| rank | 2 | 1 | 5 |
+| g | 52 | 53 | 52 |
+| w | 29 | 30 | 25 |
+| l | 23 | 23 | 27 |

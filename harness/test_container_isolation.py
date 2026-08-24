@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from harness import parse_sql, pi_stream, runner_container
+from harness import parse_sql, pi_stream, runner_container, runner_pi
 
 
 class ContainerIsolationTests(unittest.TestCase):
@@ -26,8 +26,23 @@ class ContainerIsolationTests(unittest.TestCase):
             argv = runner_container._agent_argv("pi", "system", "user", 3)
         self.assertEqual(argv[argv.index("--model") + 1], "openai/gpt-5.6-luna-pro")
         self.assertEqual(argv[argv.index("--thinking") + 1], "medium")
-        self.assertIn("sql_exec", argv)
-        self.assertIn("--no-builtin-tools", argv)
+        tools = argv[argv.index("--tools") + 1].split(",")
+        self.assertEqual(
+            set(tools),
+            {"read", "bash", "edit", "write", "grep", "find", "ls", "sql_exec", "subagent"},
+        )
+        self.assertNotIn("--no-builtin-tools", argv)
+        self.assertTrue(any("subagent/index.ts" in arg for arg in argv))
+
+    def test_host_pi_has_builtin_and_subagent_tools(self) -> None:
+        argv = runner_pi._argv("system")
+        tools = argv[argv.index("--tools") + 1].split(",")
+        self.assertEqual(
+            set(tools),
+            {"read", "bash", "edit", "write", "grep", "find", "ls", "sql_exec", "subagent"},
+        )
+        self.assertNotIn("--no-builtin-tools", argv)
+        self.assertTrue(any("subagent/index.ts" in arg for arg in argv))
 
     def test_missing_openrouter_model_gets_resolved_metadata(self) -> None:
         model = "vendor/test-model"
@@ -61,6 +76,26 @@ class ContainerIsolationTests(unittest.TestCase):
         parsed = pi_stream.parse_stream(events)
         self.assertEqual(parsed["db_queries"], 1)
         self.assertEqual(parsed["executed_sqls"], ["SELECT 1"])
+
+    def test_subagent_usage_and_sql_are_counted(self) -> None:
+        events = json.dumps({
+            "type": "tool_execution_end",
+            "toolName": "subagent",
+            "result": {"details": {"results": [{
+                "usage": {"input": 10, "output": 5, "cacheRead": 3, "cacheWrite": 2,
+                          "cost": 0.25, "turns": 1},
+                "messages": [{"role": "assistant", "content": [{
+                    "type": "toolCall", "name": "bash",
+                    "arguments": {"command": "mysql -e 'SELECT 2'"},
+                }]}],
+            }]}},
+        })
+        parsed = pi_stream.parse_stream(events)
+        self.assertEqual(parsed["subagent_calls"], 1)
+        self.assertEqual(parsed["subagent_turns"], 1)
+        self.assertEqual(parsed["usage"]["totalTokens"], 20)
+        self.assertEqual(parsed["cost"]["total"], 0.25)
+        self.assertEqual(parsed["executed_sqls"], ["SELECT 2"])
 
     def test_unclosed_sql_fence_is_recoverable(self) -> None:
         self.assertEqual(parse_sql.extract_sql("```sql\nSELECT 1;"), "SELECT 1;")

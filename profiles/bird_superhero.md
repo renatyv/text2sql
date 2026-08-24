@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:31:48.771136Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:21:18.679857Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-h5awq2eb/superhero.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-j8_b5y0b/superhero.sqlite
 schema: main
 ---
 
@@ -57,8 +57,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 35 | 15 | 9 |
-| colour | Yellow/Red | Green/Blue | Brown |
+| id | 35 | 21 | 15 |
+| colour | Yellow/Red | Pink | Green/Blue |
 
 # "gender"  (rows=3)
 
@@ -86,9 +86,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| hero_id | 756 | 89 | 339 |
-| attribute_id | 6 | 5 | 6 |
-| attribute_value | 100 | 35 | 80 |
+| hero_id | 756 | 66 | 124 |
+| attribute_id | 6 | 2 | 3 |
+| attribute_value | 100 | 55 | 35 |
 
 # "hero_power"  (rows=5825)
 
@@ -101,8 +101,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| hero_id | 756 | 277 | 144 |
-| power_id | 132 | 5 | 7 |
+| hero_id | 756 | 517 | 247 |
+| power_id | 132 | 123 | 86 |
 
 # "publisher"  (rows=25)
 
@@ -115,8 +115,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 25 | 1 | 4 |
-| publisher_name | Wildstorm |  | DC Comics |
+| id | 25 | 16 | 5 |
+| publisher_name | Wildstorm | Rebellion | George Lucas |
 
 # "race"  (rows=61)
 
@@ -129,8 +129,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 61 | 49 | 31 |
-| race | Zombie | Saiyan | Human-Vulcan |
+| id | 61 | 60 | 15 |
+| race | Zombie | Zen-Whoberian | Dathomirian Zabrak |
 
 # "superhero"  (rows=750)
 
@@ -153,18 +153,18 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 756 | 241 | 462 |
-| superhero_name | Zoom | Ego | Meteorite |
-| full_name | Hunter Zolomon | Ego | null |
-| gender_id | 1 | 3 | 2 |
-| eye_colour_id | 23 | 1 | 1 |
-| hair_colour_id | 9 | 1 | 1 |
+| id | 756 | 364 | 635 |
+| superhero_name | Zoom | James T. Kirk | Space Ghost |
+| full_name | Hunter Zolomon | James Tiberius Kirk | Thaddeus Bach |
+| gender_id | 1 | 1 | 1 |
+| eye_colour_id | 23 | 16 | 1 |
+| hair_colour_id | 9 | 9 | 1 |
 | skin_colour_id | 1 | 1 | 1 |
-| race_id | 1 | 1 | 1 |
-| publisher_id | 4 | 13 | 13 |
-| alignment_id | 2 | 2 | 1 |
-| height_cm | 185 | 0 | null |
-| weight_kg | 81 | 0 | null |
+| race_id | 1 | 24 | 24 |
+| publisher_id | 4 | 20 | 4 |
+| alignment_id | 2 | 1 | 1 |
+| height_cm | 185 | 178 | 188 |
+| weight_kg | 81 | 77 | 113 |
 
 # "superpower"  (rows=167)
 
@@ -177,5 +177,5 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 167 | 127 | 105 |
-| power_name | Omniscient | Magnetism | Natural Weapons |
+| id | 167 | 151 | 121 |
+| power_name | Omniscient | Vision - Heat | Spatial Awareness |

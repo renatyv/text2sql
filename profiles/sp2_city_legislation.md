@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:33:25.148158Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:22:59.128191Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-hxrnh7su/city_legislation.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-p2hl2oiu/city_legislation.sqlite
 schema: main
 ---
 
@@ -32,21 +32,21 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 50000 | 36239 | 7224 |
-| first_name | theressa | marty | ardella |
-| last_name | wahncke | godney | danter |
-| email | twahncke12kv@telegraph.co.uk | mgodneyrym@t-online.de | adanter5kn@devhub.com |
-| gender | female | female | female |
-| type | green | nordic | reptile |
-| birth_year | 1822 | 1970 | 1763 |
-| age | 202 | 54 | 261 |
-| favorite_food | galapagos mockingbird | phascogale, brush-tailed | black-throated butcher bird |
-| feeding_frequency | never | often | yearly |
-| aggressive | 1 | 0 | 0 |
-| occupation | chief design engineer | biostatistician iii | safety technician iii |
-| current_location | dayton | shawnee mission | van nuys |
-| state | ohio | kansas | california |
-| us_region | great lakes | plains | far west |
+| id | 50000 | 7614 | 38835 |
+| first_name | theressa | bail | pollyanna |
+| last_name | wahncke | armall | jedrzejewski |
+| email | twahncke12kv@telegraph.co.uk | barmall5vh@discovery.com | pjedrzejewskityq@fastcompany.com |
+| gender | female | male | female |
+| type | green | flatwoods | flatwoods |
+| birth_year | 1822 | 1749 | 1915 |
+| age | 202 | 275 | 109 |
+| favorite_food | galapagos mockingbird | pintail, white-cheeked | killer whale |
+| feeding_frequency | never | monthly | often |
+| aggressive | 1 | 1 | 0 |
+| occupation | chief design engineer | vp sales | chemical engineer |
+| current_location | dayton | wilkes barre | arlington |
+| state | ohio | pennsylvania | texas |
+| us_region | great lakes | mideast | southwest |
 | country | united states | united states | united states |
 
 # "aliens"  (rows=50000)
@@ -65,13 +65,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 50000 | 47817 | 38866 |
-| first_name | Theressa | Chauncey | Jasun |
-| last_name | Wahncke | Yeowell | Dannehl |
-| email | twahncke12kv@telegraph.co.uk | cyeowell10w8@people.com.cn | jdannehltzl@digg.com |
-| gender | Female | Male | Male |
-| type | Green | Green | Reptile |
-| birth_year | 1822 | 1777 | 1713 |
+| id | 50000 | 37453 | 27534 |
+| first_name | Theressa | Dyane | Portie |
+| last_name | Wahncke | de Najera | Hallen |
+| email | twahncke12kv@telegraph.co.uk | ddenajeraswc@ovh.net | phallenl8t@symantec.com |
+| gender | Female | Genderfluid | Non-binary |
+| type | Green | Flatwoods | Green |
+| birth_year | 1822 | 1857 | 1900 |
 
 # "aliens_details"  (rows=50000)
 
@@ -86,10 +86,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| detail_id | 50000 | 30696 | 1817 |
-| favorite_food | Galapagos mockingbird | Thomson's gazelle | Vervet monkey |
-| feeding_frequency | Never | Monthly | Daily |
-| aggressive | 1 | 1 | 0 |
+| detail_id | 50000 | 45521 | 2034 |
+| favorite_food | Galapagos mockingbird | Goldeneye, barrows | Little cormorant |
+| feeding_frequency | Never | Yearly | Monthly |
+| aggressive | 1 | 0 | 0 |
 
 # "aliens_location"  (rows=50000)
 
@@ -105,11 +105,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| loc_id | 50000 | 35506 | 39554 |
-| current_location | Dayton | Jacksonville | Boston |
-| state | Ohio | Florida | Massachusetts |
+| loc_id | 50000 | 46688 | 16725 |
+| current_location | Dayton | Durham | Pensacola |
+| state | Ohio | North Carolina | Florida |
 | country | United States | United States | United States |
-| occupation | Chief Design Engineer | Recruiter | Web Designer I |
+| occupation | Chief Design Engineer | Accounting Assistant II | Associate Professor |
 
 # "cities"  (rows=44622)
 
@@ -128,14 +128,14 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| city_id | 44622 | 10317 | 16541 |
-| city_name | nordvik | craponne | ales |
-| latitude | 111.51 | 4.7233 | 4.0817 |
-| longitude | 74.0165 | 45.7453 | 44.1281 |
-| country_code_2 | ru | fr | fr |
+| city_id | 44622 | 36225 | 11962 |
+| city_name | nordvik | whistler | longkeng |
+| latitude | 111.51 | -122.954 | 112.039 |
+| longitude | 74.0165 | 50.1208 | 24.0341 |
+| country_code_2 | ru | ca | cn |
 | capital | 0 | 0 | 0 |
-| population | 0 | 11248 | 41837 |
-| insert_date | 2022-04-27 | 2023-01-02 | 2021-10-05 |
+| population | 0 | 11854 | 95881 |
+| insert_date | 2022-04-27 | 2022-05-11 | 2021-01-30 |
 
 # "cities_countries"  (rows=241)
 
@@ -154,13 +154,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| country_id | 256 | 200 | 41 |
-| country_name | zambia | saint martin french part | cambodia |
-| country_code_2 | zm | mf | kh |
-| country_code_3 | zmb | maf | khm |
-| region | africa | americas | asia |
-| sub_region | subsaharan africa | latin america and the caribbean | southeastern asia |
-| intermediate_region | eastern africa | caribbean | null |
+| country_id | 256 | 236 | 121 |
+| country_name | zambia | tunisia | kazakhstan |
+| country_code_2 | zm | tn | kz |
+| country_code_3 | zmb | tun | kaz |
+| region | africa | africa | asia |
+| sub_region | subsaharan africa | northern africa | central asia |
+| intermediate_region | eastern africa | null | null |
 | created_on | 2024-07-18 | 2024-07-18 | 2024-07-18 |
 
 # "cities_currencies"  (rows=254)
@@ -176,10 +176,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| currency_id | 254 | 212 | 180 |
-| country_code_2 | zw | gs | pn |
-| currency_name | zimbabwe dollar | no universal currency | new zealand dollar |
-| currency_code | zwl | null | nzd |
+| currency_id | 254 | 183 | 113 |
+| country_code_2 | zw | pr | jp |
+| currency_name | zimbabwe dollar | us dollar | yen |
+| currency_code | zwl | usd | jpy |
 
 # "cities_languages"  (rows=608)
 
@@ -193,9 +193,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| language_id | 608 | 311 | 229 |
-| language | shona | russian | spanish |
-| country_code_2 | zw | kg | hn |
+| language_id | 608 | 546 | 50 |
+| language | shona | bena | spanish |
+| country_code_2 | zw | tz | bo |
 
 # "job_company"  (rows=14003)
 
@@ -211,11 +211,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| company_id | 787652 | 133973 | 363641 |
-| name | Rotary Engineering Pte. Ltd. | Danos | BTC Electronic Components |
-| link | http://www.rotaryeng.com.sg/ | null | http://www.btcelectronics.com/ |
-| link_google | null | https://www.google.com/search?gl=us&hl=en&q=Danos&sa=X&ved=0ahUKEwie2-KHtu__AhVukmoFHZa8B3oQmJACCIAJ | https://www.google.com/search?sca_esv=556449418&gl=us&hl=en&q=BTC+Electronic+Components&sa=X&ved=0ahUKEwi6u_TZ-tiAAxU-ZTABHbXqAoQ4HhCYkAIIkg0 |
-| thumbnail | https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcgZKxQBsMj83FmbDN7BE6mCKD63zc8F70HMUOUllYYRByt3Pz_q_c&s | https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRy7BDVLI1v0TTiEd_1-A9erQIeLXnbzmstT3FzCrk&s | null |
+| company_id | 787652 | 696542 | 319990 |
+| name | Rotary Engineering Pte. Ltd. | Extreme Networks, s.r.o. | HRIS Data Analyst |
+| link | http://www.rotaryeng.com.sg/ | null | null |
+| link_google | null | https://www.google.com/search?hl=en&gl=us&q=Extreme+Networks,+s.r.o.&sa=X&ved=0ahUKEwjY4Or7kdj8AhWml2oFHZXwB844ChCYkAIIxg0 | https://www.google.com/search?hl=en&gl=us&q=HRIS+Data+Analyst&sa=X&ved=0ahUKEwiL9rOQna78AhXkhHIEHQMkAug4HhCYkAIImQo |
+| thumbnail | https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcgZKxQBsMj83FmbDN7BE6mCKD63zc8F70HMUOUllYYRByt3Pz_q_c&s | https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRy7BDVLI1v0TTiEd_1-A9erQIeLXnbzmstT3FzCrk&s | https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpkYOaWwGP8lltRSqaDttGBYR7JJAXmh94X2ZxHk0&s |
 
 # "job_postings_fact"  (rows=78769)
 
@@ -242,19 +242,19 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| job_id | 1826663 | 1190244 | 262926 |
-| company_id | 87729 | 111259 | 9901 |
-| job_title_short | Data Scientist | Data Scientist | Senior Data Engineer |
-| job_title | Data Scientist, Data Science – Bangalore, Karnataka – Cardinal Health | Data Scientist, Product Analytics | Senior Data Engineer |
-| job_location | Anywhere | New York, NY | Tel Aviv-Yafo, Israel |
-| job_via | via MySmartPros | via Jobs Trabajo.org | via LinkedIn |
+| job_id | 1826663 | 56998 | 1545550 |
+| company_id | 87729 | 747 | 2696 |
+| job_title_short | Data Scientist | Data Scientist | Data Scientist |
+| job_title | Data Scientist, Data Science – Bangalore, Karnataka – Cardinal Health | Data Scientist Jobs | Sr Data Scientist |
+| job_location | Anywhere | Fort Belvoir, VA | Bengaluru, Karnataka, India |
+| job_via | via MySmartPros | via Clearance Jobs | via BeBee India |
 | job_schedule_type | Full-time | Full-time | Full-time |
 | job_work_from_home | 1 | 0 | 0 |
-| search_location | India | New York, United States | Israel |
-| job_posted_date | 2023-03-21 20:33:44 | 2023-08-22 12:03:17 | 2023-02-13 18:03:38 |
+| search_location | India | New York, United States | India |
+| job_posted_date | 2023-03-21 20:33:44 | 2023-08-30 19:04:00 | 2023-01-11 17:12:48 |
 | job_no_degree_mention | 0 | 0 | 0 |
 | job_health_insurance | 0 | 0 | 0 |
-| job_country | India | United States | Israel |
+| job_country | India | United States | India |
 | salary_rate | null | null | null |
 | salary_year_avg | null | null | null |
 | salary_hour_avg | null | null | null |
@@ -271,9 +271,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| date | 1999-12-31 | 1929-09-01 | 1923-07-19 |
+| date | 1999-12-31 | 1926-09-19 | 1943-07-11 |
 | month_name | December | September | July |
-| day_of_month | 31 | 1 | 19 |
+| day_of_month | 31 | 19 | 11 |
 
 # "legislators"  (rows=12518)
 
@@ -313,29 +313,29 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| full_name | Zoe Lofgren | Rufus Hardy | James Fredrick Lloyd |
-| first_name | Zoe | Rufus | James |
-| last_name | Lofgren | Hardy | Lloyd |
-| middle_name | null | null | Fredrick |
-| nickname | null | null | null |
+| full_name | Zoe Lofgren | Marvin Henry Edwards | Adam Boyd |
+| first_name | Zoe | Marvin | Adam |
+| last_name | Lofgren | Edwards | Boyd |
+| middle_name | null | Henry | null |
+| nickname | null | Mickey | null |
 | suffix | null | null | null |
 | other_names_end | null | null | null |
 | other_names_middle | null | null | null |
 | other_names_last | null | null | null |
-| birthday | 1947-12-21 | 1855-12-16 | 1922-09-27 |
+| birthday | 1947-12-21 | 1937-07-12 | 1746-03-21 |
 | gender | F | M | M |
-| id_bioguide | L000397 | H000198 | L000379 |
+| id_bioguide | L000397 | E000077 | B000714 |
 | id_bioguide_previous_0 | null | null | null |
-| id_govtrack | 400245 | 405079 | 406871 |
-| id_icpsr | 29504 | 4065 | 14250 |
-| id_wikipedia | Zoe Lofgren | Rufus Hardy (representative) | James F. Lloyd |
-| id_wikidata | Q218217 | Q2174776 | Q507358 |
-| id_google_entity_id | kg:/m/024t94 | kg:/m/02prkwf | kg:/m/0dp07h |
-| id_house_history | 17087 | 14531 | 17065 |
+| id_govtrack | 400245 | 403769 | 401675 |
+| id_icpsr | 29504 | 14415 | 927 |
+| id_wikipedia | Zoe Lofgren | Mickey Edwards | Adam Boyd (politician) |
+| id_wikidata | Q218217 | Q1931352 | Q224848 |
+| id_google_entity_id | kg:/m/024t94 | kg:/m/0687_3 | kg:/m/0262rt9 |
+| id_house_history | 17087 | 12694 | 9708 |
 | id_house_history_alternate | null | null | null |
-| id_thomas | 701 | null | 697 |
+| id_thomas | 701 | 338 | null |
 | id_cspan | 36520 | null | null |
-| id_votesmart | 21899 | null | null |
+| id_votesmart | 21899 | 2453 | null |
 | id_lis | null | null | null |
 | id_ballotpedia | Zoe Lofgren | null | null |
 | id_fec_0 | H4CA16049 | null | null |
@@ -371,25 +371,25 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id_bioguide | Z000018 | G000360 | W000802 |
-| term_number | 1 | 2 | 1 |
-| term_id | Z000018-1 | G000360-2 | W000802-1 |
-| term_type | rep | rep | sen |
-| term_start | 2017-01-03 | 1943-01-06 | 2013-01-03 |
-| term_end | 2017-03-01 | 1945-01-03 | 2019-01-03 |
-| state | MT | PA | RI |
-| district | 0 | 26 | null |
-| class | null | null | 1 |
-| party | Republican | Republican | Democrat |
+| id_bioguide | Z000018 | W000707 | C000807 |
+| term_number | 1 | 0 | 8 |
+| term_id | Z000018-1 | W000707-0 | C000807-8 |
+| term_type | rep | rep | rep |
+| term_start | 2017-01-03 | 1893-08-07 | 1985-01-03 |
+| term_end | 2017-03-01 | 1895-03-03 | 1987-01-03 |
+| state | MT | NC | PA |
+| district | 0 | 2 | 13 |
+| class | null | null | null |
+| party | Republican | Democrat | Republican |
 | how | null | null | null |
-| url | https://zinke.house.gov | null | https://www.whitehouse.senate.gov |
-| address | 1419 Longworth HOB; Washington DC 20515-2600 | null | 530 Hart Senate Office Building Washington DC 20510 |
-| phone | 202-225-3211 | null | 202-224-2921 |
-| fax | 202-225-5687 | null | 202-228-6362 |
-| contact_form | null | null | https://www.whitehouse.senate.gov/contact/email-sheldon |
-| office | 1419 Longworth House Office Building | null | 530 Hart Senate Office Building |
-| state_rank | null | null | junior |
-| rss_url | null | null | http://www.whitehouse.senate.gov/rss/feeds/?type=all&amp;cachebuster=1 |
+| url | https://zinke.house.gov | null | null |
+| address | 1419 Longworth HOB; Washington DC 20515-2600 | null | null |
+| phone | 202-225-3211 | null | null |
+| fax | 202-225-5687 | null | null |
+| contact_form | null | null | null |
+| office | 1419 Longworth House Office Building | null | null |
+| state_rank | null | null | null |
+| rss_url | null | null | null |
 | caucus | null | null | null |
 
 # "skills_dim"  (rows=26)
@@ -404,9 +404,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| skill_id | 250 | 31 | 84 |
-| skills | twilio | perl | ibm cloud |
-| type | sync | programming | cloud |
+| skill_id | 250 | 73 | 7 |
+| skills | twilio | vmware | sas |
+| type | sync | cloud | programming |
 
 # "skills_job_dim"  (rows=≈366960)
 

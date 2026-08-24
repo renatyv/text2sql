@@ -11,8 +11,8 @@ event stream, so the parsing logic lives here. The parser extracts:
   * executed_sqls  — SQL from sql_exec, or straightforward `mysql -e` bash calls
   * all_text       — assistant text segments in order (final = the answer)
   * raw_text       — the last assistant text segment (the final answer)
-  * usage / cost   — accumulated ONCE from the terminal agent_end event, with a
-                      recovery pass over turn_end if the run was aborted
+  * usage / cost   — parent usage plus nested subagent usage, with a recovery
+                      pass over turn_end if the run was aborted
   * model / provider — from the first assistant message that carries them
 
 The abort-recovery path matters: when the wall-clock timeout kills pi before it
@@ -101,6 +101,7 @@ def parse_stream(stdout: str) -> dict:
     agent_ended = False
     last_stop_reason = last_error = None
     retry_count = 0
+    subagent_calls = subagent_turns = 0
 
     events = list(_iter_events(stdout))
     for e in events:
@@ -120,6 +121,30 @@ def parse_stream(stdout: str) -> dict:
                 if sql:
                     tool_calls += 1
                     executed_sqls.append(sql)
+        if t == "tool_execution_end" and e.get("toolName") == "subagent":
+            subagent_calls += 1
+            for result in (((e.get("result") or {}).get("details") or {}).get("results") or []):
+                nested = result.get("usage") or {}
+                subagent_turns += nested.get("turns", 0) or 0
+                for k in ("input", "output", "cacheRead", "cacheWrite"):
+                    usage_total[k] += nested.get(k, 0) or 0
+                usage_total["totalTokens"] += sum(
+                    nested.get(k, 0) or 0 for k in ("input", "output", "cacheRead", "cacheWrite")
+                )
+                cost_total["total"] += nested.get("cost", 0.0) or 0.0
+                for message in result.get("messages") or []:
+                    if message.get("role") != "assistant":
+                        continue
+                    for part in message.get("content") or []:
+                        if part.get("type") != "toolCall":
+                            continue
+                        args = part.get("arguments") or {}
+                        sql = args.get("sql") if part.get("name") == "sql_exec" else None
+                        if part.get("name") == "bash":
+                            sql = _sql_from_bash(str(args.get("command", "")))
+                        if sql:
+                            tool_calls += 1
+                            executed_sqls.append(sql)
         # Collect per-turn assistant TEXT from turn_end (so the final answer is
         # captured even when agent_end never fires, e.g. on a wall-clock abort).
         if t == "turn_end":
@@ -180,6 +205,7 @@ def parse_stream(stdout: str) -> dict:
         "turns": turns, "db_queries": tool_calls, "raw_text": final_text,
         "all_text": texts, "executed_sqls": executed_sqls,
         "usage": usage_total, "cost": cost_total, "model": model, "provider": provider,
+        "subagent_calls": subagent_calls, "subagent_turns": subagent_turns,
         "retry_count": retry_count,
         "api_error": last_error if last_stop_reason == "error" else None,
     }

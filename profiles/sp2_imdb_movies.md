@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:34:19.755275Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:23:56.128386Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-l2bp97is/imdb_movies.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-vg_dmcxm/imdb_movies.sqlite
 schema: main
 ---
 
@@ -29,8 +29,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| table | role_mapping | names | names |
-| column | name_id | known_for_movies | date_of_birth |
+| table | role_mapping | movie | movie |
+| column | name_id | id | year |
 | Unnamed: 2 | null | null | null |
 | Unnamed: 3 | null | null | null |
 | Unnamed: 4 | null | null | null |
@@ -38,10 +38,10 @@ samples:
 | Unnamed: 6 | * name_id | null | null |
 | Unnamed: 7 | null | null | null |
 | Unnamed: 8 | null | null | null |
-| Unnamed: 9 | worlwide_gross_income | name | * id |
+| Unnamed: 9 | worlwide_gross_income | genre | * genre |
 | Unnamed: 10 | null | null | null |
 | Unnamed: 11 | null | null | null |
-| Unnamed: 12 | * name_id | null | null |
+| Unnamed: 12 | * name_id | ratings | avg_rating |
 
 # "director_mapping"  (rows=3867)
 
@@ -54,8 +54,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| movie_id | tt9903716 | tt4720702 | tt7183578 |
-| name_id | nm10532693 | nm5722382 | nm0159039 |
+| movie_id | tt9903716 | tt10253466 | tt8515750 |
+| name_id | nm10532693 | nm4899218 | nm0211564 |
 
 # "genre"  (rows=14662)
 
@@ -68,8 +68,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| movie_id | tt9914286 | tt5322168 | tt1226837 |
-| genre | Family | Drama | Drama |
+| movie_id | tt9914286 | tt6118340 | tt6054874 |
+| genre | Family | Horror | Action |
 
 # "movies"  (rows=7997)
 
@@ -89,15 +89,15 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | tt9914286 | tt6471264 | tt10504928 |
-| title | Sokagin Çocuklari | Fack ju Göhte 3 | Donbass. Okraina |
-| year | 2019 | 2017 | 2019 |
-| date_published | 2019-03-15T00:00:00 | 2017-10-26T00:00:00 | 2019-06-12T00:00:00 |
-| duration | 98 | 120 | 96 |
-| country | Turkey | Germany | Russia |
-| worlwide_gross_income | $ 2833 | $ 64236772 | $ 172100 |
-| languages | Turkish | German | Russian |
-| production_company | Gizem Ajans | Constantin Film | Interfest |
+| id | tt9914286 | tt6368508 | tt8331988 |
+| title | Sokagin Çocuklari | 29 to Life | La camarista |
+| year | 2019 | 2018 | 2019 |
+| date_published | 2019-03-15T00:00:00 | 2018-03-11T00:00:00 | 2019-07-26T00:00:00 |
+| duration | 98 | 100 | 102 |
+| country | Turkey | USA | Mexico |
+| worlwide_gross_income | $ 2833 | null | $ 163881 |
+| languages | Turkish | English | Spanish, French |
+| production_company | Gizem Ajans | ACM Films | Amplitud |
 
 # "names"  (rows=25735)
 
@@ -113,11 +113,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | nm9992720 | nm0781533 | nm7222062 |
-| name | McMagic Cardenas | Rhea Seehorn | Yanyong Kuruaungkoul |
-| height | null | 97 | null |
-| date_of_birth | null | null | null |
-| known_for_movies | tt7233828 | null | tt8733014 |
+| id | nm9992720 | nm0319462 | nm1087903 |
+| name | McMagic Cardenas | Sam Gilman | Christopher Chambers |
+| height | null | null | null |
+| date_of_birth | null | 1915-02-05 | null |
+| known_for_movies | tt7233828 | null | tt3245848 |
 
 # "ratings"  (rows=7997)
 
@@ -132,10 +132,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| movie_id | tt9914286 | tt3338188 | tt9193612 |
-| avg_rating | 7.2 | 4.6 | 6.9 |
-| total_votes | 190 | 140 | 151 |
-| median_rating | 10 | 6 | 7 |
+| movie_id | tt9914286 | tt4266076 | tt7853282 |
+| avg_rating | 7.2 | 6 | 6.5 |
+| total_votes | 190 | 7098 | 219 |
+| median_rating | 10 | 6 | 8 |
 
 # "role_mapping"  (rows=15615)
 
@@ -149,6 +149,6 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| movie_id | tt9903716 | tt9249432 | tt8621438 |
-| name_id | nm7237124 | nm0911976 | nm3496186 |
-| category | actress | actor | actress |
+| movie_id | tt9903716 | tt7156436 | tt6905442 |
+| name_id | nm7237124 | nm1310525 | nm3857399 |
+| category | actress | actor | actor |

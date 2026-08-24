@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
-version: 0.0.33
-generated_at_utc: 2026-08-21T12:30:55.101404Z
+version: 0.0.34
+generated_at_utc: 2026-08-24T21:20:20.161799Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-xt2xa7d0/card_games.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-ion06k1a/card_games.sqlite
 schema: main
 ---
 
@@ -95,34 +95,34 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 56832 | 18348 | 2244 |
-| artist | Colin Boyer | John Avon | Jesper Myrfors |
+| id | 56832 | 51139 | 14203 |
+| artist | Colin Boyer | Ron Spencer | Jaime Jones |
 | asciiName | null | null | null |
-| availability | mtgo,paper | mtgo,paper | paper |
-| borderColor | black | black | white |
-| cardKingdomFoilId | 238370 | 207142 | null |
-| cardKingdomId | 237883 | 206832 | 192880 |
-| colorIdentity | R,W | R | W |
+| availability | mtgo,paper | mtgo | mtgo,paper |
+| borderColor | black | black | black |
+| cardKingdomFoilId | 238370 | null | 126539 |
+| cardKingdomId | 237883 | null | 126385 |
+| colorIdentity | R,W | W | null |
 | colorIndicator | null | null | null |
-| colors | R,W | R | null |
+| colors | R,W | W | null |
 | convertedManaCost | 3 | 3 | 0 |
 | duelDeck | null | null | null |
-| edhrecRank | 10632 | 4122 | null |
+| edhrecRank | 10632 | 18838 | 974 |
 | faceConvertedManaCost | null | null | null |
 | faceName | null | null | null |
 | flavorName | null | null | null |
-| flavorText | From rebellion against the Akoum Skyclave to fighting the Eldrazi titans, the dragon-riding Kargan tribes have never missed an opportunity to defy the odds. | To the sorrow of all, its rage became focused on those who once stoked it. | null |
+| flavorText | From rebellion against the Akoum Skyclave to fighting the Eldrazi titans, the dragon-riding Kargan tribes have never missed an opportunity to defy the odds. | "The cannon wasn't aimed at you!" pleaded Vhati. "I'm not sure which is more pathetic," replied Greven, "your judgment or your aim." | null |
 | frameEffects | inverted | null | null |
-| frameVersion | 2015 | 2015 | 1993 |
+| frameVersion | 2015 | 2015 | 2003 |
 | hand | null | null | null |
 | hasContentWarning | 0 | 0 | 0 |
-| hasFoil | 1 | 1 | 0 |
+| hasFoil | 1 | 1 | 1 |
 | hasNonFoil | 1 | 1 | 1 |
 | isFullArt | 0 | 0 | 0 |
-| isOnlineOnly | 0 | 0 | 0 |
+| isOnlineOnly | 0 | 1 | 0 |
 | isOversized | 0 | 0 | 0 |
 | isPromo | 1 | 0 | 0 |
-| isReprint | 0 | 1 | 1 |
+| isReprint | 0 | 1 | 0 |
 | isReserved | 0 | 0 | 0 |
 | isStarter | 1 | 0 | 0 |
 | isStorySpotlight | 0 | 0 | 0 |
@@ -133,39 +133,39 @@ samples:
 | leadershipSkills | null | null | null |
 | life | null | null | null |
 | loyalty | null | null | null |
-| manaCost | {1}{R}{W} | {2}{R} | null |
-| mcmId | 501980 | 290416 | 6021 |
-| mcmMetaId | 317195 | 7015 | 4251 |
+| manaCost | {1}{R}{W} | {2}{W} | null |
+| mcmId | 501980 | null | 20787 |
+| mcmMetaId | 317195 | null | 10411 |
 | mtgArenaId | null | null | null |
-| mtgjsonV4Id | 28565911-47f4-53d3-9f0b-1b7360bd444c | 683441b2-a51e-51a8-b058-37a11ac74a6a | 26040712-1c74-5e6b-bbea-524b9e62c700 |
-| mtgoFoilId | null | 60988 | null |
-| mtgoId | null | 60987 | null |
-| multiverseId | null | 413676 | 2384 |
-| name | Kargan Warleader | Honden of Infinite Rage | Plains |
-| number | 391 | 134 | 365 |
+| mtgjsonV4Id | 28565911-47f4-53d3-9f0b-1b7360bd444c | bc8d2ccc-dd3a-5ebd-8f93-7c20ebb1650a | 45e5f57e-d53e-5cb4-bbc5-220d41ad6126 |
+| mtgoFoilId | null | 56753 | 31678 |
+| mtgoId | null | 56752 | 31677 |
+| multiverseId | null | 397644 | 142301 |
+| name | Kargan Warleader | Repentance | Rupture Spire |
+| number | 391 | 25 | 144 |
 | originalReleaseDate | null | null | null |
-| originalText | null | At the beginning of your upkeep, Honden of Infinite Rage deals damage to target creature or player equal to the number of Shrines you control. | ocT: Add oW to your mana pool. |
-| originalType | null | Legendary Enchantment — Shrine | Land |
+| originalText | null | Target creature deals damage to itself equal to its power. | Rupture Spire comes into play tapped. When Rupture Spire comes into play, sacrifice it unless you pay {1}. {T}: Add one mana of any color to your mana pool. |
+| originalType | null | Sorcery | Land |
 | otherFaceIds | null | null | null |
 | power | 3 | null | null |
-| printings | ZNR | CHK,EMA,HA3 | 10E,2ED,2XM,3ED,4BB,4ED,5ED,6ED,7ED,8ED,9ED,AKH,AKR,ALA,ANA,ANB,ARC,ATH,AVR,BBD,BFZ,BRB,C13,C14,C15,C16,C17,C18,C19,CED,CEI,CHK,CM2,CMA,CMD,CMR,CST,DDC,DDE,DDF,DDG,DDH,DDI,DDK,DDL,DDN,DDO,DDP,DDQ,DOM… |
+| printings | ZNR | TMP,TPR | C13,C16,C20,CM2,CMA,CMD,CMR,CON,DDH,H09,JMP,M19,PC2,PCA,TD0 |
 | promoTypes | promopack | null | null |
-| purchaseUrls | {'cardKingdom': 'https://mtgjson.com/links/5e41d001e708490c', 'cardKingdomFoil': 'https://mtgjson.com/links/daf4f53f54b28b9e', 'cardmarket': 'https://mtgjson.com/links/5bf73e54801f56c0', 'tcgplayer':… | {'cardKingdom': 'https://mtgjson.com/links/d38b79c56a696a78', 'cardKingdomFoil': 'https://mtgjson.com/links/266accd947b90cb1', 'cardmarket': 'https://mtgjson.com/links/ec196993766ee6df', 'tcgplayer':… | {'cardKingdom': 'https://mtgjson.com/links/c677f7bc4f1af31c', 'cardmarket': 'https://mtgjson.com/links/e5fabd81d92f94c5', 'tcgplayer': 'https://mtgjson.com/links/c35717e0414048b4'} |
+| purchaseUrls | {'cardKingdom': 'https://mtgjson.com/links/5e41d001e708490c', 'cardKingdomFoil': 'https://mtgjson.com/links/daf4f53f54b28b9e', 'cardmarket': 'https://mtgjson.com/links/5bf73e54801f56c0', 'tcgplayer':… | null | {'cardKingdom': 'https://mtgjson.com/links/a519acc2fd94d752', 'cardKingdomFoil': 'https://mtgjson.com/links/5b6d981cb76ff580', 'cardmarket': 'https://mtgjson.com/links/45529785cd247c60', 'tcgplayer':… |
 | rarity | uncommon | uncommon | common |
-| scryfallId | cbef1409-4e7c-445e-ae6b-b3133faf1f73 | 174bcea4-4e9c-4de5-b001-6a9df2242e37 | d17f8abd-c087-4039-8dfd-c6168f7db0a6 |
-| scryfallIllustrationId | f7a16dfb-c794-4391-82ca-2e37ddf30ef2 | b60820c0-f44c-417d-9965-4d5c5656d82c | 0dfc3c48-191c-4dec-ae58-78b7be3b35f8 |
-| scryfallOracleId | 63324e72-e580-456a-91be-766c9f07b7b3 | 0cb76b04-d9c3-46fc-a3f2-5f0cb0d91761 | bc71ebf6-2056-41f7-be35-b2e5c34afa99 |
-| setCode | ZNR | EMA | 4ED |
+| scryfallId | cbef1409-4e7c-445e-ae6b-b3133faf1f73 | 7d02c74a-8bc7-4a4d-830b-e59a7aed5722 | 568df642-3ad7-401c-a133-edb56970c3a1 |
+| scryfallIllustrationId | f7a16dfb-c794-4391-82ca-2e37ddf30ef2 | a06bc774-9673-42b4-a38d-14e2f55a4f7e | 131f121c-f166-4424-a747-b14348895566 |
+| scryfallOracleId | 63324e72-e580-456a-91be-766c9f07b7b3 | 9a345a67-0c6c-4f6f-b3c9-d525199cdbfa | 7eadffcb-1e15-44c1-b1db-78c71b8ec1ce |
+| setCode | ZNR | TPR | CON |
 | side | null | null | null |
-| subtypes | Human,Warrior | Shrine | Plains |
-| supertypes | null | Legendary | Basic |
-| tcgplayerProductId | 222853 | 118705 | 18110 |
-| text | Other Warriors you control get +1/+1. | At the beginning of your upkeep, Honden of Infinite Rage deals damage to any target equal to the number of Shrines you control. | ({T}: Add {W}.) |
+| subtypes | Human,Warrior | null | null |
+| supertypes | null | null | null |
+| tcgplayerProductId | 222853 | null | 28594 |
+| text | Other Warriors you control get +1/+1. | Target creature deals damage to itself equal to its power. | Rupture Spire enters the battlefield tapped. When Rupture Spire enters the battlefield, sacrifice it unless you pay {1}. {T}: Add one mana of any color. |
 | toughness | 3 | null | null |
-| type | Creature — Human Warrior | Legendary Enchantment — Shrine | Basic Land — Plains |
-| types | Creature | Enchantment | Land |
-| uuid | 46407d93-df48-5161-95fe-f24086746663 | 19ec5d47-a2bf-564d-a86e-da0d65232a1e | 8e19b83d-6a97-5a6e-baad-f9bf8f3ac80d |
-| variations | f3434acf-7796-572c-a889-487c84cf7948 | null | fdc50021-e80d-5470-9915-080a682d9905,331c2b62-41fc-5d5b-bd89-90e24a3f94b6 |
+| type | Creature — Human Warrior | Sorcery | Land |
+| types | Creature | Sorcery | Land |
+| uuid | 46407d93-df48-5161-95fe-f24086746663 | 2603a85f-205b-53e0-976a-87b1570c4918 | 4fb21440-637c-565f-b0a5-1592ec05da42 |
+| variations | f3434acf-7796-572c-a889-487c84cf7948 | null | null |
 | watermark | planeswalker | null | null |
 
 # "foreign_data"  (rows=≈229186)
@@ -207,10 +207,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 87769 | 55107 | 81350 |
-| date | 2013-09-15 | 2011-06-01 | 2014-02-01 |
-| text | Mana symbols in the text boxes of permanents you control don’t count toward your devotion to any color. | Damage from a source with infect has no effect on Melira’s Keepers. No -1/-1 counters are placed on it, and no damage is marked on it. The damage is still dealt for purposes of effects that care abou… | Unless some effect explicitly says otherwise, a creature that can’t attack you can still attack a planeswalker you control. |
-| uuid | 43a82ca6-338d-5ef9-ae82-1ed44ebb6c0a | e46fc639-21f8-5e58-807e-3b1c21ab3786 | d708a716-6b8b-5771-9b5e-b493ec687383 |
+| id | 87769 | 83252 | 36680 |
+| date | 2013-09-15 | 2020-09-25 | 2013-04-15 |
+| text | Mana symbols in the text boxes of permanents you control don’t count toward your devotion to any color. | In a Two-Headed Giant game, Omnath’s second ability causes the opposing team to lose 8 life the third time it resolves. Each other player’s planeswalkers—including your teammate’s—are dealt 4 damage. | You choose the creature as the spell resolves. The cipher ability doesn’t target that creature, although the spell with cipher may target that creature (or a different creature) because of its other… |
+| uuid | 43a82ca6-338d-5ef9-ae82-1ed44ebb6c0a | cf6d7e26-888e-5127-85e4-9d04eb66f3c2 | ae621fea-aa1d-57cb-ba21-74c6ef03f881 |
 
 # "set_translations"  (rows=1210)
 
@@ -225,10 +225,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 1210 | 519 | 247 |
-| language | Spanish | Russian | Korean |
-| setCode | WTH | DKM | CHK |
-| translation | null | Deckmasters 2001 | 카미가와의 투사 |
+| id | 1210 | 775 | 1087 |
+| language | Spanish | Italian | Korean |
+| setCode | WTH | M21 | UDS |
+| translation | null | null | null |
 
 # "sets"  (rows=551)
 
@@ -260,24 +260,24 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 551 | 58 | 318 |
-| baseSetSize | 285 | 145 | 1 |
-| block | null | Alara | null |
-| booster | {'arena': {'boosters': [{'contents': {'common': 10, 'rareMythic': 1, 'uncommon': 3}, 'weight': 1}], 'boostersTotalWeight': 1, 'name': 'Zendikar Rising Arena Booster', 'sheets': {'common': {'balanceCo… | {'default': {'boosters': [{'contents': {'common': 11, 'rareMythic': 1, 'uncommon': 3}, 'weight': 31}, {'contents': {'common': 10, 'foil': 1, 'rareMythic': 1, 'uncommon': 3}, 'weight': 9}], 'boostersT… | null |
-| code | ZNR | CON | PDRC |
+| id | 551 | 96 | 505 |
+| baseSetSize | 285 | 106 | 9 |
+| block | null | null | Theros |
+| booster | {'arena': {'boosters': [{'contents': {'common': 10, 'rareMythic': 1, 'uncommon': 3}, 'weight': 1}], 'boostersTotalWeight': 1, 'name': 'Zendikar Rising Arena Booster', 'sheets': {'common': {'balanceCo… | null | null |
+| code | ZNR | E01 | THP3 |
 | isFoilOnly | 0 | 0 | 0 |
 | isForeignOnly | 0 | 0 | 0 |
-| isNonFoilOnly | 0 | 0 | 1 |
+| isNonFoilOnly | 0 | 1 | 0 |
 | isOnlineOnly | 0 | 0 | 0 |
 | isPartialPreview | 0 | 0 | 0 |
-| keyruneCode | ZNR | CON | PDRC |
-| mcmId | 3404 | 106 | null |
+| keyruneCode | ZNR | E01 | JOU |
+| mcmId | 3404 | 1730 | null |
 | mcmIdExtras | 3474 | null | null |
-| mcmName | Zendikar Rising | Conflux | null |
-| mtgoCode | ZNR | CON | null |
-| name | Zendikar Rising | Conflux | Dragon Con |
-| parentCode | null | null | null |
-| releaseDate | 2020-09-25 | 2009-02-06 | 1994-07-15 |
-| tcgplayerGroupId | 2648 | 26 | null |
-| totalSetSize | 392 | 145 | 1 |
-| type | expansion | expansion | promo |
+| mcmName | Zendikar Rising | Archenemy: Nicol Bolas | null |
+| mtgoCode | ZNR | null | null |
+| name | Zendikar Rising | Archenemy: Nicol Bolas | Journey into Nyx Hero's Path |
+| parentCode | null | null | JOU |
+| releaseDate | 2020-09-25 | 2017-06-16 | 2014-05-02 |
+| tcgplayerGroupId | 2648 | 1904 | null |
+| totalSetSize | 392 | 106 | 9 |
+| type | expansion | archenemy | promo |

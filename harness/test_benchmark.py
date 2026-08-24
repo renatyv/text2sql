@@ -76,15 +76,21 @@ class BenchmarkTests(unittest.TestCase):
         self.assertIn("Turn 16 is reserved", system)
 
     @patch("harness.prompts._profile_for", return_value="PROFILE")
+    @patch("harness.prompts._schema_links_for", return_value="SCHEMA_LINKS")
     @patch("harness.prompts._metadata_for", return_value="METADATA")
-    def test_four_arms_only_change_context(self, _metadata, _profile) -> None:
+    def test_arms_only_change_context(self, _metadata, _links, _profile) -> None:
         expected = {
-            "raw": (False, False), "profile": (True, False),
-            "metadata": (False, True), "profile_metadata": (True, True),
+            "raw": (False, False, False),
+            "profile": (True, False, False),
+            "links": (False, True, False),
+            "profile_links": (True, True, False),
+            "metadata": (False, False, True),
+            "profile_metadata": (True, False, True),
         }
-        for arm, (has_profile, has_metadata) in expected.items():
+        for arm, (has_profile, has_links, has_metadata) in expected.items():
             system, user = prompts.agent_prompts("neutron", "question", arm, 10)
             self.assertEqual("PROFILE" in user, has_profile)
+            self.assertEqual("SCHEMA_LINKS" in user, has_links)
             self.assertEqual("METADATA" in user, has_metadata)
             self.assertIn("Use any supplied database context first", system)
             self.assertIn("Turn 10 is reserved", system)
