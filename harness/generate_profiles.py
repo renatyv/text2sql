@@ -23,7 +23,7 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-from db_snooper import profile_database
+from db_snooper import profile_database_with_toc
 from db_snooper.contracts import ProfileOptions
 from sqlalchemy import create_engine
 
@@ -41,7 +41,8 @@ def _sqlite_profile_pairs(db_label: str) -> list[tuple[Path, str]]:
 
 def run_sqlite(db_path: Path, profile_key: str, force: bool = False) -> Path | None:
     target = config.profile_path_for(profile_key)
-    if target.is_file() and not force:
+    toc_target = config.profile_toc_path_for(profile_key)
+    if target.is_file() and toc_target.is_file() and not force:
         return None
     with tempfile.TemporaryDirectory(prefix="dbsnoop-") as temp:
         analyzed = Path(temp) / db_path.name
@@ -54,13 +55,16 @@ def run_sqlite(db_path: Path, profile_key: str, force: bool = False) -> Path | N
             conn.close()
         engine = create_engine(f"sqlite:///{analyzed}")
         try:
-            profile = profile_database(
+            profile, toc = profile_database_with_toc(
                 engine, ProfileOptions(large_table_threshold=LARGE_TABLE_THRESHOLD)
             )
         finally:
             engine.dispose()
+        if toc is None:
+            raise RuntimeError(f"db-snooper did not generate a TOC for {db_path}")
         target.parent.mkdir(exist_ok=True)
         target.write_text(profile, encoding="utf-8")
+        toc_target.write_text(toc, encoding="utf-8")
     return target
 
 

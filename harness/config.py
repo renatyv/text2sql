@@ -1,7 +1,7 @@
 """Configuration constants for the db-snooper profiling experiment.
 
-Arms are a 2×2 matrix over profile and aggregated-metadata injection. Database
-tools and the error-avoidance checklist are fixed across every arm.
+The two arms differ only in access to the profile artifacts. Database tools
+and the error-avoidance checklist are fixed across both.
   * pi is the default runner; BEAVER_AGENT can select another installed CLI
   * identical caps across cells (turns, token guard, MySQL timeout)
 """
@@ -124,34 +124,17 @@ PHASE2_SAMPLE_SIZES = {"neutron": 1017, "nova": 1053, "dw": 500, "dw_real": 121,
 PILOT_N = 20  # Phase-1 pilot (neutron)
 
 # ---------------------------------------------------------------------------
-# Arms (profile × aggregated metadata)
+# Arms
 # ---------------------------------------------------------------------------
-# All arms use the same agent, MySQL tools, checklist, caps, and model. Only the
-# two injected artifacts vary, so pairwise differences isolate their effects.
+# Both arms use the same agent, database tools, checklist, caps, and model.
 ARMS: dict[str, dict] = {
     "raw": {
-        "tools": True, "profile": False, "metadata": False, "checklist": True,
+        "tools": True, "profile": False, "checklist": True,
         "description": "raw database access",
     },
     "profile": {
-        "tools": True, "profile": True, "metadata": False, "checklist": True,
-        "description": "raw database access + db-snooper profile",
-    },
-    "links": {
-        "tools": True, "profile": False, "links": True, "metadata": False, "checklist": True,
-        "description": "raw database access + schema links",
-    },
-    "profile_links": {
-        "tools": True, "profile": True, "links": True, "metadata": False, "checklist": True,
-        "description": "raw database access + db-snooper profile + schema links",
-    },
-    "metadata": {
-        "tools": True, "profile": False, "metadata": True, "checklist": True,
-        "description": "raw database access + aggregated metadata",
-    },
-    "profile_metadata": {
-        "tools": True, "profile": True, "metadata": True, "checklist": True,
-        "description": "raw database access + profile + aggregated metadata",
+        "tools": True, "profile": True, "checklist": True,
+        "description": "raw database access + profile, TOC, and schema links",
     },
 }
 
@@ -168,17 +151,8 @@ def arm_spec(name: str) -> dict:
         raise KeyError(f"unknown arm '{name}'; choose from {list(ARMS)}")
 
 
-# Pairwise comparisons reported when both selected arms are present.
-PAIRWISE = [
-    ("raw", "profile"),
-    ("raw", "links"),
-    ("raw", "profile_links"),
-    ("raw", "metadata"),
-    ("profile", "profile_links"),
-    ("links", "profile_links"),
-    ("profile", "profile_metadata"),
-    ("metadata", "profile_metadata"),
-]
+# Pairwise comparison reported when both arms are present.
+PAIRWISE = [("raw", "profile")]
 
 # ---------------------------------------------------------------------------
 # Model (plan §Locked decisions #2) — overridable via env for smoke tests.
@@ -403,6 +377,10 @@ def profile_path_for(profile_key: str) -> Path:
     """Artifact paths are keyed by the question's profile key: the MySQL schema
     name for BEAVER datasets, `<prefix>_<db_id>` for SQLite benchmarks."""
     return PROFILES_DIR / f"{profile_key}.md"
+
+
+def profile_toc_path_for(profile_key: str) -> Path:
+    return PROFILES_DIR / f"{profile_key}.toc.md"
 
 
 def schema_links_path_for(profile_key: str) -> Path:

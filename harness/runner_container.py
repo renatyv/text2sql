@@ -256,6 +256,13 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
         "-v", f"{config.HARNESS_DIR / 'opencode.json'}:/config/opencode.json:ro",
         "-v", f"{agents_dir}:/workspace/.pi/agents:ro",
     ]
+    if config.arm_spec(arm)["profile"]:
+        key = profile_key or db or config.mysql_db_for(db_label)
+        volumes += [
+            "-v", f"{config.profile_path_for(key)}:/workspace/profile.md:ro",
+            "-v", f"{config.profile_toc_path_for(key)}:/workspace/profile.toc.md:ro",
+            "-v", f"{config.schema_links_path_for(key)}:/workspace/schema-links.md:ro",
+        ]
     if engine == "sqlite":
         host_dir = config.databases_dir_for(db_label).resolve()
         rel = config.sqlite_db_path(db).resolve().relative_to(host_dir)

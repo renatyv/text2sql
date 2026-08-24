@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Orchestrate the db-snooper profile × metadata experiment.
+"""Orchestrate the raw-vs-db-snooper-profile experiment.
 
 Implements three phases:
   phase0  — sanity: 1 question × all arms, headless, end-to-end scored
@@ -15,8 +15,7 @@ Examples
   python run_experiment.py --dataset neutron --phase pilot --arm all
 
   # Any subset of arms, with a different sample size per database
-  python run_experiment.py --phase main --samples neutron=100 nova=80 dw=50 \
-      --arms raw profile metadata
+  python run_experiment.py --phase main --samples neutron=100 nova=80 dw=50
 
   # Dry-run cost projection from existing pilot data
   python run_experiment.py --dataset neutron --phase pilot --estimate-cost
@@ -178,6 +177,13 @@ def _protocol_fingerprint(q: dict, arm: str, db: str, max_turns: int) -> str:
         "system_prompt": system,
         "user_prompt": user,
     }
+    if config.arm_spec(arm)["profile"]:
+        payload["profile_hash"] = hashlib.sha256(
+            config.profile_path_for(profile_key).read_bytes()).hexdigest()
+        payload["profile_toc_hash"] = hashlib.sha256(
+            config.profile_toc_path_for(profile_key).read_bytes()).hexdigest()
+        payload["schema_links_hash"] = hashlib.sha256(
+            config.schema_links_path_for(profile_key).read_bytes()).hexdigest()
     return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
 
 

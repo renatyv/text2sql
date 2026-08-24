@@ -85,6 +85,11 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
         evidence=evidence, profile_key=profile_key,
     )
     sandbox.mkdir(parents=True, exist_ok=True)
+    if config.arm_spec(arm)["profile"]:
+        key = profile_key or db or config.mysql_db_for(db_label)
+        shutil.copyfile(config.profile_path_for(key), sandbox / "profile.md")
+        shutil.copyfile(config.profile_toc_path_for(key), sandbox / "profile.toc.md")
+        shutil.copyfile(config.schema_links_path_for(key), sandbox / "schema-links.md")
     agents_dir = sandbox / ".pi" / "agents"
     agents_dir.mkdir(parents=True, exist_ok=True)
     critic = (config.HARNESS_DIR / "pi_agents" / "critic.md").read_text(encoding="utf-8")

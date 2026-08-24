@@ -1,4 +1,4 @@
-"""Prompt construction for the profile × metadata experiment arms.
+"""Prompt construction for the raw-vs-profile experiment arms.
 
 Engine-aware: BEAVER runs on MySQL, BIRD / Spider 2.0 on their original
 SQLite files. Both engine templates carry the same workflow; only dialect
@@ -181,14 +181,6 @@ def _profile_for(profile_key: str) -> str:
     return config.profile_path_for(profile_key).read_text(encoding="utf-8")
 
 
-def _schema_links_for(profile_key: str) -> str:
-    return config.schema_links_path_for(profile_key).read_text(encoding="utf-8")
-
-
-def _metadata_for(profile_key: str) -> str:
-    return config.metadata_path_for(profile_key).read_text(encoding="utf-8")
-
-
 def _target_line(engine: str, db: str) -> str:
     if engine == "sqlite":
         return "Target SQLite database: the read-only file at $BEAVER_DB_PATH."
@@ -214,7 +206,8 @@ def agent_prompts(db_label: str, question: str, arm: str, max_turns: int,
     """Return (system_prompt, user_prompt) for an agentic arm (tools=True).
 
     All arms share tooling, checklist, and base instructions. The arm only
-    controls whether the frozen profile and/or aggregated metadata are included.
+    controls which frozen artifacts are available. Profiles are exposed as files
+    so they do not consume the initial context window.
     ``db``/``profile_key`` resolve per question for multi-database benchmarks
     (BIRD / Spider 2.0); the defaults reproduce the single-database BEAVER setup.
     """
@@ -231,18 +224,10 @@ def agent_prompts(db_label: str, question: str, arm: str, max_turns: int,
     context = []
     if spec["profile"]:
         context.append(
-            f"===== BEGIN DB PROFILE ({key}) =====\n{_profile_for(key)}\n"
-            "===== END DB PROFILE ====="
-        )
-    if spec.get("links"):
-        context.append(
-            f"===== BEGIN SCHEMA LINKS ({key}) =====\n{_schema_links_for(key)}\n"
-            "===== END SCHEMA LINKS ====="
-        )
-    if spec["metadata"]:
-        context.append(
-            f"===== BEGIN AGGREGATED METADATA ({key}) =====\n{_metadata_for(key)}\n"
-            "===== END AGGREGATED METADATA ====="
+            f"DB profile ({key}) is available in `profile.md`; its line index is "
+            "in `profile.toc.md`. Read the table of contents first, then only the "
+            "relevant profile ranges. `schema-links.md` contains candidate "
+            "relationships inferred from the schema and data."
         )
     grounding = "\n\n".join(context) if context else "(none supplied)"
     user = (

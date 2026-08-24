@@ -37,7 +37,7 @@ benchmark-1:
 	@uv run python run_experiment.py \
 	 --phase main \
 	 --samples dw=1 neutron=1 nova=1 \
-	 --arms raw profile metadata \
+	 --arms raw profile \
 	 --model openai/gpt-5.6-luna-pro\
 	 --effort medium\
 	 --workers 4\
@@ -47,7 +47,7 @@ benchmark-10:
 	@uv run python run_experiment.py \
 	 --phase main \
 	 --samples dw=10 neutron=10 nova=10 \
-	 --arms raw profile metadata \
+	 --arms raw profile \
 	 --model openai/gpt-5.6-luna-pro\
 	 --effort medium\
 	 --workers 4\
@@ -57,7 +57,7 @@ benchmark-100:
 	@uv run python run_experiment.py \
 	 --phase main \
 	 --samples dw=100 neutron=100 nova=100 \
-	 --arms raw profile metadata \
+	 --arms raw profile \
 	 --model openai/gpt-5.6-luna-pro\
 	 --effort medium\
 	 --workers 4\
@@ -67,7 +67,7 @@ benchmark-300:
 	@uv run python run_experiment.py \
 	 --phase main \
 	 --samples dw=300 neutron=300 nova=300 \
-	 --arms raw profile metadata \
+	 --arms raw profile \
 	 --model openai/gpt-5.6-luna-pro\
 	 --effort medium\
 	 --workers 4\

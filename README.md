@@ -21,11 +21,9 @@ The agentic arms run in a fresh, unprivileged Docker/OrbStack container for ever
 ## Experiment arms
 
 - `raw` — agent + MySQL CLI.
-- `profile` — raw access + frozen db-snooper profile.
-- `links` — raw access + schema links.
-- `profile_links` — raw access + frozen db-snooper profile + schema links.
-- `metadata` — raw access + aggregated metadata.
-- `profile_metadata` — raw access + both artifacts.
+- `profile` — raw access + read-only `profile.md`, `profile.toc.md`, and
+  `schema-links.md`. The agent reads the TOC and relevant profile ranges itself;
+  the full profile is not injected into its prompt.
 
 All arms use the same agent, prompt instructions, error-avoidance checklist, tools, model, and caps; only the supplied context differs. The default model and caps live in [`harness/config.py`](harness/config.py). The fixed evaluation budget is ten turns and 600 seconds per question. Exhausting either budget counts as an incorrect answer; only transient provider/API failures are retried.
 
@@ -50,7 +48,7 @@ uv sync
 uv run --group data python data/download_hf.py   # only if data/ is missing (re-creates the seed-77 samples)
 docker build -t beaver-agent -f Dockerfile.agent .
 docker build -t beaver-egress-proxy -f Dockerfile.proxy harness/egress
-uv run python run_experiment.py --dataset neutron --phase phase0 --arms raw profile metadata profile_metadata
+uv run python run_experiment.py --dataset neutron --phase phase0
 ```
 
 At startup the runner creates the two networks, attaches MySQL to the internal one, starts the proxy, and provisions `beaver_agent`. The privileged host MySQL credentials still come from `.env` (`BEAVER_MYSQL_*` or `MYSQL_*`). Do not set `BEAVER_AGENT_MYSQL_PWD` unless a stable debugging password is necessary; otherwise a new random password is used for each experiment process.
@@ -59,7 +57,7 @@ Useful runs:
 
 ```bash
 uv run python run_experiment.py --dataset neutron --phase pilot
-uv run python run_experiment.py --phase main --samples neutron=20 nova=20 dw=20 --arms raw profile metadata --workers 8 --max-turns 10
+uv run python run_experiment.py --phase main --samples neutron=20 nova=20 dw=20 --workers 8 --max-turns 10
 uv run python run_experiment.py --dataset neutron --phase pilot --estimate-cost
 uv run python run_experiment.py --dataset neutron --phase pilot --score-only
 ```

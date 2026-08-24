@@ -44,6 +44,18 @@ class ContainerIsolationTests(unittest.TestCase):
         self.assertNotIn("--no-builtin-tools", argv)
         self.assertTrue(any("subagent/index.ts" in arg for arg in argv))
 
+    @patch("harness.runner_container.network.is_ready", return_value=True)
+    @patch("harness.runner_container.subprocess.run")
+    def test_profile_and_toc_are_mounted_without_prompt_injection(self, run, _ready) -> None:
+        run.return_value = subprocess.CompletedProcess(["docker", "run"], 0, "", "")
+        runner_container.run("neutron", "question", "profile", 3, Path("/tmp/x"))
+        argv = run.call_args.args[0]
+        mounts = [argv[i + 1] for i, arg in enumerate(argv) if arg == "-v"]
+        self.assertTrue(any("neutron.md:/workspace/profile.md:ro" in mount for mount in mounts))
+        self.assertTrue(any("neutron.toc.md:/workspace/profile.toc.md:ro" in mount for mount in mounts))
+        self.assertTrue(any("neutron.md:/workspace/schema-links.md:ro" in mount for mount in mounts))
+        self.assertNotIn("BEGIN DB PROFILE", run.call_args.kwargs["input"])
+
     def test_missing_openrouter_model_gets_resolved_metadata(self) -> None:
         model = "vendor/test-model"
         remote = {"data": {

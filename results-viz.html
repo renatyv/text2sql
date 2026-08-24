@@ -245,9 +245,7 @@
 // Mirrors harness/config.py ARMS. Iteration order defines plot and legend order.
 const ARM_INFO = {
   raw:                {badge:"A", label:"raw database access",            color:"var(--A)", desc:"agentic SQL access only"},
-  profile:            {badge:"B", label:"db-snooper profile",              color:"var(--B)", desc:"agentic SQL access + profile"},
-  metadata:           {badge:"C", label:"aggregated metadata",             color:"var(--C)", desc:"agentic SQL access + metadata"},
-  profile_metadata:   {badge:"D", label:"profile + aggregated metadata",   color:"var(--D)", desc:"agentic SQL access + both artifacts"},
+  profile:            {badge:"B", label:"profile + schema links",           color:"var(--B)", desc:"agentic SQL access + profile, TOC, and schema links"},
 };
 const ARMS = Object.keys(ARM_INFO);
 const ARM_LABEL = Object.fromEntries(ARMS.map(a => [a, ARM_INFO[a].label]));
@@ -384,7 +382,7 @@ function wilson(k, n){
 // harness/metrics.py so pooled numbers stay comparable with per-run summaries.
 // ───────────────────────────────────────────────────────────────────────────
 /** Mirrors harness/config.py PAIRWISE as [subtrahend, minuend]. */
-const PAIRS = [["raw","profile"],["raw","metadata"],["profile","profile_metadata"],["metadata","profile_metadata"]];
+const PAIRS = [["raw","profile"]];
 const r2 = x => Math.round(x*100)/100;
 const r4 = x => Math.round(x*10000)/10000;
 const r6 = x => Math.round(x*1e6)/1e6;
