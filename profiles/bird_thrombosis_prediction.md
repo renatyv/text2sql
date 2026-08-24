@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:21:18.748399Z
+generated_at_utc: 2026-08-24T21:56:14.997378Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-a0331w1n/thrombosis_prediction.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-ij2xuh0a/thrombosis_prediction.sqlite
 schema: main
 ---
 
@@ -33,14 +33,14 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ID | 5779550 | 5567980 | 5376780 |
-| Examination Date | 1998-03-31 | 1996-11-07 | 1995-09-04 |
-| aCL IgG | 0 | 1.8 | 0.5 |
-| aCL IgM | 2.5 | 1.3 | 2.2 |
-| ANA | 4 | 0 | 4 |
-| ANA Pattern | S | null | P |
-| aCL IgA | 0 | 0 | 8 |
-| Diagnosis | SLE susp | SjS susp | null |
+| ID | 5779550 | 1787610 | 4860570 |
+| Examination Date | 1998-03-31 | 1997-06-17 | 1996-11-18 |
+| aCL IgG | 0 | 1.1 | 0 |
+| aCL IgM | 2.5 | 3.2 | 1.1 |
+| ANA | 4 | 64 | 4 |
+| ANA Pattern | S | S | P |
+| aCL IgA | 0 | 6 | 0 |
+| Diagnosis | SLE susp | PSS, MCTD | SjS |
 | KCT | null | null | null |
 | RVVT | null | null | null |
 | LAC | null | null | null |
@@ -100,42 +100,42 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ID | 5452747 | 1945616 | 4861720 |
-| Date | 1998-11-17 | 1982-03-10 | 1996-11-14 |
-| GOT | 20 | 21 | 14 |
-| GPT | 16 | 10 | 29 |
-| LDH | 211 | 187 | 703 |
-| ALP | 241 | 245 | 129 |
-| TP | 8.1 | 7.5 | 6.9 |
-| ALB | 4.5 | 4.5 | 4.4 |
-| UA | 4.3 | 3.8 | 5.1 |
-| UN | 14 | 15 | 14 |
-| CRE | 0.5 | 0.9 | 0.6 |
-| T-BIL | 0.3 | 0.4 | 0.3 |
-| T-CHO | 247 | 164 | 237 |
-| TG | null | null | 120 |
+| ID | 5452747 | 4632519 | 1180510 |
+| Date | 1998-11-17 | 1996-03-22 | 1997-08-04 |
+| GOT | 20 | 13 | 15 |
+| GPT | 16 | 6 | 12 |
+| LDH | 211 | 379 | 407 |
+| ALP | 241 | 116 | 98 |
+| TP | 8.1 | 6.8 | 7.1 |
+| ALB | 4.5 | 3.9 | 3.9 |
+| UA | 4.3 | 5 | 3.9 |
+| UN | 14 | 14 | 10 |
+| CRE | 0.5 | 1.2 | 0.3 |
+| T-BIL | 0.3 | 0.3 | 2.5 |
+| T-CHO | 247 | 201 | null |
+| TG | null | 74 | null |
 | CPK | null | null | null |
 | GLU | 127 | null | null |
-| WBC | 12 | 5.7 | 9.9 |
-| RBC | 4.5 | 4.3 | 4.4 |
-| HGB | 14 | 11.8 | 14.7 |
-| HCT | 41.7 | 36.1 | 44.1 |
-| PLT | 327 | 243 | 180 |
+| WBC | 12 | 9.8 | 3.7 |
+| RBC | 4.5 | 3.5 | 3.6 |
+| HGB | 14 | 9.8 | 11.2 |
+| HCT | 41.7 | 30.8 | 33.3 |
+| PLT | 327 | 275 | 229 |
 | PT | null | null | null |
 | APTT | null | null | null |
 | FG | null | null | null |
 | PIC | null | null | null |
 | TAT | null | null | null |
 | TAT2 | null | null | null |
-| U-PRO | - | null | null |
-| IGG | 1210 | null | null |
-| IGA | 345 | null | null |
-| IGM | 88 | null | null |
-| CRP | null | - | <0.2 |
+| U-PRO | - | - | - |
+| IGG | 1210 | 1583 | null |
+| IGA | 345 | 446 | null |
+| IGM | 88 | 100 | null |
+| CRP | null | 0.3 | <0.3 |
 | RA | - | null | null |
-| RF | null | null | null |
-| C3 | null | null | 73 |
-| C4 | null | null | 32 |
+| RF | null | 158.2 | null |
+| C3 | null | 72 | 46 |
+| C4 | null | 27 | 12 |
 | RNP | null | null | null |
 | SM | null | null | null |
 | SC170 | null | null | null |
@@ -161,10 +161,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ID | 5845877 | 5213867 | 283032 |
+| ID | 5845877 | 5307308 | 2988883 |
 | SEX | F | F | F |
-| Birthday | 1951-12-13 | 1958-06-24 | 1951-11-24 |
-| Description | 1998-09-02 | 1996-12-05 | 1994-02-19 |
-| First Date | 1998-08-28 | 1994-09-06 | 1985-10-01 |
-| Admission | + | + | - |
-| Diagnosis | Weber-Christian, PM | SLE | SLE |
+| Birthday | 1951-12-13 | 1957-10-14 | 1940-01-01 |
+| Description | 1998-09-02 | 1996-12-05 | 1997-03-27 |
+| First Date | 1998-08-28 | 1995-04-11 | null |
+| Admission | + | - | - |
+| Diagnosis | Weber-Christian, PM | RA | RA, SJS |

@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:23:56.548646Z
+generated_at_utc: 2026-08-24T21:59:26.301985Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-4l6qfvi8/modern_data.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-cf5n7yee/modern_data.sqlite
 schema: main
 ---
 
@@ -19,9 +19,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| company_id | 1073 | 345 | 591 |
-| date_joined | 2020-09-16T00:00:00.000 | 2021-04-14T00:00:00.000 | 2021-09-16T00:00:00.000 |
-| year_founded | 2014 | 2015 | 2016 |
+| company_id | 1073 | 125 | 610 |
+| date_joined | 2020-09-16T00:00:00.000 | 2020-11-10T00:00:00.000 | 2018-04-16T00:00:00.000 |
+| year_founded | 2014 | 2018 | 2014 |
 
 # "companies_funding"  (rows=1085)
 
@@ -36,10 +36,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| company_id | 1073 | 947 | 92 |
-| valuation | 1000000000 | 1000000000 | 7000000000 |
-| funding | 620000000 | 0 | 844000000 |
-| select_investors | "Novator Partners, True, Causeway Media Partners" | "Berkshire Partners, Norwest Venture Partners" | "Bessemer Venture Partners, Qualcomm Ventures, Kleiner Perkins Caufield & Byers" |
+| company_id | 1073 | 895 | 162 |
+| valuation | 1000000000 | 1000000000 | 5000000000 |
+| funding | 620000000 | 305000000 | 903000000 |
+| select_investors | "Novator Partners, True, Causeway Media Partners" | "American Family Ventures, Cox Enterprises, OMERS Ventures" | "Sequoia Capital India, Temasek, PayPal Ventures" |
 
 # "companies_industries"  (rows=1085)
 
@@ -52,8 +52,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| company_id | 1073 | 285 | 835 |
-| industry | E-commerce & direct-to-consumer | Auto & transportation | Mobile & telecommunications |
+| company_id | 1073 | 52 | 599 |
+| industry | E-commerce & direct-to-consumer | E-commerce & direct-to-consumer | Internet software & services |
 
 # "income_trees"  (rows=220)
 
@@ -71,13 +71,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| zipcode | 11697 | 10013 | 10169 |
-| Estimate_Total | 1520 | 11558 | 0 |
-| Margin_of_Error_Total | 139 | 507 | 11 |
-| Estimate_Median_income | 93333 | 96667 | 0 |
-| Margin_of_Error_Median_income | 21346 | 17159 | 0 |
-| Estimate_Mean_income | 109500 | 242875 | 0 |
-| Margin_of_Error_Mean_income | 11505 | 27704 | 0 |
+| zipcode | 11697 | 10026 | 11238 |
+| Estimate_Total | 1520 | 14527 | 23310 |
+| Margin_of_Error_Total | 139 | 360 | 526 |
+| Estimate_Median_income | 93333 | 47264 | 70873 |
+| Margin_of_Error_Median_income | 21346 | 4441 | 4505 |
+| Estimate_Mean_income | 109500 | 79815 | 93918 |
+| Margin_of_Error_Mean_income | 11505 | 6041 | 3877 |
 
 # "pizza_clean_customer_orders"  (rows=14)
 
@@ -94,12 +94,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| order_id | 10 | 10 | 3 |
-| customer_id | 104 | 104 | 102 |
+| order_id | 10 | 8 | 6 |
+| customer_id | 104 | 102 | 101 |
 | pizza_id | 1 | 1 | 2 |
 | exclusions | 2,6 | null | null |
 | extras | 1,4 | null | null |
-| order_time | 2021-01-11 18:34:49 | 2021-01-11 18:34:49 | 2021-01-02 23:51:23 |
+| order_time | 2021-01-11 18:34:49 | 2021-01-09 23:54:33 | 2021-01-08 21:03:13 |
 
 # "pizza_clean_runner_orders"  (rows=10)
 
@@ -138,12 +138,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| order_id | 10 | 8 | 3 |
-| customer_id | 104 | 102 | 102 |
+| order_id | 10 | 1 | 4 |
+| customer_id | 104 | 101 | 103 |
 | pizza_id | 1 | 1 | 1 |
-| exclusions | 2,6 | null | null |
+| exclusions | 2,6 | null | 4 |
 | extras | 1,4 | null | null |
-| order_time | 2021-01-11 18:34:49 | 2021-01-09 23:54:33 | 2021-01-02 23:51:23 |
+| order_time | 2021-01-11 18:34:49 | 2021-01-01 18:05:02 | 2021-01-04 13:23:46 |
 
 # "pizza_get_exclusions"  (rows=4)
 
@@ -256,8 +256,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| topping_id | 12 | 9 | 10 |
-| topping_name | Tomato Sauce | Peppers | Salami |
+| topping_id | 12 | 10 | 11 |
+| topping_name | Tomato Sauce | Salami | Tomatoes |
 
 # "statistics"  (rows=1010)
 
@@ -272,10 +272,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| date | 2020-11-11 00:00:00 | 2020-03-16 00:00:00 | 2020-09-17 00:00:00 |
+| date | 2020-11-11 00:00:00 | 2020-10-15 00:00:00 | 2020-10-01 00:00:00 |
 | state | MA | MA | FL |
-| total_cases | 182367 | 197 | 666507 |
-| total_deaths | 10202 | 0 | 13086 |
+| total_cases | 182367 | 148547 | 700602 |
+| total_deaths | 10202 | 9660 | 14444 |
 
 # "trees"  (rows=≈690626)
 

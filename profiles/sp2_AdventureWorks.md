@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:21:19.851352Z
+generated_at_utc: 2026-08-24T21:56:54.526732Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-x43txxxs/AdventureWorks.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-kzjs5_7k/AdventureWorks.sqlite
 schema: main
 ---
 
@@ -21,11 +21,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| BusinessEntityID | 290 | 279 | 290 |
-| QuotaDate | 2014-03-01 00:00:00 | 2013-02-28 00:00:00 | 2013-11-30 00:00:00 |
-| SalesQuota | 908000 | 572000 | 707000 |
-| rowguid | {00F2F9F8-5158-4436-B134-7E0C462289E5} | {173AD1F3-C953-4182-8168-97190CA5F929} | {A6CF1E2A-DA84-407A-9BEC-4AD473708C0B} |
-| ModifiedDate | 2014-01-15 00:00:00 | 2013-01-14 00:00:00 | 2013-10-16 00:00:00 |
+| BusinessEntityID | 290 | 290 | 282 |
+| QuotaDate | 2014-03-01 00:00:00 | 2013-05-30 00:00:00 | 2014-03-01 00:00:00 |
+| SalesQuota | 908000 | 1.3e+06 | 830000 |
+| rowguid | {00F2F9F8-5158-4436-B134-7E0C462289E5} | {C637E5F0-1E12-41F6-932E-53714B6961A8} | {F020801A-4E65-42E3-83E5-CB92FDE0BEEE} |
+| ModifiedDate | 2014-01-15 00:00:00 | 2013-04-15 00:00:00 | 2014-01-15 00:00:00 |
 
 # "countryregioncurrency"  (rows=109)
 

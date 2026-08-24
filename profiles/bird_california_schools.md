@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:20:18.802186Z
+generated_at_utc: 2026-08-24T21:55:17.585363Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-3j0htcqo/california_schools.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-g88v7q69/california_schools.sqlite
 schema: main
 ---
 
@@ -49,34 +49,34 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| CDSCode | 58727695838305 | 01612916002414 | 50757395037700 |
+| CDSCode | 58727695838305 | 56739400121426 | 30666476030969 |
 | Academic Year | 2014-2015 | 2014-2015 | 2014-2015 |
-| County Code | 58 | 01 | 50 |
-| District Code | 72769 | 61291 | 75739 |
-| School Code | 5838305 | 6002414 | 5037700 |
-| County Name | Yuba | Alameda | Stanislaus |
-| District Name | Wheatland Union High | San Leandro Unified | Turlock Unified |
-| School Name | Wheatland Union High | Madison Elementary | Turlock High |
+| County Code | 58 | 56 | 30 |
+| District Code | 72769 | 73940 | 66647 |
+| School Code | 5838305 | 0121426 | 6030969 |
+| County Name | Yuba | Ventura | Orange |
+| District Name | Wheatland Union High | Moorpark Unified | Placentia-Yorba Linda Unified |
+| School Name | Wheatland Union High | IvyTech Charter | Yorba Linda Middle |
 | District Type | High School District | Unified School District | Unified School District |
-| School Type | High Schools (Public) | Elementary Schools (Public) | High Schools (Public) |
+| School Type | High Schools (Public) | K-12 Schools (Public) | Intermediate/Middle Schools (Public) |
 | Educational Option Type | Traditional | Traditional | Traditional |
 | NSLP Provision Status | null | null | null |
-| Charter School (Y/N) | 0 | 0 | 0 |
-| Charter School Number | null | null | null |
-| Charter Funding Type | null | null | null |
-| IRC | 0 | 0 | 0 |
-| Low Grade | 9 | K | 9 |
-| High Grade | 12 | 5 | 12 |
-| Enrollment (K-12) | 732 | 408 | 2209 |
-| Free Meal Count (K-12) | 164 | 103 | 1157 |
-| Percent (%) Eligible Free (K-12) | 0.224044 | 0.252451 | 0.523766 |
-| FRPM Count (K-12) | 227 | 136 | 1368 |
-| Percent (%) Eligible FRPM (K-12) | 0.310109 | 0.333333 | 0.619285 |
-| Enrollment (Ages 5-17) | 711 | 408 | 2156 |
-| Free Meal Count (Ages 5-17) | 158 | 103 | 1120 |
-| Percent (%) Eligible Free (Ages 5-17) | 0.222222 | 0.252451 | 0.519481 |
-| FRPM Count (Ages 5-17) | 220 | 136 | 1324 |
-| Percent (%) Eligible FRPM (Ages 5-17) | 0.309423 | 0.333333 | 0.6141 |
+| Charter School (Y/N) | 0 | 1 | 0 |
+| Charter School Number | null | 1202 | null |
+| Charter Funding Type | null | Directly funded | null |
+| IRC | 0 | 1 | 0 |
+| Low Grade | 9 | 7 | 6 |
+| High Grade | 12 | 12 | 8 |
+| Enrollment (K-12) | 732 | 101 | 922 |
+| Free Meal Count (K-12) | 164 | 13 | 138 |
+| Percent (%) Eligible Free (K-12) | 0.224044 | 0.128713 | 0.149675 |
+| FRPM Count (K-12) | 227 | 16 | 178 |
+| Percent (%) Eligible FRPM (K-12) | 0.310109 | 0.158416 | 0.193059 |
+| Enrollment (Ages 5-17) | 711 | 76 | 922 |
+| Free Meal Count (Ages 5-17) | 158 | 11 | 138 |
+| Percent (%) Eligible Free (Ages 5-17) | 0.222222 | 0.144737 | 0.149675 |
+| FRPM Count (Ages 5-17) | 220 | 12 | 178 |
+| Percent (%) Eligible FRPM (Ages 5-17) | 0.309423 | 0.157895 | 0.193059 |
 | 2013-14 CALPADS Fall 1 Certification Status | 1 | 1 | 1 |
 
 # "satscores"  (rows=2269)
@@ -99,17 +99,17 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| cds | 58727695838305 | 19647331930619 | 36679593638509 |
-| rtype | S | S | S |
-| sname | Wheatland Union High | Harold McAlister High (Opportunity) | Yucaipa High |
-| dname | Wheatland Union High | Los Angeles Unified | Yucaipa-Calimesa Joint Unified |
-| cname | Yuba | Los Angeles | San Bernardino |
-| enroll12 | 160 | 43 | 622 |
-| NumTstTakr | 54 | 2 | 267 |
-| AvgScrRead | 480 | null | 482 |
-| AvgScrMath | 475 | null | 489 |
-| AvgScrWrite | 463 | null | 481 |
-| NumGE1500 | 21 | null | 110 |
+| cds | 58727695838305 | 10621660000000 | 26736920000000 |
+| rtype | S | D | D |
+| sname | Wheatland Union High | null | null |
+| dname | Wheatland Union High | Fresno Unified | Mammoth Unified |
+| cname | Yuba | Fresno | Mono |
+| enroll12 | 160 | 5057 | 68 |
+| NumTstTakr | 54 | 2216 | 39 |
+| AvgScrRead | 480 | 435 | 500 |
+| AvgScrMath | 475 | 438 | 505 |
+| AvgScrWrite | 463 | 427 | 492 |
+| NumGE1500 | 21 | 508 | 20 |
 
 # "schools"  (rows=17686)
 
@@ -169,52 +169,52 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| CDSCode | 58727695838305 | 30664496058911 | 37735696088991 |
-| NCESDist | 0642350 | 0605880 | 0628250 |
-| NCESSchool | 06930 | 00527 | 04357 |
-| StatusType | Active | Active | Active |
-| County | Yuba | Orange | San Diego |
-| District | Wheatland Union High | Brea-Olinda Unified | Oceanside Unified |
-| School | Wheatland Union High | Brea Junior High | Del Rio Elementary |
-| Street | 1010 Wheatland Road | 400 North Brea Boulevard | 5200 North River Road |
-| StreetAbr | 1010 Wheatland Rd. | 400 North Brea Blvd. | 5200 North River Rd. |
-| City | Wheatland | Brea | Oceanside |
-| Zip | 95692-9798 | 92821-3399 | 92057-3811 |
+| CDSCode | 58727695838305 | 43104396066435 | 37683386039754 |
+| NCESDist | 0642350 | 0691035 | 0634320 |
+| NCESSchool | 06930 | null | 05483 |
+| StatusType | Active | Merged | Active |
+| County | Yuba | Santa Clara | San Diego |
+| District | Wheatland Union High | Santa Clara County Office of Education | San Diego Unified |
+| School | Wheatland Union High | Osborne Juvenile Center | Horton Elementary |
+| Street | 1010 Wheatland Road | 840 Guadalupe Parkway | 5050 Guymon Street |
+| StreetAbr | 1010 Wheatland Rd. | 840 Guadalupe Pkwy. | 5050 Guymon St. |
+| City | Wheatland | San Jose | San Diego |
+| Zip | 95692-9798 | 95110 | 92102-3734 |
 | State | CA | CA | CA |
-| MailStreet | 1010 Wheatland Road | 400 North Brea Boulevard | 5200 North River Road |
-| MailStrAbr | 1010 Wheatland Rd. | 400 North Brea Blvd. | 5200 North River Rd. |
-| MailCity | Wheatland | Brea | Oceanside |
-| MailZip | 95692-9798 | 92821-3399 | 92057-3811 |
+| MailStreet | 1010 Wheatland Road | 840 Guadalupe Parkway | 5050 Guymon Street |
+| MailStrAbr | 1010 Wheatland Rd. | 840 Guadalupe Pkwy. | 5050 Guymon St. |
+| MailCity | Wheatland | San Jose | San Diego |
+| MailZip | 95692-9798 | 95110 | 92102-3734 |
 | MailState | CA | CA | CA |
-| Phone | (530) 633-3100 | (714) 990-7500 | (760) 901-7300 |
+| Phone | (530) 633-3100 | null | (619) 264-0171 |
 | Ext | null | null | null |
-| Website | www.wheatlandhigh.org | null | http://delrio.oside.us/ |
+| Website | www.wheatlandhigh.org | null | null |
 | OpenDate | 1980-07-01 | 1980-07-01 | 1980-07-01 |
-| ClosedDate | null | null | null |
+| ClosedDate | null | 1989-06-30 | null |
 | Charter | 0 | 0 | 0 |
 | CharterNum | null | null | null |
 | FundingType | null | null | null |
-| DOC | 56 | 54 | 54 |
-| DOCType | High School District | Unified School District | Unified School District |
-| SOC | 66 | 62 | 60 |
-| SOCType | High Schools (Public) | Intermediate/Middle Schools (Public) | Elementary Schools (Public) |
-| EdOpsCode | TRAD | TRAD | TRAD |
-| EdOpsName | Traditional | Traditional | Traditional |
-| EILCode | HS | INTMIDJR | ELEM |
-| EILName | High School | Intermediate/Middle/Junior High | Elementary |
-| GSoffered | 9-12 | 7-8 | K-5 |
-| GSserved | 9-12 | 7-8 | K-5 |
-| Virtual | N | N | N |
-| Magnet | 0 | 0 | 0 |
-| Latitude | 38.999 | 33.925 | 33.2553 |
-| Longitude | -121.455 | -117.896 | -117.295 |
-| AdmFName1 | Vic | Kelly | Kimo |
-| AdmLName1 | Ramos | Kennedy | Marquardt |
-| AdmEmail1 | vramos@wheatlandhigh.org | kkennedy@bousd.us | kimo.marquardt@oside.us |
+| DOC | 56 | 00 | 54 |
+| DOCType | High School District | County Office of Education (COE) | Unified School District |
+| SOC | 66 | 14 | 60 |
+| SOCType | High Schools (Public) | Juvenile Court Schools | Elementary Schools (Public) |
+| EdOpsCode | TRAD | null | TRAD |
+| EdOpsName | Traditional | null | Traditional |
+| EILCode | HS | ELEMHIGH | ELEM |
+| EILName | High School | Elementary-High Combination | Elementary |
+| GSoffered | 9-12 | 5-12 | K-5 |
+| GSserved | 9-12 | null | K-5 |
+| Virtual | N | null | N |
+| Magnet | 0 | null | 0 |
+| Latitude | 38.999 | null | 32.7123 |
+| Longitude | -121.455 | null | -117.086 |
+| AdmFName1 | Vic | null | Staci |
+| AdmLName1 | Ramos | null | Dent |
+| AdmEmail1 | vramos@wheatlandhigh.org | null | sdent@sandi.net |
 | AdmFName2 | null | null | null |
 | AdmLName2 | null | null | null |
 | AdmEmail2 | null | null | null |
 | AdmFName3 | null | null | null |
 | AdmLName3 | null | null | null |
 | AdmEmail3 | null | null | null |
-| LastUpdate | 2015-06-18 | 2015-06-18 | 2015-06-18 |
+| LastUpdate | 2015-06-18 | 1999-06-24 | 2015-09-17 |

@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:21:17.405221Z
+generated_at_utc: 2026-08-24T21:56:13.689018Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-xnsadlmr/formula_1.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-ej0n0aez/formula_1.sqlite
 schema: main
 ---
 
@@ -34,15 +34,15 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| circuitId | 73 | 30 | 12 |
-| circuitRef | BAK | kyalami | valencia |
-| name | Baku City Circuit | Kyalami | Valencia Street Circuit |
-| location | Baku | Midrand | Valencia |
-| country | Azerbaijan | South Africa | Spain |
-| lat | 40.3725 | -25.9894 | 39.4589 |
-| lng | 49.8533 | 28.0767 | -0.331667 |
+| circuitId | 73 | 42 | 56 |
+| circuitRef | BAK | dallas | george |
+| name | Baku City Circuit | Fair Park | Prince George Circuit |
+| location | Baku | Dallas | Eastern Cape Province |
+| country | Azerbaijan | USA | South Africa |
+| lat | 40.3725 | 32.7774 | -33.0486 |
+| lng | 49.8533 | -96.7587 | 27.8736 |
 | alt | null | null | null |
-| url | http://en.wikipedia.org/wiki/Baku_City_Circuit | http://en.wikipedia.org/wiki/Kyalami | http://en.wikipedia.org/wiki/Valencia_Street_Circuit |
+| url | http://en.wikipedia.org/wiki/Baku_City_Circuit | http://en.wikipedia.org/wiki/Fair_Park | http://en.wikipedia.org/wiki/Prince_George_Circuit |
 
 # "constructorResults"  (rows=11082)
 
@@ -58,10 +58,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| constructorResultsId | 15579 | 12977 | 11113 |
-| raceId | 982 | 565 | 694 |
-| constructorId | 6 | 56 | 167 |
-| points | 0 | 1 | 0 |
+| constructorResultsId | 15579 | 824 | 5627 |
+| raceId | 982 | 96 | 460 |
+| constructorId | 6 | 17 | 4 |
+| points | 0 | 0 | 9 |
 | status | null | null | null |
 
 # "constructorStandings"  (rows=11836)
@@ -80,12 +80,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| constructorStandingsId | 26872 | 24591 | 24379 |
-| raceId | 982 | 846 | 348 |
-| constructorId | 210 | 6 | 131 |
-| points | 37 | 93 | 132 |
-| position | 8 | 3 | 4 |
-| positionText | 8 | 3 | 4 |
+| constructorStandingsId | 26872 | 8256 | 24277 |
+| raceId | 982 | 306 | 340 |
+| constructorId | 210 | 17 | 15 |
+| points | 37 | 0 | 0 |
+| position | 8 | 11 | 9 |
+| positionText | 8 | 11 | 9 |
 | wins | 0 | 0 | 0 |
 
 # "constructors"  (rows=208)
@@ -102,11 +102,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| constructorId | 210 | 199 | 197 |
-| constructorRef | haas | march-alfa_romeo | brm-ford |
-| name | Haas F1 Team | March-Alfa Romeo | BRM-Ford |
-| nationality | American | British | British |
-| url | http://en.wikipedia.org/wiki/Haas_F1_Team | http://en.wikipedia.org/wiki/March_Engineering | http://en.wikipedia.org/wiki/BRM |
+| constructorId | 210 | 73 | 58 |
+| constructorRef | haas | parnelli | shadow |
+| name | Haas F1 Team | Parnelli | Shadow |
+| nationality | American | American | British |
+| url | http://en.wikipedia.org/wiki/Haas_F1_Team | http://en.wikipedia.org/wiki/Parnelli | http://en.wikipedia.org/wiki/Shadow_Racing_Cars |
 
 # "driverStandings"  (rows=31578)
 
@@ -124,12 +124,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| driverStandingsId | 68460 | 57934 | 3321 |
-| raceId | 982 | 549 | 169 |
-| driverId | 814 | 256 | 55 |
-| points | 0 | 0 | 0 |
-| position | 23 | 29 | 22 |
-| positionText | 23 | 29 | 22 |
+| driverStandingsId | 68460 | 10580 | 13645 |
+| raceId | 982 | 254 | 37 |
+| driverId | 814 | 84 | 19 |
+| points | 0 | 7 | 0 |
+| position | 23 | 12 | 18 |
+| positionText | 23 | 12 | 18 |
 | wins | 0 | 0 | 0 |
 
 # "drivers"  (rows=840)
@@ -150,15 +150,15 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| driverId | 841 | 392 | 329 |
-| driverRef | giovinazzi | fisher | beuttler |
+| driverId | 841 | 427 | 798 |
+| driverRef | giovinazzi | trintignant | levrett |
 | number | 36 | null | null |
 | code | GIO | null | null |
-| forename | Antonio | Mike | Mike |
-| surname | Giovinazzi | Fisher | Beuttler |
-| dob | 1993-12-14 | 1943-03-13 | 1940-04-13 |
-| nationality | Italian | American | British |
-| url | http://en.wikipedia.org/wiki/Antonio_Giovinazzi | http://en.wikipedia.org/wiki/Mike_Fisher_(driver) | http://en.wikipedia.org/wiki/Mike_Beuttler |
+| forename | Antonio | Maurice | Bayliss |
+| surname | Giovinazzi | Trintignant | Levrett |
+| dob | 1993-12-14 | 1917-10-30 | 1914-02-14 |
+| nationality | Italian | French | American |
+| url | http://en.wikipedia.org/wiki/Antonio_Giovinazzi | http://en.wikipedia.org/wiki/Maurice_Trintignant | http://en.wikipedia.org/wiki/Bayliss_Levrett |
 
 # "lapTimes"  (rows=≈400524)
 
@@ -189,13 +189,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| raceId | 982 | 955 | 898 |
-| driverId | 840 | 830 | 818 |
+| raceId | 982 | 861 | 959 |
+| driverId | 840 | 8 | 821 |
 | stop | 4 | 2 | 1 |
-| lap | 26 | 20 | 27 |
-| time | 21:05:07 | 17:41:33 | 13:54:22 |
-| duration | 29.412 | 22.497 | 24.381 |
-| milliseconds | 29412 | 22497 | 24381 |
+| lap | 26 | 13 | 25 |
+| time | 21:05:07 | 17:26:32 | 14:38:07 |
+| duration | 29.412 | 24.927 | 20.099 |
+| milliseconds | 29412 | 24927 | 20099 |
 
 # "qualifying"  (rows=6967)
 
@@ -215,15 +215,15 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| qualifyId | 7419 | 1144 | 1078 |
-| raceId | 982 | 77 | 68 |
-| driverId | 828 | 4 | 30 |
-| constructorId | 15 | 4 | 6 |
-| number | 9 | 5 | 5 |
-| position | 20 | 6 | 6 |
-| q1 | 1:45.570 | 1:31.056 | 1:47.366 |
-| q2 | null | null | 1:45.660 |
-| q3 | null | null | 1:45.775 |
+| qualifyId | 7419 | 3729 | 4837 |
+| raceId | 982 | 353 | 854 |
+| driverId | 828 | 10 | 811 |
+| constructorId | 15 | 166 | 4 |
+| number | 9 | 24 | 9 |
+| position | 20 | 20 | 15 |
+| q1 | 1:45.570 | 1:40.748 | 1:48.861 |
+| q2 | null | null | 1:48.662 |
+| q3 | null | null | null |
 
 # "races"  (rows=954)
 
@@ -242,14 +242,14 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| raceId | 988 | 622 | 57 |
-| year | 2017 | 1972 | 2006 |
-| round | 20 | 3 | 5 |
-| circuitId | 24 | 45 | 20 |
-| name | Abu Dhabi Grand Prix | Spanish Grand Prix | European Grand Prix |
-| date | 2017-11-26 | 1972-05-01 | 2006-05-07 |
-| time | 17:00:00 | null | 14:00:00 |
-| url | https://en.wikipedia.org/wiki/2017_Abu_Dhabi_Grand_Prix | http://en.wikipedia.org/wiki/1972_Spanish_Grand_Prix | http://en.wikipedia.org/wiki/2006_European_Grand_Prix |
+| raceId | 988 | 686 | 135 |
+| year | 2017 | 1967 | 2002 |
+| round | 20 | 8 | 12 |
+| circuitId | 24 | 48 | 10 |
+| name | Abu Dhabi Grand Prix | Canadian Grand Prix | German Grand Prix |
+| date | 2017-11-26 | 1967-08-27 | 2002-07-28 |
+| time | 17:00:00 | null | null |
+| url | https://en.wikipedia.org/wiki/2017_Abu_Dhabi_Grand_Prix | http://en.wikipedia.org/wiki/1967_Canadian_Grand_Prix | http://en.wikipedia.org/wiki/2002_German_Grand_Prix |
 
 # "results"  (rows=23179)
 
@@ -278,24 +278,24 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| resultId | 23661 | 14718 | 1215 |
-| raceId | 982 | 597 | 74 |
-| driverId | 8 | 224 | 40 |
-| constructorId | 6 | 1 | 18 |
-| number | 7 | 5 | 20 |
-| grid | 4 | 3 | 19 |
-| position | null | 3 | null |
-| positionText | R | 3 | R |
-| positionOrder | 20 | 3 | 17 |
-| points | 0 | 4 | 0 |
-| laps | 0 | 75 | 8 |
-| time | null | +30.27 | null |
-| milliseconds | null | 6210620 | null |
-| fastestLap | null | null | 5 |
-| rank | 0 | null | 20 |
-| fastestLapTime | null | null | 1:28.334 |
-| fastestLapSpeed | null | null | 201.041 |
-| statusId | 3 | 1 | 8 |
+| resultId | 23661 | 11794 | 16166 |
+| raceId | 982 | 491 | 654 |
+| driverId | 8 | 163 | 346 |
+| constructorId | 6 | 4 | 37 |
+| number | 7 | 16 | 11 |
+| grid | 4 | 1 | 23 |
+| position | null | 9 | 9 |
+| positionText | R | 9 | 9 |
+| positionOrder | 20 | 9 | 9 |
+| points | 0 | 0 | 0 |
+| laps | 0 | 64 | 105 |
+| time | null | null | null |
+| milliseconds | null | null | null |
+| fastestLap | null | null | null |
+| rank | 0 | null | null |
+| fastestLapTime | null | null | null |
+| fastestLapSpeed | null | null | null |
+| statusId | 3 | 99 | 13 |
 
 # "seasons"  (rows=68)
 
@@ -308,8 +308,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| year | 2017 | 1953 | 1970 |
-| url | https://en.wikipedia.org/wiki/2017_Formula_One_season | http://en.wikipedia.org/wiki/1953_Formula_One_season | http://en.wikipedia.org/wiki/1970_Formula_One_season |
+| year | 2017 | 1956 | 2013 |
+| url | https://en.wikipedia.org/wiki/2017_Formula_One_season | http://en.wikipedia.org/wiki/1956_Formula_One_season | http://en.wikipedia.org/wiki/2013_Formula_One_season |
 
 # "status"  (rows=134)
 
@@ -322,5 +322,5 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| statusId | 136 | 125 | 67 |
-| status | Seat | +46 Laps | Wheel bearing |
+| statusId | 136 | 123 | 21 |
+| status | Seat | +30 Laps | Radiator |

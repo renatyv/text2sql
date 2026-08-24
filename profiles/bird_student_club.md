@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:21:18.494688Z
+generated_at_utc: 2026-08-24T21:56:14.753779Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-8cd_vpeu/student_club.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-re8651l_/student_club.sqlite
 schema: main
 ---
 
@@ -26,8 +26,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| link_to_event | reczhS8wix6Kzbp9P | recykdvf4LgsyA3wZ | recLKj8BbTNqxFbTb |
-| link_to_member | recxBj3tjKTGHqucS | recf4UKTfipCzgcSA | recxBj3tjKTGHqucS |
+| link_to_event | reczhS8wix6Kzbp9P | recGxVCwaLW3mDIa3 | rec5XDvJLyxDsGZWc |
+| link_to_member | recxBj3tjKTGHqucS | recttfySfQnYb68u3 | recsTO4OZIF9rbubk |
 
 # "budget"  (rows=52)
 
@@ -45,13 +45,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| budget_id | recziC0Fccvve12RF | reczf4LoOK6z7oOec | recpyBgyiqxFEFCI3 |
-| category | Parking | Food | Food |
-| spent | 0 | 122.33 | 0 |
-| remaining | 10 | 27.67 | 150 |
-| amount | 10 | 150 | 150 |
-| event_status | Open | Closed | Open |
-| link_to_event | recAlAwtBZ0Fqbr5K | reciRZdAqNIKuMC96 | recerGvehRmgO0obW |
+| budget_id | recziC0Fccvve12RF | reckyFmOuPIIya9hY | rec0QmEc3cSQFQ6V2 |
+| category | Parking | Advertisement | Advertisement |
+| spent | 0 | 0 | 67.81 |
+| remaining | 10 | 75 | 7.19 |
+| amount | 10 | 75 | 75 |
+| event_status | Open | Open | Closed |
+| link_to_event | recAlAwtBZ0Fqbr5K | recAlAwtBZ0Fqbr5K | recI43CzsZ0Q625ma |
 
 # "event"  (rows=42)
 
@@ -69,13 +69,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| event_id | reczhS8wix6Kzbp9P | recY3Yesu24bRK7tr | reciRZdAqNIKuMC96 |
-| event_name | September Meeting | January Meeting | November Speaker |
-| event_date | 2019-09-10T12:00:00 | 2020-01-14T12:00:00 | 2019-11-19T12:00:00 |
-| type | Meeting | Meeting | Guest Speaker |
-| notes | null | null | null |
-| location | MU 215 | MU 215 | MU 215 |
-| status | Closed | Open | Closed |
+| event_id | reczhS8wix6Kzbp9P | recJcyZUsdhK2ukaY | rec2mJrCofveboaz6 |
+| event_name | September Meeting | Laugh Out Loud | April Speaker |
+| event_date | 2019-09-10T12:00:00 | 2020-04-23T13:00:00 | 2020-04-21T12:00:00 |
+| type | Meeting | Social | Guest Speaker |
+| notes | null | Semester social event. Optional attendance. | null |
+| location | MU 215 | 900 E. Washington St. | MU 215 |
+| status | Closed | Planning | Planning |
 
 # "expense"  (rows=32)
 
@@ -93,13 +93,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| expense_id | recytertXPNtYtkC3 | recelGWS0AxwSMQwl | rec1oMgNFt7Y0G40x |
-| expense_description | Bakery - Donuts, muffins | Alumni Glass | Pizza |
-| expense_date | 2019-09-03 | 2019-11-14 | 2019-09-10 |
-| cost | 195.3 | 16.28 | 51.81 |
+| expense_id | recytertXPNtYtkC3 | rec1nIjoZKTYayqZ6 | recoMvesC2XeccvpV |
+| expense_description | Bakery - Donuts, muffins | Water, Cookies | Water, Cookies |
+| expense_date | 2019-09-03 | 2019-10-08 | 2019-11-05 |
+| cost | 195.3 | 20.2 | 20.2 |
 | approved | true | true | true |
-| link_to_member | rec4BLdZHS2Blfp4v | rec4BLdZHS2Blfp4v | recD078PnS3x2doBe |
-| link_to_budget | recca5tkvdQgoLKZz | recutlCwBNym7tS12 | recwXIiKoBMjXJsGZ |
+| link_to_member | rec4BLdZHS2Blfp4v | recro8T1MPMwRadVH | recD078PnS3x2doBe |
+| link_to_budget | recca5tkvdQgoLKZz | recy8KY5bUdzF81vv | rec1z6ISJU2HdIsVm |
 
 # "income"  (rows=36)
 
@@ -116,12 +116,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| income_id | reczYkzM4iPYdi8rh | recms6rgtCkMIYg1A | recOo362sJrXFv2az |
-| date_received | 2019-09-12 | 2019-09-22 | 2019-09-25 |
+| income_id | reczYkzM4iPYdi8rh | recbCZLKaq6fihDEu | recXFdA0P6QkxSqg8 |
+| date_received | 2019-09-12 | 2019-09-27 | 2019-09-18 |
 | amount | 50 | 50 | 50 |
 | source | Dues | Dues | Dues |
 | notes | null | null | null |
-| link_to_member | rec3pH4DxMcWHMRB7 | recD078PnS3x2doBe | recL94zpn6Xh6kQii |
+| link_to_member | rec3pH4DxMcWHMRB7 | recxBj3tjKTGHqucS | recP6DJPyi5donvXL |
 
 # "major"  (rows=113)
 
@@ -136,10 +136,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| major_id | recz2waxrgL2KJEHe | recgszEfeJ5j1n90X | recR2UFppcwddeAkz |
-| major_name | Art History | Management | Recreation Administration |
-| department | Art and Design Department | Management Department | Kinesiology and Health Science Department |
-| college | College of the Arts | School of Business | College of Education & Human Services |
+| major_id | recz2waxrgL2KJEHe | rec6RbGBAHBphB4hi | recvCrHgQbHOGMgoB |
+| major_name | Art History | Physics | Technology and Engineering Education |
+| department | Art and Design Department | Physics Department | School of Applied Sciences, Technology and Education |
+| college | College of the Arts | College of Science | College of Agriculture and Applied Sciences |
 
 # "member"  (rows=33)
 
@@ -159,15 +159,15 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| member_id | recxBj3tjKTGHqucS | recP6DJPyi5donvXL | rec2a03QXbFQAUZ7X |
-| first_name | Sherri | Katy | Randy |
-| last_name | Ramsey | Balentine | Woodard |
-| email | sherri.ramsey@lpu.edu | katy.balentine@lpu.edu | randy.woodard@lpu.edu |
-| position | Member | Member | Inactive |
+| member_id | recxBj3tjKTGHqucS | reco0mr8dXTgs5wWA | recD078PnS3x2doBe |
+| first_name | Sherri | Keith | Phillip |
+| last_name | Ramsey | Dunlop | Cullen |
+| email | sherri.ramsey@lpu.edu | keith.dunlap@lpu.edu | phillip.cullen@lpu.edu |
+| position | Member | Member | Vice President |
 | t_shirt_size | Large | Large | X-Large |
-| phone | 942-555-1132 | 716-555-3845 | 490-555-8460 |
-| zip | 8861 | 12203 | 8021 |
-| link_to_major | recVYIFAwjT91pnv7 | rec1N0upiVLy5esTO | null |
+| phone | 942-555-1132 | 394-555-4909 | 905-555-5035 |
+| zip | 8861 | 98290 | 1020 |
+| link_to_major | recVYIFAwjT91pnv7 | recVeoVlIsO6k6iUM | rec9CqGCGV8Y8rOSY |
 
 # "zip_code"  (rows=41877)
 
@@ -184,9 +184,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| zip_code | 99950 | 78261 | 66503 |
+| zip_code | 99950 | 2128 | 24162 |
 | type | PO Box | Standard | Standard |
-| city | Ketchikan | San Antonio | Manhattan |
-| county | Prince of Wales-Outer Ketchikan Borough | Bexar County | Riley County |
-| state | Alaska | Texas | Kansas |
-| short_state | AK | TX | KS |
+| city | Ketchikan | Boston | Shawsville |
+| county | Prince of Wales-Outer Ketchikan Borough | Suffolk County | Montgomery County |
+| state | Alaska | Massachusetts | Virginia |
+| short_state | AK | MA | VA |

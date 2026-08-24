@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:23:56.665225Z
+generated_at_utc: 2026-08-24T21:59:26.455447Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-iknew0hp/music.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-6drfkxuh/music.sqlite
 schema: main
 ---
 
@@ -31,9 +31,9 @@ indexes: "ArtistId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| AlbumId | 347 | 188 | 115 |
-| Title | Koyaanisqatsi (Soundtrack from the Motion Picture) | Green | Sex Machine |
-| ArtistId | 275 | 124 | 91 |
+| AlbumId | 347 | 49 | 4 |
+| Title | Koyaanisqatsi (Soundtrack from the Motion Picture) | The Essential Miles Davis [Disc 2] | Let There Be Rock |
+| ArtistId | 275 | 68 | 1 |
 
 # "Artist"  (rows=275)
 
@@ -46,8 +46,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ArtistId | 275 | 83 | 234 |
-| Name | Philip Glass Ensemble | Falamansa | Orchestra of The Age of Enlightenment |
+| ArtistId | 275 | 245 | 215 |
+| Name | Philip Glass Ensemble | Michael Tilson Thomas & San Francisco Symphony | Academy of St. Martin in the Fields Chamber Ensemble & Sir Neville Marriner |
 
 # "Customer"  (rows=59)
 
@@ -71,19 +71,19 @@ indexes: "SupportRepId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| CustomerId | 59 | 1 | 42 |
-| FirstName | Puja | Luís | Wyatt |
-| LastName | Srivastava | Gonçalves | Girard |
-| Company | null | Embraer - Empresa Brasileira de Aeronáutica S.A. | null |
-| Address | 3,Raj Bhavan Road | Av. Brigadeiro Faria Lima, 2170 | 9, Place Louis Barthou |
-| City | Bangalore | São José dos Campos | Bordeaux |
-| State | null | SP | null |
-| Country | India | Brazil | France |
-| PostalCode | 560001 | 12227-000 | 33000 |
-| Phone | +91 080 22289999 | +55 (12) 3923-5555 | +33 05 56 96 96 96 |
-| Fax | null | +55 (12) 3923-5566 | null |
-| Email | puja_srivastava@yahoo.in | luisg@embraer.com.br | wyatt.girard@yahoo.fr |
-| SupportRepId | 3 | 3 | 3 |
+| CustomerId | 59 | 7 | 45 |
+| FirstName | Puja | Astrid | Ladislav |
+| LastName | Srivastava | Gruber | Kovács |
+| Company | null | null | null |
+| Address | 3,Raj Bhavan Road | Rotenturmstraße 4, 1010 Innere Stadt | Erzsébet krt. 58. |
+| City | Bangalore | Vienne | Budapest |
+| State | null | null | null |
+| Country | India | Austria | Hungary |
+| PostalCode | 560001 | 1010 | H-1073 |
+| Phone | +91 080 22289999 | +43 01 5134505 | null |
+| Fax | null | null | null |
+| Email | puja_srivastava@yahoo.in | astrid.gruber@apple.at | ladislav_kovacs@apple.hu |
+| SupportRepId | 3 | 5 | 3 |
 
 # "Employee"  (rows=8)
 
@@ -136,8 +136,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| GenreId | 25 | 24 | 12 |
-| Name | Opera | Classical | Easy Listening |
+| GenreId | 25 | 19 | 21 |
+| Name | Opera | TV Shows | Drama |
 
 # "Invoice"  (rows=412)
 
@@ -157,15 +157,15 @@ indexes: "CustomerId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| InvoiceId | 412 | 338 | 25 |
-| CustomerId | 58 | 58 | 10 |
-| InvoiceDate | 2013-12-22T00:00:00 | 2013-01-29T00:00:00 | 2009-04-09T00:00:00 |
-| BillingAddress | 12,Community Centre | 12,Community Centre | Rua Dr. Falcão Filho, 155 |
-| BillingCity | Delhi | Delhi | São Paulo |
+| InvoiceId | 412 | 56 | 275 |
+| CustomerId | 58 | 9 | 11 |
+| InvoiceDate | 2013-12-22T00:00:00 | 2009-09-06T00:00:00 | 2012-04-25T00:00:00 |
+| BillingAddress | 12,Community Centre | Sønder Boulevard 51 | Av. Paulista, 2022 |
+| BillingCity | Delhi | Copenhagen | São Paulo |
 | BillingState | null | null | SP |
-| BillingCountry | India | India | Brazil |
-| BillingPostalCode | 110017 | 110017 | 01007-010 |
-| Total | 1.99 | 3.96 | 8.91 |
+| BillingCountry | India | Denmark | Brazil |
+| BillingPostalCode | 110017 | 1720 | 01310-200 |
+| Total | 1.99 | 1.98 | 3.96 |
 
 # "InvoiceLine"  (rows=2240)
 
@@ -181,9 +181,9 @@ indexes: "InvoiceId", "TrackId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| InvoiceLineId | 2240 | 195 | 1924 |
-| InvoiceId | 412 | 37 | 355 |
-| TrackId | 3177 | 1170 | 1208 |
+| InvoiceLineId | 2240 | 2153 | 1171 |
+| InvoiceId | 412 | 397 | 215 |
+| TrackId | 3177 | 2609 | 134 |
 | UnitPrice | 1.99 | 0.99 | 0.99 |
 | Quantity | 1 | 1 | 1 |
 
@@ -212,8 +212,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| PlaylistId | 18 | 7 | 4 |
-| Name | On-The-Go 1 | Movies | Audiobooks |
+| PlaylistId | 18 | 5 | 14 |
+| Name | On-The-Go 1 | 90’s Music | Classical 101 - Next Steps |
 
 # "PlaylistTrack"  (rows=8715)
 
@@ -226,8 +226,8 @@ indexes: "TrackId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| PlaylistId | 18 | 5 | 5 |
-| TrackId | 597 | 182 | 1679 |
+| PlaylistId | 18 | 1 | 1 |
+| TrackId | 597 | 3460 | 1974 |
 
 # "Track"  (rows=3503)
 
@@ -247,12 +247,12 @@ indexes: "AlbumId", "GenreId", "MediaTypeId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| TrackId | 3503 | 2341 | 2093 |
-| Name | Koyaanisqatsi | Bê-a-Bá | Bark at the Moon |
-| AlbumId | 347 | 191 | 170 |
-| MediaTypeId | 2 | 1 | 2 |
-| GenreId | 10 | 4 | 1 |
-| Composer | Philip Glass | Rodolfo | O. Osbourne |
-| Milliseconds | 206005 | 249051 | 257252 |
-| Bytes | 3305164 | 8130636 | 4601224 |
+| TrackId | 3503 | 1864 | 862 |
+| Name | Koyaanisqatsi | The Unforgiven II | Acelerou |
+| AlbumId | 347 | 153 | 69 |
+| MediaTypeId | 2 | 1 | 1 |
+| GenreId | 10 | 3 | 7 |
+| Composer | Philip Glass | Hetfield, Ulrich, Hammett | null |
+| Milliseconds | 206005 | 395520 | 284081 |
+| Bytes | 3305164 | 12886474 | 9396942 |
 | UnitPrice | 0.99 | 0.99 | 0.99 |

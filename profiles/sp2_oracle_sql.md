@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:23:56.975469Z
+generated_at_utc: 2026-08-24T21:59:26.789261Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-qkgmu2gm/oracle_sql.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-ehz9xzh2/oracle_sql.sqlite
 schema: main
 ---
 
@@ -130,12 +130,12 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customer_id | 51069 | 50741 | 50741 |
-| customer_name | Der Wichtelmann | Hygge og Humle | Hygge og Humle |
-| ordered | 2019-02-17 | 2019-02-26 | 2019-03-12 |
-| product_id | 6600 | 6600 | 4280 |
-| product_name | Hazy Pink Cloud | Hazy Pink Cloud | Hoppy Crude Oil |
-| qty | 24 | 16 | 90 |
+| customer_id | 51069 | 50741 | 51069 |
+| customer_name | Der Wichtelmann | Hygge og Humle | Der Wichtelmann |
+| ordered | 2019-02-17 | 2019-01-18 | 2019-02-17 |
+| product_id | 6600 | 6520 | 6600 |
+| product_name | Hazy Pink Cloud | Der Helle Kumpel | Hazy Pink Cloud |
+| qty | 24 | 40 | 24 |
 
 # "customer_order_products_obj"  (rows=3)
 
@@ -204,10 +204,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| emp_id | 147 | 143 | 147 |
-| start_ | 2016-11-01 | 2010-07-01 | 2016-05-01 |
-| end_ | null | 2014-01-01 | 2017-03-01 |
-| title | Operations Chief | IT Technician | Warehouse Manager |
+| emp_id | 147 | 143 | 142 |
+| start_ | 2016-11-01 | 2014-04-01 | 2012-04-01 |
+| end_ | null | 2015-10-01 | null |
+| title | Operations Chief | Code Tester | Managing Director |
 
 # "employees"  (rows=14)
 
@@ -222,10 +222,10 @@ indexes: "supervisor_id"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 155 | 142 | 154 |
-| name | Susanne Hoff | Harold King | Simon Chang |
-| title | Janitor | Managing Director | Retail Salesman |
-| supervisor_id | 146 | null | 151 |
+| id | 155 | 144 | 145 |
+| name | Susanne Hoff | Axel de Proef | Zoe Thorston |
+| title | Janitor | Product Director | IT Developer |
+| supervisor_id | 146 | 142 | 143 |
 
 # "gender_dim"  (rows=2)
 
@@ -255,11 +255,11 @@ indexes: "location_id", "product_id", "purchase_id"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 1484 | 1172 | 1451 |
-| location_id | 245 | 133 | 101 |
-| product_id | 7870 | 7790 | 6600 |
-| purchase_id | 780 | 724 | 773 |
-| qty | 48 | 6 | 8 |
+| id | 1484 | 1412 | 1337 |
+| location_id | 245 | 249 | 215 |
+| product_id | 7870 | 4160 | 5310 |
+| purchase_id | 780 | 766 | 752 |
+| qty | 48 | 29 | 48 |
 
 # "inventory_totals"  (rows=10)
 
@@ -318,16 +318,16 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 1484 | 1325 | 1244 |
-| product_id | 7870 | 7870 | 4160 |
-| product_name | Ghost of Hops | Ghost of Hops | Reindeer Fuel |
-| purchase_id | 780 | 750 | 736 |
-| purchased | 2018-12-29 | 2018-06-29 | 2018-04-22 |
-| location_id | 245 | 246 | 139 |
-| warehouse | 2 | 2 | 2 |
-| aisle | D | D | A |
-| position | 21 | 22 | 11 |
-| qty | 48 | 48 | 48 |
+| id | 1484 | 1397 | 1301 |
+| product_id | 7870 | 6600 | 4160 |
+| product_name | Ghost of Hops | Hazy Pink Cloud | Reindeer Fuel |
+| purchase_id | 780 | 763 | 746 |
+| purchased | 2018-12-29 | 2018-09-27 | 2018-06-22 |
+| location_id | 245 | 89 | 188 |
+| warehouse | 2 | 1 | 2 |
+| aisle | D | C | B |
+| position | 21 | 25 | 28 |
+| qty | 48 | 19 | 48 |
 
 # "locations"  (rows=256)
 
@@ -342,10 +342,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 256 | 103 | 64 |
+| id | 256 | 30 | 4 |
 | warehouse | 2 | 1 | 1 |
-| aisle | D | D | B |
-| position | 32 | 7 | 32 |
+| aisle | D | A | A |
+| position | 32 | 30 | 4 |
 
 # "monthly_budget"  (rows=48)
 
@@ -359,9 +359,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_id | 6600 | 6520 | 6600 |
-| mth | 2019-12-01 | 2019-01-01 | 2018-02-01 |
-| qty | 20 | 45 | 6 |
+| product_id | 6600 | 6600 | 6600 |
+| mth | 2019-12-01 | 2019-08-01 | 2019-03-01 |
+| qty | 20 | 20 | 20 |
 
 # "monthly_orders"  (rows=10)
 
@@ -400,9 +400,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_id | 7950 | 7870 | 4280 |
-| mth | 2018-12-01 | 2016-11-01 | 2018-02-01 |
-| qty | 50 | 41 | 13 |
+| product_id | 7950 | 4280 | 6520 |
+| mth | 2018-12-01 | 2016-12-01 | 2017-09-01 |
+| qty | 50 | 18 | 70 |
 
 # "orderlines"  (rows=18)
 
@@ -418,11 +418,11 @@ indexes: "order_id"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 9299 | 9298 | 9286 |
-| order_id | 430 | 429 | 426 |
-| product_id | 7950 | 5430 | 6520 |
-| qty | 50 | 40 | 40 |
-| amount | 480 | 875 | 680 |
+| id | 9299 | 9280 | 9282 |
+| order_id | 430 | 425 | 425 |
+| product_id | 7950 | 5430 | 6600 |
+| qty | 50 | 60 | 24 |
+| amount | 480 | 1150 | 480 |
 
 # "orders"  (rows=10)
 
@@ -453,8 +453,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 534 | 531 | 523 |
-| name | Pallet Mix SG | Pallet of L | Box Small |
+| id | 534 | 521 | 534 |
+| name | Pallet Mix SG | Box Large | Pallet Mix SG |
 
 # "packaging_relations"  (rows=12)
 
@@ -468,9 +468,9 @@ indexes: "contains_id"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| packaging_id | 534 | 521 | 534 |
-| contains_id | 524 | 502 | 524 |
-| qty | 16 | 72 | 16 |
+| packaging_id | 534 | 534 | 534 |
+| contains_id | 524 | 523 | 524 |
+| qty | 16 | 20 | 16 |
 
 # "picking_line"  (rows=21)
 
@@ -487,12 +487,12 @@ indexes: "location_id", "order_id", "product_id"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| picklist_id | 842 | 841 | 842 |
-| line_no | 12 | 6 | 11 |
-| location_id | 233 | 186 | 233 |
-| order_id | 423 | 421 | 422 |
-| product_id | 6520 | 6520 | 6520 |
-| qty | 18 | 24 | 8 |
+| picklist_id | 842 | 842 | 842 |
+| line_no | 12 | 7 | 4 |
+| location_id | 233 | 165 | 65 |
+| order_id | 423 | 422 | 422 |
+| product_id | 6520 | 6520 | 4280 |
+| qty | 18 | 14 | 36 |
 
 # "picking_list"  (rows=2)
 
@@ -524,11 +524,11 @@ indexes: "location_id", ("picklist_id","pickline_no")
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| picklist_id | 842 | 842 | 841 |
-| log_time | 2019-01-19 16:11:42 | 2019-01-19 16:04:57 | 2019-01-16 14:10:57 |
-| activity | A | A | P |
-| location_id | null | 114 | 165 |
-| pickline_no | null | null | 7 |
+| picklist_id | 842 | 841 | 842 |
+| log_time | 2019-01-19 16:11:42 | 2019-01-16 14:05:52 | 2019-01-19 16:03:46 |
+| activity | A | P | A |
+| location_id | null | 16 | 65 |
+| pickline_no | null | 1 | null |
 
 # "product_alcohol"  (rows=10)
 
@@ -607,12 +607,12 @@ indexes: "brewery_id", "product_id"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 780 | 706 | 654 |
-| purchased | 2018-12-29 | 2017-10-11 | 2016-11-08 |
-| brewery_id | 523 | 536 | 523 |
-| product_id | 7870 | 4040 | 7790 |
-| qty | 54 | 54 | 53 |
-| cost | 391 | 316 | 394 |
+| id | 780 | 734 | 626 |
+| purchased | 2018-12-29 | 2018-03-28 | 2016-06-02 |
+| brewery_id | 523 | 523 | 536 |
+| product_id | 7870 | 7790 | 4160 |
+| qty | 54 | 56 | 68 |
+| cost | 391 | 388 | 448 |
 
 # "purchases_with_dims"  (rows=180)
 
@@ -650,16 +650,16 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 780 | 738 | 616 |
-| purchased | 2018-12-29 | 2018-04-25 | 2016-04-02 |
-| brewery_id | 523 | 518 | 536 |
-| brewery_name | Happy Hoppy Hippo | Balthazar Brauerei | Brewing Barbarian |
-| product_id | 7870 | 5430 | 4160 |
-| product_name | Ghost of Hops | Hercule Trippel | Reindeer Fuel |
-| group_id | 232 | 152 | 142 |
-| group_name | IPA | Belgian | Stout |
-| qty | 54 | 92 | 72 |
-| cost | 391 | 662 | 475 |
+| id | 780 | 767 | 715 |
+| purchased | 2018-12-29 | 2018-10-23 | 2017-11-18 |
+| brewery_id | 523 | 536 | 523 |
+| brewery_name | Happy Hoppy Hippo | Brewing Barbarian | Happy Hoppy Hippo |
+| product_id | 7870 | 4280 | 7790 |
+| product_name | Ghost of Hops | Hoppy Crude Oil | Summer in India |
+| group_id | 232 | 142 | 232 |
+| group_name | IPA | Stout | IPA |
+| qty | 54 | 37 | 48 |
+| cost | 391 | 192 | 309 |
 
 # "server_heartbeat"  (rows=14)
 
@@ -673,7 +673,7 @@ samples:
 | column | latest | sample | sample |
 |---|---|---|---|
 | server | 10.0.0.142 | 10.0.0.142 | 10.0.0.100 |
-| beat_time | 2019-04-10 13:55 | 2019-04-10 13:25 | 2019-04-10 13:45 |
+| beat_time | 2019-04-10 13:55 | 2019-04-10 13:00 | 2019-04-10 13:55 |
 
 # "stock"  (rows=1)
 
@@ -702,8 +702,8 @@ samples:
 | column | latest | sample | sample |
 |---|---|---|---|
 | symbol | BEER | BEER | BEER |
-| day | 2019-04-19 | 2019-04-05 | 2019-04-18 |
-| price | 15.5 | 15.6 | 14.3 |
+| day | 2019-04-19 | 2019-04-19 | 2019-04-11 |
+| price | 15.5 | 15.5 | 14.4 |
 
 # "total_sales"  (rows=10)
 
@@ -758,9 +758,9 @@ samples:
 | column | latest | sample | sample |
 |---|---|---|---|
 | app_id | 542 | 542 | 542 |
-| page_no | 4 | 4 | 3 |
-| day | 2019-04-30 | 2019-04-21 | 2019-04-15 |
-| counter | 586 | 524 | 2409 |
+| page_no | 4 | 3 | 4 |
+| day | 2019-04-30 | 2019-04-20 | 2019-04-07 |
+| counter | 586 | 2735 | 499 |
 
 # "web_demographics"  (rows=2)
 
@@ -837,10 +837,10 @@ samples:
 |---|---|---|---|
 | app_id | 542 | 542 | 542 |
 | app_name | Webshop | Webshop | Webshop |
-| page_no | 4 | 3 | 1 |
-| friendly_url | /About | /Breweries | /Shop |
-| day | 2019-04-30 | 2019-04-13 | 2019-04-18 |
-| counter | 586 | 2331 | 7186 |
+| page_no | 4 | 1 | 2 |
+| friendly_url | /About | /Shop | /Categories |
+| day | 2019-04-30 | 2019-04-13 | 2019-04-27 |
+| counter | 586 | 6079 | 4588 |
 
 # "web_page_visits"  (rows=23)
 
@@ -855,10 +855,10 @@ indexes: ("app_id","page_no")
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| client_ip | 85.237.86.200 | 85.237.86.200 | 104.130.89.12 |
-| visit_time | 2019-04-20 12:02:02 | 2019-04-20 12:02:02 | 2019-04-20 15:05:48 |
+| client_ip | 85.237.86.200 | 104.130.89.12 | 85.237.86.200 |
+| visit_time | 2019-04-20 12:02:02 | 2019-04-20 08:28:55 | 2019-04-20 11:58:39 |
 | app_id | 542 | 542 | 542 |
-| page_no | 3 | 3 | 3 |
+| page_no | 3 | 4 | 2 |
 
 # "web_pages"  (rows=4)
 
@@ -899,10 +899,10 @@ columns:
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| yr | 2018 | 2016 | 2018 |
-| product_id | 7950 | 6520 | 4040 |
-| product_name | Pale Rider Rides | Der Helle Kumpel | Coalminers Sweat |
-| yr_qty | 491 | 415 | 300 |
+| yr | 2018 | 2018 | 2018 |
+| product_id | 7950 | 7790 | 7870 |
+| product_name | Pale Rider Rides | Summer in India | Ghost of Hops |
+| yr_qty | 491 | 263 | 451 |
 
 - Skipped 1 table(s) due to DDL generation errors: "emp_hire_periods_with_name"
 

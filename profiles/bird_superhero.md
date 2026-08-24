@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:21:18.679857Z
+generated_at_utc: 2026-08-24T21:56:14.925833Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-j8_b5y0b/superhero.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-t74cz6nl/superhero.sqlite
 schema: main
 ---
 
@@ -57,8 +57,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 35 | 21 | 15 |
-| colour | Yellow/Red | Pink | Green/Blue |
+| id | 35 | 21 | 4 |
+| colour | Yellow/Red | Pink | Black |
 
 # "gender"  (rows=3)
 
@@ -86,9 +86,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| hero_id | 756 | 66 | 124 |
-| attribute_id | 6 | 2 | 3 |
-| attribute_value | 100 | 55 | 35 |
+| hero_id | 756 | 80 | 529 |
+| attribute_id | 6 | 2 | 6 |
+| attribute_value | 100 | 30 | 15 |
 
 # "hero_power"  (rows=5825)
 
@@ -101,8 +101,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| hero_id | 756 | 517 | 247 |
-| power_id | 132 | 123 | 86 |
+| hero_id | 756 | 323 | 245 |
+| power_id | 132 | 59 | 35 |
 
 # "publisher"  (rows=25)
 
@@ -115,8 +115,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 25 | 16 | 5 |
-| publisher_name | Wildstorm | Rebellion | George Lucas |
+| id | 25 | 8 | 20 |
+| publisher_name | Wildstorm | Icon Comics | Star Trek |
 
 # "race"  (rows=61)
 
@@ -129,8 +129,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 61 | 60 | 15 |
-| race | Zombie | Zen-Whoberian | Dathomirian Zabrak |
+| id | 61 | 33 | 26 |
+| race | Zombie | Icthyo Sapien | Human / Clone |
 
 # "superhero"  (rows=750)
 
@@ -153,18 +153,18 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 756 | 364 | 635 |
-| superhero_name | Zoom | James T. Kirk | Space Ghost |
-| full_name | Hunter Zolomon | James Tiberius Kirk | Thaddeus Bach |
-| gender_id | 1 | 1 | 1 |
-| eye_colour_id | 23 | 16 | 1 |
+| id | 756 | 170 | 508 |
+| superhero_name | Zoom | Cecilia Reyes | Nina Theroux |
+| full_name | Hunter Zolomon | null | - |
+| gender_id | 1 | 3 | 2 |
+| eye_colour_id | 23 | 9 | 1 |
 | hair_colour_id | 9 | 9 | 1 |
 | skin_colour_id | 1 | 1 | 1 |
-| race_id | 1 | 24 | 24 |
-| publisher_id | 4 | 20 | 4 |
+| race_id | 1 | 1 | 3 |
+| publisher_id | 4 | 13 | 21 |
 | alignment_id | 2 | 1 | 1 |
-| height_cm | 185 | 178 | 188 |
-| weight_kg | 81 | 77 | 113 |
+| height_cm | 185 | 170 | 0 |
+| weight_kg | 81 | 62 | 0 |
 
 # "superpower"  (rows=167)
 
@@ -177,5 +177,5 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 167 | 151 | 121 |
-| power_name | Omniscient | Vision - Heat | Spatial Awareness |
+| id | 167 | 101 | 54 |
+| power_name | Omniscient | Toxin and Disease Control | Astral Projection |

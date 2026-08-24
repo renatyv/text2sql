@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:23:50.460427Z
+generated_at_utc: 2026-08-24T21:59:19.847886Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-w9urnezm/education_business.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-xo7ngxkp/education_business.sqlite
 schema: main
 ---
 
@@ -22,12 +22,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 4343 | 170 | 3332 |
-| CompanyName | vPhrase | Zoom Video Communications | TTEC |
-| JobTitle | Machine Learning Engineer | Data Scientist | Data Engineer |
-| SalariesReported | 1 | 2 | 2 |
-| Location | Mumbai | Bangalore | Hyderabad |
-| Salary | ₹9,39,843/yr | ₹28,39,076/yr | ₹12,51,502/yr |
+| index | 4343 | 3026 | 1292 |
+| CompanyName | vPhrase | Accenture | JCB |
+| JobTitle | Machine Learning Engineer | Data Engineer | Data Science |
+| SalariesReported | 1 | 3 | 1 |
+| Location | Mumbai | Bangalore | Pune |
+| Salary | ₹9,39,843/yr | ₹50,367/mo | ₹1,12,474/yr |
 
 # "StaffHours"  (rows=236)
 
@@ -42,9 +42,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StaffMember | Z | S | I |
-| EventDate | 2013-03-09 | 2013-02-08 | 2013-02-21 |
-| EventTime | 11:45 | 09:40 | 08:50 |
+| StaffMember | Z | M | W |
+| EventDate | 2013-03-09 | 2013-03-12 | 2013-03-05 |
+| EventTime | 11:45 | 07:55 | 12:20 |
 | EventType | Enter | Enter | Enter |
 
 # "hardware_dim_customer"  (rows=209)
@@ -63,13 +63,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customer_code | 90027207 | 90022073 | 90005159 |
-| customer | Amazon  | Control | Expression |
-| platform | E-Commerce | Brick & Mortar | Brick & Mortar |
-| channel | Retailer | Retailer | Retailer |
-| market | Brazil | USA | Pakistan |
-| sub_zone | LATAM | null | ROA |
-| region | LATAM | null | APAC |
+| customer_code | 90027207 | 90021088 | 70014143 |
+| customer | Amazon  | Electricalslytical | Atliq e Store |
+| platform | E-Commerce | Brick & Mortar | E-Commerce |
+| channel | Retailer | Retailer | Direct |
+| market | Brazil | United Kingdom | Netherlands |
+| sub_zone | LATAM | NE | NE |
+| region | LATAM | EU | EU |
 
 # "hardware_dim_product"  (rows=397)
 
@@ -86,12 +86,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_code | A7321160303 | A7018160402 | A5621110403 |
-| division | N & S | N & S | PC |
-| segment | Networking | Storage | Notebook |
-| category | Wi fi extender | USB Flash Drives | Gaming Laptop |
-| product | AQ Wi Power Dx3 | AQ Ultra Dual 3.0 | AQ Smash 1 |
-| variant | Premium | Plus | Standard Black |
+| product_code | A7321160303 | A0519150206 | A3320150501 |
+| division | N & S | P & A | P & A |
+| segment | Networking | Peripherals | Accessories |
+| category | Wi fi extender | Graphic Card | Keyboard |
+| product | AQ Wi Power Dx3 | AQ Mforce Gen Y | AQ Maxima |
+| variant | Premium | Plus 3 | Standard 1 |
 
 # "hardware_fact_gross_price"  (rows=579)
 
@@ -105,9 +105,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_code | A7321160303 | A4721110704 | A4520110505 |
-| fiscal_year | 2021 | 2021 | 2021 |
-| gross_price | 42.8483 | 380.215 | 325.216 |
+| product_code | A7321160303 | A1018150102 | A4218110204 |
+| fiscal_year | 2021 | 2020 | 2020 |
+| gross_price | 42.8483 | 117.15 | 225.693 |
 
 # "hardware_fact_manufacturing_cost"  (rows=579)
 
@@ -121,9 +121,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_code | A7321160303 | A4419110401 | A0721150401 |
-| cost_year | 2021 | 2021 | 2021 |
-| manufacturing_cost | 12.9502 | 84.1379 | 11.5709 |
+| product_code | A7321160303 | A0620150305 | A3120150304 |
+| cost_year | 2021 | 2021 | 2020 |
+| manufacturing_cost | 12.9502 | 10.9579 | 4.3931 |
 
 # "hardware_fact_pre_invoice_deductions"  (rows=418)
 
@@ -137,9 +137,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customer_code | 90027207 | 70010048 | 70008170 |
-| fiscal_year | 2021 | 2021 | 2021 |
-| pre_invoice_discount_pct | 0.2772 | 0.2205 | 0.1817 |
+| customer_code | 90027207 | 90017057 | 90004064 |
+| fiscal_year | 2021 | 2021 | 2020 |
+| pre_invoice_discount_pct | 0.2772 | 0.1844 | 0.2174 |
 
 # "hardware_fact_sales_monthly"  (rows=≈971631)
 
@@ -181,9 +181,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| OfferNo | 9876 | 5678 | 9876 |
-| StdNo | 901234567 | 567890123 | 456789012 |
-| EnrGrade | 4 | 2.6 | 3.4 |
+| OfferNo | 9876 | 1234 | 4321 |
+| StdNo | 901234567 | 678901234 | 123456789 |
+| EnrGrade | 4 | 3.4 | 3.5 |
 
 # "university_faculty"  (rows=8)
 
@@ -234,14 +234,14 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| OfferNo | 9876 | 5555 | 3333 |
-| CourseNo | IS460 | FIN300 | IS320 |
+| OfferNo | 9876 | 4444 | 9876 |
+| CourseNo | IS460 | IS320 | IS460 |
 | OffTerm | SPRING | WINTER | SPRING |
 | OffYear | 2010 | 2010 | 2010 |
-| OffLocation | BLM307 | BLM207 | BLM214 |
-| OffTime | 1:30 PM | 8:30 AM | 8:30 AM |
-| FacNo | 6.5e+08 | 7.7e+08 | 9.9e+07 |
-| OffDays | TTH | MW | MW |
+| OffLocation | BLM307 | BLM302 | BLM307 |
+| OffTime | 1:30 PM | 3:30 PM | 1:30 PM |
+| FacNo | 6.5e+08 | 5.4e+08 | 6.5e+08 |
+| OffDays | TTH | TTH | TTH |
 
 # "university_student"  (rows=11)
 
@@ -261,15 +261,15 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StdNo | 901234567 | 345678901 | 456789012 |
-| StdFirstName | WILLIAM | WALLY | JOE |
-| StdLastName | PILGRIM | KENDALL | ESTRADA |
-| StdCity | BOTHELL | SEATTLE | SEATTLE |
+| StdNo | 901234567 | 234567890 | 890123456 |
+| StdFirstName | WILLIAM | CANDY | LUKE |
+| StdLastName | PILGRIM | KENDALL | BRAZZI |
+| StdCity | BOTHELL | TACOMA | SEATTLE |
 | StdState | WA | WA | WA |
-| StdZip | 98113-1885 | 98123-1141 | 98121-2333 |
-| StdMajor | IS | IS | FIN |
-| StdClass | SO | SR | SR |
-| StdGPA | 3.8 | 2.8 | 3.2 |
+| StdZip | 98113-1885 | 99042-3321 | 98116-0021 |
+| StdMajor | IS | ACCT | IS |
+| StdClass | SO | JR | SR |
+| StdGPA | 3.8 | 3.5 | 2.2 |
 
 # "web_accounts"  (rows=351)
 
@@ -287,13 +287,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 4501 | 2171 | 3751 |
-| name | SpartanNash | Northrop Grumman | Global Partners |
-| website | www.spartannash.com | www.northropgrumman.com | www.globalp.com |
-| lat | 45.5557 | 41.8785 | 34.0556 |
-| long | -122.657 | -87.6309 | -118.251 |
-| primary_poc | Jewell Likes | Nannette Costa | Jordan Fils |
-| sales_rep_id | 321970 | 321730 | 321950 |
+| id | 4501 | 1611 | 2041 |
+| name | SpartanNash | Coca-Cola | Travelers Cos. |
+| website | www.spartannash.com | www.coca-colacompany.com | www.travelers.com |
+| lat | 45.5557 | 40.7622 | 42.3553 |
+| long | -122.657 | -73.9802 | -71.0631 |
+| primary_poc | Jewell Likes | Tisha Coletti | Vernie Pound |
+| sales_rep_id | 321970 | 321690 | 321680 |
 
 # "web_events"  (rows=9073)
 
@@ -308,10 +308,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 9073 | 6374 | 5174 |
-| account_id | 4501 | 2381 | 1571 |
-| occurred_at | 2016-05-30T00:46:53.000Z | 2015-03-12T11:43:23.000Z | 2015-06-05T03:05:07.000Z |
-| channel | organic | facebook | organic |
+| id | 9073 | 6991 | 4801 |
+| account_id | 4501 | 2851 | 1331 |
+| occurred_at | 2016-05-30T00:46:53.000Z | 2016-01-16T13:46:51.000Z | 2016-12-09T07:33:27.000Z |
+| channel | organic | facebook | adwords |
 
 # "web_orders"  (rows=6912)
 
@@ -333,17 +333,17 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 6912 | 3782 | 1762 |
-| account_id | 4501 | 4101 | 2341 |
-| occurred_at | 2016-12-21T13:30:42.000Z | 2016-11-14T06:30:10.000Z | 2016-08-28T23:33:30.000Z |
-| standard_qty | 61 | 513 | 442 |
-| gloss_qty | 150 | 4 | 29 |
-| poster_qty | 52 | 23 | 22 |
-| total | 263 | 540 | 493 |
-| standard_amt_usd | 304.39 | 2559.87 | 2205.58 |
-| gloss_amt_usd | 1123.5 | 29.96 | 217.21 |
-| poster_amt_usd | 422.24 | 186.76 | 178.64 |
-| total_amt_usd | 1850.13 | 2776.59 | 2601.43 |
+| id | 6912 | 1589 | 4751 |
+| account_id | 4501 | 2181 | 1501 |
+| occurred_at | 2016-12-21T13:30:42.000Z | 2016-02-02T07:11:27.000Z | 2016-12-05T01:27:01.000Z |
+| standard_qty | 61 | 603 | 56 |
+| gloss_qty | 150 | 5 | 480 |
+| poster_qty | 52 | 0 | 445 |
+| total | 263 | 608 | 981 |
+| standard_amt_usd | 304.39 | 3008.97 | 279.44 |
+| gloss_amt_usd | 1123.5 | 37.45 | 3595.2 |
+| poster_amt_usd | 422.24 | 0 | 3613.4 |
+| total_amt_usd | 1850.13 | 3046.42 | 7488.04 |
 
 # "web_region"  (rows=4)
 
@@ -371,6 +371,6 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 321990 | 321820 | 321710 |
-| name | Dawna Agnew | Dorotha Seawell | Sherlene Wetherington |
-| region_id | 4 | 3 | 2 |
+| id | 321990 | 321830 | 321680 |
+| name | Dawna Agnew | Maren Musto | Elna Condello |
+| region_id | 4 | 3 | 1 |

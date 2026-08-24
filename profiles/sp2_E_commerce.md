@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:22:51.399781Z
+generated_at_utc: 2026-08-24T21:58:22.859128Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-593w9orh/E_commerce.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-ro9dgqm9/E_commerce.sqlite
 schema: main
 ---
 
@@ -21,11 +21,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customer_id | ffffe8b65bbe3087b653a978c870db99 | e34c642add1c46f0904e95997afac775 | 038043a62bca294b36eefac078e69729 |
-| customer_unique_id | 736e6bfa0510aa5b878881a226a5fd89 | ce1fd4ae53af3460683ee1e6dff3e028 | 27177c850559ea0ec7bc49e36d30a45c |
-| customer_zip_code_prefix | 6172 | 74820 | 84300 |
-| customer_city | osasco | goiania | tibagi |
-| customer_state | SP | GO | PR |
+| customer_id | ffffe8b65bbe3087b653a978c870db99 | d41c394310a182cb056aac9346787d35 | 6cb94c8d3c096c20feafe2abf1ed78d3 |
+| customer_unique_id | 736e6bfa0510aa5b878881a226a5fd89 | 8ccefd0fe3c240e494ee7326a9feca1d | 3daa1c97a3155484f70c88b19c90dfb5 |
+| customer_zip_code_prefix | 6172 | 35680 | 61890 |
+| customer_city | osasco | itauna | guaiuba |
+| customer_state | SP | MG | CE |
 
 # "geolocation"  (rows=≈1000163)
 
@@ -62,18 +62,18 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| mql_id | fff8db9478d2fd72df65a67ee6b62f67 | a7a8f7739ddc1abdd3bf7d4f9d8a911f | cd39b2fcf60d4580dbe25b82be3fd1ab |
-| seller_id | bdae679a9b282249bc23b9b69dae9a99 | ec8463980a4e0ea9f8517aea1ed0c419 | 72bb43f9683adea77d240b7985e2dfa2 |
-| sdr_id | 4b339f9567d060bcea4f5136b9f5949e | 4b339f9567d060bcea4f5136b9f5949e | 4b339f9567d060bcea4f5136b9f5949e |
-| sr_id | 6565aa9ce3178a5caf6171827af3a9ba | 9e4d1098a3b0f5da39b0bc48f9876645 | 495d4e95a8cf8bbf8b432b612a2aa328 |
-| won_date | 2018-01-24 15:19:49 | 2018-04-09 18:58:34 | 2018-03-27 03:00:00 |
-| business_segment | construction_tools_house_garden | home_decor | pet |
+| mql_id | fff8db9478d2fd72df65a67ee6b62f67 | d90b1c32b55f731e8a2072bfad782fdd | 85ac6feb584b665e85664974c546cfec |
+| seller_id | bdae679a9b282249bc23b9b69dae9a99 | d8d9567d0bfb0bc7eb845a205ba42657 | 74636e24f01da9268b0ed88dacd8513e |
+| sdr_id | 4b339f9567d060bcea4f5136b9f5949e | 4b339f9567d060bcea4f5136b9f5949e | 56bf83c4bb35763a51c2baab501b4c67 |
+| sr_id | 6565aa9ce3178a5caf6171827af3a9ba | d3d1e91a157ea7f90548eef82f1955e3 | 9ae085775a198122c5586fa830ff7f2b |
+| won_date | 2018-01-24 15:19:49 | 2018-02-09 13:41:10 | 2018-02-28 16:19:57 |
+| business_segment | construction_tools_house_garden | books | toys |
 | lead_type | online_medium | online_medium | online_medium |
-| lead_behaviour_profile | null | shark | wolf |
+| lead_behaviour_profile | null | wolf | cat |
 | has_company | null | null | null |
 | has_gtin | null | null | null |
 | average_stock | null | null | null |
-| business_type | reseller | manufacturer | reseller |
+| business_type | reseller | reseller | reseller |
 | declared_product_catalog_size | null | null | null |
 | declared_monthly_revenue | 0 | 0 | 0 |
 
@@ -90,10 +90,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| mql_id | fffffe98d0963d27015c198262d97221 | 54ed85e7af8edc78637654cb4a89040e | 47cd9b242ad7a8e2ebc41a4ea69d2ca9 |
-| first_contact_date | 2018-01-25 | 2017-09-09 | 2018-05-28 |
-| landing_page_id | 88740e65d5d6b056e0cda098e1ea6313 | 007f9098284a86ee80ddeb25d53e0af8 | b76ef37428e6799c421989521c0e5077 |
-| origin | social | paid_search | social |
+| mql_id | fffffe98d0963d27015c198262d97221 | 49bf72bb66a00f922b002b7fcac4804f | 2e95ade370c3871fda51e03448bf1b20 |
+| first_contact_date | 2018-01-25 | 2018-02-21 | 2018-02-01 |
+| landing_page_id | 88740e65d5d6b056e0cda098e1ea6313 | 2228a43ac0bc372e25f9569e69fc9015 | 40dec9f3d5259a3d2dbcdab2114fae47 |
+| origin | social | paid_search | paid_search |
 
 # "order_items"  (rows=112650)
 
@@ -111,13 +111,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| order_id | fffe41c64501cc87c801fd61db3f6244 | 2922d9dd6672241cb658a40bf507e4b1 | 9f076b87261e6c9894139da7d41eb02d |
-| order_item_id | 1 | 1 | 4 |
-| product_id | 350688d9dc1e75ff97be326363655e01 | bfc275f6de912665e4dcd8da32f43c10 | 7a82832901d5f4cd314a4e102c47bd2b |
-| seller_id | f7ccf836d21b2fb1de37564105216cc1 | 71271995e85f5b8530be99ed54a91b89 | 9de4643a8dbde634fe55621059d92273 |
-| shipping_limit_date | 2018-06-12 17:10:13 | 2018-07-17 10:06:23 | 2017-05-11 19:45:09 |
-| price | 43 | 97 | 37.99 |
-| freight_value | 12.79 | 14.98 | 15.1 |
+| order_id | fffe41c64501cc87c801fd61db3f6244 | ef26a1bd5203cf613f8150597210abdc | 827efe7f5818a815652ea13b2dda5d7e |
+| order_item_id | 1 | 1 | 1 |
+| product_id | 350688d9dc1e75ff97be326363655e01 | ebe4b53f756dfcecfc539faf8ec0df9f | 04b48e86a968cfe620da1cab5c7556ae |
+| seller_id | f7ccf836d21b2fb1de37564105216cc1 | 7178f9f4dd81dcef02f62acdf8151e01 | 15b3b1b81484422eb41df68ac87f1f50 |
+| shipping_limit_date | 2018-06-12 17:10:13 | 2017-08-02 23:45:06 | 2017-11-30 02:12:58 |
+| price | 43 | 199 | 43.35 |
+| freight_value | 12.79 | 16.14 | 12.69 |
 
 # "order_payments"  (rows=103886)
 
@@ -133,11 +133,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| order_id | fffe41c64501cc87c801fd61db3f6244 | 4f3e39331cc2ae23851f526e268a8880 | 1182df110fbf0a14dfb08dd06c560836 |
+| order_id | fffe41c64501cc87c801fd61db3f6244 | 1bb86f8d6d2967cbf88b8a487d536e43 | 2bad3a7085e17ad44f9117d127de525f |
 | payment_sequential | 1 | 1 | 1 |
 | payment_type | credit_card | credit_card | credit_card |
-| payment_installments | 1 | 3 | 1 |
-| payment_value | 55.79 | 123.2 | 49.84 |
+| payment_installments | 1 | 1 | 1 |
+| payment_value | 55.79 | 81.75 | 61.83 |
 
 # "order_reviews"  (rows=99224)
 
@@ -155,13 +155,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| review_id | fffefe7a48d22f7b32046421062219d1 | c1b71fac499523deefebaf45957320d9 | 3c0a75a2772c0644eadf7fb35e34f635 |
-| order_id | 1061bc32577c6b8beb107bf1b5a65175 | 91fb016286a84fa7006aa6033499914b | 8f4855298c9242f63d934ee48d41253f |
-| review_score | 5 | 5 | 5 |
-| review_comment_title | null | excelente | null |
-| review_comment_message | null | null | Amo comprar nas lojas lannister. parabéns estou satisfeita obrigada por tudo bjks ficam com Deus 💋💋💕💕💞???? |
-| review_creation_date | 2017-10-28 00:00:00 | 2018-08-23 00:00:00 | 2018-04-14 00:00:00 |
-| review_answer_timestamp | 2017-10-30 21:43:56 | 2018-08-24 22:56:25 | 2018-04-17 00:02:11 |
+| review_id | fffefe7a48d22f7b32046421062219d1 | 24c49c99bb61d6912887795f94e680de | 662d2c533d56243557c12699eff9d5a3 |
+| order_id | 1061bc32577c6b8beb107bf1b5a65175 | 371dcdd114490b436dff8fac7d52a928 | aa20064eef8808d62ed9ac5286ec0796 |
+| review_score | 5 | 4 | 5 |
+| review_comment_title | null | null | null |
+| review_comment_message | null | null | null |
+| review_creation_date | 2017-10-28 00:00:00 | 2018-07-12 00:00:00 | 2017-04-14 00:00:00 |
+| review_answer_timestamp | 2017-10-30 21:43:56 | 2018-07-13 18:53:26 | 2017-04-16 19:41:32 |
 
 # "orders"  (rows=99441)
 
@@ -180,14 +180,14 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| order_id | fffe41c64501cc87c801fd61db3f6244 | 4294e241abc5a583ac06ee97d557745f | 1ecb44533ccf6974a67e7d36d913b027 |
-| customer_id | 96d649da0cc4ff33bb408b199d4c7dcf | 87a887e1089dce0c7fed596e76039b27 | 9e10bfe5eb4c55263654f22bfb0af9b7 |
+| order_id | fffe41c64501cc87c801fd61db3f6244 | f380a3a29b8b454d07e134ad890c93b3 | d6e3732aea036f7d71b44db75163e2f4 |
+| customer_id | 96d649da0cc4ff33bb408b199d4c7dcf | 5fa2daff047604045729c55aac7b6c3b | 0e030dda2e8d63beb191f52346ac0fbe |
 | order_status | delivered | delivered | delivered |
-| order_purchase_timestamp | 2018-06-09 17:00:18 | 2018-03-04 16:29:24 | 2017-08-07 09:56:09 |
-| order_approved_at | 2018-06-09 17:10:13 | 2018-03-04 16:48:33 | 2017-08-07 10:05:26 |
-| order_delivered_carrier_date | 2018-06-11 14:11:00 | 2018-03-08 21:09:35 | 2017-08-09 15:30:23 |
-| order_delivered_customer_date | 2018-06-14 17:56:26 | 2018-03-20 21:58:29 | 2017-08-25 17:31:19 |
-| order_estimated_delivery_date | 2018-06-28 00:00:00 | 2018-04-02 00:00:00 | 2017-08-29 00:00:00 |
+| order_purchase_timestamp | 2018-06-09 17:00:18 | 2017-06-22 22:30:56 | 2018-07-03 09:45:53 |
+| order_approved_at | 2018-06-09 17:10:13 | 2017-06-22 22:43:17 | 2018-07-05 16:27:57 |
+| order_delivered_carrier_date | 2018-06-11 14:11:00 | 2017-06-23 12:35:59 | 2018-07-04 14:03:00 |
+| order_delivered_customer_date | 2018-06-14 17:56:26 | 2017-06-27 18:17:51 | 2018-07-05 15:21:52 |
+| order_estimated_delivery_date | 2018-06-28 00:00:00 | 2017-07-12 00:00:00 | 2018-07-20 00:00:00 |
 
 # "product_category_name_translation"  (rows=71)
 
@@ -200,8 +200,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_category_name | utilidades_domesticas | instrumentos_musicais | beleza_saude |
-| product_category_name_english | housewares | musical_instruments | health_beauty |
+| product_category_name | utilidades_domesticas | fashion_roupa_masculina | papelaria |
+| product_category_name_english | housewares | fashion_male_clothing | stationery |
 
 # "products"  (rows=32951)
 
@@ -221,15 +221,15 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| product_id | fffe9eeff12fcbd74a2f2b007dde0c58 | 880f4cc8f0bd44fe5afa9fc978a216e1 | 3948f284081821f4e27ba8c23d4cbc9a |
-| product_category_name | brinquedos | cine_foto | brinquedos |
-| product_name_lenght | 57 | 52 | 26 |
-| product_description_lenght | 1536 | 578 | 344 |
-| product_photos_qty | 3 | 1 | 1 |
-| product_weight_g | 3900 | 100 | 1825 |
-| product_length_cm | 43 | 16 | 33 |
-| product_height_cm | 16 | 5 | 19 |
-| product_width_cm | 11 | 12 | 45 |
+| product_id | fffe9eeff12fcbd74a2f2b007dde0c58 | 0d9e040b938001c020cc395f7ee87ce7 | 6d8d9c9af735eae354cb0b43a9cbebfa |
+| product_category_name | brinquedos | automotivo | fashion_bolsas_e_acessorios |
+| product_name_lenght | 57 | 52 | 63 |
+| product_description_lenght | 1536 | 126 | 655 |
+| product_photos_qty | 3 | 1 | 4 |
+| product_weight_g | 3900 | 100 | 300 |
+| product_length_cm | 43 | 16 | 16 |
+| product_height_cm | 16 | 10 | 9 |
+| product_width_cm | 11 | 16 | 20 |
 
 # "sellers"  (rows=3095)
 
@@ -244,7 +244,7 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| seller_id | ffff564a4f9085cd26170f4732393726 | a08692680c77d30a0b4280da5df01c5a | dfc5fb7259bb2b599ca565e6e9448f0f |
-| seller_zip_code_prefix | 13070 | 4719 | 9780 |
-| seller_city | campinas | sao paulo | sao bernardo do campo |
-| seller_state | SP | SP | SP |
+| seller_id | ffff564a4f9085cd26170f4732393726 | c03121937e54a93fcc1825c3098bbb6e | 76c47a299e4a8fe992316a85865acbe9 |
+| seller_zip_code_prefix | 13070 | 82800 | 14075 |
+| seller_city | campinas | curitiba | ribeirao preto |
+| seller_state | SP | PR | SP |

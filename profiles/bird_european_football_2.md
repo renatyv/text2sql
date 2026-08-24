@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:20:34.977799Z
+generated_at_utc: 2026-08-24T21:55:32.889584Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-6osjd4kd/european_football_2.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-m8mnavuc/european_football_2.sqlite
 schema: main
 ---
 
@@ -28,8 +28,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 24558 | 24558 | 17642 |
-| name | Switzerland | Switzerland | Portugal |
+| id | 24558 | 21518 | 4769 |
+| name | Switzerland | Spain | France |
 
 # "League"  (rows=11)
 
@@ -43,9 +43,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 24558 | 1 | 4769 |
-| country_id | 24558 | 1 | 4769 |
-| name | Switzerland Super League | Belgium Jupiler League | France Ligue 1 |
+| id | 24558 | 17642 | 19694 |
+| country_id | 24558 | 17642 | 19694 |
+| name | Switzerland Super League | Portugal Liga ZON Sagres | Scotland Premier League |
 
 # "Match"  (rows=25979)
 
@@ -171,121 +171,121 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 25979 | 4809 | 8969 |
-| country_id | 24558 | 4769 | 7809 |
-| league_id | 24558 | 4769 | 7809 |
+| id | 25979 | 21849 | 25233 |
+| country_id | 24558 | 21518 | 24558 |
+| league_id | 24558 | 21518 | 24558 |
 | season | 2015/2016 | 2008/2009 | 2011/2012 |
-| stage | 9 | 13 | 33 |
-| date | 2015-09-23 00:00:00 | 2008-11-08 00:00:00 | 2012-04-28 00:00:00 |
-| match_api_id | 1992095 | 483249 | 1030389 |
-| home_team_api_id | 10192 | 9827 | 9788 |
-| away_team_api_id | 9931 | 8583 | 8406 |
-| home_team_goal | 4 | 2 | 0 |
+| stage | 9 | 5 | 4 |
+| date | 2015-09-23 00:00:00 | 2008-09-28 00:00:00 | 2011-08-07 00:00:00 |
+| match_api_id | 1992095 | 530124 | 1026945 |
+| home_team_api_id | 10192 | 8388 | 10191 |
+| away_team_api_id | 9931 | 8371 | 7955 |
+| home_team_goal | 4 | 0 | 0 |
 | away_team_goal | 3 | 0 | 0 |
 | home_player_X1 | 1 | 1 | 1 |
 | home_player_X2 | 2 | 2 | 2 |
 | home_player_X3 | 4 | 4 | 4 |
 | home_player_X4 | 6 | 6 | 6 |
 | home_player_X5 | 8 | 8 | 8 |
-| home_player_X6 | 2 | 3 | 4 |
-| home_player_X7 | 4 | 5 | 6 |
-| home_player_X8 | 6 | 7 | 2 |
-| home_player_X9 | 8 | 3 | 8 |
-| home_player_X10 | 4 | 5 | 4 |
-| home_player_X11 | 6 | 7 | 6 |
+| home_player_X6 | 2 | 4 | 4 |
+| home_player_X7 | 4 | 6 | 6 |
+| home_player_X8 | 6 | 3 | 3 |
+| home_player_X9 | 8 | 5 | 5 |
+| home_player_X10 | 4 | 7 | 7 |
+| home_player_X11 | 6 | 5 | 5 |
 | away_player_X1 | 1 | 1 | 1 |
 | away_player_X2 | 2 | 2 | 2 |
 | away_player_X3 | 4 | 4 | 4 |
 | away_player_X4 | 6 | 6 | 6 |
 | away_player_X5 | 8 | 8 | 8 |
-| away_player_X6 | 4 | 3 | 5 |
-| away_player_X7 | 6 | 5 | 2 |
-| away_player_X8 | 3 | 7 | 4 |
-| away_player_X9 | 5 | 3 | 6 |
-| away_player_X10 | 7 | 5 | 8 |
-| away_player_X11 | 5 | 7 | 5 |
+| away_player_X6 | 4 | 4 | 2 |
+| away_player_X7 | 6 | 6 | 4 |
+| away_player_X8 | 3 | 3 | 6 |
+| away_player_X9 | 5 | 5 | 8 |
+| away_player_X10 | 7 | 7 | 4 |
+| away_player_X11 | 5 | 5 | 6 |
 | home_player_Y1 | 1 | 1 | 1 |
 | home_player_Y2 | 3 | 3 | 3 |
 | home_player_Y3 | 3 | 3 | 3 |
 | home_player_Y4 | 3 | 3 | 3 |
 | home_player_Y5 | 3 | 3 | 3 |
-| home_player_Y6 | 7 | 7 | 5 |
-| home_player_Y7 | 7 | 7 | 5 |
-| home_player_Y8 | 7 | 7 | 7 |
-| home_player_Y9 | 7 | 10 | 7 |
-| home_player_Y10 | 10 | 10 | 10 |
-| home_player_Y11 | 10 | 10 | 10 |
+| home_player_Y6 | 7 | 6 | 6 |
+| home_player_Y7 | 7 | 6 | 6 |
+| home_player_Y8 | 7 | 8 | 8 |
+| home_player_Y9 | 7 | 8 | 8 |
+| home_player_Y10 | 10 | 8 | 8 |
+| home_player_Y11 | 10 | 11 | 11 |
 | away_player_Y1 | 1 | 1 | 1 |
 | away_player_Y2 | 3 | 3 | 3 |
 | away_player_Y3 | 3 | 3 | 3 |
 | away_player_Y4 | 3 | 3 | 3 |
 | away_player_Y5 | 3 | 3 | 3 |
-| away_player_Y6 | 6 | 7 | 5 |
-| away_player_Y7 | 6 | 7 | 7 |
-| away_player_Y8 | 8 | 7 | 7 |
-| away_player_Y9 | 8 | 10 | 7 |
-| away_player_Y10 | 8 | 10 | 7 |
-| away_player_Y11 | 11 | 10 | 11 |
-| home_player_1 | 274787 | 26117 | 184554 |
-| home_player_2 | 492132 | 26142 | 114025 |
-| home_player_3 | 108451 | 40543 | 26588 |
-| home_player_4 | 25815 | 26119 | 38432 |
-| home_player_5 | 94553 | 41092 | 27412 |
-| home_player_6 | 384376 | 39978 | 37292 |
-| home_player_7 | 598355 | 33744 | 145551 |
-| home_player_8 | 36785 | 39963 | 192625 |
-| home_player_9 | 45174 | 41093 | 38398 |
-| home_player_10 | 302079 | 40710 | 129944 |
-| home_player_11 | 71764 | 41119 | 30854 |
-| away_player_1 | 156175 | 40714 | 27503 |
-| away_player_2 | 95216 | 11323 | 26618 |
-| away_player_3 | 172768 | 108535 | 26465 |
-| away_player_4 | 22834 | 30823 | 95081 |
-| away_player_5 | 458806 | 26136 | 240348 |
-| away_player_6 | 207234 | 39996 | 27425 |
-| away_player_7 | 25772 | 30977 | 36057 |
-| away_player_8 | 40274 | 26113 | 37319 |
-| away_player_9 | 34035 | 39999 | 201888 |
-| away_player_10 | 41726 | 26288 | 27524 |
-| away_player_11 | 527103 | 39994 | 38182 |
-| goal | null | null | <goal /> |
-| shoton | null | null | <shoton /> |
-| shotoff | null | null | <shotoff /> |
-| foulcommit | null | null | <foulcommit /> |
-| card | null | null | <card><value><comment>y</comment><stats><ycards>1</ycards></stats><event_incident_typefk>70</event_incident_typefk><elapsed>42</elapsed><card_type>y</card_type><player1>36057</player1><sortorder>0</s… |
-| cross | null | null | <cross /> |
-| corner | null | null | <corner /> |
-| possession | null | null | <possession /> |
-| B365H | null | 1.55 | 1.73 |
-| B365D | null | 3.6 | 3.75 |
-| B365A | null | 7 | 4.5 |
-| BWH | null | 1.6 | 1.75 |
-| BWD | null | 3.25 | 3.7 |
-| BWA | null | 6 | 4.4 |
-| IWH | null | 1.65 | 1.7 |
-| IWD | null | 3.3 | 3.5 |
-| IWA | null | 4.9 | 4.4 |
-| LBH | null | 1.53 | 1.75 |
-| LBD | null | 3.5 | 3.75 |
-| LBA | null | 5.5 | 4.5 |
+| away_player_Y6 | 6 | 6 | 7 |
+| away_player_Y7 | 6 | 6 | 7 |
+| away_player_Y8 | 8 | 8 | 7 |
+| away_player_Y9 | 8 | 8 | 7 |
+| away_player_Y10 | 8 | 8 | 10 |
+| away_player_Y11 | 11 | 11 | 10 |
+| home_player_1 | 274787 | 75195 | 41722 |
+| home_player_2 | 492132 | 75199 | 8800 |
+| home_player_3 | 108451 | null | 178210 |
+| home_player_4 | 25815 | 38561 | 67346 |
+| home_player_5 | 94553 | 74435 | 67389 |
+| home_player_6 | 384376 | 38008 | 133126 |
+| home_player_7 | 598355 | null | 34052 |
+| home_player_8 | 36785 | 102374 | 92252 |
+| home_player_9 | 45174 | 38550 | 104646 |
+| home_player_10 | 302079 | 74721 | 103846 |
+| home_player_11 | 71764 | 38526 | 30939 |
+| away_player_1 | 156175 | 24591 | 25852 |
+| away_player_2 | 95216 | 38534 | 274786 |
+| away_player_3 | 172768 | 11778 | 30276 |
+| away_player_4 | 22834 | 33865 | 26065 |
+| away_player_5 | 458806 | 72541 | 95217 |
+| away_player_6 | 207234 | 26044 | 67333 |
+| away_player_7 | 25772 | 42369 | 42232 |
+| away_player_8 | 40274 | 38424 | 107930 |
+| away_player_9 | 34035 | 30744 | 173011 |
+| away_player_10 | 41726 | 30907 | 170775 |
+| away_player_11 | 527103 | 96615 | 92095 |
+| goal | null | <goal /> | null |
+| shoton | null | <shoton /> | null |
+| shotoff | null | <shotoff /> | null |
+| foulcommit | null | <foulcommit /> | null |
+| card | null | <card><value><comment>y</comment><stats><ycards>1</ycards></stats><event_incident_typefk>70</event_incident_typefk><elapsed>35</elapsed><card_type>y</card_type><player1>30744</player1><sortorder>0</s… | null |
+| cross | null | <cross /> | null |
+| corner | null | <corner /> | null |
+| possession | null | <possession /> | null |
+| B365H | null | 2.38 | null |
+| B365D | null | 3.25 | null |
+| B365A | null | 3 | null |
+| BWH | null | 2.25 | null |
+| BWD | null | 3.15 | null |
+| BWA | null | 2.95 | null |
+| IWH | null | 2.3 | null |
+| IWD | null | 3 | null |
+| IWA | null | 2.9 | null |
+| LBH | null | 2.25 | null |
+| LBD | null | 3.2 | null |
+| LBA | null | 2.75 | null |
 | PSH | null | null | null |
 | PSD | null | null | null |
 | PSA | null | null | null |
-| WHH | null | 1.53 | 1.75 |
-| WHD | null | 3.3 | 3.75 |
-| WHA | null | 6 | 4.5 |
-| SJH | null | 1.53 | 1.75 |
-| SJD | null | 3.5 | 3.6 |
-| SJA | null | 8 | 4.75 |
-| VCH | null | 1.5 | 1.75 |
-| VCD | null | 3.5 | 3.9 |
-| VCA | null | 6 | 5 |
-| GBH | null | 1.57 | 1.75 |
-| GBD | null | 3.4 | 3.6 |
-| GBA | null | 6.5 | 4.5 |
-| BSH | null | 1.5 | 1.75 |
-| BSD | null | 3.6 | 3.6 |
-| BSA | null | 6.5 | 4.5 |
+| WHH | null | 2.25 | null |
+| WHD | null | 3.25 | null |
+| WHA | null | 2.7 | null |
+| SJH | null | 2.38 | null |
+| SJD | null | 3.2 | null |
+| SJA | null | 3 | null |
+| VCH | null | 2.3 | null |
+| VCD | null | 3.2 | null |
+| VCA | null | 2.8 | null |
+| GBH | null | 2.3 | null |
+| GBD | null | 3.2 | null |
+| GBA | null | 3 | null |
+| BSH | null | 2.3 | null |
+| BSD | null | 3.2 | null |
+| BSA | null | 2.88 | null |
 
 # "Player"  (rows=11060)
 
@@ -303,13 +303,13 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 11075 | 9702 | 2059 |
-| player_api_id | 39902 | 37443 | 38434 |
-| player_name | Zvjezdan Misimovic | Sergio Rodri | Damien Lahaye |
-| player_fifa_api_id | 102359 | 147000 | 169923 |
-| birthday | 1982-06-05 00:00:00 | 1984-08-17 00:00:00 | 1984-01-30 00:00:00 |
-| height | 180 | 185 | 180 |
-| weight | 176 | 179 | 181 |
+| id | 11075 | 10154 | 3996 |
+| player_api_id | 39902 | 25541 | 37972 |
+| player_name | Zvjezdan Misimovic | Taye Taiwo | Gregory Dufer |
+| player_fifa_api_id | 102359 | 164954 | 45208 |
+| birthday | 1982-06-05 00:00:00 | 1985-04-16 00:00:00 | 1981-12-19 00:00:00 |
+| height | 180 | 182 | 175 |
+| weight | 176 | 179 | 154 |
 
 # "Player_Attributes"  (rows=183978)
 
@@ -362,48 +362,48 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 183978 | 37571 | 34268 |
-| player_fifa_api_id | 102359 | 148632 | 190416 |
-| player_api_id | 39902 | 26637 | 172610 |
-| date | 2007-02-22 00:00:00 | 2008-08-30 00:00:00 | 2011-02-22 00:00:00 |
-| overall_rating | 80 | 66 | 67 |
-| potential | 81 | 67 | 84 |
-| preferred_foot | right | right | right |
-| attacking_work_rate | medium | None | medium |
-| defensive_work_rate | low | o | medium |
-| crossing | 74 | 27 | 39 |
-| finishing | 68 | 42 | 68 |
-| heading_accuracy | 57 | 71 | 73 |
-| short_passing | 88 | 56 | 59 |
-| volleys | 77 | 37 | 63 |
-| dribbling | 87 | 57 | 74 |
-| curve | 86 | 44 | 61 |
-| free_kick_accuracy | 53 | 32 | 31 |
-| long_passing | 78 | 45 | 30 |
-| ball_control | 91 | 50 | 69 |
-| acceleration | 58 | 66 | 80 |
-| sprint_speed | 64 | 65 | 81 |
-| agility | 77 | 48 | 65 |
-| reactions | 66 | 52 | 64 |
-| balance | 73 | 66 | 56 |
-| shot_power | 72 | 36 | 58 |
-| jumping | 58 | 72 | 62 |
-| stamina | 67 | 71 | 73 |
-| strength | 59 | 77 | 65 |
-| long_shots | 78 | 34 | 47 |
-| aggression | 63 | 72 | 38 |
-| interceptions | 63 | 68 | 43 |
-| positioning | 68 | 72 | 65 |
-| vision | 88 | 65 | 49 |
-| penalties | 53 | 67 | 66 |
-| marking | 38 | 64 | 17 |
-| standing_tackle | 32 | 66 | 16 |
-| sliding_tackle | 30 | 61 | 21 |
-| gk_diving | 9 | 5 | 9 |
-| gk_handling | 9 | 24 | 11 |
-| gk_kicking | 78 | 45 | 5 |
-| gk_positioning | 7 | 24 | 9 |
-| gk_reflexes | 15 | 24 | 9 |
+| id | 183978 | 168751 | 46589 |
+| player_fifa_api_id | 102359 | 137080 | 174804 |
+| player_api_id | 39902 | 39045 | 41122 |
+| date | 2007-02-22 00:00:00 | 2013-09-20 00:00:00 | 2014-02-21 00:00:00 |
+| overall_rating | 80 | 78 | 72 |
+| potential | 81 | 78 | 72 |
+| preferred_foot | right | left | right |
+| attacking_work_rate | medium | medium | high |
+| defensive_work_rate | low | low | high |
+| crossing | 74 | 82 | 72 |
+| finishing | 68 | 75 | 37 |
+| heading_accuracy | 57 | 54 | 70 |
+| short_passing | 88 | 77 | 67 |
+| volleys | 77 | 76 | 25 |
+| dribbling | 87 | 81 | 56 |
+| curve | 86 | 72 | 41 |
+| free_kick_accuracy | 53 | 78 | 37 |
+| long_passing | 78 | 75 | 68 |
+| ball_control | 91 | 83 | 65 |
+| acceleration | 58 | 79 | 77 |
+| sprint_speed | 64 | 77 | 76 |
+| agility | 77 | 83 | 71 |
+| reactions | 66 | 76 | 76 |
+| balance | 73 | 84 | 76 |
+| shot_power | 72 | 79 | 50 |
+| jumping | 58 | 72 | 69 |
+| stamina | 67 | 66 | 76 |
+| strength | 59 | 61 | 72 |
+| long_shots | 78 | 65 | 42 |
+| aggression | 63 | 66 | 77 |
+| interceptions | 63 | 39 | 64 |
+| positioning | 68 | 75 | 41 |
+| vision | 88 | 78 | 50 |
+| penalties | 53 | 83 | 27 |
+| marking | 38 | 37 | 76 |
+| standing_tackle | 32 | 38 | 73 |
+| sliding_tackle | 30 | 31 | 75 |
+| gk_diving | 9 | 14 | 13 |
+| gk_handling | 9 | 14 | 13 |
+| gk_kicking | 78 | 6 | 12 |
+| gk_positioning | 7 | 10 | 13 |
+| gk_reflexes | 15 | 15 | 15 |
 
 # "Team"  (rows=299)
 
@@ -419,11 +419,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 51606 | 47605 | 37214 |
-| team_api_id | 7896 | 8372 | 7842 |
-| team_fifa_api_id | null | 467 | 10020 |
-| team_long_name | Lugano | SD Eibar | Estoril Praia |
-| team_short_name | LUG | EIB | EST |
+| id | 51606 | 8779 | 15627 |
+| team_api_id | 7896 | 8678 | 9912 |
+| team_fifa_api_id | null | 1943 | 159 |
+| team_long_name | Lugano | Bournemouth | DSC Arminia Bielefeld |
+| team_short_name | LUG | BOU | BIE |
 
 # "Team_Attributes"  (rows=1458)
 
@@ -459,28 +459,28 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 1458 | 215 | 444 |
-| team_fifa_api_id | 15005 | 22 | 1903 |
-| team_api_id | 10000 | 9789 | 9908 |
-| date | 2015-09-10 00:00:00 | 2015-09-10 00:00:00 | 2015-09-10 00:00:00 |
-| buildUpPlaySpeed | 54 | 71 | 50 |
-| buildUpPlaySpeedClass | Balanced | Fast | Balanced |
-| buildUpPlayDribbling | 42 | 37 | 39 |
-| buildUpPlayDribblingClass | Normal | Normal | Normal |
-| buildUpPlayPassing | 51 | 40 | 54 |
+| id | 1458 | 843 | 159 |
+| team_fifa_api_id | 15005 | 1747 | 1714 |
+| team_api_id | 10000 | 9998 | 6493 |
+| date | 2015-09-10 00:00:00 | 2013-09-20 00:00:00 | 2010-02-22 00:00:00 |
+| buildUpPlaySpeed | 54 | 50 | 40 |
+| buildUpPlaySpeedClass | Balanced | Balanced | Balanced |
+| buildUpPlayDribbling | 42 | null | null |
+| buildUpPlayDribblingClass | Normal | Little | Little |
+| buildUpPlayPassing | 51 | 50 | 50 |
 | buildUpPlayPassingClass | Mixed | Mixed | Mixed |
 | buildUpPlayPositioningClass | Organised | Organised | Organised |
-| chanceCreationPassing | 47 | 70 | 55 |
-| chanceCreationPassingClass | Normal | Risky | Normal |
-| chanceCreationCrossing | 52 | 44 | 64 |
-| chanceCreationCrossingClass | Normal | Normal | Normal |
-| chanceCreationShooting | 32 | 49 | 28 |
-| chanceCreationShootingClass | Little | Normal | Little |
-| chanceCreationPositioningClass | Organised | Free Form | Organised |
-| defencePressure | 44 | 65 | 54 |
+| chanceCreationPassing | 47 | 55 | 55 |
+| chanceCreationPassingClass | Normal | Normal | Normal |
+| chanceCreationCrossing | 52 | 67 | 65 |
+| chanceCreationCrossingClass | Normal | Lots | Normal |
+| chanceCreationShooting | 32 | 46 | 55 |
+| chanceCreationShootingClass | Little | Normal | Normal |
+| chanceCreationPositioningClass | Organised | Organised | Organised |
+| defencePressure | 44 | 46 | 45 |
 | defencePressureClass | Medium | Medium | Medium |
-| defenceAggression | 58 | 71 | 58 |
-| defenceAggressionClass | Press | Double | Press |
-| defenceTeamWidth | 37 | 40 | 47 |
+| defenceAggression | 58 | 45 | 50 |
+| defenceAggressionClass | Press | Press | Press |
+| defenceTeamWidth | 37 | 47 | 55 |
 | defenceTeamWidthClass | Normal | Normal | Normal |
 | defenceDefenderLineClass | Cover | Cover | Cover |

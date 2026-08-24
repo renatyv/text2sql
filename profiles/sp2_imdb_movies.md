@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:23:56.128386Z
+generated_at_utc: 2026-08-24T21:59:25.844374Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-vg_dmcxm/imdb_movies.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-kwsjknvq/imdb_movies.sqlite
 schema: main
 ---
 
@@ -29,8 +29,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| table | role_mapping | movie | movie |
-| column | name_id | id | year |
+| table | role_mapping | movie | names |
+| column | name_id | production_company | id |
 | Unnamed: 2 | null | null | null |
 | Unnamed: 3 | null | null | null |
 | Unnamed: 4 | null | null | null |
@@ -38,10 +38,10 @@ samples:
 | Unnamed: 6 | * name_id | null | null |
 | Unnamed: 7 | null | null | null |
 | Unnamed: 8 | null | null | null |
-| Unnamed: 9 | worlwide_gross_income | genre | * genre |
+| Unnamed: 9 | worlwide_gross_income | * id | production_company |
 | Unnamed: 10 | null | null | null |
 | Unnamed: 11 | null | null | null |
-| Unnamed: 12 | * name_id | ratings | avg_rating |
+| Unnamed: 12 | * name_id | null | null |
 
 # "director_mapping"  (rows=3867)
 
@@ -54,8 +54,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| movie_id | tt9903716 | tt10253466 | tt8515750 |
-| name_id | nm10532693 | nm4899218 | nm0211564 |
+| movie_id | tt9903716 | tt6743942 | tt10255320 |
+| name_id | nm10532693 | nm1280221 | nm0006395 |
 
 # "genre"  (rows=14662)
 
@@ -68,8 +68,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| movie_id | tt9914286 | tt6118340 | tt6054874 |
-| genre | Family | Horror | Action |
+| movie_id | tt9914286 | tt7752454 | tt6917272 |
+| genre | Family | Mystery | Comedy |
 
 # "movies"  (rows=7997)
 
@@ -89,15 +89,15 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | tt9914286 | tt6368508 | tt8331988 |
-| title | Sokagin Çocuklari | 29 to Life | La camarista |
-| year | 2019 | 2018 | 2019 |
-| date_published | 2019-03-15T00:00:00 | 2018-03-11T00:00:00 | 2019-07-26T00:00:00 |
-| duration | 98 | 100 | 102 |
-| country | Turkey | USA | Mexico |
-| worlwide_gross_income | $ 2833 | null | $ 163881 |
-| languages | Turkish | English | Spanish, French |
-| production_company | Gizem Ajans | ACM Films | Amplitud |
+| id | tt9914286 | tt6820184 | tt6876488 |
+| title | Sokagin Çocuklari | Madame Mills, une voisine si parfaite | Gek van Geluk |
+| year | 2019 | 2018 | 2017 |
+| date_published | 2019-03-15T00:00:00 | 2018-03-07T00:00:00 | 2017-12-07T00:00:00 |
+| duration | 98 | 88 | 106 |
+| country | Turkey | Belgium, France, China | Netherlands |
+| worlwide_gross_income | $ 2833 | $ 2141498 | $ 1418659 |
+| languages | Turkish | French, English, Chinese | Dutch |
+| production_company | Gizem Ajans | Films du Cap, Les | Johan Nijenhuis & Co |
 
 # "names"  (rows=25735)
 
@@ -113,11 +113,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | nm9992720 | nm0319462 | nm1087903 |
-| name | McMagic Cardenas | Sam Gilman | Christopher Chambers |
-| height | null | null | null |
-| date_of_birth | null | 1915-02-05 | null |
-| known_for_movies | tt7233828 | null | tt3245848 |
+| id | nm9992720 | nm0675114 | nm6646364 |
+| name | McMagic Cardenas | Jeff Perry | Elizabeth Rhoades |
+| height | null | null | 200 |
+| date_of_birth | null | 1955-08-16 | null |
+| known_for_movies | tt7233828 | null | tt6619250,tt6557704 |
 
 # "ratings"  (rows=7997)
 
@@ -132,10 +132,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| movie_id | tt9914286 | tt4266076 | tt7853282 |
-| avg_rating | 7.2 | 6 | 6.5 |
-| total_votes | 190 | 7098 | 219 |
-| median_rating | 10 | 6 | 8 |
+| movie_id | tt9914286 | tt6613878 | tt2039380 |
+| avg_rating | 7.2 | 6.7 | 3 |
+| total_votes | 190 | 2321 | 478 |
+| median_rating | 10 | 7 | 3 |
 
 # "role_mapping"  (rows=15615)
 
@@ -149,6 +149,6 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| movie_id | tt9903716 | tt7156436 | tt6905442 |
-| name_id | nm7237124 | nm1310525 | nm3857399 |
-| category | actress | actor | actor |
+| movie_id | tt9903716 | tt7241654 | tt9047474 |
+| name_id | nm7237124 | nm0000574 | nm3198515 |
+| category | actress | actor | actress |

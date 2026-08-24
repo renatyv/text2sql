@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:20:20.161799Z
+generated_at_utc: 2026-08-24T21:55:18.789126Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-ion06k1a/card_games.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-voi1gump/card_games.sqlite
 schema: main
 ---
 
@@ -95,36 +95,36 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 56832 | 51139 | 14203 |
-| artist | Colin Boyer | Ron Spencer | Jaime Jones |
+| id | 56832 | 39668 | 1205 |
+| artist | Colin Boyer | Chris Rahn | Sandra Everingham |
 | asciiName | null | null | null |
-| availability | mtgo,paper | mtgo | mtgo,paper |
-| borderColor | black | black | black |
-| cardKingdomFoilId | 238370 | null | 126539 |
-| cardKingdomId | 237883 | null | 126385 |
-| colorIdentity | R,W | W | null |
+| availability | mtgo,paper | paper | paper |
+| borderColor | black | black | white |
+| cardKingdomFoilId | 238370 | 209375 | null |
+| cardKingdomId | 237883 | null | 26035 |
+| colorIdentity | R,W | G | W |
 | colorIndicator | null | null | null |
-| colors | R,W | W | null |
-| convertedManaCost | 3 | 3 | 0 |
+| colors | R,W | G | W |
+| convertedManaCost | 3 | 4 | 2 |
 | duelDeck | null | null | null |
-| edhrecRank | 10632 | 18838 | 974 |
+| edhrecRank | 10632 | 7470 | 11514 |
 | faceConvertedManaCost | null | null | null |
 | faceName | null | null | null |
 | flavorName | null | null | null |
-| flavorText | From rebellion against the Akoum Skyclave to fighting the Eldrazi titans, the dragon-riding Kargan tribes have never missed an opportunity to defy the odds. | "The cannon wasn't aimed at you!" pleaded Vhati. "I'm not sure which is more pathetic," replied Greven, "your judgment or your aim." | null |
+| flavorText | From rebellion against the Akoum Skyclave to fighting the Eldrazi titans, the dragon-riding Kargan tribes have never missed an opportunity to defy the odds. | null | null |
 | frameEffects | inverted | null | null |
-| frameVersion | 2015 | 2015 | 2003 |
+| frameVersion | 2015 | 2015 | 1993 |
 | hand | null | null | null |
 | hasContentWarning | 0 | 0 | 0 |
-| hasFoil | 1 | 1 | 1 |
-| hasNonFoil | 1 | 1 | 1 |
+| hasFoil | 1 | 1 | 0 |
+| hasNonFoil | 1 | 0 | 1 |
 | isFullArt | 0 | 0 | 0 |
-| isOnlineOnly | 0 | 1 | 0 |
+| isOnlineOnly | 0 | 0 | 0 |
 | isOversized | 0 | 0 | 0 |
-| isPromo | 1 | 0 | 0 |
-| isReprint | 0 | 1 | 0 |
+| isPromo | 1 | 1 | 0 |
+| isReprint | 0 | 1 | 1 |
 | isReserved | 0 | 0 | 0 |
-| isStarter | 1 | 0 | 0 |
+| isStarter | 1 | 1 | 0 |
 | isStorySpotlight | 0 | 0 | 0 |
 | isTextless | 0 | 0 | 0 |
 | isTimeshifted | 0 | 0 | 0 |
@@ -133,38 +133,38 @@ samples:
 | leadershipSkills | null | null | null |
 | life | null | null | null |
 | loyalty | null | null | null |
-| manaCost | {1}{R}{W} | {2}{W} | null |
-| mcmId | 501980 | null | 20787 |
-| mcmMetaId | 317195 | null | 10411 |
+| manaCost | {1}{R}{W} | {2}{G}{G} | {1}{W} |
+| mcmId | 501980 | 292943 | 5723 |
+| mcmMetaId | 317195 | null | null |
 | mtgArenaId | null | null | null |
-| mtgjsonV4Id | 28565911-47f4-53d3-9f0b-1b7360bd444c | bc8d2ccc-dd3a-5ebd-8f93-7c20ebb1650a | 45e5f57e-d53e-5cb4-bbc5-220d41ad6126 |
-| mtgoFoilId | null | 56753 | 31678 |
-| mtgoId | null | 56752 | 31677 |
-| multiverseId | null | 397644 | 142301 |
-| name | Kargan Warleader | Repentance | Rupture Spire |
-| number | 391 | 25 | 144 |
+| mtgjsonV4Id | 28565911-47f4-53d3-9f0b-1b7360bd444c | 559ecfa7-9e38-5f3e-96b3-02ca3814ff73 | 28262cc3-56c1-597c-ac52-9e6b6b88c8ab |
+| mtgoFoilId | null | null | null |
+| mtgoId | null | null | null |
+| multiverseId | null | null | 1337 |
+| name | Kargan Warleader | Bristling Hydra | Circle of Protection: Green |
+| number | 391 | 147s | 11 |
 | originalReleaseDate | null | null | null |
-| originalText | null | Target creature deals damage to itself equal to its power. | Rupture Spire comes into play tapped. When Rupture Spire comes into play, sacrifice it unless you pay {1}. {T}: Add one mana of any color to your mana pool. |
-| originalType | null | Sorcery | Land |
+| originalText | null | null | o1: Prevents all damage against you from one green source. If a source does damage to you more than once in a turn, you must pay 1 mana each time you want to prevent the damage. |
+| originalType | null | null | Enchantment |
 | otherFaceIds | null | null | null |
-| power | 3 | null | null |
-| printings | ZNR | TMP,TPR | C13,C16,C20,CM2,CMA,CMD,CMR,CON,DDH,H09,JMP,M19,PC2,PCA,TD0 |
-| promoTypes | promopack | null | null |
-| purchaseUrls | {'cardKingdom': 'https://mtgjson.com/links/5e41d001e708490c', 'cardKingdomFoil': 'https://mtgjson.com/links/daf4f53f54b28b9e', 'cardmarket': 'https://mtgjson.com/links/5bf73e54801f56c0', 'tcgplayer':… | null | {'cardKingdom': 'https://mtgjson.com/links/a519acc2fd94d752', 'cardKingdomFoil': 'https://mtgjson.com/links/5b6d981cb76ff580', 'cardmarket': 'https://mtgjson.com/links/45529785cd247c60', 'tcgplayer':… |
-| rarity | uncommon | uncommon | common |
-| scryfallId | cbef1409-4e7c-445e-ae6b-b3133faf1f73 | 7d02c74a-8bc7-4a4d-830b-e59a7aed5722 | 568df642-3ad7-401c-a133-edb56970c3a1 |
-| scryfallIllustrationId | f7a16dfb-c794-4391-82ca-2e37ddf30ef2 | a06bc774-9673-42b4-a38d-14e2f55a4f7e | 131f121c-f166-4424-a747-b14348895566 |
-| scryfallOracleId | 63324e72-e580-456a-91be-766c9f07b7b3 | 9a345a67-0c6c-4f6f-b3c9-d525199cdbfa | 7eadffcb-1e15-44c1-b1db-78c71b8ec1ce |
-| setCode | ZNR | TPR | CON |
+| power | 3 | 4 | null |
+| printings | ZNR | KLD,KLR,PKLD,PRES | 2ED,3ED,4BB,4ED,5ED,6ED,7ED,8ED,CED,CEI,FBB,ICE,LEA,LEB,PTC,SUM,TMP |
+| promoTypes | promopack | setpromo,prerelease,datestamped | null |
+| purchaseUrls | {'cardKingdom': 'https://mtgjson.com/links/5e41d001e708490c', 'cardKingdomFoil': 'https://mtgjson.com/links/daf4f53f54b28b9e', 'cardmarket': 'https://mtgjson.com/links/5bf73e54801f56c0', 'tcgplayer':… | {'cardKingdomFoil': 'https://mtgjson.com/links/d63136a173067627', 'tcgplayer': 'https://mtgjson.com/links/c28ec0e0583f07ff'} | {'cardKingdom': 'https://mtgjson.com/links/067cbbfb8116f9ce', 'tcgplayer': 'https://mtgjson.com/links/1f3d54be7f98c978'} |
+| rarity | uncommon | rare | common |
+| scryfallId | cbef1409-4e7c-445e-ae6b-b3133faf1f73 | 095ac316-dd28-4e2d-83f9-6e2d05a499a6 | 251e0407-b49a-4ee5-83a1-1523ff03a7a7 |
+| scryfallIllustrationId | f7a16dfb-c794-4391-82ca-2e37ddf30ef2 | 1706c503-8a79-4846-90c9-5ae1fe36fd42 | 3826a644-d46a-4800-ae87-382b809a284b |
+| scryfallOracleId | 63324e72-e580-456a-91be-766c9f07b7b3 | b3b23c58-0b7a-4fe4-a8e8-5320a7605724 | 41b0f347-1398-4778-bf3f-4007d8a77162 |
+| setCode | ZNR | PKLD | 3ED |
 | side | null | null | null |
-| subtypes | Human,Warrior | null | null |
+| subtypes | Human,Warrior | Hydra | null |
 | supertypes | null | null | null |
-| tcgplayerProductId | 222853 | null | 28594 |
-| text | Other Warriors you control get +1/+1. | Target creature deals damage to itself equal to its power. | Rupture Spire enters the battlefield tapped. When Rupture Spire enters the battlefield, sacrifice it unless you pay {1}. {T}: Add one mana of any color. |
-| toughness | 3 | null | null |
-| type | Creature — Human Warrior | Sorcery | Land |
-| types | Creature | Sorcery | Land |
-| uuid | 46407d93-df48-5161-95fe-f24086746663 | 2603a85f-205b-53e0-976a-87b1570c4918 | 4fb21440-637c-565f-b0a5-1592ec05da42 |
+| tcgplayerProductId | 222853 | 123352 | 1362 |
+| text | Other Warriors you control get +1/+1. | When Bristling Hydra enters the battlefield, you get {E}{E}{E} (three energy counters). Pay {E}{E}{E}: Put a +1/+1 counter on Bristling Hydra. It gains hexproof until end of turn. | {1}: The next time a green source of your choice would deal damage to you this turn, prevent that damage. |
+| toughness | 3 | 3 | null |
+| type | Creature — Human Warrior | Creature — Hydra | Enchantment |
+| types | Creature | Creature | Enchantment |
+| uuid | 46407d93-df48-5161-95fe-f24086746663 | 8ae68f83-585e-5ce9-9db6-366786f0ee8a | 43ef269c-93d4-5a0f-89d4-3d0e8a34e0b1 |
 | variations | f3434acf-7796-572c-a889-487c84cf7948 | null | null |
 | watermark | planeswalker | null | null |
 
@@ -207,10 +207,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 87769 | 83252 | 36680 |
-| date | 2013-09-15 | 2020-09-25 | 2013-04-15 |
-| text | Mana symbols in the text boxes of permanents you control don’t count toward your devotion to any color. | In a Two-Headed Giant game, Omnath’s second ability causes the opposing team to lose 8 life the third time it resolves. Each other player’s planeswalkers—including your teammate’s—are dealt 4 damage. | You choose the creature as the spell resolves. The cipher ability doesn’t target that creature, although the spell with cipher may target that creature (or a different creature) because of its other… |
-| uuid | 43a82ca6-338d-5ef9-ae82-1ed44ebb6c0a | cf6d7e26-888e-5127-85e4-9d04eb66f3c2 | ae621fea-aa1d-57cb-ba21-74c6ef03f881 |
+| id | 87769 | 63397 | 71691 |
+| date | 2013-09-15 | 2015-08-25 | 2013-07-01 |
+| text | Mana symbols in the text boxes of permanents you control don’t count toward your devotion to any color. | Eldrazi and Scion are each separate creature types. Anything that affects Eldrazi will affect these tokens, for example. | Auras attached to the exiled creature will be put into their owners’ graveyards. Equipment attached to the exiled creature will become unattached and remain on the battlefield. Any counters on the ex… |
+| uuid | 43a82ca6-338d-5ef9-ae82-1ed44ebb6c0a | 78361f75-8f21-58fd-9968-7f12de34c277 | 923f67c6-b478-5f00-a349-1a9b0e789f7d |
 
 # "set_translations"  (rows=1210)
 
@@ -225,10 +225,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 1210 | 775 | 1087 |
-| language | Spanish | Italian | Korean |
-| setCode | WTH | M21 | UDS |
-| translation | null | null | null |
+| id | 1210 | 939 | 518 |
+| language | Spanish | Russian | Portuguese (Brazil) |
+| setCode | WTH | RAV | DKM |
+| translation | null | Равника: Город Гильдий | Deckmasters 2001 |
 
 # "sets"  (rows=551)
 
@@ -260,24 +260,24 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 551 | 96 | 505 |
-| baseSetSize | 285 | 106 | 9 |
-| block | null | null | Theros |
+| id | 551 | 111 | 241 |
+| baseSetSize | 285 | 12 | 4 |
+| block | null | Friday Night Magic | Commander |
 | booster | {'arena': {'boosters': [{'contents': {'common': 10, 'rareMythic': 1, 'uncommon': 3}, 'weight': 1}], 'boostersTotalWeight': 1, 'name': 'Zendikar Rising Arena Booster', 'sheets': {'common': {'balanceCo… | null | null |
-| code | ZNR | E01 | THP3 |
-| isFoilOnly | 0 | 0 | 0 |
+| code | ZNR | F07 | OC17 |
+| isFoilOnly | 0 | 1 | 1 |
 | isForeignOnly | 0 | 0 | 0 |
-| isNonFoilOnly | 0 | 1 | 0 |
+| isNonFoilOnly | 0 | 0 | 0 |
 | isOnlineOnly | 0 | 0 | 0 |
 | isPartialPreview | 0 | 0 | 0 |
-| keyruneCode | ZNR | E01 | JOU |
-| mcmId | 3404 | 1730 | null |
+| keyruneCode | ZNR | DCI | C17 |
+| mcmId | 3404 | null | null |
 | mcmIdExtras | 3474 | null | null |
-| mcmName | Zendikar Rising | Archenemy: Nicol Bolas | null |
+| mcmName | Zendikar Rising | null | null |
 | mtgoCode | ZNR | null | null |
-| name | Zendikar Rising | Archenemy: Nicol Bolas | Journey into Nyx Hero's Path |
-| parentCode | null | null | JOU |
-| releaseDate | 2020-09-25 | 2017-06-16 | 2014-05-02 |
-| tcgplayerGroupId | 2648 | 1904 | null |
-| totalSetSize | 392 | 106 | 9 |
-| type | expansion | archenemy | promo |
+| name | Zendikar Rising | Friday Night Magic 2007 | Commander 2017 Oversized |
+| parentCode | null | null | C17 |
+| releaseDate | 2020-09-25 | 2007-01-01 | 2017-08-25 |
+| tcgplayerGroupId | 2648 | null | null |
+| totalSetSize | 392 | 12 | 4 |
+| type | expansion | promo | memorabilia |

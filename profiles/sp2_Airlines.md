@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:21:21.552986Z
+generated_at_utc: 2026-08-24T21:56:56.209456Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-yo6t_dpk/Airlines.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-ythvxn6w/Airlines.sqlite
 schema: main
 ---
 
@@ -37,11 +37,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| airport_code | YKS | MJZ | PEZ |
-| airport_name | {"en": "Yakutsk Airport", "ru": "Якутск"} | {"en": "Mirny Airport", "ru": "Мирный"} | {"en": "Penza Airport", "ru": "Пенза"} |
-| city | {"en": "Yakutsk", "ru": "Якутск"} | {"en": "Mirnyj", "ru": "Мирный"} | {"en": "Penza", "ru": "Пенза"} |
-| coordinates | (129.77099609375,62.0932998657226562) | (114.03900146484375,62.534698486328125) | (45.0210990905761719,53.1105995178222656) |
-| timezone | Asia/Yakutsk | Asia/Yakutsk | Europe/Moscow |
+| airport_code | YKS | AER | EGO |
+| airport_name | {"en": "Yakutsk Airport", "ru": "Якутск"} | {"en": "Sochi International Airport", "ru": "Сочи"} | {"en": "Belgorod International Airport", "ru": "Белгород"} |
+| city | {"en": "Yakutsk", "ru": "Якутск"} | {"en": "Sochi", "ru": "Сочи"} | {"en": "Belgorod", "ru": "Белгород"} |
+| coordinates | (129.77099609375,62.0932998657226562) | (39.9566001892089986,43.4499015808110016) | (36.5900993347167969,50.643798828125) |
+| timezone | Asia/Yakutsk | Europe/Moscow | Europe/Moscow |
 
 # "boarding_passes"  (rows=≈579686)
 
@@ -83,16 +83,16 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| flight_id | 33121 | 16152 | 25593 |
-| flight_no | PG0063 | PG0046 | PG0606 |
-| scheduled_departure | 2017-08-26 19:25:00+03 | 2017-09-10 18:50:00+03 | 2017-08-15 15:55:00+03 |
-| scheduled_arrival | 2017-08-26 20:10:00+03 | 2017-09-10 20:55:00+03 | 2017-08-15 16:50:00+03 |
-| departure_airport | SKX | GRV | ULV |
-| arrival_airport | SVO | DME | DME |
-| status | Scheduled | Scheduled | Arrived |
-| aircraft_code | CR2 | CR2 | SU9 |
-| actual_departure | \N | \N | 2017-08-15 15:59:00+03 |
-| actual_arrival | \N | \N | 2017-08-15 16:54:00+03 |
+| flight_id | 33121 | 17056 | 10080 |
+| flight_no | PG0063 | PG0518 | PG0186 |
+| scheduled_departure | 2017-08-26 19:25:00+03 | 2017-08-12 15:30:00+03 | 2017-08-06 13:50:00+03 |
+| scheduled_arrival | 2017-08-26 20:10:00+03 | 2017-08-12 16:50:00+03 | 2017-08-06 16:00:00+03 |
+| departure_airport | SKX | SCW | OVB |
+| arrival_airport | SVO | DME | PEE |
+| status | Scheduled | Arrived | Arrived |
+| aircraft_code | CR2 | 763 | 319 |
+| actual_departure | \N | 2017-08-12 15:33:00+03 | 2017-08-06 13:54:00+03 |
+| actual_arrival | \N | 2017-08-12 16:52:00+03 | 2017-08-06 16:03:00+03 |
 
 # "seats"  (rows=1339)
 
@@ -106,9 +106,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| aircraft_code | SU9 | 773 | 321 |
-| seat_no | 9F | 14F | 20B |
-| fare_conditions | Economy | Comfort | Economy |
+| aircraft_code | SU9 | 763 | 773 |
+| seat_no | 9F | 4A | 49H |
+| fare_conditions | Economy | Business | Economy |
 
 # "ticket_flights"  (rows=≈1045726)
 

@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:22:58.933713Z
+generated_at_utc: 2026-08-24T21:58:29.887125Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-3cyyjw2e/chinook.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-sn1zd77_/chinook.sqlite
 schema: main
 ---
 
@@ -31,9 +31,9 @@ indexes: "ArtistId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| AlbumId | 347 | 340 | 139 |
-| Title | Koyaanisqatsi (Soundtrack from the Motion Picture) | Liszt - 12 Études D'Execution Transcendante | A TempestadeTempestade Ou O Livro Dos Dias |
-| ArtistId | 275 | 269 | 99 |
+| AlbumId | 347 | 86 | 296 |
+| Title | Koyaanisqatsi (Soundtrack from the Motion Picture) | Quanta Gente Veio Ver (Live) | A Copland Celebration, Vol. I |
+| ArtistId | 275 | 27 | 230 |
 
 # "artists"  (rows=275)
 
@@ -46,8 +46,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ArtistId | 275 | 82 | 94 |
-| Name | Philip Glass Ensemble | Faith No More | Jimi Hendrix |
+| ArtistId | 275 | 191 | 158 |
+| Name | Philip Glass Ensemble | Nação Zumbi | Battlestar Galactica (Classic) |
 
 # "customers"  (rows=59)
 
@@ -71,19 +71,19 @@ indexes: "SupportRepId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| CustomerId | 59 | 40 | 12 |
-| FirstName | Puja | Dominique | Roberto |
-| LastName | Srivastava | Lefebvre | Almeida |
-| Company | null | null | Riotur |
-| Address | 3,Raj Bhavan Road | 8, Rue Hanovre | Praça Pio X, 119 |
-| City | Bangalore | Paris | Rio de Janeiro |
-| State | null | null | RJ |
-| Country | India | France | Brazil |
-| PostalCode | 560001 | 75002 | 20040-020 |
-| Phone | +91 080 22289999 | +33 01 47 42 71 71 | +55 (21) 2271-7000 |
-| Fax | null | null | +55 (21) 2271-7070 |
-| Email | puja_srivastava@yahoo.in | dominiquelefebvre@gmail.com | roberto.almeida@riotur.gov.br |
-| SupportRepId | 3 | 4 | 3 |
+| CustomerId | 59 | 54 | 33 |
+| FirstName | Puja | Steve | Ellie |
+| LastName | Srivastava | Murray | Sullivan |
+| Company | null | null | null |
+| Address | 3,Raj Bhavan Road | 110 Raeburn Pl | 5112 48 Street |
+| City | Bangalore | Edinburgh  | Yellowknife |
+| State | null | null | NT |
+| Country | India | United Kingdom | Canada |
+| PostalCode | 560001 | EH4 1HH | X1A 1N6 |
+| Phone | +91 080 22289999 | +44 0131 315 3300 | +1 (867) 920-2233 |
+| Fax | null | null | null |
+| Email | puja_srivastava@yahoo.in | steve.murray@yahoo.uk | ellie.sullivan@shaw.ca |
+| SupportRepId | 3 | 5 | 3 |
 
 # "employees"  (rows=8)
 
@@ -136,8 +136,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| GenreId | 25 | 17 | 12 |
-| Name | Opera | Hip Hop/Rap | Easy Listening |
+| GenreId | 25 | 20 | 18 |
+| Name | Opera | Sci Fi & Fantasy | Science Fiction |
 
 # "invoice_items"  (rows=2240)
 
@@ -153,10 +153,10 @@ indexes: "InvoiceId", "TrackId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| InvoiceLineId | 2240 | 244 | 2198 |
-| InvoiceId | 412 | 46 | 404 |
-| TrackId | 3177 | 1452 | 2904 |
-| UnitPrice | 1.99 | 0.99 | 1.99 |
+| InvoiceLineId | 2240 | 602 | 516 |
+| InvoiceId | 412 | 110 | 96 |
+| TrackId | 3177 | 166 | 3115 |
+| UnitPrice | 1.99 | 0.99 | 0.99 |
 | Quantity | 1 | 1 | 1 |
 
 # "invoices"  (rows=412)
@@ -177,15 +177,15 @@ indexes: "CustomerId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| InvoiceId | 412 | 406 | 122 |
-| CustomerId | 58 | 21 | 5 |
-| InvoiceDate | 2013-12-22T00:00:00 | 2013-12-04T00:00:00 | 2010-06-14T00:00:00 |
-| BillingAddress | 12,Community Centre | 801 W 4th Street | Klanova 9/506 |
-| BillingCity | Delhi | Reno | Prague |
-| BillingState | null | NV | null |
-| BillingCountry | India | USA | Czech Republic |
-| BillingPostalCode | 110017 | 89503 | 14700 |
-| Total | 1.99 | 1.98 | 5.94 |
+| InvoiceId | 412 | 206 | 238 |
+| CustomerId | 58 | 48 | 53 |
+| InvoiceDate | 2013-12-22T00:00:00 | 2011-06-21T00:00:00 | 2011-11-21T00:00:00 |
+| BillingAddress | 12,Community Centre | Lijnbaansgracht 120bg | 113 Lupus St |
+| BillingCity | Delhi | Amsterdam | London |
+| BillingState | null | VV | null |
+| BillingCountry | India | Netherlands | United Kingdom |
+| BillingPostalCode | 110017 | 1016 | SW1V 3EN |
+| Total | 1.99 | 8.94 | 1.98 |
 
 # "media_types"  (rows=5)
 
@@ -212,8 +212,8 @@ indexes: "TrackId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| PlaylistId | 18 | 1 | 1 |
-| TrackId | 597 | 1326 | 315 |
+| PlaylistId | 18 | 5 | 8 |
+| TrackId | 597 | 1975 | 1850 |
 
 # "playlists"  (rows=18)
 
@@ -226,8 +226,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| PlaylistId | 18 | 12 | 1 |
-| Name | On-The-Go 1 | Classical | Music |
+| PlaylistId | 18 | 4 | 1 |
+| Name | On-The-Go 1 | Audiobooks | Music |
 
 # "tracks"  (rows=3503)
 
@@ -247,12 +247,12 @@ indexes: "AlbumId", "GenreId", "MediaTypeId"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| TrackId | 3503 | 2794 | 3097 |
-| Name | Koyaanisqatsi | 32 Dentes | Once |
-| AlbumId | 347 | 224 | 245 |
+| TrackId | 3503 | 3160 | 970 |
+| Name | Koyaanisqatsi | Sapopemba e Maxambomba | Underwater Love |
+| AlbumId | 347 | 248 | 77 |
 | MediaTypeId | 2 | 1 | 1 |
-| GenreId | 10 | 4 | 1 |
-| Composer | Philip Glass | Titãs | Van Halen |
-| Milliseconds | 206005 | 184946 | 462837 |
-| Bytes | 3305164 | 6157904 | 15378082 |
+| GenreId | 10 | 7 | 4 |
+| Composer | Philip Glass | Nei Lopes/Wilson Moreira | Faith No More |
+| Milliseconds | 206005 | 245394 | 231993 |
+| Bytes | 3305164 | 8268712 | 7634387 |
 | UnitPrice | 0.99 | 0.99 | 0.99 |

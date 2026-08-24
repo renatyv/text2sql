@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:22:57.774943Z
+generated_at_utc: 2026-08-24T21:58:28.801127Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-yf33b_uw/bank_sales_trading.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-n4g8fkl1/bank_sales_trading.sqlite
 schema: main
 ---
 
@@ -19,9 +19,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| member_id | eccbc8 | c51ce4 | eccbc8 |
-| first_name | Charlie | Pavan | Charlie |
-| region | United States | Australia | United States |
+| member_id | eccbc8 | d3d944 | e4da3b |
+| first_name | Charlie | Enoch | Rowan |
+| region | United States | Africa | United States |
 
 # "bitcoin_prices"  (rows=3404)
 
@@ -41,13 +41,13 @@ samples:
 | column | latest | sample | sample |
 |---|---|---|---|
 | ticker | ETH | ETH | BTC |
-| market_date | 31-12-2020 | 24-02-2020 | 10-01-2019 |
-| price | 735.94 | 265.65 | 3603.7 |
-| open | 751.92 | 274.72 | 3978.9 |
-| high | 755.13 | 276.81 | 4007.7 |
-| low | 724.67 | 258.15 | 3562.1 |
-| volume | 1.04M | 19.96M | 697.31K |
-| change | -2.11% | -3.30% | -9.41% |
+| market_date | 31-12-2020 | 16-03-2017 | 21-08-2017 |
+| price | 735.94 | 45.07 | 4005.1 |
+| open | 751.92 | 34.8 | 4066.6 |
+| high | 755.13 | 46.21 | 4097.3 |
+| low | 724.67 | 34.8 | 3966.9 |
+| volume | 1.04M | 3.06M | 90.65K |
+| change | -2.11% | 29.51% | -1.51% |
 
 # "bitcoin_transactions"  (rows=22918)
 
@@ -66,14 +66,14 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| txn_id | 22918 | 14726 | 4956 |
-| member_id | d3d944 | eccbc8 | 8f14e4 |
-| ticker | BTC | ETH | BTC |
-| txn_date | 27-08-2021 | 04-01-2020 | 04-01-2018 |
-| txn_type | BUY | SELL | BUY |
-| quantity | 7.22216 | 5.94956 | 4.5975 |
-| percentage_fee | 0.01 | 0.23 | 0.3 |
-| txn_time | 2021-08-27T22:26:10.258Z | 2020-01-04T18:06:50.416Z | 2018-01-04T11:04:18.853Z |
+| txn_id | 22918 | 10524 | 12961 |
+| member_id | d3d944 | c4ca42 | e4da3b |
+| ticker | BTC | BTC | ETH |
+| txn_date | 27-08-2021 | 27-02-2019 | 31-08-2019 |
+| txn_type | BUY | BUY | SELL |
+| quantity | 7.22216 | 7.1647 | 4.99077 |
+| percentage_fee | 0.01 | 0.3 | 0.08 |
+| txn_time | 2021-08-27T22:26:10.258Z | 2019-02-27T19:00:45.070Z | 2019-08-31T16:08:56.319Z |
 
 # "cleaned_weekly_sales"  (rows=17117)
 
@@ -98,20 +98,20 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| week_date_formatted | 2020-8-31 | 2018-8-20 | 2019-5-13 |
-| week_date | 2020-08-31 | 2018-08-20 | 2019-05-13 |
-| region | USA | USA | CANADA |
-| platform | Shopify | Shopify | Retail |
-| segment | unknown | unknown | unknown |
-| customer_type | New | New | Guest |
-| transactions | 154 | 104 | 437760 |
-| sales | 25762 | 18690 | 12079867 |
-| week_number | 36 | 34 | 20 |
-| month_number | 8 | 8 | 5 |
-| calendar_year | 2020 | 2018 | 2019 |
-| age_band | unknown | unknown | unknown |
-| demographic | unknown | unknown | unknown |
-| avg_transaction | 167.29 | 179.71 | 27.59 |
+| week_date_formatted | 2020-8-31 | 2019-6-3 | 2019-6-24 |
+| week_date | 2020-08-31 | 2019-06-03 | 2019-06-24 |
+| region | USA | SOUTH AMERICA | EUROPE |
+| platform | Shopify | Retail | Retail |
+| segment | unknown | C3 | F1 |
+| customer_type | New | New | New |
+| transactions | 154 | 775 | 939 |
+| sales | 25762 | 30023 | 38925 |
+| week_number | 36 | 23 | 26 |
+| month_number | 8 | 6 | 6 |
+| calendar_year | 2020 | 2019 | 2019 |
+| age_band | unknown | Retirees | Young Adults |
+| demographic | unknown | Couples | Families |
+| avg_transaction | 167.29 | 38.74 | 41.45 |
 
 # "customer_nodes"  (rows=3500)
 
@@ -127,11 +127,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customer_id | 500 | 144 | 190 |
-| region_id | 2 | 3 | 5 |
-| node_id | 5 | 4 | 5 |
-| start_date | 2020-03-13 | 2020-01-14 | 2020-01-26 |
-| end_date | 2020-03-18 | 2020-02-13 | 2020-02-18 |
+| customer_id | 500 | 400 | 466 |
+| region_id | 2 | 4 | 1 |
+| node_id | 5 | 5 | 4 |
+| start_date | 2020-03-13 | 2020-03-12 | 2020-02-09 |
+| end_date | 2020-03-18 | 2020-03-28 | 2020-03-02 |
 
 # "customer_regions"  (rows=5)
 
@@ -160,10 +160,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customer_id | 500 | 401 | 124 |
-| txn_date | 2020-03-25 | 2020-01-21 | 2020-02-07 |
-| txn_type | deposit | withdrawal | deposit |
-| txn_amount | 825 | 854 | 710 |
+| customer_id | 500 | 344 | 457 |
+| txn_date | 2020-03-25 | 2020-02-29 | 2020-02-12 |
+| txn_type | deposit | deposit | deposit |
+| txn_amount | 825 | 90 | 300 |
 
 # "interest_map"  (rows=1209)
 
@@ -179,11 +179,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| id | 51678 | 44587 | 41553 |
-| interest_name | Plumbers | Baseball Enthusiasts | Classical Music Enthusiasts |
-| interest_summary | Professionals reading industry news and researching products and services for plumbers. | People researching baseball leagues and purchasing equipment and apparel. | People reading about classical music and musicians. |
-| created_at | 2019-05-06 22:00:00 | 2019-01-28 23:00:00 | 2018-12-03 11:10:05 |
-| last_modified | 2019-05-07 18:50:04 | 2019-02-01 14:13:05 | 2018-12-03 11:10:05 |
+| id | 51678 | 22424 | 85 |
+| interest_name | Plumbers | Cosplay Enthusiasts | Online Movie Downloaders |
+| interest_summary | Professionals reading industry news and researching products and services for plumbers. | People researching cosplay events and activities and purchasing costumes. | Consumers downloading feature length movies and TV shows. |
+| created_at | 2019-05-06 22:00:00 | 2018-06-21 14:15:06 | 2016-05-26 14:57:59 |
+| last_modified | 2019-05-07 18:50:04 | 2018-06-21 14:15:06 | 2018-05-23 11:30:13 |
 
 # "interest_metrics"  (rows=14273)
 
@@ -202,14 +202,14 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| _month | 12 | 1 | 3 |
+| _month | 12 | 8 | 5 |
 | _year | 2018 | 2019 | 2019 |
-| month_year | 12-2018 | 01-2019 | 03-2019 |
-| interest_id | 42239 | 18350 | 22419 |
-| composition | 1.74 | 3.16 | 3.02 |
-| index_value | 1.39 | 1.44 | 1.15 |
-| ranking | 523 | 286 | 748 |
-| percentile_ranking | 47.44 | 70.61 | 34.15 |
+| month_year | 12-2018 | 08-2019 | 05-2019 |
+| interest_id | 42239 | 19595 | 6221 |
+| composition | 1.74 | 2.11 | 1.65 |
+| index_value | 1.39 | 0.98 | 1.22 |
+| ranking | 523 | 1120 | 754 |
+| percentile_ranking | 47.44 | 2.52 | 12.02 |
 
 # "shopping_cart_campaign_identifier"  (rows=3)
 
@@ -260,12 +260,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| visit_id | ffeed3 | b90071 | 7d34b7 |
-| cookie_id | beed13 | 7f2acc | c796bd |
-| page_id | 2 | 1 | 6 |
-| event_type | 1 | 1 | 2 |
-| sequence_number | 1 | 1 | 7 |
-| event_time | 2020-02-15 22:00:09.764174 | 2020-03-14 07:40:00.667079 | 2020-02-10 07:56:53.280756 |
+| visit_id | ffeed3 | a10c2c | 0d8e27 |
+| cookie_id | beed13 | 81e6ff | 8c3236 |
+| page_id | 2 | 12 | 8 |
+| event_type | 1 | 1 | 1 |
+| sequence_number | 1 | 17 | 10 |
+| event_time | 2020-02-15 22:00:09.764174 | 2020-02-22 13:39:39.340224 | 2020-03-16 17:47:29.717291 |
 
 # "shopping_cart_page_hierarchy"  (rows=13)
 
@@ -280,10 +280,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| page_id | 13 | 10 | 4 |
-| page_name | Confirmation | Crab | Kingfish |
-| product_category | null | Shellfish | Fish |
-| product_id | null | 8 | 2 |
+| page_id | 13 | 3 | 10 |
+| page_name | Confirmation | Salmon | Crab |
+| product_category | null | Fish | Shellfish |
+| product_id | null | 1 | 8 |
 
 # "shopping_cart_users"  (rows=1782)
 
@@ -297,9 +297,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| user_id | 500 | 401 | 247 |
-| cookie_id | f1ab70 | 816b11 | 1a6dda |
-| start_date | 2020-02-28 | 2020-01-02 | 2020-02-06 |
+| user_id | 500 | 313 | 249 |
+| cookie_id | f1ab70 | 061fca | 077e29 |
+| start_date | 2020-02-28 | 2020-03-05 | 2020-01-28 |
 
 # "veg_cat"  (rows=251)
 
@@ -315,11 +315,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 250 | 127 | 43 |
-| item_code | 106973990980123 | 102900011009444 | 102900011008522 |
-| item_name | Hfyg Haixian Mushroom (Bunch) | Dalong Eggplant | Sweet Chinese Cabbage |
-| category_code | 1011010801 | 1011010501 | 1011010101 |
-| category_name | Edible Mushroom | Solanum | Flower/Leaf Vegetables |
+| index | 250 | 168 | 207 |
+| item_code | 106973990980123 | 102900011032244 | 102900011026793 |
+| item_name | Hfyg Haixian Mushroom (Bunch) | Red Hot Peppers (Bag) | Apricot Bao Mushroom (250 G) |
+| category_code | 1011010801 | 1011010504 | 1011010801 |
+| category_name | Edible Mushroom | Capsicum | Edible Mushroom |
 
 # "veg_loss_rate_df"  (rows=251)
 
@@ -334,10 +334,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 250 | 169 | 13 |
-| item_code | 106973990980123 | 102900011032343 | 102900005115878 |
-| item_name | Hfyg Haixian Mushroom (Bunch) | 7 Colour Pepper (2) | Garden Chrysanthemum |
-| loss_rate_% | 0.12 | 9.43 | 6.27 |
+| index | 250 | 232 | 227 |
+| item_code | 106973990980123 | 102900051010790 | 102900051004294 |
+| item_name | Hfyg Haixian Mushroom (Bunch) | Purple Beicai | Green Line Pepper |
+| loss_rate_% | 0.12 | 19.58 | 7.8 |
 
 # "veg_txn_df"  (rows=≈878503)
 
@@ -368,10 +368,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 55981 | 30770 | 4467 |
-| whsle_date | 2023-06-30 00:00:00 | 2022-03-09 00:00:00 | 2020-10-17 00:00:00 |
-| item_code | 106971533450003 | 102900051004294 | 102900011001806 |
-| whsle_px_rmb-kg | 1.95 | 16.57 | 4.44 |
+| index | 55981 | 29300 | 7029 |
+| whsle_date | 2023-06-30 00:00:00 | 2022-02-14 00:00:00 | 2020-12-12 00:00:00 |
+| item_code | 106971533450003 | 102900005116530 | 102900005116530 |
+| whsle_px_rmb-kg | 1.95 | 11.35 | 12 |
 
 # "weekly_sales"  (rows=17117)
 
@@ -389,10 +389,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| week_date | 9/7/18 | 16/7/18 | 10/8/20 |
-| region | USA | ASIA | SOUTH AMERICA |
-| platform | Shopify | Shopify | Retail |
-| segment | F3 | F2 | C4 |
+| week_date | 9/7/18 | 25/5/20 | 8/4/19 |
+| region | USA | SOUTH AMERICA | CANADA |
+| platform | Shopify | Retail | Retail |
+| segment | F3 | C1 | C4 |
 | customer_type | New | Existing | New |
-| transactions | 50 | 1744 | 227 |
-| sales | 8314 | 341540 | 8724 |
+| transactions | 50 | 2841 | 11386 |
+| sales | 8314 | 78053 | 445194 |

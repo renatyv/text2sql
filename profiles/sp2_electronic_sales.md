@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:23:50.886748Z
+generated_at_utc: 2026-08-24T21:59:20.292647Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-8l8euo9e/electronic_sales.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-2fxcu_zd/electronic_sales.sqlite
 schema: main
 ---
 
@@ -22,12 +22,12 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 99440 | 68484 | 40582 |
-| customer_id | 274fa6071e5e17fe303b9748641082c8 | 4f1f2b13805c2ab2ce70a6cad8001b18 | 9ccdd15c9060a6ea0d5f0abbb7324022 |
-| customer_unique_id | 84732c5050c01db9b23e19ba39899398 | 34fbd9c42eb9702b4b8c6624b228ef11 | d6203ca017ec577b71f0f49429a38203 |
-| customer_zip_code_prefix | 6703 | 4218 | 8900 |
-| customer_city | cotia | sao paulo | guararema |
-| customer_state | SP | SP | SP |
+| index | 99440 | 29727 | 32977 |
+| customer_id | 274fa6071e5e17fe303b9748641082c8 | a55e8e19f8787d1c56a55001da76ccd0 | ea26c56ff6442484745579ed30526f01 |
+| customer_unique_id | 84732c5050c01db9b23e19ba39899398 | 859b1c60b32236f6e71137547894935d | 8dfbc9064378d19ac99a21ac353072d7 |
+| customer_zip_code_prefix | 6703 | 85660 | 24240 |
+| customer_city | cotia | dois vizinhos | niteroi |
+| customer_state | SP | PR | RJ |
 
 # "geolocation"  (rows=≈1000163)
 
@@ -59,14 +59,14 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 112649 | 57126 | 93610 |
-| order_id | fffe41c64501cc87c801fd61db3f6244 | 8203c6a0f836ad28ea9043e6db95cb71 | d42c0ebb65d63fd42b509a1573c281aa |
-| order_item_id | 1 | 1 | 1 |
-| product_id | 350688d9dc1e75ff97be326363655e01 | 3790861742b5e1e8c72bc179fbeba4be | d0b9d3d449a97f582b325f11b512bfd2 |
-| seller_id | f7ccf836d21b2fb1de37564105216cc1 | 066a6914e1ebf3ea95a216c73a986b91 | da6a60cc8cc724fe51be021ff8be779c |
-| shipping_limit_date | 2018-06-12 17:10:13 | 2018-07-26 17:25:15 | 2018-07-18 22:45:15 |
-| price | 43 | 24.9 | 115.89 |
-| freight_value | 12.79 | 18.27 | 23.61 |
+| index | 112649 | 80452 | 63993 |
+| order_id | fffe41c64501cc87c801fd61db3f6244 | b7085490200f5a1f838eb937d05b4b4a | 922acd93e452539fe6833fd485296ffe |
+| order_item_id | 1 | 2 | 1 |
+| product_id | 350688d9dc1e75ff97be326363655e01 | 0152f69b6cf919bcdaf117aa8c43e5a2 | 389d119b48cf3043d311335e499d9c6b |
+| seller_id | f7ccf836d21b2fb1de37564105216cc1 | d2374cbcbb3ca4ab1086534108cc3ab7 | 1f50f920176fa81dab994f9023523100 |
+| shipping_limit_date | 2018-06-12 17:10:13 | 2017-04-26 09:15:16 | 2018-02-14 07:50:29 |
+| price | 43 | 13.9 | 49.9 |
+| freight_value | 12.79 | 13.54 | 17.6 |
 
 # "order_payments"  (rows=103886)
 
@@ -83,12 +83,12 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 103885 | 18131 | 78888 |
-| order_id | 28bbae6599b09d39ca406b747b6632b1 | 52fb2336bbf199586136afbe9822086c | 0ee3384432be1cfa2a044251ca3ea3a4 |
+| index | 103885 | 16187 | 28532 |
+| order_id | 28bbae6599b09d39ca406b747b6632b1 | f70a0aff17df5a6cdd9a7196128bd354 | 7f7b3e8f848e23fbcd3d2e096d12ef94 |
 | payment_sequential | 1 | 1 | 1 |
-| payment_type | boleto | credit_card | credit_card |
-| payment_installments | 1 | 10 | 3 |
-| payment_value | 191.58 | 157.21 | 58.74 |
+| payment_type | boleto | boleto | credit_card |
+| payment_installments | 1 | 1 | 7 |
+| payment_value | 191.58 | 313.19 | 73.49 |
 
 # "order_reviews"  (rows=99224)
 
@@ -107,14 +107,14 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 99223 | 32196 | 35980 |
-| review_id | efe49f1d6f951dd88b51e6ccd4cc548f | a339be8981f438caccabc132af417f93 | 5c0b7e34ed85ec659bb064902d878e7a |
-| order_id | 90531360ecb1eec2a1fbb265a0db0508 | 12321543ad6f89cc74cde9ae42d12e3e | 0005f50442cb953dcd1d21e1fb923495 |
-| review_score | 1 | 5 | 4 |
+| index | 99223 | 57267 | 13775 |
+| review_id | efe49f1d6f951dd88b51e6ccd4cc548f | 12b537151a5e71612763d55a3d9e326a | df55ce5fdc0c4d061eb3952ebda8b3ff |
+| order_id | 90531360ecb1eec2a1fbb265a0db0508 | eb6c151662d92e0f9c6b1c3f30122348 | 5ff78652a040431e007c9349249d3503 |
+| review_score | 1 | 5 | 5 |
 | review_comment_title | null | null | null |
 | review_comment_message | meu produto chegou e ja tenho que devolver, pois está com defeito , não segurar carga | null | null |
-| review_creation_date | 2017-07-03 00:00:00 | 2017-09-20 00:00:00 | 2018-07-05 00:00:00 |
-| review_answer_timestamp | 2017-07-03 21:01:49 | 2017-09-20 21:45:33 | 2018-07-05 23:17:04 |
+| review_creation_date | 2017-07-03 00:00:00 | 2018-01-09 00:00:00 | 2018-05-01 00:00:00 |
+| review_answer_timestamp | 2017-07-03 21:01:49 | 2018-01-09 19:05:44 | 2018-05-03 23:16:35 |
 
 # "orders"  (rows=99441)
 
@@ -134,15 +134,15 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 99440 | 7261 | 77191 |
-| order_id | 66dea50a8b16d9b4dee7af250b4be1a5 | 606f74161b904d7a1bd3ac18746368a6 | 75af1e1795850c2407c73221960b3d1f |
-| customer_id | edb027a75a1449115f6b43211ae02a24 | e190b8172936245229e18611c7f908bf | 8c13b0382b29fe9c46551ddc325a857a |
-| order_status | delivered | delivered | delivered |
-| order_purchase_timestamp | 2018-03-08 20:57:30 | 2017-08-16 23:23:48 | 2018-06-20 22:58:49 |
-| order_approved_at | 2018-03-09 11:20:28 | 2017-08-17 01:05:34 | 2018-06-22 02:59:06 |
-| order_delivered_carrier_date | 2018-03-09 22:11:59 | 2017-08-17 21:11:22 | 2018-06-22 12:59:00 |
-| order_delivered_customer_date | 2018-03-16 13:08:30 | 2017-08-25 22:09:48 | 2018-06-28 19:56:38 |
-| order_estimated_delivery_date | 2018-04-03 00:00:00 | 2017-09-08 00:00:00 | 2018-07-12 00:00:00 |
+| index | 99440 | 18962 | 30949 |
+| order_id | 66dea50a8b16d9b4dee7af250b4be1a5 | 8abd0f2c3a61336c2ee97b2785175332 | 741f2c4e19ea249883b7eab05a4061f6 |
+| customer_id | edb027a75a1449115f6b43211ae02a24 | b26210baf58f3919747468874d88c53f | ac8e2c478cb1b8bd0ebf1915f0d789e4 |
+| order_status | delivered | canceled | delivered |
+| order_purchase_timestamp | 2018-03-08 20:57:30 | 2018-04-19 13:18:07 | 2017-04-26 20:47:50 |
+| order_approved_at | 2018-03-09 11:20:28 | 2018-04-19 14:31:24 | 2017-04-26 21:02:32 |
+| order_delivered_carrier_date | 2018-03-09 22:11:59 | null | 2017-05-03 14:48:17 |
+| order_delivered_customer_date | 2018-03-16 13:08:30 | null | 2017-05-10 09:49:55 |
+| order_estimated_delivery_date | 2018-04-03 00:00:00 | 2018-05-08 00:00:00 | 2017-05-31 00:00:00 |
 
 # "product_category_name_translation"  (rows=71)
 
@@ -156,9 +156,9 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 70 | 42 | 39 |
-| product_category_name | seguros_e_servicos | moveis_sala | livros_tecnicos |
-| product_category_name_english | security_and_services | furniture_living_room | books_technical |
+| index | 70 | 32 | 34 |
+| product_category_name | seguros_e_servicos | eletronicos | artigos_de_festas |
+| product_category_name_english | security_and_services | electronics | party_supplies |
 
 # "products"  (rows=32951)
 
@@ -179,16 +179,16 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 32950 | 9201 | 19850 |
-| product_id | 106392145fca363410d287a815be6de4 | dce4459168283eed926d7af76ba39e02 | 58db79da5975332e9006ec0fca77226f |
-| product_category_name | cama_mesa_banho | telefonia | automotivo |
-| product_name_lenght | 58 | 50 | 58 |
-| product_description_lenght | 309 | 165 | 974 |
-| product_photos_qty | 1 | 3 | 6 |
-| product_weight_g | 2083 | 150 | 800 |
-| product_length_cm | 12 | 18 | 35 |
-| product_height_cm | 2 | 6 | 20 |
-| product_width_cm | 7 | 11 | 20 |
+| index | 32950 | 28683 | 30783 |
+| product_id | 106392145fca363410d287a815be6de4 | cf262d646b27e22488de0494b5d08da0 | 1ba74b19c790ee59fb57fa2befa6e885 |
+| product_category_name | cama_mesa_banho | utilidades_domesticas | fashion_bolsas_e_acessorios |
+| product_name_lenght | 58 | 63 | 53 |
+| product_description_lenght | 309 | 807 | 297 |
+| product_photos_qty | 1 | 13 | 1 |
+| product_weight_g | 2083 | 1900 | 150 |
+| product_length_cm | 12 | 27 | 21 |
+| product_height_cm | 2 | 23 | 9 |
+| product_width_cm | 7 | 35 | 14 |
 
 # "sellers"  (rows=3095)
 
@@ -204,8 +204,8 @@ indexes: "index"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| index | 3094 | 1353 | 241 |
-| seller_id | 9e25199f6ef7e7c347120ff175652c3b | ea3ebea5317b0efbc663ecc8ce5e9bc2 | 830379336fad8c6f3b15a4a3ddb5c66e |
-| seller_zip_code_prefix | 12051 | 88036 | 2518 |
-| seller_city | taubate | florianopolis | sao paulo |
-| seller_state | SP | SC | SP |
+| index | 3094 | 619 | 748 |
+| seller_id | 9e25199f6ef7e7c347120ff175652c3b | 054694fa03fe82cec4b7551487331d74 | 3faf68a3b0af94b10bac70d86077be49 |
+| seller_zip_code_prefix | 12051 | 15840 | 13825 |
+| seller_city | taubate | itajobi | holambra |
+| seller_state | SP | SP | SP |

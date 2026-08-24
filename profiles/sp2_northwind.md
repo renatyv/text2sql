@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:23:56.831998Z
+generated_at_utc: 2026-08-24T21:59:26.629997Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-r7p_uau2/northwind.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-b2a938j0/northwind.sqlite
 schema: main
 ---
 
@@ -60,17 +60,17 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| customerid | WOLZA | BOLID | OTTIK |
-| companyname | Wolski  Zajazd | Bólido Comidas preparadas | Ottilies Käseladen |
-| contactname | Zbyszek Piestrzeniewicz | Martín Sommer | Henriette Pfalzheim |
-| contacttitle | Owner | Owner | Owner |
-| address | ul. Filtrowa 68 | C/ Araquil, 67 | Mehrheimerstr. 369 |
-| city | Warszawa | Madrid | Köln |
+| customerid | WOLZA | FRANK | ROMEY |
+| companyname | Wolski  Zajazd | Frankenversand | Romero y tomillo |
+| contactname | Zbyszek Piestrzeniewicz | Peter Franken | Alejandra Camino |
+| contacttitle | Owner | Marketing Manager | Accounting Manager |
+| address | ul. Filtrowa 68 | Berliner Platz 43 | Gran Vía, 1 |
+| city | Warszawa | München | Madrid |
 | region | null | null | null |
-| postalcode | 01-012 | 28023 | 50739 |
-| country | Poland | Spain | Germany |
-| phone | (26) 642-7012 | (91) 555 22 82 | 0221-0644327 |
-| fax | (26) 642-7012 | (91) 555 91 99 | 0221-0765721 |
+| postalcode | 01-012 | 80805 | 28001 |
+| country | Poland | Germany | Spain |
+| phone | (26) 642-7012 | 089-0877310 | (91) 745 6200 |
+| fax | (26) 642-7012 | 089-0877451 | (91) 745 6210 |
 
 # "employees"  (rows=9)
 
@@ -128,8 +128,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| employeeid | 9 | 1 | 3 |
-| territoryid | 55439 | 19713 | 30346 |
+| employeeid | 9 | 1 | 4 |
+| territoryid | 55439 | 06897 | 27511 |
 
 # "order_details"  (rows=2155)
 
@@ -145,11 +145,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| orderid | 11077 | 10997 | 10730 |
-| productid | 77 | 52 | 65 |
-| unitprice | 13 | 7 | 21.05 |
-| quantity | 2 | 20 | 10 |
-| discount | 0 | 0.25 | 0.05 |
+| orderid | 11077 | 11039 | 10446 |
+| productid | 77 | 35 | 52 |
+| unitprice | 13 | 18 | 5.6 |
+| quantity | 2 | 24 | 15 |
+| discount | 0 | 0 | 0.1 |
 
 # "orders"  (rows=830)
 
@@ -174,20 +174,20 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| orderid | 11077 | 10498 | 10431 |
-| customerid | RATTC | HILAA | BOTTM |
-| employeeid | 1 | 8 | 4 |
-| orderdate | 1998-05-06 | 1997-04-07 | 1997-01-30 |
-| requireddate | 1998-06-03 | 1997-05-05 | 1997-02-13 |
-| shippeddate | null | 1997-04-11 | 1997-02-07 |
+| orderid | 11077 | 10424 | 10756 |
+| customerid | RATTC | MEREP | SPLIR |
+| employeeid | 1 | 7 | 8 |
+| orderdate | 1998-05-06 | 1997-01-23 | 1997-11-27 |
+| requireddate | 1998-06-03 | 1997-02-20 | 1997-12-25 |
+| shippeddate | null | 1997-01-27 | 1997-12-02 |
 | shipvia | 2 | 2 | 2 |
-| freight | 8.53 | 29.75 | 44.17 |
-| shipname | Rattlesnake Canyon Grocery | HILARION-Abastos | Bottom-Dollar Markets |
-| shipaddress | 2817 Milton Dr. | Carrera 22 con Ave. Carlos Soublette #8-35 | 23 Tsawassen Blvd. |
-| shipcity | Albuquerque | San Cristóbal | Tsawassen |
-| shipregion | NM | Táchira | BC |
-| shippostalcode | 87110 | 5022 | T2F 8M4 |
-| shipcountry | USA | Venezuela | Canada |
+| freight | 8.53 | 370.61 | 73.21 |
+| shipname | Rattlesnake Canyon Grocery | Mère Paillarde | Split Rail Beer & Ale |
+| shipaddress | 2817 Milton Dr. | 43 rue St. Laurent | P.O. Box 555 |
+| shipcity | Albuquerque | Montréal | Lander |
+| shipregion | NM | Québec | WY |
+| shippostalcode | 87110 | H1J 1C3 | 82520 |
+| shipcountry | USA | Canada | USA |
 
 # "products"  (rows=77)
 
@@ -208,16 +208,16 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| productid | 77 | 26 | 53 |
-| productname | Original Frankfurter grüne Soße | Gumbär Gummibärchen | Perth Pasties |
-| supplierid | 12 | 11 | 24 |
-| categoryid | 2 | 3 | 6 |
-| quantityperunit | 12 boxes | 100 - 250 g bags | 48 pieces |
-| unitprice | 13 | 31.23 | 32.8 |
-| unitsinstock | 32 | 15 | 0 |
+| productid | 77 | 54 | 22 |
+| productname | Original Frankfurter grüne Soße | Tourtière | Gustaf's Knäckebröd |
+| supplierid | 12 | 25 | 9 |
+| categoryid | 2 | 6 | 5 |
+| quantityperunit | 12 boxes | 16 pies | 24 - 500 g pkgs. |
+| unitprice | 13 | 7.45 | 21 |
+| unitsinstock | 32 | 21 | 104 |
 | unitsonorder | 0 | 0 | 0 |
-| reorderlevel | 15 | 0 | 0 |
-| discontinued | 0 | 0 | 1 |
+| reorderlevel | 15 | 10 | 25 |
+| discontinued | 0 | 0 | 0 |
 
 # "region"  (rows=4)
 
@@ -270,18 +270,18 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| supplierid | 29 | 2 | 27 |
-| companyname | Forêts d'érables | New Orleans Cajun Delights | Escargots Nouveaux |
-| contactname | Chantal Goulet | Shelley Burke | Marie Delamare |
-| contacttitle | Accounting Manager | Order Administrator | Sales Manager |
-| address | 148 rue Chasseur | P.O. Box 78934 | 22, rue H. Voiron |
-| city | Ste-Hyacinthe | New Orleans | Montceau |
-| region | Québec | LA | null |
-| postalcode | J2S 7S8 | 70117 | 71300 |
-| country | Canada | USA | France |
-| phone | (514) 555-2955 | (100) 555-4822 | 85.57.00.07 |
-| fax | (514) 555-2921 | null | null |
-| homepage | null | #CAJUN.HTM# | null |
+| supplierid | 29 | 21 | 20 |
+| companyname | Forêts d'érables | Lyngbysild | Leka Trading |
+| contactname | Chantal Goulet | Niels Petersen | Chandra Leka |
+| contacttitle | Accounting Manager | Sales Manager | Owner |
+| address | 148 rue Chasseur | Lyngbysild Fiskebakken 10 | 471 Serangoon Loop, Suite #402 |
+| city | Ste-Hyacinthe | Lyngby | Singapore |
+| region | Québec | null | null |
+| postalcode | J2S 7S8 | 2800 | 0512 |
+| country | Canada | Denmark | Singapore |
+| phone | (514) 555-2955 | 43844108 | 555-8787 |
+| fax | (514) 555-2921 | 43844115 | null |
+| homepage | null | null | null |
 
 # "territories"  (rows=53)
 
@@ -295,9 +295,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| territoryid | 98104 | 20852 | 48304 |
-| territorydescription | Seattle | Rockville | Bloomfield Hills |
-| regionid | 2 | 1 | 3 |
+| territoryid | 98104 | 53404 | 10019 |
+| territorydescription | Seattle | Racine | New York |
+| regionid | 2 | 3 | 1 |
 
 # "usstates"  (rows=51)
 
@@ -312,9 +312,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| stateid | 51 | 9 | 45 |
-| statename | Wyoming | District of Columbia | Utah |
-| stateabbr | WY | DC | UT |
-| stateregion | west | east | west |
+| stateid | 51 | 26 | 18 |
+| statename | Wyoming | Missouri | Kentucky |
+| stateabbr | WY | MO | KY |
+| stateregion | west | south | south |
 
 - Skipped 2 empty table(s): "customercustomerdemo", "customerdemographics"

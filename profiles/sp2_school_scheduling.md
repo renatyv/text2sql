@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:23:57.346251Z
+generated_at_utc: 2026-08-24T21:59:27.233764Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-0r8ioi_u/school_scheduling.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-k5r89yzr/school_scheduling.sqlite
 schema: main
 ---
 
@@ -69,9 +69,9 @@ indexes: "BuildingCode"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ClassRoomID | 3455 | 1525 | 1619 |
-| BuildingCode | CC | AS | AS |
-| PhoneAvailable | true | true | false |
+| ClassRoomID | 3455 | 1619 | 3452 |
+| BuildingCode | CC | AS | CC |
+| PhoneAvailable | true | false | false |
 
 # "Classes"  (rows=147)
 
@@ -95,18 +95,18 @@ indexes: "ClassRoomID", "SubjectID"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ClassID | 6600 | 1012 | 1002 |
-| SubjectID | 41 | 14 | 12 |
-| ClassRoomID | 3420 | 1627 | 1619 |
-| Credits | 5 | 4 | 4 |
-| StartDate | 2018-01-15 | 2017-09-12 | 2017-09-11 |
-| StartTime | 13:00:00 | 13:00:00 | 15:30:00 |
-| Duration | 140 | 110 | 110 |
-| MondaySchedule | true | false | true |
-| TuesdaySchedule | false | true | false |
-| WednesdaySchedule | true | false | true |
-| ThursdaySchedule | false | true | false |
-| FridaySchedule | false | false | false |
+| ClassID | 6600 | 2911 | 2410 |
+| SubjectID | 41 | 46 | 23 |
+| ClassRoomID | 3420 | 3445 | 1640 |
+| Credits | 5 | 5 | 4 |
+| StartDate | 2018-01-15 | 2017-09-11 | 2017-09-12 |
+| StartTime | 13:00:00 | 12:00:00 | 10:00:00 |
+| Duration | 140 | 50 | 110 |
+| MondaySchedule | true | true | false |
+| TuesdaySchedule | false | true | true |
+| WednesdaySchedule | true | true | false |
+| ThursdaySchedule | false | true | true |
+| FridaySchedule | false | true | false |
 | SaturdaySchedule | false | false | false |
 
 # "Departments"  (rows=5)
@@ -138,8 +138,8 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StaffID | 98064 | 98028 | 98053 |
-| Title | Professor | Professor | Instructor |
+| StaffID | 98064 | 98013 | 98040 |
+| Title | Professor | Instructor | Associate Professor |
 | Status | Full Time | Full Time | Full Time |
 | Tenured | true | true | true |
 
@@ -154,8 +154,8 @@ indexes: "CategoryID", "StaffID"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StaffID | 98064 | 98040 | 98062 |
-| CategoryID | JRN | CSC | BUS |
+| StaffID | 98064 | 98020 | 98014 |
+| CategoryID | JRN | CHE | ENG |
 
 # "Faculty_Classes"  (rows=145)
 
@@ -168,8 +168,8 @@ indexes: "ClassID", "StaffID"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| ClassID | 6600 | 5213 | 4825 |
-| StaffID | 98042 | 98052 | 98020 |
+| ClassID | 6600 | 3600 | 5223 |
+| StaffID | 98042 | 98042 | 98053 |
 
 # "Faculty_Subjects"  (rows=110)
 
@@ -183,9 +183,9 @@ indexes: "StaffID", "SubjectID"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StaffID | 98064 | 98030 | 98062 |
-| SubjectID | 41 | 14 | 4 |
-| ProficiencyRating | 8 | 10 | 8 |
+| StaffID | 98064 | 98020 | 98025 |
+| SubjectID | 41 | 50 | 3 |
+| ProficiencyRating | 8 | 8 | 10 |
 
 # "Majors"  (rows=7)
 
@@ -222,17 +222,17 @@ indexes: "StfZipCode"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StaffID | 98064 | 98025 | 98040 |
-| StfFirstName | Luke | Carol | Jim |
-| StfLastname | Patterson | Viescas | Wilson |
-| StfStreetAddress | 877 145th Ave SE | 722 Moss Bay Blvd. | 101 NE 88th |
-| StfCity | Portland | Kirkland | Salem |
-| StfState | OR | WA | OR |
-| StfZipCode | 97208 | 98033 | 97301 |
-| StfAreaCode | 503 | 425 | 503 |
-| StfPhoneNumber | 555-2316 | 555-2576 | 555-2636 |
-| Salary | 56000 | 50000 | 50000 |
-| DateHired | 1989-08-20 | 1984-04-12 | 1987-01-13 |
+| StaffID | 98064 | 98045 | 98007 |
+| StfFirstName | Luke | Michael | Gary |
+| StfLastname | Patterson | Hernandez | Hallmark |
+| StfStreetAddress | 877 145th Ave SE | PO Box 223311 | Route 2, Box 203B |
+| StfCity | Portland | Tacoma | Auburn |
+| StfState | OR | WA | WA |
+| StfZipCode | 97208 | 98413 | 98002 |
+| StfAreaCode | 503 | 253 | 253 |
+| StfPhoneNumber | 555-2316 | 555-2711 | 555-2676 |
+| Salary | 56000 | 60000 | 53000 |
+| DateHired | 1989-08-20 | 1990-08-20 | 1985-01-21 |
 | Position | Faculty | Faculty | Faculty |
 
 # "Student_Class_Status"  (rows=3)
@@ -262,10 +262,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StudentID | 1018 | 1017 | 1015 |
-| ClassID | 5933 | 1000 | 4183 |
-| ClassStatus | 1 | 2 | 1 |
-| Grade | 0 | 69.46 | 0 |
+| StudentID | 1018 | 1005 | 1017 |
+| ClassID | 5933 | 2907 | 2895 |
+| ClassStatus | 1 | 2 | 2 |
+| Grade | 0 | 94.33 | 70.55 |
 
 # "Students"  (rows=19)
 
@@ -287,17 +287,17 @@ indexes: "StudAreaCode", "StudMajor", "StudZipCode"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| StudentID | 1019 | 1009 | 1007 |
-| StudFirstName | Daffy | Karen | Elizabeth |
-| StudLastName | Dumbwit | Smith | Hallmark |
-| StudStreetAddress | 4567 NE 32nd Ct | 30301 - 166th Ave. N.E. | Route 2, Box 203B |
-| StudCity | Bellevue | Eugene | Marysville |
+| StudentID | 1019 | 1006 | 1017 |
+| StudFirstName | Daffy | Scott | George |
+| StudLastName | Dumbwit | Bishop | Chavez |
+| StudStreetAddress | 4567 NE 32nd Ct | 66 Spring Valley Drive | 281 Old Navy Road |
+| StudCity | Bellevue | Medford | Marysville |
 | StudState | WA | OR | WA |
-| StudZipCode | 98002 | 97401 | 98271 |
-| StudAreaCode | 425 | 541 | 253 |
-| StudPhoneNumber | 555-9872 | 555-2551 | 555-2521 |
-| StudGPA | 0 | 80 | 87.65 |
-| StudMajor | null | 2 | 7 |
+| StudZipCode | 98002 | 97501 | 98270 |
+| StudAreaCode | 425 | 541 | 206 |
+| StudPhoneNumber | 555-9872 | 555-2666 | 555-9930 |
+| StudGPA | 0 | 88.5 | 79.25 |
+| StudMajor | null | 6 | 6 |
 
 # "Subjects"  (rows=56)
 
@@ -314,9 +314,9 @@ indexes: "CategoryID", "SubjectPreReq"
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| SubjectID | 56 | 8 | 4 |
-| CategoryID | POL | BUS | ACC |
-| SubjectCode | POL 213 | BUS 151 | ACC 251 |
-| SubjectName | Women and Politics | Introduction to Entrepreneurship | Intermediate Accounting |
-| SubjectPreReq | null | null | ACC 220 |
-| SubjectDescription | Introduction to concepts of power and policy issues as they relate to women. Theoretical, historical and empirical studies of women's participation in social and political movements nationally and in… | Overview of the entrepreneurial process, examination of the marketplace, and discussion of successful business strategies. Product selection, selling and marketing strategies. Sources of information… | In-depth review of financial accounting principles. Emphasizes the conceptual framework of accounting, revenue and expense recognition. Accounts Receivable, Depreciation, and Amortization, etc. Prere… |
+| SubjectID | 56 | 41 | 27 |
+| CategoryID | POL | GEG | CSC |
+| SubjectCode | POL 213 | GEG 205 | CSC 110 |
+| SubjectName | Women and Politics | Physical Geography | Programming in BASIC |
+| SubjectPreReq | null | null | null |
+| SubjectDescription | Introduction to concepts of power and policy issues as they relate to women. Theoretical, historical and empirical studies of women's participation in social and political movements nationally and in… | Study of the Earth, the materials that make it up, and plate tectonics. Special attention to the Pacific Northwest. Includes laboratory and field trip work. | Computer programming and program design using the Visual Basic programming language. Emphasis is on Program Design and Algorithm Development while writing programs primarily about mathematical and sc… |

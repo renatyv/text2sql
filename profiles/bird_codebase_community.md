@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:20:27.221922Z
+generated_at_utc: 2026-08-24T21:55:25.354379Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-d9ubgnvq/codebase_community.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-7u6ab_5n/codebase_community.sqlite
 schema: main
 ---
 
@@ -25,10 +25,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| Id | 92240 | 67846 | 57347 |
-| UserId | 12597 | 40620 | 5397 |
-| Name | Autobiographer | Autobiographer | Notable Question |
-| Date | 2014-09-14T02:31:28 | 2014-02-20T16:17:17 | 2013-11-07T09:17:02 |
+| Id | 92240 | 9999 | 15480 |
+| UserId | 12597 | 5434 | 8817 |
+| Name | Autobiographer | Autobiographer | Teacher |
+| Date | 2014-09-14T02:31:28 | 2011-08-05T09:14:17 | 2012-01-29T23:22:32 |
 
 # "comments"  (rows=174285)
 
@@ -46,12 +46,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| Id | 221292 | 190412 | 101498 |
-| PostId | 115374 | 77846 | 51941 |
-| Score | 1 | 0 | 1 |
-| Text | @DilipSarwate indeed, in that case, the odds are even. | @NickCox If the models are nested, isn't looking at the change in $R^2$ equivalent to the partial F-test? | `What about an estimator which is an average over its closest k neighbors with the weights given to the neighbors decreasing with distance from the target point.` This is essentially inverse distance… |
-| CreationDate | 2014-09-14T02:04:27 | 2014-05-15T01:30:01 | 2013-03-11T20:21:37 |
-| UserId | 805 | 44451 | 1036 |
+| Id | 221292 | 130988 | 166963 |
+| PostId | 115374 | 67816 | 85537 |
+| Score | 1 | 0 | 0 |
+| Text | @DilipSarwate indeed, in that case, the odds are even. | This isn't very effective for movie recommendation, since when user $i$ is asking for a movie to watch, your estimated ratings are all of the form $a_i + b_j$. Since $a_i$ is constant, your recommend… | @whuber DGP is data generating process. Z is the standard normal distribution. b is indeed the OLS as you mentioned. And I let $x$ denote a random vector of the $x_i$'s, but I'm not sure whether my n… |
+| CreationDate | 2014-09-14T02:04:27 | 2013-08-20T03:31:42 | 2014-02-06T07:54:12 |
+| UserId | 805 | 9964 | 31563 |
 | UserDisplayName | null | null | null |
 
 # "postHistory"  (rows=≈303155)
@@ -84,10 +84,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| Id | 3356789 | 1772083 | 3236567 |
-| CreationDate | 2014-09-13T20:54:31 | 2012-08-30T08:09:51 | 2014-07-24T01:54:13 |
-| PostId | 115360 | 35352 | 108928 |
-| RelatedPostId | 60438 | 18603 | 35276 |
+| Id | 3356789 | 477351 | 2638685 |
+| CreationDate | 2014-09-13T20:54:31 | 2011-04-12T15:23:59 | 2013-09-13T20:28:22 |
+| PostId | 115360 | 9475 | 69982 |
+| RelatedPostId | 60438 | 3331 | 69898 |
 | LinkTypeId | 1 | 1 | 1 |
 
 # "posts"  (rows=91966)
@@ -120,24 +120,24 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| Id | 115378 | 20324 | 10598 |
-| PostTypeId | 2 | 1 | 1 |
-| AcceptedAnswerId | null | null | 14771 |
-| CreaionDate | 2014-09-14T02:09:23 | 2011-12-28T17:32:36 | 2011-05-10T14:19:14 |
-| Score | 0 | 1 | 7 |
-| ViewCount | null | 246 | 397 |
-| Body | <p>Decision trees are notoriously <strong>unstable</strong>: small perturbations in the training data can produce dramatically different trees, even though these trees can, and often do, perform abou… | <p>Background: I am developing a Python Statistics Framework, not because the ones out there are bad but because it will help me learn Python and Statistics. I have taken AP Stats, and read scattered… | <p>Various forms of the correlation, e.g., $r =  \\frac{\\Sigma_i x_i * y_i}{\\sigma_x  \\sigma_y}$ or $r = \\frac{\\Sigma_i (x_i-\\bar{x}) * (y_i-\\bar{y})}{\\sigma_x  \\sigma_y}$ are popular simila… |
-| OwnerUserId | 7250 | 7711 | 2728 |
-| LasActivityDate | 2014-09-14T02:09:23 | 2014-03-26T20:55:37 | 2011-08-24T19:32:05 |
-| Title | null | How do I compare multiple arbitrary predictions for a given data set? | Correlation as a likelihood measure |
-| Tags | null | <python><curve-fitting><nonparametric-bayes> | <probability><correlation><interpretation><likelihood-function> |
-| AnswerCount | null | 2 | 2 |
-| CommentCount | 0 | 1 | 2 |
-| FavoriteCount | null | null | 2 |
-| LastEditorUserId | null | 7711 | 2728 |
-| LastEditDate | null | 2011-12-29T17:04:11 | 2011-05-10T14:30:19 |
+| Id | 115378 | 26319 | 49927 |
+| PostTypeId | 2 | 2 | 1 |
+| AcceptedAnswerId | null | null | null |
+| CreaionDate | 2014-09-14T02:09:23 | 2012-04-12T00:26:12 | 2013-02-13T18:41:30 |
+| Score | 0 | 0 | 2 |
+| ViewCount | null | null | 100 |
+| Body | <p>Decision trees are notoriously <strong>unstable</strong>: small perturbations in the training data can produce dramatically different trees, even though these trees can, and often do, perform abou… | <p>For SAS, there is Ron Cody's <a href="http://rads.stackoverflow.com/amzn/click/1580256007" rel="nofollow">Data Cleaning Techniques using SAS Software</a>. There is a saying on SAS-L: "You can neve… | <p>Can someone provide a simple definition of what a binary explanatory variable is?  A description in simple terms would be ideal.  How would you recognize one?  </p>  |
+| OwnerUserId | 7250 | 686 | 20812 |
+| LasActivityDate | 2014-09-14T02:09:23 | 2012-04-12T00:26:12 | 2014-07-07T03:06:39 |
+| Title | null | null | What is a binary explanatory variable? |
+| Tags | null | null | <terminology><binary> |
+| AnswerCount | null | null | 1 |
+| CommentCount | 0 | 1 | 3 |
+| FavoriteCount | null | null | null |
+| LastEditorUserId | null | null | 7290 |
+| LastEditDate | null | null | 2013-02-13T20:20:35 |
 | CommunityOwnedDate | null | null | null |
-| ParentId | 115375 | null | null |
+| ParentId | 115375 | 26296 | null |
 | ClosedDate | null | null | null |
 | OwnerDisplayName | null | null | null |
 | LastEditorDisplayName | null | null | null |
@@ -156,11 +156,11 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| Id | 1869 | 1380 | 1246 |
-| TagName | zero-inflated | deming-regression | big-data |
-| Count | 1 | 6 | 28 |
-| ExcerptPostId | null | null | 44122 |
-| WikiPostId | null | null | 44121 |
+| Id | 1869 | 793 | 1308 |
+| TagName | zero-inflated | zipf | mad |
+| Count | 1 | 11 | 16 |
+| ExcerptPostId | null | null | 30241 |
+| WikiPostId | null | null | 30240 |
 
 # "users"  (rows=40325)
 
@@ -185,19 +185,19 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| Id | 55747 | 22202 | 18440 |
-| Reputation | 1 | 11 | 101 |
-| CreationDate | 2014-09-14T01:01:44 | 2013-03-19T01:01:07 | 2013-01-07T16:52:06 |
-| DisplayName | Shivam Agrawal | vitasoy | palm3D |
-| LastAccessDate | 2014-09-14T01:19:04 | 2013-03-23T01:21:43 | 2013-01-25T09:54:03 |
-| WebsiteUrl | null | null | http://domain.invalid |
-| Location | India | null | Belgium |
-| AboutMe | <p>Maths Enthusiast </p>  | null | Computer scientist |
-| Views | 0 | 16 | 0 |
-| UpVotes | 0 | 0 | 0 |
+| Id | 55747 | 1064 | 5037 |
+| Reputation | 1 | 101 | 21 |
+| CreationDate | 2014-09-14T01:01:44 | 2010-08-23T16:20:03 | 2011-06-15T18:05:17 |
+| DisplayName | Shivam Agrawal | S.Skov | tom |
+| LastAccessDate | 2014-09-14T01:19:04 | 2010-12-01T19:35:45 | 2013-05-29T16:28:00 |
+| WebsiteUrl | null | http://www.xteprofiler.com | null |
+| Location | India | Denmark | null |
+| AboutMe | <p>Maths Enthusiast </p>  | null | null |
+| Views | 0 | 0 | 2 |
+| UpVotes | 0 | 1 | 0 |
 | DownVotes | 0 | 0 | 0 |
-| AccountId | 5027354 | 2512446 | 1953 |
-| Age | null | null | 32 |
+| AccountId | 5027354 | 48019 | 510043 |
+| Age | null | null | null |
 | ProfileImageUrl | https://lh4.googleusercontent.com/-ZsXhwVaFmiY/AAAAAAAAAAI/AAAAAAAAAqo/6UwTjH_MRIQ/photo.jpg | null | null |
 
 # "votes"  (rows=38930)
@@ -215,9 +215,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| Id | 43538 | 22361 | 9037 |
-| PostId | 10202 | 4873 | 660 |
-| VoteTypeId | 2 | 2 | 5 |
-| CreationDate | 2011-05-01 | 2010-12-07 | 2010-09-12 |
-| UserId | null | null | 1253 |
+| Id | 43538 | 38147 | 7470 |
+| PostId | 10202 | 3035 | 2252 |
+| VoteTypeId | 2 | 2 | 2 |
+| CreationDate | 2011-05-01 | 2011-03-28 | 2010-09-01 |
+| UserId | null | null | null |
 | BountyAmount | null | null | null |

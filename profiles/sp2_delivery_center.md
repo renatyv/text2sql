@@ -1,9 +1,9 @@
 ---
 generator: db-snooper
 version: 0.0.34
-generated_at_utc: 2026-08-24T21:23:50.393479Z
+generated_at_utc: 2026-08-24T21:59:19.761851Z
 dialect: sqlite
-database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-mcetaut5/delivery_center.sqlite
+database: /var/folders/9j/b9bx_drd53sc6zbpsqyrjy4h0000gn/T/dbsnoop-1wvfrevn/delivery_center.sqlite
 schema: main
 ---
 
@@ -19,9 +19,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| channel_id | 49 | 3 | 7 |
-| channel_name | RIBA PLACE | WHATS PLACE | BERLIN PLACE |
-| channel_type | OWN CHANNEL | OWN CHANNEL | OWN CHANNEL |
+| channel_id | 49 | 20 | 41 |
+| channel_name | RIBA PLACE | MUNICH PLACE | PANCEPS PLACE |
+| channel_type | OWN CHANNEL | MARKETPLACE | MARKETPLACE |
 
 # "deliveries"  (rows=≈378843)
 
@@ -47,9 +47,9 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| driver_id | 66494 | 32149 | 11574 |
-| driver_modal | MOTOBOY | MOTOBOY | BIKER |
-| driver_type | FREELANCE | LOGISTIC OPERATOR | FREELANCE |
+| driver_id | 66494 | 50630 | 55187 |
+| driver_modal | MOTOBOY | MOTOBOY | MOTOBOY |
+| driver_type | FREELANCE | FREELANCE | LOGISTIC OPERATOR |
 
 # "hubs"  (rows=32)
 
@@ -66,12 +66,12 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| hub_id | 91 | 43 | 51 |
-| hub_name | GAROA SHOPPING | HOTMILK SHOPPING | RUBY SHOPPING |
-| hub_city | SÃO PAULO | CURITIBA | RIO DE JANEIRO |
-| hub_state | SP | PR | RJ |
-| hub_latitude | -23.5251 | -25.4412 | -22.9237 |
-| hub_longitude | -46.5468 | -49.2777 | -43.5678 |
+| hub_id | 91 | 37 | 86 |
+| hub_name | GAROA SHOPPING | RIVER SHOPPING | R SHOPPING |
+| hub_city | SÃO PAULO | SÃO PAULO | SÃO PAULO |
+| hub_state | SP | SP | SP |
+| hub_latitude | -23.5251 | -23.5071 | -23.5415 |
+| hub_longitude | -46.5468 | -46.7182 | -46.5766 |
 
 # "orders"  (rows=≈368999)
 
@@ -138,10 +138,10 @@ indexes: none
 samples:
 | column | latest | sample | sample |
 |---|---|---|---|
-| store_id | 4679 | 4167 | 4348 |
-| hub_id | 85 | 26 | 28 |
-| store_name | PIGUE PIPACO  | STRAMZ  | CIRACIOU  |
-| store_segment | FOOD | GOOD | GOOD |
-| store_plan_price | 49.9 | 29 | 1 |
-| store_latitude | -23.5134 | -23.5638 | -23.5958 |
-| store_longitude | -46.6185 | -46.6526 | -46.686 |
+| store_id | 4679 | 2604 | 911 |
+| hub_id | 85 | 21 | 28 |
+| store_name | PIGUE PIPACO  | GIPUMZIGUM  | RCOUMILES  |
+| store_segment | FOOD | GOOD | FOOD |
+| store_plan_price | 49.9 | null | 0 |
+| store_latitude | -23.5134 | -23.5504 | -23.5958 |
+| store_longitude | -46.6185 | -46.7213 | -46.686 |
