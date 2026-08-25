@@ -39,6 +39,21 @@ class BenchmarkTests(unittest.TestCase):
         self.assertEqual(rec["harness_attempts"], 1)
         self.assertFalse(rec["correct"])
 
+    @patch("run_experiment.time.sleep")
+    @patch("run_experiment._protocol_fingerprint", return_value="new")
+    @patch("run_experiment._score", side_effect=lambda rec, *_a: rec)
+    @patch("run_experiment._run_one", side_effect=[
+        {"retryable_error": True, "infrastructure_error": True,
+         "tool_calls": [{"source": "main", "name": "read", "arguments": {}}]},
+        {"tool_calls": [{"source": "main", "name": "bash", "arguments": {}}]},
+    ])
+    def test_tool_calls_survive_harness_retry(self, _run_one, _score, _fingerprint, _sleep) -> None:
+        rec, _ = run_experiment._run_one_and_score(
+            {"id": "q", "question": "?", "sql": "SELECT 1"},
+            "raw", "neutron", 6, 1,
+        )
+        self.assertEqual([call["attempt"] for call in rec["tool_calls"]], [1, 2])
+
     def test_cache_requires_matching_protocol(self) -> None:
         with TemporaryDirectory() as temp:
             path = Path(temp) / "records.jsonl"

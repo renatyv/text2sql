@@ -322,7 +322,7 @@ MAX_TURNS_MAIN = 10
 TOKEN_GUARD = 320_000             # runaway guard, total tokens/question
 PI_WALL_CLOCK = 600               # seconds; exceeding the evaluation budget is incorrect
 ZEROSHOT_WALL_CLOCK = 120         # seconds, hard timeout for the zero-shot arm
-PROTOCOL_VERSION = 6              # bump when runner semantics change outside prompt/config hashes
+PROTOCOL_VERSION = 7              # bump when runner semantics change outside prompt/config hashes
 PI_AGENT_VERSION = "0.84.1"       # pinned in Dockerfile.agent
 
 # ---------------------------------------------------------------------------

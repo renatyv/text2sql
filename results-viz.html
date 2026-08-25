@@ -201,7 +201,7 @@
 
     <section class="card" id="drillSec">
       <h2>Per-question drill-down <span id="drillRunTag" class="pill"></span></h2>
-      <p class="hint">Records joined across setups by question id within the focused run — or pooled across every loaded run when “Σ all runs” is selected. Click a row to inspect SQL.</p>
+      <p class="hint">Records joined across setups by question id within the focused run — or pooled across every loaded run when “Σ all runs” is selected. Click a row to inspect SQL and tool calls.</p>
       <div class="filters" id="drillFilters"></div>
       <div class="wrap"><table id="drillTbl"></table></div>
     </section>
@@ -239,6 +239,7 @@
  *   turns?:number, db_queries?:number, latency_s?:number,
  *   usage?:{input?:number,output?:number,totalTokens?:number},
  *   cost?:{total?:number}, pred_sql?:string, gold_sql?:string, executed_sqls?:string[],
+ *   tool_calls?:{source?:string,name?:string,arguments?:unknown,attempt?:number}[],
  *   timed_out?:boolean}} QRec */
 /** @typedef {{name:string, summary?:any, arms:Record<Arm,QRec[]>}} Run */
 
@@ -796,14 +797,14 @@ function renderAuxStats(){
   const run=currentRun();
   if (!run){ tag.textContent=""; host.innerHTML=""; return; }
   tag.textContent=prettyName(run.name);
-  const rows=ARMS.map(arm=>({arm,s:armSummary(run,arm)})).filter(r=>r.s);
+  const rows=ARMS.map(arm=>({arm,s:armSummary(run,arm),tools:agg(run.arms[arm]||[],r=>r.tool_calls?.length)})).filter(r=>r.s);
   if (!rows.length){ host.innerHTML=`<tbody><tr><td class="l empty">No summary statistics available.</td></tr></tbody>`; return; }
   host.innerHTML=`<thead><tr>
-    <th class="l">Setup</th><th>Questions</th><th>Valid SQL</th><th>Mean turns</th><th>Mean DB queries</th>
+    <th class="l">Setup</th><th>Questions</th><th>Valid SQL</th><th>Mean turns</th><th>Mean DB queries</th><th>Mean tool calls</th>
     <th>Mean latency</th><th>Input tokens</th><th>Output tokens</th><th>Total tokens</th><th>Total cost</th><th>Cost / question</th>
-  </tr></thead><tbody>${rows.map(({arm,s})=>`<tr>
+  </tr></thead><tbody>${rows.map(({arm,s,tools})=>`<tr>
     <td class="l"><span class="armbadge ${ARM_BADGE[arm]}" title="${ARM_LABEL[arm]}">${ARM_BADGE[arm]}</span> ${ARM_LABEL[arm]}</td>
-    <td>${fmtInt(s.n)}</td><td>${fmtPct(s.valid_sql_pct)}</td><td>${fmtNum(s.mean_turns)}</td><td>${fmtNum(s.mean_db_queries)}</td>
+    <td>${fmtInt(s.n)}</td><td>${fmtPct(s.valid_sql_pct)}</td><td>${fmtNum(s.mean_turns)}</td><td>${fmtNum(s.mean_db_queries)}</td><td>${fmtNum(tools)}</td>
     <td>${fmtSec(s.mean_latency_s)}</td><td>${fmtInt(s.tokens_in)}</td><td>${fmtInt(s.tokens_out)}</td><td>${fmtInt(s.tokens_total)}</td>
     <td>${fmtUSD(s.cost_usd)}</td><td>${fmtUSD(s.cost_usd != null && s.n ? s.cost_usd/s.n : null)}</td>
   </tr>`).join("")}</tbody>`;
@@ -980,6 +981,7 @@ function renderDrill(){
       domain: anyRec?.contains_domain_knowledge,
       correct: metric("correct"), err: metric("error_class"),
       turns: metric("turns"), dbq: metric("db_queries"), lat: metric("latency_s"),
+      tools: Object.fromEntries(ARMS.map(arm=>[arm, arms[arm]?.tool_calls?.length])),
     };
   });
 
@@ -1056,8 +1058,9 @@ function renderDrill(){
       <th colspan="${ARMS.length}" style="text-align:center">Error</th>
       <th colspan="${ARMS.length}" style="text-align:center">Turns</th>
       <th colspan="${ARMS.length}" style="text-align:center">DB queries</th>
+      <th colspan="${ARMS.length}" style="text-align:center">Tool calls</th>
     </tr><tr>
-      ${setupHeads("correct")}${setupHeads("err")}${setupHeads("turns")}${setupHeads("dbq")}
+      ${setupHeads("correct")}${setupHeads("err")}${setupHeads("turns")}${setupHeads("dbq")}${setupHeads("tools")}
     </tr></thead><tbody>`;
     for (const r of data){
       const cell = (/** @type {boolean|null|undefined} */ v)=> v===true?`<span class="corr-yes">✓</span>`:v===false?`<span class="corr-no">✗</span>`:`<span class="corr-na">–</span>`;
@@ -1072,6 +1075,7 @@ function renderDrill(){
         ${ARMS.map(arm=>`<td>${errc(r.err[arm])}</td>`).join("")}
         ${ARMS.map(arm=>`<td>${num(r.turns[arm])}</td>`).join("")}
         ${ARMS.map(arm=>`<td>${num(r.dbq[arm])}</td>`).join("")}
+        ${ARMS.map(arm=>`<td>${num(r.tools[arm])}</td>`).join("")}
       </tr>`;
     }
     host.innerHTML = html + "</tbody>";
@@ -1100,6 +1104,10 @@ function formatSql(sql){
     depth = Math.max(0, depth + (bare.match(/\(/g)?.length||0) - (bare.match(/\)/g)?.length||0) + leadingClose);
     return out;
   }).join("\n");
+}
+function formatToolCall(call, index){
+  const attempt = call.attempt == null ? "" : `attempt ${call.attempt} · `;
+  return `[${index+1}] ${attempt}${call.source||"main"} · ${call.name||"unknown"}\n${JSON.stringify(call.arguments??{},null,2)}`;
 }
 
 // ───────────────────────────────────────────────────────────────────────────
@@ -1146,6 +1154,7 @@ function openPanel(key){
         <span class="k">valid_sql</span><span class="v">${r.valid_sql===true?"yes":r.valid_sql===false?"no":"—"}</span>
         <span class="k">turns</span><span class="v">${r.turns??"—"}</span>
         <span class="k">db_queries</span><span class="v">${r.db_queries??"—"}</span>
+        <span class="k">tool_calls</span><span class="v">${r.tool_calls?.length??"—"}</span>
         <span class="k">latency</span><span class="v">${fmtSec(r.latency_s)}</span>
         <span class="k">tokens in</span><span class="v">${fmtInt(r.usage?.input)}</span>
         <span class="k">tokens out</span><span class="v">${fmtInt(r.usage?.output)}</span>
@@ -1197,6 +1206,24 @@ function openPanel(key){
     body.appendChild(exBlk);
   }
 
+  const haveTools = ARMS.some(a=>recs[a]?.tool_calls?.length);
+  if (haveTools){
+    const toolBlk = document.createElement("div"); toolBlk.className="blk";
+    toolBlk.innerHTML = `<h4>Tool calls (agentic trace)</h4>`;
+    for (const arm of ARMS){
+      const r = recs[arm], calls = r?.tool_calls; if(!calls?.length) continue;
+      const wrap = document.createElement("details"); wrap.className="execs";
+      wrap.innerHTML = `<summary><span class="armbadge ${ARM_BADGE[arm]||""}">${ARM_LABEL[arm]}</span> · ${calls.length} call(s)</summary><div></div>`;
+      calls.forEach((call,i)=>{
+        const d = document.createElement("div"); d.className="exec";
+        d.textContent = formatToolCall(call,i);
+        wrap.lastElementChild.appendChild(d);
+      });
+      toolBlk.appendChild(wrap);
+    }
+    body.appendChild(toolBlk);
+  }
+
   document.getElementById("panel").classList.add("open");
   document.getElementById("overlay").classList.add("open");
 }
@@ -1207,6 +1234,7 @@ function closePanel(){
 window.closePanel = closePanel;
 document.addEventListener("keydown", e=>{ if(e.key==="Escape") closePanel(); });
 console.assert(formatSql("WITH q AS (SELECT 'FROM (x)' AS x FROM t WHERE a=1 AND b=2) SELECT * FROM q").includes("WITH q AS (\n  SELECT 'FROM (x)' AS x\n  FROM t\n  WHERE a=1\n    AND b=2)\nSELECT *\nFROM q"), "SQL display formatter");
+console.assert(formatToolCall({source:"subagent",name:"read",arguments:{path:"x"},attempt:2},0)==='[1] attempt 2 · subagent · read\n{\n  "path": "x"\n}', "tool-call display formatter");
 
 // Dev-only hook: lets automated checks feed in data without the native file dialog.
 // Picks a run folder over HTTP and builds a FileList like the directory picker would.

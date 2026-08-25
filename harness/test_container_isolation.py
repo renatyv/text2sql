@@ -88,9 +88,16 @@ class ContainerIsolationTests(unittest.TestCase):
         parsed = pi_stream.parse_stream(events)
         self.assertEqual(parsed["db_queries"], 1)
         self.assertEqual(parsed["executed_sqls"], ["SELECT 1"])
+        self.assertEqual(parsed["tool_calls"], [{
+            "source": "main", "name": "bash",
+            "arguments": {"command": "mysql -D neutron -e 'SELECT 1'"},
+        }])
 
     def test_subagent_usage_and_sql_are_counted(self) -> None:
         events = json.dumps({
+            "type": "tool_execution_start", "toolName": "subagent",
+            "args": {"agent": "critic", "task": "check SQL"},
+        }) + "\n" + json.dumps({
             "type": "tool_execution_end",
             "toolName": "subagent",
             "result": {"details": {"results": [{
@@ -108,6 +115,12 @@ class ContainerIsolationTests(unittest.TestCase):
         self.assertEqual(parsed["usage"]["totalTokens"], 20)
         self.assertEqual(parsed["cost"]["total"], 0.25)
         self.assertEqual(parsed["executed_sqls"], ["SELECT 2"])
+        self.assertEqual(parsed["tool_calls"], [
+            {"source": "main", "name": "subagent",
+             "arguments": {"agent": "critic", "task": "check SQL"}},
+            {"source": "subagent", "name": "bash",
+             "arguments": {"command": "mysql -e 'SELECT 2'"}},
+        ])
 
     def test_unclosed_sql_fence_is_recoverable(self) -> None:
         self.assertEqual(parse_sql.extract_sql("```sql\nSELECT 1;"), "SELECT 1;")

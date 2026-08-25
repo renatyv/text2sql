@@ -203,12 +203,16 @@ def _run_one_and_score(q: dict, arm: str, db_label: str,
     engine, db, _profile_key = _q_target(q, db_label)
     mode = config.dataset_spec(db_label)["scoring"]
     try:
+        tool_calls = []
         for attempt in range(2):
             rec = _run_one(q, arm, db_label, max_turns, idx, status_callback)
+            tool_calls.extend(call | {"attempt": attempt + 1}
+                              for call in rec.get("tool_calls", []))
             if not rec.get("retryable_error"):
                 break
             if attempt == 0:
                 time.sleep(random.uniform(5, 15))
+        rec["tool_calls"] = tool_calls
         if not rec.get("infrastructure_error"):
             rec = _score(rec, q, engine, db, mode)
         rec["harness_attempts"] = attempt + 1

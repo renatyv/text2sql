@@ -9,6 +9,7 @@ event stream, so the parsing logic lives here. The parser extracts:
                       the container runner this counts bash tool calls that run
                       SQL — see extract_sql_from_bash below)
   * executed_sqls  — SQL from sql_exec, or straightforward `mysql -e` bash calls
+  * tool_calls     — every main-agent and nested subagent tool invocation
   * all_text       — assistant text segments in order (final = the answer)
   * raw_text       — the last assistant text segment (the final answer)
   * usage / cost   — parent usage plus nested subagent usage, with a recovery
@@ -92,7 +93,8 @@ def parse_stream(stdout: str) -> dict:
     See module docstring for the fields returned.
     """
     turns = 0
-    tool_calls = 0
+    db_queries = 0
+    tool_calls: list[dict] = []
     texts: list[str] = []          # assistant text segments, in order
     executed_sqls: list[str] = []
     usage_total = _empty_usage()
@@ -112,14 +114,16 @@ def parse_stream(stdout: str) -> dict:
             turns += 1
         if t == "tool_execution_start":
             tool_name = e.get("toolName")
-            sql = (e.get("args") or {}).get("sql")
+            args = e.get("args") or {}
+            tool_calls.append({"source": "main", "name": tool_name, "arguments": args})
+            sql = args.get("sql")
             if sql:
-                tool_calls += 1
+                db_queries += 1
                 executed_sqls.append(sql)
             elif tool_name == "bash":
-                sql = _sql_from_bash(str((e.get("args") or {}).get("command", "")))
+                sql = _sql_from_bash(str(args.get("command", "")))
                 if sql:
-                    tool_calls += 1
+                    db_queries += 1
                     executed_sqls.append(sql)
         if t == "tool_execution_end" and e.get("toolName") == "subagent":
             subagent_calls += 1
@@ -139,11 +143,15 @@ def parse_stream(stdout: str) -> dict:
                         if part.get("type") != "toolCall":
                             continue
                         args = part.get("arguments") or {}
+                        tool_calls.append({
+                            "source": "subagent", "name": part.get("name"),
+                            "arguments": args,
+                        })
                         sql = args.get("sql") if part.get("name") == "sql_exec" else None
                         if part.get("name") == "bash":
                             sql = _sql_from_bash(str(args.get("command", "")))
                         if sql:
-                            tool_calls += 1
+                            db_queries += 1
                             executed_sqls.append(sql)
         # Collect per-turn assistant TEXT from turn_end (so the final answer is
         # captured even when agent_end never fires, e.g. on a wall-clock abort).
@@ -202,8 +210,8 @@ def parse_stream(stdout: str) -> dict:
 
     final_text = texts[-1] if texts else ""
     return {
-        "turns": turns, "db_queries": tool_calls, "raw_text": final_text,
-        "all_text": texts, "executed_sqls": executed_sqls,
+        "turns": turns, "db_queries": db_queries, "raw_text": final_text,
+        "all_text": texts, "executed_sqls": executed_sqls, "tool_calls": tool_calls,
         "usage": usage_total, "cost": cost_total, "model": model, "provider": provider,
         "subagent_calls": subagent_calls, "subagent_turns": subagent_turns,
         "retry_count": retry_count,
