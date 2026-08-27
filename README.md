@@ -62,6 +62,18 @@ uv run python run_experiment.py --dataset neutron --phase pilot --estimate-cost
 uv run python run_experiment.py --dataset neutron --phase pilot --score-only
 ```
 
+Critic ablation — same protocol minus the critic subagent (the main agent
+critiques inline). Run ids carry the protocol identity (version, model, effort,
+turn budget, critic mode), so runs that cannot share cached records land in
+separate `results/` directories; records from a different protocol found in a
+results file are archived as `arm<N>.jsonl.stale-<ts>` rather than overwritten:
+
+```bash
+uv run python run_experiment.py --dataset bird_mini_dev --phase main --arms raw \
+  --model openai/gpt-5.6-luna-pro --no-critic --workers 8
+# -> results/bird_mini_dev__main__n500_v7-openai-gpt-5.6-luna-pro-medium-t10-nocritic/
+```
+
 `--no-container` is a legacy debugging path. It runs pi on the host with `sql_exec.ts`; it does not provide the container isolation described above.
 
 Completed records are reused only when their protocol fingerprint matches the current prompts, artifacts, model, runner, reasoning effort, and budgets. Prompt or budget changes therefore cannot silently mix incompatible results. While pi runs, the progress bar shows the latest completed agent turn and database-query count.

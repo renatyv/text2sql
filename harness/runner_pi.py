@@ -64,7 +64,9 @@ def _argv(append_prompt: str) -> list[str]:
         "-e", str(config.PI_EXTENSION),
         "-e", str(Path(shutil.which(config.PI_BIN) or config.PI_BIN).resolve().parent.parent
                     / "examples/extensions/subagent/index.ts"),
-        "--tools", "read,bash,edit,write,grep,find,ls,sql_exec,subagent",
+        "--tools", ("read,bash,edit,write,grep,find,ls,sql_exec,subagent"
+                    if config.CRITIC_ENABLED
+                    else "read,bash,edit,write,grep,find,ls,sql_exec"),
         "--thinking", config.PI_THINKING,
         "--append-system-prompt", append_prompt,
         "--provider", config.DEFAULT_PROVIDER,
@@ -92,11 +94,12 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
         shutil.copyfile(config.schema_links_path_for(key), sandbox / "schema-links.md")
     agents_dir = sandbox / ".pi" / "agents"
     agents_dir.mkdir(parents=True, exist_ok=True)
-    critic = (config.HARNESS_DIR / "pi_agents" / "critic.md").read_text(encoding="utf-8")
-    (agents_dir / "critic.md").write_text(
-        critic.replace("__CRITIC_MODEL__", f"{config.DEFAULT_PROVIDER}/{config.DEFAULT_MODEL_ID}"),
-        encoding="utf-8",
-    )
+    if config.CRITIC_ENABLED:
+        critic = (config.HARNESS_DIR / "pi_agents" / "critic.md").read_text(encoding="utf-8")
+        (agents_dir / "critic.md").write_text(
+            critic.replace("__CRITIC_MODEL__", f"{config.DEFAULT_PROVIDER}/{config.DEFAULT_MODEL_ID}"),
+            encoding="utf-8",
+        )
     started = time.time()
     rec: dict = {
         "arm": arm, "runner": "pi", "db_label": db_label,

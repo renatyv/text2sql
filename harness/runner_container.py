@@ -108,6 +108,9 @@ def _agent_argv(agent: str, system_prompt: str, user_prompt: str, max_turns: int
         ]
     # pi is the default and the only runner with custom lifecycle extensions.
     # The SELECT-only database account and ephemeral container enforce safety.
+    tools = "read,bash,edit,write,grep,find,ls,sql_exec"
+    if config.CRITIC_ENABLED:
+        tools += ",subagent"
     return [
         "-p",
         "--mode", "json",
@@ -121,7 +124,7 @@ def _agent_argv(agent: str, system_prompt: str, user_prompt: str, max_turns: int
         "-e", "/extensions/sql_exec.ts",
         "-e", "/extensions/turn_guard.ts",
         "-e", "/usr/local/lib/node_modules/@earendil-works/pi-coding-agent/examples/extensions/subagent/index.ts",
-        "--tools", "read,bash,edit,write,grep,find,ls,sql_exec,subagent",
+        "--tools", tools,
         "--thinking", config.PI_THINKING,
         "--append-system-prompt", system_prompt,
         "--provider", config.DEFAULT_PROVIDER,
@@ -231,11 +234,12 @@ def run(db_label: str, question: str, arm: str, max_turns: int,
     }
     agents_dir = sandbox / ".pi" / "agents"
     agents_dir.mkdir(parents=True, exist_ok=True)
-    critic = (config.HARNESS_DIR / "pi_agents" / "critic.md").read_text(encoding="utf-8")
-    (agents_dir / "critic.md").write_text(
-        critic.replace("__CRITIC_MODEL__", f"{config.DEFAULT_PROVIDER}/{config.CONTAINER_AGENT_MODEL}"),
-        encoding="utf-8",
-    )
+    if config.CRITIC_ENABLED:
+        critic = (config.HARNESS_DIR / "pi_agents" / "critic.md").read_text(encoding="utf-8")
+        (agents_dir / "critic.md").write_text(
+            critic.replace("__CRITIC_MODEL__", f"{config.DEFAULT_PROVIDER}/{config.CONTAINER_AGENT_MODEL}"),
+            encoding="utf-8",
+        )
 
     if not network.is_ready():
         rec["error"] = ("agent network not ready — call harness.network.setup() "

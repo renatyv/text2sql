@@ -52,12 +52,7 @@ Workflow:
       LIMIT/top-N where a bounded number of rows is requested.
     - Values: rows are non-empty; literal values (strings, dates, IDs) match
       the question or database exactly.
-   Then use the `subagent` tool with agent `critic`, project scope, and project
-   confirmation disabled. Give it the question, evidence, candidate SQL, and
-   observed result; ask it to disprove the projection, cardinality, joins,
-   predicates, aggregation grain, ordering, or limit. If the tool is unavailable,
-   do this critique yourself. Repair only a concrete mismatch.
-   Then verify the query against the error checklist. If any check changes
+{critic_block}   Then verify the query against the error checklist. If any check changes
    the query, use turn {repair_turn} to repair and execute the complete
    corrected query again. Never submit a query you have not executed.
 4. Output the last successfully executed complete query inside exactly one answer block.
@@ -107,12 +102,7 @@ Workflow:
       LIMIT/top-N where a bounded number of rows is requested.
     - Values: rows are non-empty; literal values (strings, dates, IDs) match
       the question or database exactly.
-   Then use the `subagent` tool with agent `critic`, project scope, and project
-   confirmation disabled. Give it the question, evidence, candidate SQL, and
-   observed result; ask it to disprove the projection, cardinality, joins,
-   predicates, aggregation grain, ordering, or limit. If the tool is unavailable,
-   do this critique yourself. Repair only a concrete mismatch.
-   Then verify the query against the error checklist. If any check changes
+{critic_block}   Then verify the query against the error checklist. If any check changes
    the query, use turn {repair_turn} to repair and execute the complete
    corrected query again. Never submit a query you have not executed.
 4. Output the last successfully executed complete query inside exactly one answer block.
@@ -136,6 +126,24 @@ Leave at least 1 (better 2) steps for final corrections before returning final a
 {checklist_block}\
 """
 
+# Step-3 critique instructions. Default: dispatch the independent critic
+# subagent (installed by the runners). config.CRITIC_ENABLED=False swaps in the
+# same critique performed inline by the main agent, so the ablation changes
+# only WHO critiques, not the surrounding workflow.
+_CRITIC_SUBAGENT_BLOCK = """\
+   Then use the `subagent` tool with agent `critic`, project scope, and project
+   confirmation disabled. Give it the question, evidence, candidate SQL, and
+   observed result; ask it to disprove the projection, cardinality, joins,
+   predicates, aggregation grain, ordering, or limit. If the tool is unavailable,
+   do this critique yourself. Repair only a concrete mismatch.
+"""
+
+_CRITIC_INLINE_BLOCK = """\
+   Then critique the candidate query yourself: try to disprove its projection,
+   cardinality, joins, predicates, aggregation grain, ordering, or limit.
+   Repair only a concrete mismatch.
+"""
+
 # Trailer appended to the agentic system prompt when checklist=True. Indented to
 # sit cleanly under the Rules block above.
 _AGENT_CHECKLIST_BLOCK = """
@@ -147,7 +155,8 @@ text-to-SQL errors and avoid them:
 _SYSTEM_TEMPLATES = {"mysql": _AGENT_SYSTEM_TEMPLATE, "sqlite": _AGENT_SYSTEM_TEMPLATE_SQLITE}
 
 
-def _agent_system(timeout: int, max_turns: int, checklist: bool, engine: str = "mysql") -> str:
+def _agent_system(timeout: int, max_turns: int, checklist: bool, engine: str = "mysql",
+                  critic: bool = True) -> str:
     """Format the agentic system-prompt APPEND text, optionally with checklist."""
     return _SYSTEM_TEMPLATES[engine].format(
         timeout=timeout,
@@ -155,6 +164,7 @@ def _agent_system(timeout: int, max_turns: int, checklist: bool, engine: str = "
         penultimate_turn=max(0, max_turns - 1),
         validation_turn=max(1, max_turns - 2),
         repair_turn=max(1, max_turns - 1),
+        critic_block=_CRITIC_SUBAGENT_BLOCK if critic else _CRITIC_INLINE_BLOCK,
         checklist_block=(_AGENT_CHECKLIST_BLOCK + _ERROR_CHECKLIST[engine] + "\n") if checklist else "",
     )
 
@@ -218,6 +228,7 @@ def agent_prompts(db_label: str, question: str, arm: str, max_turns: int,
         max_turns=max_turns,
         checklist=spec["checklist"],
         engine=engine,
+        critic=config.CRITIC_ENABLED,
     )
     db = db or config.mysql_db_for(db_label)
     key = profile_key or db

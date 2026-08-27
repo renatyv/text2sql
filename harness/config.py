@@ -154,6 +154,13 @@ def arm_spec(name: str) -> dict:
 # Pairwise comparison reported when both arms are present.
 PAIRWISE = [("raw", "profile")]
 
+# Critic subagent ablation (--no-critic / BEAVER_CRITIC=0): when False, the
+# critic.md agent is not installed, the `subagent` tool is withheld, and the
+# prompts ask for the same critique performed inline by the main agent. The
+# changed system prompt automatically invalidates cached records (prompt hash
+# is part of the protocol fingerprint).
+CRITIC_ENABLED = os.environ.get("BEAVER_CRITIC", "1").strip().lower() not in ("0", "false", "no")
+
 # ---------------------------------------------------------------------------
 # Model (plan §Locked decisions #2) — overridable via env for smoke tests.
 # ---------------------------------------------------------------------------

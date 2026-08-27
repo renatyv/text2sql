@@ -81,9 +81,22 @@ def _status_tag(rec: dict) -> str:
     return "[red]✗[/red]"
 
 
-def _run_id(dataset: str, phase: str, num_samples: int | None) -> str:
+def _run_id(dataset: str, phase: str, num_samples: int | None, max_turns: int,
+            tag: str | None = None) -> str:
+    """Run id carrying the protocol identity, so runs that cannot share cached
+    records (different model, effort, turn budget, critic mode) land in
+    different results/ directories instead of overwriting each other.
+    Prompt-content drift at the same identity is caught by the stale-record
+    archive guard in the main loop."""
     n_tag = "full" if num_samples is None else f"n{num_samples}"
-    return f"{dataset}__{phase}__{n_tag}"
+    model = config.CONTAINER_AGENT_MODEL if _USE_CONTAINER else config.DEFAULT_MODEL_ID
+    slug = "".join(c if c.isalnum() or c in "._-" else "-"
+                   for c in model.replace("/", "-"))
+    parts = [f"v{config.PROTOCOL_VERSION}", slug, config.PI_THINKING, f"t{max_turns}"]
+    if not config.CRITIC_ENABLED:
+        parts.append("nocritic")
+    run_id = f"{dataset}__{phase}__{n_tag}_" + "-".join(parts)
+    return f"{run_id}_{tag}" if tag else run_id
 
 
 def _results_dir(run_id: str) -> Path:
@@ -243,6 +256,25 @@ def _load_existing(path: Path, fingerprints: dict[str, str] | None = None) -> di
                  or r.get("protocol_fingerprint") == fingerprints.get(r["id"]))}
 
 
+def _load_current(path: Path, fingerprints: dict[str, str]) -> tuple[dict[str, dict], Path | None]:
+    """Load fingerprint-matching records; archive the file aside if it also
+    holds records from a different protocol.
+
+    The main loop rewrites arm<N>.jsonl from the matching subset plus new
+    records, so stale records would otherwise be silently dropped. Archiving
+    (arm<N>.jsonl.stale-<ts>) keeps every prior record recoverable.
+    """
+    all_records = [r for r in metrics.read_jsonl(path)
+                   if "id" in r and not _is_infrastructure_failure(r)]
+    current = {r["id"]: r for r in all_records
+               if r.get("protocol_fingerprint") == fingerprints.get(r["id"])}
+    if len(current) == len(all_records):
+        return current, None
+    archive = path.with_name(path.name + f".stale-{time.strftime('%Y%m%d-%H%M%S')}")
+    path.rename(archive)
+    return current, archive
+
+
 def _run_dataset(args) -> int:
     if args.dataset not in config.DATASETS:
         print(f"unknown dataset '{args.dataset}'; choose from {list(config.DATASETS)}")
@@ -260,14 +292,16 @@ def _run_dataset(args) -> int:
     engine = man.get("engine") or spec["engine"]
     db = man.get("mysql_db") or config.mysql_db_for(args.dataset)
     db_desc = db if engine == "mysql" else f"{engine} · {len({q['db'] for q in questions})} database files"
-    run_id = _run_id(args.dataset, args.phase, num_samples)
-    rdir = _results_dir(run_id)
-
     arms = args.arms or (list(config.ARMS) if args.arm in (None, "all") else [args.arm])
     max_turns = args.max_turns or PHASE_DEFAULT_TURNS[args.phase]
-    # Container vs. host runner for agentic arms.
+    # Container vs. host runner for agentic arms — resolved before the run id
+    # so the directory name reflects the model actually used.
     global _USE_CONTAINER
     _USE_CONTAINER = not getattr(args, "no_container", False)
+    run_id = _run_id(args.dataset, args.phase, num_samples, max_turns,
+                     getattr(args, "tag", None))
+    rdir = _results_dir(run_id)
+
     fingerprints = {
         arm: {q["id"]: _protocol_fingerprint(q, arm, args.dataset, max_turns)
               for q in questions}
@@ -275,9 +309,10 @@ def _run_dataset(args) -> int:
     }
 
     runner_name = f"container:{config.CONTAINER_AGENT}" if _USE_CONTAINER else "host(pi)"
+    critic_name = "subagent" if config.CRITIC_ENABLED else "inline self-critique"
     print(f"=== run {run_id} | arms={arms} | questions={len(questions)} | "
           f"max_turns={max_turns} | db={db_desc} | workers={args.workers} "
-          f"| runner={runner_name} ===")
+          f"| runner={runner_name} | critic={critic_name} ===")
     model = config.CONTAINER_AGENT_MODEL if _USE_CONTAINER else config.DEFAULT_MODEL_ID
     print(f"agent model: openrouter/{model}")
 
@@ -328,7 +363,12 @@ def _run_dataset(args) -> int:
     with progress:
         for arm in arms:
             path = rdir / f"arm{arm}.jsonl"
-            done = _load_existing(path, fingerprints[arm])
+            done, stale_archive = _load_current(path, fingerprints[arm])
+            if stale_archive:
+                progress.console.print(
+                    f"  [yellow]arm {arm}: archived {stale_archive.name} — records "
+                    f"from a different protocol (prompt/model/budget change) are "
+                    f"kept there instead of being overwritten[/yellow]")
             records: list[dict] = list(done.values())
             write_lock = threading.Lock()  # guards `records` + write_jsonl on main thread
             desc = f"arm {arm} · {config.ARM_DESCRIPTIONS[arm]}"
@@ -493,6 +533,17 @@ def main(argv=None) -> int:
                    help="parallel questions per arm (thread pool). Bounded by "
                         "OpenRouter/DeepSeek rate limits; raise with care.")
     p.add_argument("--force", action="store_true", help="re-run cached questions")
+    p.add_argument("--no-critic", action="store_true",
+                   help="critic ablation: do not install the critic subagent and "
+                        "critique inline in the main agent instead (env: BEAVER_CRITIC=0). "
+                        "Invalidates cached records via the prompt hash; combine with "
+                        "--tag so the records land in their own results directory.")
+    p.add_argument("--tag", metavar="SUFFIX",
+                   help="extra suffix for the results run id. Run ids already carry "
+                        "the protocol identity (version, model, effort, turn budget, "
+                        "critic mode), e.g. "
+                        "results/bird_mini_dev__main__n500_v7-<model>-medium-t10-nocritic; "
+                        "use --tag for one-off labels on top (e.g. --tag rerun1).")
     p.add_argument("--no-container", action="store_true",
                    help="run agentic arms with the host `pi` binary (legacy sql_exec.ts "
                         "path) instead of the isolated Docker container. For debugging "
@@ -500,8 +551,12 @@ def main(argv=None) -> int:
     p.add_argument("--score-only", action="store_true", help="rescore existing records")
     p.add_argument("--estimate-cost", action="store_true", help="project Phase-2 cost from pilot")
     args = p.parse_args(argv)
+    if args.tag and not all(c.isalnum() or c in "-_" for c in args.tag):
+        p.error("--tag may only contain letters, digits, '-', '_'")
     try:
         config.PI_THINKING = args.effort
+        if args.no_critic:
+            config.CRITIC_ENABLED = False
         if args.model:
             config.set_openrouter_model(args.model)
         return run(args)
